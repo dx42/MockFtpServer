@@ -21,7 +21,7 @@ import java.net.ServerSocket;
 /**
  * Default implementation of the {@link ServerSocketFactory}; creates standard {@link ServerSocket} instances.
  * 
- * @version $Revision: 95 $ - $Date: 2007-10-30 22:05:41 -0400 (Tue, 30 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

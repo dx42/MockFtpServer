@@ -26,7 +26,7 @@ import org.mockftpserver.stub.command.RetrCommandHandler;
 /**
  * Tests for the RetrCommandHandler class
  * 
- * @version $Revision: 88 $ - $Date: 2007-10-27 20:18:11 -0400 (Sat, 27 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

@@ -25,7 +25,7 @@ import org.mockftpserver.stub.command.SystCommandHandler;
 /**
  * Tests for the SystCommandHandler class
  * 
- * @version $Revision: 88 $ - $Date: 2007-10-27 20:18:11 -0400 (Sat, 27 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

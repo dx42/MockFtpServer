@@ -35,7 +35,7 @@ import org.mockftpserver.core.util.Assert;
  *              on the invocation (the second command parameter)
  * </ul>
  * 
- * @version $Revision: 139 $ - $Date: 2007-12-11 20:58:30 -0500 (Tue, 11 Dec 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

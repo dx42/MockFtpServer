@@ -22,7 +22,7 @@ import java.net.ServerSocket;
  * Interface for factory that creates new {@link ServerSocket} instances.
  * Using this abstraction enables unit testing.
  * 
- * @version $Revision: 95 $ - $Date: 2007-10-30 22:05:41 -0400 (Tue, 30 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

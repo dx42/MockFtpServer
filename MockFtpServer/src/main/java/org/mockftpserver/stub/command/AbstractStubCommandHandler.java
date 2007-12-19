@@ -26,7 +26,7 @@ import org.mockftpserver.stub.StubFtpServer;
  * Subclasses can optionally override the reply code and/or text for the reply by calling
  * {@link #setReplyCode(int)}, {@link #setReplyMessageKey(String)} and {@link #setReplyText(String)}.
  * 
- * @version $Revision: 95 $ - $Date: 2007-10-30 22:05:41 -0400 (Tue, 30 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

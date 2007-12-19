@@ -24,7 +24,7 @@ import org.mockftpserver.core.socket.ServerSocketFactory;
  * Test-only implementation of ServerSocketFactory. It always returns the predefined
  * ServerSocket instance specified on the constructor.
  * 
- * @version $Revision: 88 $ - $Date: 2007-10-27 20:18:11 -0400 (Sat, 27 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

@@ -45,7 +45,7 @@ import org.mockftpserver.core.util.AssertFailedException;
  *    <li>{@link #PATHNAME_KEY} ("pathname") - the pathname of the file submitted on the invocation (the first command parameter)
  * </ul>
  * 
- * @version $Revision: 93 $ - $Date: 2007-10-30 19:26:16 -0400 (Tue, 30 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

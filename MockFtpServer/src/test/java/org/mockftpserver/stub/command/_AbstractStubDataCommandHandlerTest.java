@@ -30,7 +30,7 @@ import org.mockftpserver.test.AbstractTest;
  * Tests for AbstractStubDataCommandHandler. The class name is prefixed with an underscore
  * so that it is not filtered out by Maven's Surefire test plugin.
  * 
- * @version $Revision: 93 $ - $Date: 2007-10-30 19:26:16 -0400 (Tue, 30 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

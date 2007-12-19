@@ -26,7 +26,7 @@ import org.mockftpserver.core.socket.SocketFactory;
  * StubSocket instance specified on the constructor. It allows direct access to the
  * requested host address and port number.
  * 
- * @version $Revision: 88 $ - $Date: 2007-10-27 20:18:11 -0400 (Sat, 27 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

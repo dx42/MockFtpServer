@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
  * interface is implemented by CommandHandlers so that the StubFtpServer can automatically
  * set the default reply text ResourceBundle for the CommandHandler.
  * 
- * @version $Revision: 89 $ - $Date: 2007-10-28 16:54:24 -0400 (Sun, 28 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

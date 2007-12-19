@@ -33,7 +33,7 @@ import org.mockftpserver.core.util.Assert;
 
  * @see http://www.ietf.org/rfc/rfc943
  *  
- * @version $Revision: 95 $ - $Date: 2007-10-30 22:05:41 -0400 (Tue, 30 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */
