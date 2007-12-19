@@ -46,7 +46,7 @@ import org.mockftpserver.core.util.AssertFailedException;
  * the data transfer is complete) by calling {@link #setFinalReplyCode(int)}, 
  * {@link #setFinalReplyMessageKey(String)} and/or {@link #setFinalReplyText(String)} methods.
  * 
- * @version $Revision: 95 $ - $Date: 2007-10-30 22:05:41 -0400 (Tue, 30 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

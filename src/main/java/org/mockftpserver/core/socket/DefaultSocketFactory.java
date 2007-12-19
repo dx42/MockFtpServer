@@ -22,7 +22,7 @@ import java.net.Socket;
 /**
  * Default implementation of the {@link SocketFactory}; creates standard {@link Socket} instances.
  * 
- * @version $Revision: 95 $ - $Date: 2007-10-30 22:05:41 -0400 (Tue, 30 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

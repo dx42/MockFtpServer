@@ -31,7 +31,7 @@ import org.mockftpserver.core.session.Session;
  *    <li>{@link #FILE_CONTENTS_KEY} ("fileContents") - the file contents (<code>byte[]</code>) sent on the data connection
  * </ul>
  *
- * @version $Revision: 95 $ - $Date: 2007-10-30 22:05:41 -0400 (Tue, 30 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

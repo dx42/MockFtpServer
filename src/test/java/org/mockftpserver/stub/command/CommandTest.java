@@ -23,7 +23,7 @@ import org.mockftpserver.test.AbstractTest;
 /**
  * Tests for the Command class
  * 
- * @version $Revision: 137 $ - $Date: 2007-12-10 22:16:25 -0500 (Mon, 10 Dec 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

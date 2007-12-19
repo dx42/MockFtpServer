@@ -24,7 +24,7 @@ import org.apache.commons.net.ftp.FTPClient;
 /**
  * Simple FTP client code example.
  * 
- * @version $Revision: 88 $ - $Date: 2007-10-27 20:18:11 -0400 (Sat, 27 Oct 2007) $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

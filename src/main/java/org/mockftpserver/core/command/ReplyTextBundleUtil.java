@@ -23,7 +23,7 @@ import org.mockftpserver.core.util.Assert;
  * Contains common utility method to conditionally set the reply text ResourceBundle on a
  * CommandHandler instance.
  * 
- * @version $Revision: 139 $ - $Date: 2007-12-11 20:58:30 -0500 (Tue, 11 Dec 2007) $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

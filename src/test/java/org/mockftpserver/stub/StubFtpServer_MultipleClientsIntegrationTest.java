@@ -29,7 +29,7 @@ import org.mockftpserver.test.IntegrationTest;
 /**
  * StubFtpServer tests for multiple FTP clients using the Apache Jakarta Commons Net FTP client.
  * 
- * @version $Revision: 93 $ - $Date: 2007-10-30 19:26:16 -0400 (Tue, 30 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

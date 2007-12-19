@@ -125,7 +125,7 @@ import org.mockftpserver.stub.command.UserCommandHandler;
  * completely replace the ResourceBundle file by calling the calling the 
  * {@link #setReplyTextBaseName(String)} method. 
  * 
- * @version $Revision: 137 $ - $Date: 2007-12-10 22:16:25 -0500 (Mon, 10 Dec 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

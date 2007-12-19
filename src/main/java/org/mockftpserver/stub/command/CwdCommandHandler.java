@@ -29,7 +29,7 @@ import org.mockftpserver.core.session.Session;
  *    <li>{@link #PATHNAME_KEY} ("pathname") - the pathname of the directory submitted on the invocation (the first command parameter)
  * </ul>
  * 
- * @version $Revision: 135 $ - $Date: 2007-12-10 21:13:13 -0500 (Mon, 10 Dec 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

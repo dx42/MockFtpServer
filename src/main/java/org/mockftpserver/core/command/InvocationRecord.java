@@ -37,7 +37,7 @@ import org.mockftpserver.core.util.AssertFailedException;
  * The {@link #lock()} method makes an instance of this class immutable. After an instance is locked,
  * calling the {@link #set(String, Object)} method will throw an <code>AssertFailedException</code>. 
  * 
- * @version $Revision: 95 $ - $Date: 2007-10-30 22:05:41 -0400 (Tue, 30 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

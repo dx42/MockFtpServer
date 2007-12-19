@@ -39,7 +39,7 @@ import org.mockftpserver.core.util.AssertFailedException;
 /**
  * Abstract superclass for all project test classes
  * 
- * @version $Revision: 90 $ - $Date: 2007-10-29 09:40:00 -0400 (Mon, 29 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

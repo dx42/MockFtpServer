@@ -18,7 +18,7 @@ package org.mockftpserver.core;
 /**
  * Represents an error specific to the MockFtpServer project.
  * 
- * @version $Revision: 95 $ - $Date: 2007-10-30 22:05:41 -0400 (Tue, 30 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

@@ -32,7 +32,7 @@ import org.mockftpserver.test.AbstractTest;
 /**
  * Abstract superclass for CommandHandler tests
  * 
- * @version $Revision: 93 $ - $Date: 2007-10-30 19:26:16 -0400 (Tue, 30 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

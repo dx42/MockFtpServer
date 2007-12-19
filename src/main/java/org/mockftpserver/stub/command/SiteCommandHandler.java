@@ -29,7 +29,7 @@ import org.mockftpserver.core.session.Session;
  *    <li>{@link #PARAMETERS_KEY} ("parameters") - the site parameters submitted on the invocation (the first command parameter)
  * </ul>
  * 
- * @version $Revision: 139 $ - $Date: 2007-12-11 20:58:30 -0500 (Tue, 11 Dec 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

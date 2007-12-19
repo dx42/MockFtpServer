@@ -29,7 +29,7 @@ import org.mockftpserver.core.session.Session;
  *    <li>{@link #FILE_STRUCTURE_KEY} ("fileStructure") - the file structure code submitted on the invocation (the first command parameter)
  * </ul>
  * 
- * @version $Revision: 95 $ - $Date: 2007-10-30 22:05:41 -0400 (Tue, 30 Oct 2007) $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */
