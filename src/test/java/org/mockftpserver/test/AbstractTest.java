@@ -135,6 +135,15 @@ public abstract class AbstractTest extends TestCase {
     //-------------------------------------------------------------------------
 
     /**
+     * Assert that the two objects are not equal
+     * @param object1 - the first object
+     * @param object2 - the second object
+     */
+    protected void assertNotEquals(String message, Object object1, Object object2) {
+        assertFalse(message, object1.equals(object2));
+    }
+    
+    /**
      * Assert that the two byte arrays have the same length and content
      * @param array1 - the first array
      * @param array2 - the second array
@@ -201,7 +210,7 @@ public abstract class AbstractTest extends TestCase {
     /**
      * Create and return a List containing the Objects passed as arguments to this method
      * @param e1- the first element to add
-     * @param e1- the second element to add
+     * @param e2- the second element to add
      * @return the List containing the specified elements
      */
     protected static List list(Object e1, Object e2) {
@@ -212,15 +221,37 @@ public abstract class AbstractTest extends TestCase {
     }
 
     /**
+     * Create and return a List containing the single Object passed as an argument to this method
+     * @param element- the element to add
+     * @return the List containing the specified element
+     */
+    protected static List list(Object element) {
+        return Collections.singletonList(element);
+    }
+
+    /**
      * Create and return a Set containing the Objects passed as arguments to this method
-     * @param e1- the first element to add
-     * @param e1- the second element to add
+     * @param e1 - the first element to add
+     * @param e2 - the second element to add
      * @return the Set containing the specified elements
      */
     protected static Set set(Object e1, Object e2) {
         Set set = new HashSet();
         set.add(e1);
         set.add(e2);
+        return set;
+    }
+
+    /**
+     * Create and return a Set containing the Objects passed as arguments to this method
+     * @param e1 - the first element to add
+     * @param e2 - the second element to add
+     * @param e3 - the third element to add
+     * @return the Set containing the specified elements
+     */
+    protected static Set set(Object e1, Object e2, Object e3) {
+        Set set = set(e1, e2);
+        set.add(e3);
         return set;
     }
 
