@@ -15,7 +15,10 @@
  */
 package org.mockftpserver.stub;
 
+import org.apache.commons.net.ftp.FTPClient;
+import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.stub.StubFtpServer;
+import org.mockftpserver.stub.command.PwdCommandHandler;
 import org.mockftpserver.test.AbstractTest;
 
 /**
@@ -26,6 +29,8 @@ import org.mockftpserver.test.AbstractTest;
  * @author Chris Mair
  */
 public final class StubFtpServer_StartTest extends AbstractTest {
+
+    private static final String SERVER = "localhost";
 
     private StubFtpServer stubFtpServer;
     
@@ -44,6 +49,32 @@ public final class StubFtpServer_StartTest extends AbstractTest {
         stubFtpServer.stop();
         
         assertEquals("shutdown - after stop()", true, stubFtpServer.isShutdown());
+    }
+    
+    /**
+     * Test setting a non-default port number for the StubFtpServer control connection socket. 
+     */
+    public void testCustomServerControlPort() throws Exception {
+        final int SERVER_CONTROL_PORT = 9187;
+        final String DIR = "abc 1234567";
+        PwdCommandHandler pwd = new PwdCommandHandler();
+        pwd.setDirectory(DIR);
+        
+        stubFtpServer = new StubFtpServer();
+        stubFtpServer.setServerControlPort(SERVER_CONTROL_PORT);
+        stubFtpServer.setCommandHandler(CommandNames.PWD, pwd);
+        
+        stubFtpServer.start();
+
+        try {
+            FTPClient ftpClient = new FTPClient();
+            ftpClient.connect(SERVER, SERVER_CONTROL_PORT);
+            
+            assertEquals("pwd", DIR, ftpClient.printWorkingDirectory());
+        }
+        finally {
+            stubFtpServer.stop();
+        }
     }
     
 }

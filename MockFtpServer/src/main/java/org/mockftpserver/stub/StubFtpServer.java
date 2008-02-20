@@ -133,7 +133,7 @@ public final class StubFtpServer implements Runnable {
 
     /** Default basename for reply text ResourceBundle */
     public static final String REPLY_TEXT_BASENAME = "ReplyText"; 
-    private static final int SERVER_CONTROL_PORT = 21;
+    private static final int DEFAULT_SERVER_CONTROL_PORT = 21;
 
     private static Logger LOG = Logger.getLogger(StubFtpServer.class);
 
@@ -148,7 +148,8 @@ public final class StubFtpServer implements Runnable {
     ResourceBundle replyTextBundle;             // non-private for testing only
     private volatile boolean terminate = false;
     private Map commandHandlers;
-    private Thread serverThread; 
+    private Thread serverThread;
+    private int serverControlPort = DEFAULT_SERVER_CONTROL_PORT;
         
     // Map of Session -> SessionInfo
     private Map sessions = new HashMap(); 
@@ -216,8 +217,8 @@ public final class StubFtpServer implements Runnable {
      */
     public void run() {
         try {
-            LOG.info("Starting the server...");
-            serverSocket = serverSocketFactory.createServerSocket(SERVER_CONTROL_PORT);
+            LOG.info("Starting the server on port " + serverControlPort);
+            serverSocket = serverSocketFactory.createServerSocket(serverControlPort);
 
             serverSocket.setSoTimeout(500);
             while(!terminate) {
@@ -343,6 +344,14 @@ public final class StubFtpServer implements Runnable {
         replyTextBundle = ResourceBundle.getBundle(baseName);
     }
     
+    /**
+     * Set the port number to which the server control connection socket will bind. The default value is 21.
+     * @param serverControlPort - the port number for the server control connection ServerSocket
+     */
+    public void setServerControlPort(int serverControlPort) {
+        this.serverControlPort = serverControlPort;
+    }
+    
     //-------------------------------------------------------------------------
     // Internal Helper Methods
     //-------------------------------------------------------------------------
@@ -370,5 +379,5 @@ public final class StubFtpServer implements Runnable {
     boolean isStarted() {
         return serverThread != null && serverThread.isAlive() && serverSocket != null;
     }
-    
+
 }
