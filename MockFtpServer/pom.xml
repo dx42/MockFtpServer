@@ -3,13 +3,15 @@
   <groupId>org.mockftpserver</groupId>
   <artifactId>MockFtpServer</artifactId>
   <name>MockFtpServer</name>
-  <version>1.0</version>
+  <version>1.1</version>
   <url>http://mockftpserver.sourceforge.net/</url>
-  
+
+  <!--  
   <scm>
     <connection>scm:svn:http://localhost/svn/dev/tags/MockFtpServer-1.0-RC1</connection>
     <developerConnection>scm:svn:http://localhost/svn/dev/tags/MockFtpServer-1.0-RC1</developerConnection>
   </scm>
+  -->
   
   <dependencies>
 
