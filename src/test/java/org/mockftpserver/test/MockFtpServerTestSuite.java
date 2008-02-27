@@ -43,4 +43,12 @@ public class MockFtpServerTestSuite extends AbstractDirectoryTestSuite {
     public static Test suite() {
         return new MockFtpServerTestSuite();
     }
+    
+    /**
+     * Run the test suite
+     */
+    public static void main(String[] args) throws Exception {
+        junit.textui.TestRunner.run(suite());
+    }
+
 }
