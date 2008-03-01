@@ -20,6 +20,7 @@ import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.stub.StubFtpServer;
 import org.mockftpserver.stub.command.PwdCommandHandler;
 import org.mockftpserver.test.AbstractTest;
+import org.mockftpserver.test.PortTestUtil;
 
 /**
  * Tests for StubFtpServer that require the StubFtpServer thread to be started. 
@@ -39,6 +40,7 @@ public final class StubFtpServer_StartTest extends AbstractTest {
      */
     public void testStartAndStop() throws Exception {
         stubFtpServer = new StubFtpServer();
+        stubFtpServer.setServerControlPort(PortTestUtil.getFtpServerControlPort());
         assertEquals("started - before", false, stubFtpServer.isStarted());
         
         stubFtpServer.start();

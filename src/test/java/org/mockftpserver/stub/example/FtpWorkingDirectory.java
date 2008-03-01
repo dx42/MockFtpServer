@@ -30,6 +30,7 @@ import org.apache.commons.net.ftp.FTPClient;
 public class FtpWorkingDirectory {
 
     private String server;
+    private int port;
 
     /**
      * Return the current working directory for the FTP account on the server
@@ -39,7 +40,7 @@ public class FtpWorkingDirectory {
      */
     public String getWorkingDirectory() throws SocketException, IOException {
         FTPClient ftpClient = new FTPClient();
-        ftpClient.connect(server);
+        ftpClient.connect(server, port);
         return ftpClient.printWorkingDirectory();
     }
 
@@ -51,4 +52,12 @@ public class FtpWorkingDirectory {
         this.server = server;
     }
     
+    /**
+     * Set the port number for the FTP server
+     * @param port - the port number
+     */
+    public void setPort(int port) {
+        this.port = port;
+    }
+
 }

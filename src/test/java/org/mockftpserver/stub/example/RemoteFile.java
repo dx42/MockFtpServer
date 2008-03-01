@@ -31,11 +31,12 @@ import org.apache.commons.net.ftp.FTPClient;
 public class RemoteFile {
 
     private String server;
+    private int port;
 
     public String readFile(String filename) throws SocketException, IOException {
 
         FTPClient ftpClient = new FTPClient();
-        ftpClient.connect(server);
+        ftpClient.connect(server, port);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         boolean success = ftpClient.retrieveFile(filename, outputStream);
@@ -53,6 +54,14 @@ public class RemoteFile {
      */
     public void setServer(String server) {
         this.server = server;
+    }
+
+    /**
+     * Set the port number for the FTP server
+     * @param port - the port number
+     */
+    public void setPort(int port) {
+        this.port = port;
     }
     
     // Other methods ...

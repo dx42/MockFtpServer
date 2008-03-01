@@ -26,6 +26,7 @@ import org.mockftpserver.test.IntegrationTest;
  */
 public class FtpWorkingDirectoryTest extends AbstractTest implements IntegrationTest {
 
+    private static final int PORT = 9981;
     private FtpWorkingDirectory ftpWorkingDirectory;
     private StubFtpServer stubFtpServer;
     
@@ -53,7 +54,9 @@ public class FtpWorkingDirectoryTest extends AbstractTest implements Integration
     protected void setUp() throws Exception {
         super.setUp();
         ftpWorkingDirectory = new FtpWorkingDirectory();
+        ftpWorkingDirectory.setPort(PORT);
         stubFtpServer = new StubFtpServer();
+        stubFtpServer.setServerControlPort(PORT);
     }
 
     /**
