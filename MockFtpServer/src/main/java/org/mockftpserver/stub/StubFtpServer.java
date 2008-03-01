@@ -150,6 +150,7 @@ public final class StubFtpServer implements Runnable {
     private Map commandHandlers;
     private Thread serverThread;
     private int serverControlPort = DEFAULT_SERVER_CONTROL_PORT;
+    private Object startLock = new Object();
         
     // Map of Session -> SessionInfo
     private Map sessions = new HashMap(); 
@@ -209,6 +210,17 @@ public final class StubFtpServer implements Runnable {
     public void start() {
         serverThread = new Thread(this);
         serverThread.start();
+        
+        // Wait until the thread is initialized
+        synchronized(startLock){ 
+            try {
+                startLock.wait();
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+                throw new MockFtpServerException(e);
+            } 
+        } 
     }
     
     /**
@@ -219,6 +231,11 @@ public final class StubFtpServer implements Runnable {
         try {
             LOG.info("Starting the server on port " + serverControlPort);
             serverSocket = serverSocketFactory.createServerSocket(serverControlPort);
+
+            // Notify to allow the start() method to finish and return
+            synchronized(startLock) { 
+                startLock.notify(); 
+            } 
 
             serverSocket.setSoTimeout(500);
             while(!terminate) {
