@@ -25,6 +25,7 @@ import org.mockftpserver.stub.StubFtpServer;
 import org.mockftpserver.stub.command.AbstractStubCommandHandler;
 import org.mockftpserver.test.AbstractTest;
 import org.mockftpserver.test.IntegrationTest;
+import org.mockftpserver.test.PortTestUtil;
 
 /**
  * StubFtpServer tests for multiple FTP clients using the Apache Jakarta Commons Net FTP client.
@@ -60,19 +61,19 @@ public final class StubFtpServer_MultipleClientsIntegrationTest extends Abstract
 
         // Connect from client 1
         LOG.info("connect() to ftpClient1");
-        ftpClient1.connect(SERVER);
+        ftpClient1.connect(SERVER, PortTestUtil.getFtpServerControlPort());
         String sessionId1 = ftpClient1.printWorkingDirectory();
         LOG.info("PWD(1) reply =[" + sessionId1 + "]");
 
         // Connect from client 2
         LOG.info("connect() to ftpClient2");
-        ftpClient2.connect(SERVER);
+        ftpClient2.connect(SERVER, PortTestUtil.getFtpServerControlPort());
         String sessionId2 = ftpClient2.printWorkingDirectory();
         LOG.info("PWD(2) reply =[" + sessionId2 + "]");
 
         // Connect from client 3
         LOG.info("connect() to ftpClient3");
-        ftpClient3.connect(SERVER);
+        ftpClient3.connect(SERVER, PortTestUtil.getFtpServerControlPort());
         String sessionId3 = ftpClient3.printWorkingDirectory();
         LOG.info("PWD(3) reply =[" + sessionId3 + "]");
         
@@ -99,6 +100,7 @@ public final class StubFtpServer_MultipleClientsIntegrationTest extends Abstract
         super.setUp();
 
         stubFtpServer = new StubFtpServer();
+        stubFtpServer.setServerControlPort(PortTestUtil.getFtpServerControlPort());
         stubFtpServer.setCommandHandler(CommandNames.PWD, new CustomPwdCommandHandler());
         stubFtpServer.start();
         

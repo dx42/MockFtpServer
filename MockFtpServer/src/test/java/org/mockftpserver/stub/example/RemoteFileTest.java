@@ -29,6 +29,7 @@ import org.mockftpserver.test.IntegrationTest;
  */
 public class RemoteFileTest extends AbstractTest implements IntegrationTest {
 
+    private static final int PORT = 9981;
     private static final String FILENAME = "dir/sample.txt";
 
     private RemoteFile remoteFile;
@@ -87,7 +88,9 @@ public class RemoteFileTest extends AbstractTest implements IntegrationTest {
         super.setUp();
         remoteFile = new RemoteFile();
         remoteFile.setServer("localhost");
+        remoteFile.setPort(PORT);
         stubFtpServer = new StubFtpServer();
+        stubFtpServer.setServerControlPort(PORT);
     }
 
     /**

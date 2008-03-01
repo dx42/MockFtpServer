@@ -17,6 +17,7 @@ package org.mockftpserver.stub;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 
 import org.apache.commons.net.ftp.FTP;
@@ -41,6 +42,7 @@ import org.mockftpserver.stub.command.StorCommandHandler;
 import org.mockftpserver.stub.command.StouCommandHandler;
 import org.mockftpserver.test.AbstractTest;
 import org.mockftpserver.test.IntegrationTest;
+import org.mockftpserver.test.PortTestUtil;
 
 /**
  * Tests for StubFtpServer using the Apache Jakarta Commons Net FTP client.
@@ -56,7 +58,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
     private static final String USERNAME = "user123";
     private static final String PASSWORD = "password";
     private static final String FILENAME = "abc.txt";
-    private static final String ASCII_CONTENTS = "abcdef\r\nghijkl\r\nmnopqr";
+    private static final String ASCII_CONTENTS = "abcdef\tghijklmnopqr";
     private static final byte[] BINARY_CONTENTS = new byte[256];
 
     private StubFtpServer stubFtpServer;
@@ -74,7 +76,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
     public void testLogin() throws Exception {
         // Connect
         LOG.info("Conecting to " + SERVER);
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
         verifyReplyCode("connect", 220);
 
         // Login
@@ -94,7 +96,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test the ACCT command
      */
     public void testAcct() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // ACCT
         int replyCode = ftpClient.acct("123456");
@@ -117,7 +119,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         HelpCommandHandler helpCommandHandler = (HelpCommandHandler) stubFtpServer.getCommandHandler(CommandNames.HELP);
         helpCommandHandler.setHelpMessage(HELP);
 
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // HELP
         String help = ftpClient.listHelp();
@@ -129,7 +131,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test the LIST and SYST commands.
      */
     public void testList() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // Set directory listing
         ListCommandHandler listCommandHandler = (ListCommandHandler) stubFtpServer.getCommandHandler(CommandNames.LIST);
@@ -148,7 +150,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test the LIST, PASV and SYST commands, transferring a directory listing in passive mode
      */
     public void testList_PassiveMode() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         ftpClient.enterLocalPassiveMode();
         
@@ -166,7 +168,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test the NLST command.
      */
     public void testNlst() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // Set directory listing
         NlstCommandHandler nlstCommandHandler = (NlstCommandHandler) stubFtpServer.getCommandHandler(CommandNames.NLST);
@@ -189,7 +191,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         PwdCommandHandler pwdCommandHandler = (PwdCommandHandler) stubFtpServer.getCommandHandler(CommandNames.PWD);
         pwdCommandHandler.setDirectory(DIR);
 
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // PWD
         String dir = ftpClient.printWorkingDirectory();
@@ -206,7 +208,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         StatCommandHandler statCommandHandler = (StatCommandHandler) stubFtpServer.getCommandHandler(CommandNames.STAT);
         statCommandHandler.setStatus(STATUS);
 
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // STAT
         String status = ftpClient.getStatus();
@@ -224,7 +226,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         StatCommandHandler statCommandHandler = (StatCommandHandler) stubFtpServer.getCommandHandler(CommandNames.STAT);
         statCommandHandler.setStatus(STATUS);
 
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // STAT
         String status = ftpClient.getStatus();
@@ -236,7 +238,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test the System (SYST) command
      */
     public void testSyst() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // SYST
         assertEquals("getSystemName()", "\"WINDOWS\" system type.", ftpClient.getSystemName());
@@ -249,7 +251,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
     public void testCwd() throws Exception {
         // Connect
         LOG.info("Conecting to " + SERVER);
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
         verifyReplyCode("connect", 220);
 
         // CWD
@@ -267,7 +269,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         StaticReplyCommandHandler cwdCommandHandler = new StaticReplyCommandHandler(REPLY_CODE);
         stubFtpServer.setCommandHandler("CWD", cwdCommandHandler);
 
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // CWD
         boolean success = ftpClient.changeWorkingDirectory("dir1/dir2");
@@ -279,7 +281,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test changing to the parent directory (CDUP)
      */
     public void testCdup() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // CDUP
         boolean success = ftpClient.changeToParentDirectory();
@@ -291,7 +293,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test delete (DELE)
      */
     public void testDele() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // DELE
         boolean success = ftpClient.deleteFile(FILENAME);
@@ -303,7 +305,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test make directory (MKD)
      */
     public void testMkd() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // MKD
         boolean success = ftpClient.makeDirectory("dir1/dir2");
@@ -315,7 +317,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test NOOP
      */
     public void testNoop() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // NOOP
         boolean success = ftpClient.sendNoOp();
@@ -327,7 +329,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test restart (REST)
      */
     public void testRest() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // REST
         int replyCode = ftpClient.rest("marker");
@@ -338,7 +340,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test changing the current working directory (RMD)
      */
     public void testRmd() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // RMD
         boolean success = ftpClient.removeDirectory("dir1/dir2");
@@ -350,7 +352,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test rename (RNFR/RNTO)
      */
     public void testRename() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // Rename (RNFR, RNTO)
         boolean success = ftpClient.rename(FILENAME, "new_" + FILENAME);
@@ -362,7 +364,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test the ALLO command
      */
     public void testAllo() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // ALLO
         assertTrue("ALLO", ftpClient.allocate(1024));
@@ -375,7 +377,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
     public void testTransferAsciiFile() throws Exception {
         retrCommandHandler.setFileContents(ASCII_CONTENTS);
 
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // Get File
         LOG.info("Get File for remotePath [" + FILENAME + "]");
@@ -400,7 +402,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
     public void testTransferBinaryFiles() throws Exception {
         retrCommandHandler.setFileContents(BINARY_CONTENTS);
 
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
         ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 
         // Get File
@@ -427,7 +429,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         StouCommandHandler stouCommandHandler = (StouCommandHandler) stubFtpServer.getCommandHandler(CommandNames.STOU);
         stouCommandHandler.setFilename(FILENAME);
         
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // Stor a File (STOU)
         ByteArrayInputStream inputStream = new ByteArrayInputStream(ASCII_CONTENTS.getBytes());
@@ -444,7 +446,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
     public void testAppe() throws Exception {
         AppeCommandHandler appeCommandHandler = (AppeCommandHandler) stubFtpServer.getCommandHandler(CommandNames.APPE);
         
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // Append a File (APPE)
         ByteArrayInputStream inputStream = new ByteArrayInputStream(ASCII_CONTENTS.getBytes());
@@ -459,7 +461,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test the ABOR command
      */
     public void testAbor() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // ABOR
         assertTrue("ABOR", ftpClient.abort());
@@ -469,7 +471,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test the Passive (PASV) command
      */
     public void testPasv() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // PASV
         ftpClient.enterLocalPassiveMode();
@@ -480,7 +482,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test Mode (MODE)
     */
     public void testMode() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // MODE
         boolean success = ftpClient.setFileTransferMode(FTP.STREAM_TRANSFER_MODE);
@@ -492,7 +494,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test file structure (STRU)
      */
     public void testStru() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // STRU
         boolean success = ftpClient.setFileStructure(FTP.FILE_STRUCTURE);
@@ -513,7 +515,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         stubFtpServer.setCommandHandler("CWD", simpleCompositeCommandHandler);
         
         // Connect
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // CWD
         assertFalse("first", ftpClient.changeWorkingDirectory("dir1/dir2"));
@@ -524,7 +526,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test site parameters (SITE)
      */
     public void testSite() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // SITE
         int replyCode = ftpClient.site("parameters,1,2,3");
@@ -535,7 +537,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test structure mount (SMNT)
      */
     public void testSmnt() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // SMNT
         assertTrue("SMNT", ftpClient.structureMount("dir1/dir2"));
@@ -546,7 +548,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test reinitialize (REIN)
      */
     public void testRein() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         // REIN
         assertEquals("REIN", 220, ftpClient.rein());
@@ -556,7 +558,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      * Test that command names in lowercase or mixed upper/lower case are accepted
      */
     public void testCommandNamesInLowerOrMixedCase() throws Exception {
-        ftpClient.connect(SERVER);
+        ftpClientConnect();
 
         assertEquals("rein", 220, ftpClient.sendCommand("rein"));
         assertEquals("rEIn", 220, ftpClient.sendCommand("rEIn"));
@@ -580,6 +582,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         }
 
         stubFtpServer = new StubFtpServer();
+        stubFtpServer.setServerControlPort(PortTestUtil.getFtpServerControlPort());
         stubFtpServer.start();
         ftpClient = new FTPClient();
         retrCommandHandler = (RetrCommandHandler) stubFtpServer.getCommandHandler(CommandNames.RETR);
@@ -599,6 +602,13 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
     // Internal Helper Methods
     // -------------------------------------------------------------------------
 
+    /**
+     * Connect to the server from the FTPClient
+     */
+    private void ftpClientConnect() throws IOException {
+        ftpClient.connect(SERVER, PortTestUtil.getFtpServerControlPort());
+    }
+    
     /**
      * Assert that the FtpClient reply code is equal to the expected value
      * 

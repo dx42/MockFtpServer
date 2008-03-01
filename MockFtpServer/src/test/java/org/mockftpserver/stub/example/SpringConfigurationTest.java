@@ -33,6 +33,7 @@ public class SpringConfigurationTest extends AbstractTest {
 
     private static final Logger LOG = Logger.getLogger(SpringConfigurationTest.class);
     private static final String SERVER = "localhost";
+    private static final int PORT = 9981;
 
     private StubFtpServer stubFtpServer;
     private FTPClient ftpClient;
@@ -43,7 +44,7 @@ public class SpringConfigurationTest extends AbstractTest {
     public void testStubFtpServer() throws Exception {
         stubFtpServer.start();
         
-        ftpClient.connect(SERVER);
+        ftpClient.connect(SERVER, PORT);
 
         // PWD
         String dir = ftpClient.printWorkingDirectory();
