@@ -3,15 +3,20 @@
   <groupId>org.mockftpserver</groupId>
   <artifactId>MockFtpServer</artifactId>
   <name>MockFtpServer</name>
-  <version>1.2</version>
+  <description>
+	The MockFtpServer project provides a mock/dummy FTP server for testing FTP client code. 
+	It can be configured to return custom data or reply codes, to simulate either success 
+	or failure scenarios. You can also verify expected command invocations. 
+  </description>
+  <packaging>jar</packaging>
+  <version>1.2.1</version>
   <url>http://mockftpserver.sourceforge.net/</url>
 
-  <!--  
   <scm>
-    <connection>scm:svn:http://localhost/svn/dev/tags/MockFtpServer-1.0-RC1</connection>
-    <developerConnection>scm:svn:http://localhost/svn/dev/tags/MockFtpServer-1.0-RC1</developerConnection>
+    <connection>scm:svn:https://mockftpserver.svn.sourceforge.net/svnroot/mockftpserver/MockFtpServer</connection>
+    <developerConnection>scm:svn:https://mockftpserver.svn.sourceforge.net/svnroot/mockftpserver/MockFtpServer</developerConnection>
+    <url>https://mockftpserver.svn.sourceforge.net/svnroot/mockftpserver</url>
   </scm>
-  -->
   
   <dependencies>
 
@@ -62,8 +67,23 @@
 
   </dependencies>
   
-<build> 
-  <plugins> 
+  <distributionManagement>
+    <repository>
+      <id>sourceforge</id>
+      <url>scp://shell.sourceforge.net/home/groups/m/mo/mockftpserver/htdocs/m2repo</url>
+    </repository>
+  </distributionManagement>
+  
+  <build>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+         <artifactId>wagon-ssh-external</artifactId>
+         <version>1.0-beta-2</version>
+      </extension>
+    </extensions>
+   
+    <plugins> 
     
     <plugin>
       <groupId>org.apache.maven.plugins</groupId>
@@ -119,8 +139,8 @@
       </configuration>
     </plugin>
     
-  </plugins> 
- </build> 
+    </plugins> 
+  </build> 
 
   <reporting> 
     <plugins> 

@@ -16,3 +16,15 @@ MockFtpServer
   at different levels of abstraction. Currently, however, <<StubFtpServer>> is the only one provided, 
   though others are being considered. <<StubFtpServer>> is a "stub" implementation of an FTP server. 
   See the {{{stubftpserver-getting-started.html}StubFtpServer Getting Started Guide}} for more information.
+
+  For projects built using {{{http://maven.apache.org/}Maven}}, <<MockFtpServer>> is now available 
+  from the <<Maven Central Repository>>. Add a dependency to your POM like this:
+
+--------------------
+  <dependency>
+    <groupId>org.mockftpserver</groupId>
+    <artifactId>MockFtpServer</artifactId>
+    <version>1.2.1</version>
+    <scope>test</scope>
+  </dependency>
+--------------------
