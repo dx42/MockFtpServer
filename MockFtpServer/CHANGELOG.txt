@@ -1,6 +1,10 @@
 MockFtpServer Change Log
 -------------------------------------------------------------------------------
 
+Changes in version 1.2.1 (10 Mar 2008)
+------------------------------------------
+- Change Maven POM (pom.xml) to enable sync-ing with central Maven repository (ibiblio).
+
 Changes in version 1.2 (29 Feb 2008)
 ------------------------------------------
 - BUG FIX: StubFtpServer: Add wait/notify to ensure that the server starts up and opens the server 
