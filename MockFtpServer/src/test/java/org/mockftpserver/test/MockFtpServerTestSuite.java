@@ -26,7 +26,8 @@ import junit.framework.Test;
  */
 public class MockFtpServerTestSuite extends AbstractDirectoryTestSuite {
 
-    private static final String CLASSES_DIR = "target/test-classes";
+    //private static final String CLASSES_DIR = "target/test-classes";
+    private static final String CLASSES_DIR = "bin-groovy";
 
     /**
      * @see org.mockftpserver.test.AbstractDirectoryTestSuite#getTestClassesDirectory()
