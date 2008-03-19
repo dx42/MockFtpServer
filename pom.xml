@@ -8,7 +8,7 @@
 	It can be configured to return custom data or reply codes, to simulate either success 
 	or failure scenarios. You can also verify expected command invocations. 
   </description>
-  <packaging>jar</packaging>
+  <packaging>groovy-jar</packaging>
   <version>1.2.1</version>
   <url>http://mockftpserver.sourceforge.net/</url>
 
@@ -19,6 +19,12 @@
   </scm>
   
   <dependencies>
+
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>1.5.4</version>
+    </dependency>
 
     <dependency>
       <groupId>log4j</groupId>
@@ -85,6 +91,12 @@
    
     <plugins> 
     
+    <plugin>
+       <groupId>org.codehaus.mojo.groovy</groupId>
+       <artifactId>groovy-maven-plugin</artifactId>
+       <extensions>true</extensions>
+    </plugin>
+   
     <plugin>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-compiler-plugin</artifactId>
