@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.fake
+package org.mockftpserver.core.util
 
 import java.io.ByteArrayInputStream
 import java.io.InputStream

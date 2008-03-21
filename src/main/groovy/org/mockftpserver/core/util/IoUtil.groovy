@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.fake
+package org.mockftpserver.core.util
 
 import org.mockftpserver.core.util.Assert
 import org.mockftpserver.core.util.AssertFailedException
