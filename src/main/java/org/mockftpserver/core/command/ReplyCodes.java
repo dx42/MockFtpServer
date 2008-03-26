@@ -53,6 +53,7 @@ public final class ReplyCodes {
     public static final int TYPE_OK = 200;
     public static final int USER_LOGGED_IN_OK = 230;
     public static final int USER_NEED_PASSWORD_OK = 331;
+    public static final int USER_NO_SUCH_USER = 530;
     
     public static final int SEND_DATA_INITIAL_OK = 150;
     public static final int SEND_DATA_FINAL_OK = 226;
