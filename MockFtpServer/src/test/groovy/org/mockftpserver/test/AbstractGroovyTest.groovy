@@ -46,7 +46,23 @@ abstract class AbstractGroovyTest extends GroovyTestCase {
          assert actualException.class == expectedExceptionClass, "Expected [${expectedExceptionClass.getName()}] but was [${actualException.class.name}]" 
          return actualException 
      } 
-         
+
+     /** 
+      * Assert that the specified code throws an exception with an error message
+      * containing the specified text. 
+      * @param text - the text expected within the exception message 
+      * @param code - the Closure containing the code to be executed, which is expected to throw an exception of the specified type
+      * @return the message from the thrown Exception 
+      * 
+      * @throws AssertionError - if no exception is thrown by the code or if the thrown 
+      * 	exception message does not contain the expected text 
+      */ 
+     protected String shouldFailWithMessageContaining(String text, Closure code) { 
+          def message = shouldFail(code)
+          assert message.contains(text)
+          return message
+     }
+          
      /** 
       * Write the specified message out to the log. Application-specific subclasses 
       * can override with application-specific logging behavior, if desired. 

@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.stub.command;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.util.AssertFailedException;
@@ -32,13 +34,24 @@ public final class CommandTest extends AbstractTest {
     private static final Logger LOG = Logger.getLogger(CommandTest.class);
     
     /**
-     * Test the constructor
+     * Test the Command(String,String[]) constructor
      */
     public void testConstructor() {
         final String[] PARAMETERS = array("123");
         Command command = new Command("abc", PARAMETERS);
         assertEquals("name", "abc", command.getName());
         assertEquals("parameters", PARAMETERS, command.getParameters());
+    }
+    
+    /**
+     * Test the Command(String,List) constructor
+     */
+    public void testConstructor_List() {
+        final List PARAMETERS_LIST = list("123");
+        final String[] PARAMETERS_ARRAY = array("123");
+        Command command = new Command("abc", PARAMETERS_LIST);
+        assertEquals("name", "abc", command.getName());
+        assertEquals("parameters String[]", PARAMETERS_ARRAY, command.getParameters());
     }
     
     /**
@@ -59,7 +72,7 @@ public final class CommandTest extends AbstractTest {
      */
     public void testConstructor_NullParameters() {
         try {
-            new Command("OK", null);
+            new Command("OK", (String[])null);
             fail("Expected AssertFailedException");
         }
         catch (AssertFailedException expected) {

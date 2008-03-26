@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 the original author or authors.
+ * Copyright 20078 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.mockftpserver.core.command;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.mockftpserver.core.util.Assert;
 
@@ -35,7 +36,7 @@ public final class Command {
     /**
      * Construct a new immutable instance with the specified command name and parameters
      * @param name - the command name; may not be null
-     * @param parameters - the command parameters; may be empty; may not benull
+     * @param parameters - the command parameters; may be empty; may not be null
      */
     public Command(String name, String[] parameters) {
         Assert.notNull(name, "name");
@@ -44,6 +45,15 @@ public final class Command {
         this.parameters = copy(parameters);
     }
 
+    /**
+     * Construct a new immutable instance with the specified command name and parameters
+     * @param name - the command name; may not be null
+     * @param parameters - the command parameters; may be empty; may not be null
+     */
+    public Command(String name, List parameters) {
+        this(name, (String[]) parameters.toArray(new String[parameters.size()]));
+    }
+    
     /**
      * @return the name
      */
