@@ -29,8 +29,17 @@ class UserCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         def username = getRequiredParameter(command, 0)
-        session.setAttribute(SessionKeys.USERNAME, username)
-        sendReply(session, ReplyCodes.USER_NEED_PASSWORD_OK)
+        
+        // If the UserAccount is configured to not require password for login
+        def userAccount = serverConfiguration.getUserAccount(username)
+        if (userAccount && !userAccount.passwordRequiredForLogin) {
+            session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
+            sendReply(session, ReplyCodes.USER_LOGGED_IN_OK)
+        }
+        else {
+            session.setAttribute(SessionKeys.USERNAME, username)
+            sendReply(session, ReplyCodes.USER_NEED_PASSWORD_OK)
+        }
     }
 
 }

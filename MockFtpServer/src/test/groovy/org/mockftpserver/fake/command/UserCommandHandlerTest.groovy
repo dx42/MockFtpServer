@@ -49,15 +49,15 @@ class UserCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         assertUsernameInSession(true)
 	}
 
-//    void testHandleCommand_PasswordNotRequiredForLogin() {
-//        def userAccount = new UserAccount()
-//        userAccount.passwordRequiredForLogin = false
-//        serverConfiguration.userAccounts[USERNAME] = userAccount
-//
-//        commandHandler.handleCommand(createCommand([USERNAME]), session)
-//        assertSessionReply(ReplyCodes.USER_LOGGED_IN_OK)
-//        assertUsernameInSession(true)
-//	}
+    void testHandleCommand_PasswordNotRequiredForLogin() {
+        def userAccount = new UserAccount(passwordRequiredForLogin:false)
+        serverConfiguration.userAccounts[USERNAME] = userAccount
+
+        commandHandler.handleCommand(createCommand([USERNAME]), session)
+        assertSessionReply(ReplyCodes.USER_LOGGED_IN_OK)
+        assert session.getAttribute(SessionKeys.USER_ACCOUNT) == userAccount
+        assertUsernameInSession(false)
+	}
 
     void testHandleCommand_MissingUsernameParameter() {
         testHandleCommand_MissingRequiredParameter([])
