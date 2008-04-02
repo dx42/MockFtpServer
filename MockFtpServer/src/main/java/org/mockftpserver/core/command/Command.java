@@ -84,8 +84,18 @@ public final class Command {
      * @param index - the index
      * @return the parameter value as a String, or null if this Command does not have a parameter for that index
      */
-    public String getOptionalString(int index) {
+    public String getParameter(int index) {
         return (parameters.length > index) ? parameters[index] : null;
+    }
+
+    /**
+     * Get the String value of the parameter at the specified index; return null if no
+     * parameter exists for the index. This is an alias for {@link #getParameter(int)}.
+     * @param index - the index
+     * @return the parameter value as a String, or null if this Command does not have a parameter for that index
+     */
+    public String getOptionalString(int index) {
+        return getParameter(index);
     }
 
     /**
@@ -114,7 +124,7 @@ public final class Command {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        return "Command[" + name + ": " + Arrays.asList(parameters) + "]";
+        return "Command[" + name + ":" + Arrays.asList(parameters) + "]";
     }
 
     /**

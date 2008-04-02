@@ -16,7 +16,7 @@
 package org.mockftpserver.test
 
 import org.mockftpserver.test.LoggingUtil
-/**
+import org.apache.log4j.Logger/**
  * Abstract superclass for Groovy tests
  * 
  * @version $Revision: $ - $Date: $
@@ -25,6 +25,7 @@ import org.mockftpserver.test.LoggingUtil
  */
 abstract class AbstractGroovyTest extends GroovyTestCase {
 
+     protected final Logger LOG = Logger.getLogger(this.class)
      private LoggingUtil testLogger 
          
      /** 
@@ -63,15 +64,6 @@ abstract class AbstractGroovyTest extends GroovyTestCase {
           return message
      }
           
-     /** 
-      * Write the specified message out to the log. Application-specific subclasses 
-      * can override with application-specific logging behavior, if desired. 
-      * @param message the message to write 
-      */ 
-     protected void log(Object message) { 
-         testLogger.log(this, message) 
-     } 
-
      //------------------------------------------------------------------------------------ 
      // Test Setup and Tear Down 
      //------------------------------------------------------------------------------------ 

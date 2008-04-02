@@ -34,6 +34,7 @@ class UserAccount {
     String username
     String password
     String homeDirectory
+    boolean passwordRequiredForLogin = true
     boolean passwordCheckedDuringValidation = true
     
     /**
@@ -56,7 +57,8 @@ class UserAccount {
      * @return the String representation of this object
      */
     String toString() {
-        "UserAccount[username=$username; password=$password; homeDirectory=$homeDirectory]"
+        "UserAccount[username=$username; password=$password; homeDirectory=$homeDirectory; " +
+            "passwordRequiredForLogin=$passwordRequiredForLogin]"
     }
     
     /**
