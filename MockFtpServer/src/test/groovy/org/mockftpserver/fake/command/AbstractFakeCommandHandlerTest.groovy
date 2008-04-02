@@ -28,7 +28,7 @@ import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
  *
  * @author Chris Mair
  */
-abstract class AbstractCommandHandlerTest extends AbstractGroovyTest {
+abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
 
     protected session
     protected serverConfiguration
