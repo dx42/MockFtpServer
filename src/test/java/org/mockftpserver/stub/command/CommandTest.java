@@ -123,6 +123,16 @@ public final class CommandTest extends AbstractTest {
     }
     
     /**
+     * Test the getParameter method
+     */
+    public void testGetParameter() {
+        Command command = new Command("abc", array("123", "456"));
+        assertEquals("123", "123", command.getParameter(0));
+        assertEquals("456", "456", command.getParameter(1));
+        assertEquals("null", null, command.getParameter(2));
+    }
+    
+    /**
      * Test that a Command object is immutable, changing the original parameters passed in to the constructor
      */
     public void testImmutable_ChangeOriginalParameters() {

@@ -17,12 +17,17 @@ package org.mockftpserver.fake.command
 
 import org.mockftpserver.fake.ServerConfigurationAware
 import org.mockftpserver.fake.ServerConfiguration
-import org.mockftpserver.core.session.Sessionimport org.apache.log4j.Loggerimport org.apache.log4j.Loggerimport java.text.MessageFormatimport org.mockftpserver.core.command.Command
-
+import org.mockftpserver.core.CommandSyntaxException
+import org.mockftpserver.core.IllegalStateException
+import org.mockftpserver.core.command.Command
+import org.mockftpserver.core.command.CommandHandler
+import org.mockftpserver.core.command.ReplyCodes
+import org.mockftpserver.core.session.Session
+import org.apache.log4j.Loggerimport java.text.MessageFormat
 /**
  * Abstract superclass for CommandHandler classes for the "Fake" server.
  */
-abstract class AbstractFakeCommandHandler implements ServerConfigurationAware {
+abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfigurationAware {
 
      final Logger LOG = Logger.getLogger(this.class)
      ServerConfiguration serverConfiguration
@@ -30,12 +35,22 @@ abstract class AbstractFakeCommandHandler implements ServerConfigurationAware {
      /**
       * Use template method to centralize and ensure common validation
       */
-     protected final void handleCommand(Command command, Session session) {
+     void handleCommand(Command command, Session session) {
          assert serverConfiguration != null
          assert command != null
          assert session != null
-             
-         handle(command, session)
+
+         try {
+             handle(command, session)
+         }
+         catch(CommandSyntaxException e) {
+             LOG.warn("Error handling command: $command; ${e}")
+             sendReply(session, ReplyCodes.COMMAND_SYNTAX_ERROR)
+         }
+         catch(IllegalStateException e) {
+             LOG.warn("Error handling command: $command; ${e}")
+             sendReply(session, ReplyCodes.ILLEGAL_STATE)
+         }
      }
      
      /**
@@ -109,6 +124,35 @@ abstract class AbstractFakeCommandHandler implements ServerConfigurationAware {
      protected void assertValidReplyCode(int replyCode) {
          assert replyCode > 0, "The number [" + replyCode + "] is not a valid reply code"
      }
-     
+
+     /**
+      * Return the value of the command's parameter at the specified index.
+      * @param command - the Command
+      * @param index - the index of the parameter to retrieve
+      * @return the value of the command parameter
+      * @throws CommandSyntaxException if the Command does not have a parameter at that index
+      */
+     protected String getRequiredParameter(Command command, int index) {
+         String value = command.getParameter(index)
+         if (!value) {
+             throw new CommandSyntaxException("$command missing required parameter at index [$index]")
+         }
+         return value
+     }
+      
+     /**
+      * Return the value of the named attribute within the session.
+      * @param session - the Session
+      * @param name - the name of the session attribute to retrieve
+      * @return the value of the named session attribute
+      * @throws IllegalStateException - if the Session does not contain the named attribute
+      */
+     protected Object getRequiredSessionAttribute(Session session, String name) {
+         Object value = session.getAttribute(name)
+         if (value == null) {
+             throw new IllegalStateException("Session missing required attribute [$name]")
+         }
+         return value
+     }
       
 }

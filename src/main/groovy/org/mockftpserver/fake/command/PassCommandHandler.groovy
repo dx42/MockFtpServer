@@ -19,18 +19,31 @@ import org.mockftpserver.fake.command.AbstractFakeCommandHandlerimport org.mock
 import org.mockftpserver.core.command.ReplyCodes
 
 /**
- * CommandHandler for the USER command
+ * CommandHandler for the PASS command
  * 
  * @version $Revision: $ - $Date: $
  *
  * @author Chris Mair
  */
-class UserCommandHandler extends AbstractFakeCommandHandler {
+class PassCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
-        def username = getRequiredParameter(command, 0)
-        session.setAttribute(SessionKeys.USERNAME, username)
-        sendReply(session, ReplyCodes.USER_NEED_PASSWORD_OK)
+        def password = getRequiredParameter(command, 0)
+        def username = getRequiredSessionAttribute(session, SessionKeys.USERNAME)
+        
+        def userAccount = serverConfiguration.getUserAccount(username)
+        if (userAccount == null) {
+            sendReply(session, ReplyCodes.PASS_LOG_IN_FAILED)
+            return
+        }
+        
+        if (userAccount.isValidPassword(password)) {
+            sendReply(session, ReplyCodes.PASS_OK)
+            session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
+        }
+        else {
+            sendReply(session, ReplyCodes.PASS_LOG_IN_FAILED)
+        }
     }
 
 }

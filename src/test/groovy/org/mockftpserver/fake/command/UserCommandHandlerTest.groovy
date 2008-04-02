@@ -17,11 +17,12 @@ package org.mockftpserver.fake.command
 
 import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.core.command.Command
+import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNamesimport org.mockftpserver.core.session.StubSession
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.StubServerConfiguration
 import org.mockftpserver.fake.user.UserAccount
-import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodesimport com.sun.corba.se.impl.activation.CommandHandlerimport org.mockftpserver.core.util.AssertFailedException
+import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodesimport org.mockftpserver.core.util.AssertFailedException
 
 /**
  * Tests for UserCommandHandler
@@ -30,57 +31,62 @@ import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
  *
  * @author Chris Mair
  */
-class UserCommandHandlerTest extends AbstractCommandHandlerTest {
+class UserCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
-     def USERNAME = "user123"
+    def USERNAME = "user123"
     
     void testHandleCommand_UserExists() {
         serverConfiguration.userAccounts[USERNAME] = new UserAccount()
-        def command = new Command(CommandNames.USER, [USERNAME]);
-		commandHandler.handleCommand(command, session)
+		commandHandler.handleCommand(createCommand([USERNAME]), session)
         assertSessionReply(ReplyCodes.USER_NEED_PASSWORD_OK)
-        assert session.getAttribute(SessionKeys.USERNAME) == USERNAME
+        assertUsernameInSession(true)
 	}
 
     void testHandleCommand_NoSuchUser() {
-        def command = new Command(CommandNames.USER, [USERNAME]);
-		commandHandler.handleCommand(command, session)
+		commandHandler.handleCommand(createCommand([USERNAME]), session)
 		// Will return OK, even if username is not recognized
-        assertSessionReply(ReplyCodes.USER_NEED_PASSWORD_OK)
-        assert session.getAttribute(SessionKeys.USERNAME) == USERNAME
+        assertSessionReply(ReplyCodes.USER_NEED_PASSWORD_OK) 
+        assertUsernameInSession(true)
 	}
 
+//    void testHandleCommand_PasswordNotRequiredForLogin() {
+//        def userAccount = new UserAccount()
+//        userAccount.passwordRequiredForLogin = false
+//        serverConfiguration.userAccounts[USERNAME] = userAccount
+//
+//        commandHandler.handleCommand(createCommand([USERNAME]), session)
+//        assertSessionReply(ReplyCodes.USER_LOGGED_IN_OK)
+//        assertUsernameInSession(true)
+//	}
+
     void testHandleCommand_MissingUsernameParameter() {
-        def command = new Command(CommandNames.USER, []);
-        shouldFail(AssertFailedException) { commandHandler.handleCommand(command, session) }
+        testHandleCommand_MissingRequiredParameter([])
+        assertUsernameInSession(false)
     }
     
     void testHandleCommand_EmptyUsernameParameter() {
-        def command = new Command(CommandNames.USER, [""]);
-        shouldFail { commandHandler.handleCommand(command, session) }
+        testHandleCommand_MissingRequiredParameter([""])
+        assertUsernameInSession(false)
     }
-    
-    void testHandleCommand_ServerConfigurationIsNull() {
-        commandHandler.serverConfiguration = null
-        def command = new Command(CommandNames.USER, [USERNAME]);
-        shouldFailWithMessageContaining("serverConfiguration") { commandHandler.handleCommand(command, session) }
-    }
-    
-    void testHandleCommand_CommandIsNull() {
-        shouldFailWithMessageContaining("command") { commandHandler.handleCommand(null, session) }
-    }
-    
-    void testHandleCommand_SessionIsNull() {
-        def command = new Command(CommandNames.USER, [USERNAME]);
-        shouldFailWithMessageContaining("session") { commandHandler.handleCommand(command, null) }
-    }
-    
-	void setUp() {
-	    super.setUp()
-	}
 
-	protected createCommandHandler() {
+    //-------------------------------------------------------------------------
+    // Helper Methods
+    //-------------------------------------------------------------------------
+    
+	CommandHandler createCommandHandler() {
 	    new UserCommandHandler()
 	}
 	
- }
+    Command createValidCommand() {
+        return new Command(CommandNames.USER, [USERNAME])
+    }
+    
+    /**
+     * Assert that the Username is stored in the session, depending on the value of isUsernameInSession.
+     * @param isUsernameInSession - true if the Username is expected in the session; false if it is not expected
+     */
+    private void assertUsernameInSession(boolean isUsernameInSession) {
+        def expectedValue = isUsernameInSession ? USERNAME : null
+        assert session.getAttribute(SessionKeys.USERNAME) == expectedValue
+    }
+}
