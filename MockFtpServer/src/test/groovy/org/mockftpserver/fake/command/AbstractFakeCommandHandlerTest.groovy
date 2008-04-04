@@ -114,10 +114,16 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
      * Assert that the specified reply code (and default message) was sent to the session.
      */
     void assertSessionReply(int replyCode) {
-		LOG.info(session)
-		def actual = session.sentReplies[0]
-		def expected = [replyCode, replyCode as String]
-        assert actual == expected
+        assertSessionReply(replyCode, replyCode as String)
     }
     
+    /**
+     * Assert that the specified reply code and message was sent to the session.
+     */
+    void assertSessionReply(int replyCode, String text) {
+		LOG.info(session)
+		def actual = session.sentReplies[0]
+		def expected = [replyCode, text]
+        assert actual == expected
+    }
  }

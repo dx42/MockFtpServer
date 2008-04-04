@@ -24,8 +24,13 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.apache.log4j.Loggerimport java.text.MessageFormat
+
 /**
  * Abstract superclass for CommandHandler classes for the "Fake" server.
+ * 
+ * @version $Revision: $ - $Date: $
+ *
+ * @author Chris Mair
  */
 abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfigurationAware {
 
@@ -70,51 +75,27 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
       * 
       * @param session - the Session
       * @param replyCode - the reply code
+      * @param args - the optional message arguments; defaults to []
       * 
       * @throws AssertionError - if session is null
       * 
       * @see MessageFormat
       */
-     protected void sendReply(Session session, int replyCode) {
+     protected void sendReply(Session session, int replyCode, args = []) {
          assert session
          assertValidReplyCode(replyCode);
-
-         //String key = (replyMessageKey != null) ? replyMessageKey : Integer.toString(replyCode);
+         
          String key = Integer.toString(replyCode);
-         //String text = getTextForReplyCode(replyCode, key, null);
          String text = serverConfiguration.getTextForReplyCode(replyCode)
-         String replyTextToLog = (text == null) ? "" : " " + text;
-         LOG.debug("Sending reply [" + replyCode + replyTextToLog + "]");
-         session.sendReply(replyCode, text);
+         
+         String textWithArgs = MessageFormat.format(text, args as Object[]);
+
+         String replyTextToLog = (textWithArgs == null) ? "" : " " + textWithArgs;
+         // TODO change to LOG.debug()
+         LOG.info("Sending reply [" + replyCode + replyTextToLog + "]");
+         session.sendReply(replyCode, textWithArgs);
      }
      
-      /**
-       * Return the text for the specified reply code, formatted using the message arguments, if
-       * supplied. Return the text mapped to the code from the replyText ResourceBundle. If the 
-       * ResourceBundle contains no mapping, then return null.
-       * <p>
-       * If arguments is not null, then the returned reply text if formatted using the
-       * {@link MessageFormat} class.
-       * 
-       * @param code - the reply code
-       * @param messageKey - the key used to retrieve the reply text from the replyTextBundle
-       * @param arguments - the array of arguments to be formatted and substituted within the reply
-       *        text; may be null
-       * @return the text for the reply code; may be null
-       */
-      private String getTextForReplyCode(int code, String messageKey, Object[] arguments) {
-          try {
-              String t = serverConfiguration.getTextForReplyCode(code)
-              String formattedMessage = MessageFormat.format(t, arguments);
-              return (formattedMessage == null) ? null : formattedMessage.trim();
-          }
-          catch (MissingResourceException e) {
-              // No reply text is mapped for the specified key
-              LOG.warn("No reply text defined for reply code [" + code + "]");
-              return null;
-          }
-      }
-
      /**
       * Assert that the specified number is a valid reply code
       * @param replyCode - the reply code to check
