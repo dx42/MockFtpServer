@@ -30,13 +30,12 @@ class StubServerConfiguration implements ServerConfiguration {
 
      ResourceBundle replyTextBundle
      Map userAccounts = [:]
+     private Map textForReplyCodeMap = [:]
      
      FileSystem getFileSystem() {
-         
      }
      
      void setFileSystem(FileSystem fileSystem) {
-         
      }
 
      
@@ -45,11 +44,18 @@ class StubServerConfiguration implements ServerConfiguration {
      }
      
      String getTextForReplyCode(int replyCode) {
-         return replyCode as String
+         return textForReplyCodeMap[replyCode] ?: replyCode as String
      }
 
      //-------------------------------------------------------------------------
      // Stub-specific API - Helper methods not part of ServerConfiguration interface
      //-------------------------------------------------------------------------
-     
+
+     /**
+      * Set the text to be returned for the specified reply code by the 
+      * {@link #getTextForReplyCode(int)} method.
+      */
+     void setTextForReplyCode(int replyCode, String text) {
+         textForReplyCodeMap[replyCode] = text
+     }
 }
