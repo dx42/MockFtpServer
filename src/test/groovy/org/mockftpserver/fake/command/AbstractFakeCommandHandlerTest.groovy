@@ -21,6 +21,9 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNamesimport org.mockftpserver.core.session.StubSession
 import org.mockftpserver.fake.StubServerConfiguration
 import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
+import org.mockftpserver.fake.user.UserAccount
+import org.mockftpserver.fake.filesystem.FakeUnixFileSystem
+
 /**
  * Abstract superclass for CommandHandler tests
  * 
@@ -33,6 +36,8 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     protected session
     protected serverConfiguration
     protected commandHandler
+    protected userAccount
+    protected fileSystem
 
     //-------------------------------------------------------------------------
     // Tests (common to all subclasses)
@@ -76,8 +81,13 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
 	    super.setUp()
 	    session = new StubSession()
 	    serverConfiguration = new StubServerConfiguration()
+	    fileSystem = new FakeUnixFileSystem()
+	    fileSystem.createParentDirectoriesAutomatically = true
+	    serverConfiguration.setFileSystem(fileSystem)
+	    
 	    commandHandler = createCommandHandler()
-	    commandHandler.serverConfiguration = serverConfiguration 
+	    commandHandler.serverConfiguration = serverConfiguration
+	    userAccount = new UserAccount()
 	}
 
     //-------------------------------------------------------------------------
@@ -101,6 +111,16 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
         def command = createValidCommand()
 		commandHandler.handleCommand(command, session)
         assertSessionReply(ReplyCodes.ILLEGAL_STATE)
+    }
+
+    /**
+     * Perform a test of the handleCommand() method on the specified command
+     * parameters, when the current user has not yet logged in.
+     */
+    protected testHandleCommand_MissingRequiredLogin() {
+        def command = createValidCommand()
+		commandHandler.handleCommand(command, session)
+        assertSessionReply(ReplyCodes.NOT_LOGGED_IN)
     }
 
     /**

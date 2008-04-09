@@ -32,15 +32,10 @@ abstract class AbstractFakeFileSystemTest extends AbstractFileSystemTest {
 
      // TODO tests for illegal filenames (#@$%^&* etc.)
 
-     private static final Logger LOG = Logger.getLogger(AbstractFakeFileSystemTest)
-
      // -------------------------------------------------------------------------
      // Tests
      // -------------------------------------------------------------------------
 
-     /**
-      * Test the addEntry() method
-      */
      void testAddEntry() {
          AbstractFakeFileSystem fakeFileSystem = (AbstractFakeFileSystem) fileSystem
          assertFalse("exists before", fileSystem.exists(NEW_FILE))
@@ -56,6 +51,28 @@ abstract class AbstractFakeFileSystemTest extends AbstractFileSystemTest {
          shouldFail(FileSystemException) { fakeFileSystem.addEntry(new FileEntry("/abc/def/ghi")) }
      }
 
+     void testCreateDirectory_CreateParentDirectoriesAutomatically() {
+         final NEW_SUBDIR = fileSystem.path(NEW_DIR, "sub")
+         fileSystem.createParentDirectoriesAutomatically = true
+         assert !fileSystem.exists(NEW_DIR), "Before createDirectory"
+         assert !fileSystem.exists(NEW_SUBDIR), "Before createDirectory"
+
+         assert fileSystem.createDirectory(NEW_SUBDIR)
+         assert fileSystem.exists(NEW_DIR), "After createDirectory"
+         assert fileSystem.exists(NEW_SUBDIR), "$NEW_SUBDIR: After createDirectory"
+     }
+     
+     void testCreateFile_CreateParentDirectoriesAutomatically() {
+         final NEW_FILE_IN_SUBDIR = fileSystem.path(NEW_DIR, "abc.txt")
+         fileSystem.createParentDirectoriesAutomatically = true
+         assert !fileSystem.exists(NEW_DIR), "Before createDirectory"
+         assert !fileSystem.exists(NEW_FILE_IN_SUBDIR), "Before createDirectory"
+
+         assert fileSystem.createFile(NEW_FILE_IN_SUBDIR)
+         assert fileSystem.exists(NEW_DIR), "After createDirectory"
+         assert fileSystem.exists(NEW_FILE_IN_SUBDIR), "$NEW_FILE_IN_SUBDIR: After createDirectory"
+     }
+     
      /**
       * Verify the contents of the file at the specified path read from its InputSteam
       * 

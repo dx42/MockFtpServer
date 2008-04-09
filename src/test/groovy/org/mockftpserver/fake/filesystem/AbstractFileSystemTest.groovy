@@ -39,7 +39,6 @@ import org.mockftpserver.test.AbstractGroovyTest
  */
 abstract class AbstractFileSystemTest extends AbstractGroovyTest {
 
-     private static final Logger LOG = Logger.getLogger(AbstractFileSystemTest.class)
      public static final FILENAME1 = "file1.txt"
      public static final FILENAME2 = "file2.txt"
      public static final DIR1 = "dir1"
