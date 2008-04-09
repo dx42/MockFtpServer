@@ -39,6 +39,14 @@ import org.mockftpserver.core.util.AssertFailedException
 abstract class AbstractFakeFileSystem implements FileSystem {
 
      private static final LOG = Logger.getLogger(AbstractFakeFileSystem)
+
+     /**
+      * If <code>true</code>, creating a directory or file will automatically create 
+      * any parent directories (recursively) that do not already exist. If <code>false</code>, 
+      * then creating a directory or file throws an exception if its parent directory 
+      * does not exist. This value defaults to <code>false</code>.
+      */
+     boolean createParentDirectoriesAutomatically = false
      
      private Map entries = new HashMap()
 
@@ -74,7 +82,20 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      public boolean createFile(String path) {
          Assert.notNull(path, "path")
          checkForInvalidFilename(path)
-         verifyParentDirectoryExists(path)
+
+         // TODO Consider refactoring into adEntry()
+         if (!parentDirectoryExists(path)) {
+             if (createParentDirectoriesAutomatically) {
+                 String parent = getParent(path)
+                 if (!createDirectory(parent)) {
+                     return false
+                 }
+             }
+             else {
+                 throw new FileSystemException("Parent directory does not exist: " + getParent(path))
+             }
+         }
+         
          if (exists(path)) {
              return false
          }
@@ -96,8 +117,17 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      public boolean createDirectory(String path) {
          Assert.notNull(path, "path")
          String normalizedPath = normalize(path)
+         
          if (!parentDirectoryExists(path)) {
-             return false
+             String parent = getParent(path)
+             if (createParentDirectoriesAutomatically) {
+                 if (!createDirectory(parent)) {
+                     return false
+                 }
+             }
+             else {
+                 return false
+             }
          }
          try {
              addEntry(new DirectoryEntry(normalizedPath))
@@ -312,7 +342,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
       * @see java.lang.Object#toString()
       */
      public String toString() {
-         return this.class.name + entries + "]"
+         return this.class.name + entries
      }
      
      //-------------------------------------------------------------------------

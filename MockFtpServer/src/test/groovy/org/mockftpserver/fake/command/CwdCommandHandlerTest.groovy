@@ -25,37 +25,60 @@ import org.mockftpserver.fake.user.UserAccount
 import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodesimport org.mockftpserver.core.util.AssertFailedException
 
 /**
- * Tests for PwdCommandHandler
+ * Tests for CwdCommandHandler
  * 
  * @version $Revision: $ - $Date: $
  *
  * @author Chris Mair
  */
-class PwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
-    def DIR = "/usr/abc"
+    def DIR = "/usr"
     
     void testHandleCommand() {
-        session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
-        serverConfiguration.setTextForReplyCode(ReplyCodes.PWD_OK, "dir={0}")
-        commandHandler.handleCommand(createCommand([]), session)        
-        assertSessionReply(ReplyCodes.PWD_OK, "dir=${DIR}")
+        assert fileSystem.createDirectory("/usr")
+        commandHandler.handleCommand(createCommand([DIR]), session)        
+        assertSessionReply(ReplyCodes.CWD_OK)
+        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == DIR
 	}
     
-    void testHandleCommand_CurrentDirectoryNotSet() {
-        testHandleCommand_MissingRequiredSessionAttribute()
+    void testHandleCommand_PathDoesNotExistInFileSystem() {
+        commandHandler.handleCommand(createCommand([DIR]), session)        
+        assertSessionReply(ReplyCodes.CWD_NO_SUCH_DIRECTORY)
+        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
+	}
+    
+    void testHandleCommand_PathSpecifiesAFile() {
+        assert fileSystem.createFile(DIR)
+        commandHandler.handleCommand(createCommand([DIR]), session)        
+        assertSessionReply(ReplyCodes.CWD_NO_SUCH_DIRECTORY)
+        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
+	}
+    
+    void testHandleCommand_NotLoggedIn() {
+        session.removeAttribute(SessionKeys.USER_ACCOUNT)
+        testHandleCommand_MissingRequiredLogin()    
     }
 
+    void testHandleCommand_MissingPathParameter() {
+        testHandleCommand_MissingRequiredParameter([])
+    }
+    
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
     
 	CommandHandler createCommandHandler() {
-	    new PwdCommandHandler()
+	    new CwdCommandHandler()
 	}
 	
     Command createValidCommand() {
-        return new Command(CommandNames.PWD, [])
+        return new Command(CommandNames.CWD, [DIR])
     }
 
+    void setUp() {
+        super.setUp()
+        session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
+    }
+    
 }

@@ -19,10 +19,12 @@ import org.mockftpserver.fake.ServerConfigurationAware
 import org.mockftpserver.fake.ServerConfiguration
 import org.mockftpserver.core.CommandSyntaxException
 import org.mockftpserver.core.IllegalStateException
+import org.mockftpserver.core.NotLoggedInException
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
+import org.mockftpserver.core.session.SessionKeys
 import org.apache.log4j.Loggerimport java.text.MessageFormat
 
 /**
@@ -56,6 +58,10 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
              LOG.warn("Error handling command: $command; ${e}")
              sendReply(session, ReplyCodes.ILLEGAL_STATE)
          }
+         catch(NotLoggedInException e) {
+             LOG.warn("Error handling command: $command; ${e}")
+             sendReply(session, ReplyCodes.NOT_LOGGED_IN)
+         }
      }
      
      /**
@@ -88,12 +94,13 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
          String key = Integer.toString(replyCode);
          String text = serverConfiguration.getTextForReplyCode(replyCode)
          
-         String textWithArgs = MessageFormat.format(text, args as Object[]);
+         String replyText = (args) ? MessageFormat.format(text, args as Object[]) : text;
 
-         String replyTextToLog = (textWithArgs == null) ? "" : " " + textWithArgs;
+         String replyTextToLog = (replyText == null) ? "" : " " + replyText;
          // TODO change to LOG.debug()
-         LOG.info("Sending reply [" + replyCode + replyTextToLog + "]");
-         session.sendReply(replyCode, textWithArgs);
+         def argsToLog = (args) ? " args=$args" : ""
+         LOG.info("Sending reply [" + replyCode + replyTextToLog + "]" + argsToLog);
+         session.sendReply(replyCode, replyText);
      }
      
      /**
@@ -135,5 +142,14 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
          }
          return value
      }
-      
+
+     /**
+      * Verify that the current user (if any) has already logged in successfully.
+      * @param session - the Session
+      */
+     protected void verifyLoggedIn(Session session) {
+         if (session.getAttribute(SessionKeys.USER_ACCOUNT) == null) {
+             throw new NotLoggedInException("User has not logged in")
+         }
+     }
 }

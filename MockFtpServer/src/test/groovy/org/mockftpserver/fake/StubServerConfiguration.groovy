@@ -31,13 +31,7 @@ class StubServerConfiguration implements ServerConfiguration {
      ResourceBundle replyTextBundle
      Map userAccounts = [:]
      private Map textForReplyCodeMap = [:]
-     
-     FileSystem getFileSystem() {
-     }
-     
-     void setFileSystem(FileSystem fileSystem) {
-     }
-
+     FileSystem fileSystem
      
      UserAccount getUserAccount(String username) {
          userAccounts[username]
