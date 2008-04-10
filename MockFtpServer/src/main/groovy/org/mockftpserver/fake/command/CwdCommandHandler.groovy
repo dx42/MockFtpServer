@@ -25,7 +25,7 @@ import org.mockftpserver.core.command.ReplyCodes
  *  <li>If the required pathname parameter is missing, then reply with 501</li>
  *  <li>If the pathname parameter does not specify an existing directory, then reply with 550</li>
  *  <li>Otherwise, reply with 250</li>
- * </ol>m
+ * </ol>
  * 
  * @version $Revision: $ - $Date: $
  *
@@ -35,17 +35,13 @@ class CwdCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
-        def path = getRequiredParameter(command, 0)
-        
-        def fileSystem = serverConfiguration.getFileSystem()
-        if (fileSystem?.exists(path) && fileSystem?.isDirectory(path)) {
-            session.setAttribute(SessionKeys.CURRENT_DIRECTORY, path)
-            sendReply(session, ReplyCodes.CWD_OK)
-        }
-        else {
-            sendReply(session, ReplyCodes.CWD_NO_SUCH_DIRECTORY, [path])
-        }
-        
+        def path = getRequiredParameter(command)
+
+        verifyFileCondition(fileSystem.exists(path), path)
+        verifyFileCondition(fileSystem.isDirectory(path), path)
+
+        session.setAttribute(SessionKeys.CURRENT_DIRECTORY, path)
+        sendReply(session, ReplyCodes.CWD_OK, [path])
     }
 
 }

@@ -29,7 +29,6 @@ public final class ReplyCodes {
     public static final int ALLO_OK = 200;
     public static final int CDUP_OK = 250;
     public static final int CWD_OK = 250;
-    public static final int CWD_NO_SUCH_DIRECTORY = 550;
     public static final int DELE_OK = 250;
     public static final int HELP_OK = 214;
     public static final int MKD_OK = 257;
@@ -66,6 +65,7 @@ public final class ReplyCodes {
     public static final int COMMAND_SYNTAX_ERROR = 501;
     public static final int ILLEGAL_STATE = 503;       // Bad sequence
     public static final int NOT_LOGGED_IN = 530;
+    public static final int FILE_OPERATION_NOT_ALLOWED = 550;
     
     
     /**

@@ -19,7 +19,14 @@ import org.mockftpserver.fake.command.AbstractFakeCommandHandlerimport org.mock
 import org.mockftpserver.core.command.ReplyCodes
 
 /**
- * CommandHandler for the PASS command
+ * CommandHandler for the PASS command. Handler logic:
+ * <ol>
+ *  <li>If the required pathname parameter is missing, then reply with 501</li>
+ *  <li>If this command was not preceded by a valid USER command, then reply with 503</li>
+ *  <li>If the named user does not exist, then reply with 530</li>
+ *  <li>If the specified password is not correct, then reply with 530</li>
+ *  <li>Otherwise, reply with 250</li>
+ * </ol>
  * 
  * @version $Revision: $ - $Date: $
  *
@@ -28,7 +35,7 @@ import org.mockftpserver.core.command.ReplyCodes
 class PassCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
-        def password = getRequiredParameter(command, 0)
+        def password = getRequiredParameter(command)
         def username = getRequiredSessionAttribute(session, SessionKeys.USERNAME)
         
         def userAccount = serverConfiguration.getUserAccount(username)

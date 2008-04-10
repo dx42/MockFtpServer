@@ -38,7 +38,7 @@ class StubServerConfiguration implements ServerConfiguration {
      }
      
      String getTextForReplyCode(int replyCode) {
-         return textForReplyCodeMap[replyCode] ?: replyCode as String
+         return textForReplyCodeMap[replyCode] ?: "$replyCode {0}"
      }
 
      //-------------------------------------------------------------------------

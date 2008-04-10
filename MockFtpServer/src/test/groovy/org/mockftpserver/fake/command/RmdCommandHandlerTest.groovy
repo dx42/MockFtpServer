@@ -25,34 +25,42 @@ import org.mockftpserver.fake.user.UserAccount
 import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodesimport org.mockftpserver.core.util.AssertFailedException
 
 /**
- * Tests for CwdCommandHandler
+ * Tests for RmdCommandHandler
  * 
  * @version $Revision: $ - $Date: $
  *
  * @author Chris Mair
  */
-class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     def DIR = "/usr"
     
     void testHandleCommand() {
-        assert fileSystem.createDirectory("/usr")
+        assert fileSystem.createDirectory(DIR)
         commandHandler.handleCommand(createCommand([DIR]), session)        
-        assertSessionReply(ReplyCodes.CWD_OK)
-        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == DIR
+        assertSessionReply(ReplyCodes.RMD_OK)
+        assert fileSystem.exists(DIR) == false
 	}
     
     void testHandleCommand_PathDoesNotExistInFileSystem() {
         commandHandler.handleCommand(createCommand([DIR]), session)        
         assertSessionReply(ReplyCodes.FILE_OPERATION_NOT_ALLOWED, DIR)
-        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
 	}
     
     void testHandleCommand_PathSpecifiesAFile() {
         assert fileSystem.createFile(DIR)
         commandHandler.handleCommand(createCommand([DIR]), session)        
         assertSessionReply(ReplyCodes.FILE_OPERATION_NOT_ALLOWED, DIR)
-        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
+        assert fileSystem.exists(DIR)
+	}
+    
+    void testHandleCommand_DirectoryIsNotEmpty() {
+        final FILE = DIR + "/file.txt"
+        assert fileSystem.createFile(FILE)
+        commandHandler.handleCommand(createCommand([DIR]), session)        
+        assertSessionReply(ReplyCodes.FILE_OPERATION_NOT_ALLOWED, DIR)
+        assert fileSystem.exists(DIR)
+        assert fileSystem.exists(FILE)
 	}
     
     void testHandleCommand_NotLoggedIn() {
@@ -69,11 +77,11 @@ class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     //-------------------------------------------------------------------------
     
 	CommandHandler createCommandHandler() {
-	    new CwdCommandHandler()
+	    new RmdCommandHandler()
 	}
 	
     Command createValidCommand() {
-        return new Command(CommandNames.CWD, [DIR])
+        return new Command(CommandNames.RMD, [DIR])
     }
 
     void setUp() {
