@@ -17,6 +17,8 @@ package org.mockftpserver.fake.command
 
 import org.mockftpserver.fake.ServerConfigurationAware
 import org.mockftpserver.fake.ServerConfiguration
+import org.mockftpserver.fake.filesystem.FileSystem
+import org.mockftpserver.fake.filesystem.FileOperationNotAllowedException
 import org.mockftpserver.core.CommandSyntaxException
 import org.mockftpserver.core.IllegalStateException
 import org.mockftpserver.core.NotLoggedInException
@@ -38,6 +40,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
 
      final Logger LOG = Logger.getLogger(this.class)
      ServerConfiguration serverConfiguration
+     protected FileSystem fileSystem
      
      /**
       * Use template method to centralize and ensure common validation
@@ -47,6 +50,8 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
          assert command != null
          assert session != null
 
+         fileSystem = serverConfiguration.fileSystem
+         
          try {
              handle(command, session)
          }
@@ -61,6 +66,10 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
          catch(NotLoggedInException e) {
              LOG.warn("Error handling command: $command; ${e}")
              sendReply(session, ReplyCodes.NOT_LOGGED_IN)
+         }
+         catch(FileOperationNotAllowedException e) {
+             LOG.warn("Error handling command: $command; ${e}; path: ${e.path}")
+             sendReply(session, ReplyCodes.FILE_OPERATION_NOT_ALLOWED, [e.path])
          }
      }
      
@@ -116,11 +125,11 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
      /**
       * Return the value of the command's parameter at the specified index.
       * @param command - the Command
-      * @param index - the index of the parameter to retrieve
+      * @param index - the index of the parameter to retrieve; defaults to zero
       * @return the value of the command parameter
       * @throws CommandSyntaxException if the Command does not have a parameter at that index
       */
-     protected String getRequiredParameter(Command command, int index) {
+     protected String getRequiredParameter(Command command, int index=0) {
          String value = command.getParameter(index)
          if (!value) {
              throw new CommandSyntaxException("$command missing required parameter at index [$index]")
@@ -150,6 +159,19 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
      protected void verifyLoggedIn(Session session) {
          if (session.getAttribute(SessionKeys.USER_ACCOUNT) == null) {
              throw new NotLoggedInException("User has not logged in")
+         }
+     }
+     
+     /**
+      * Verify that the specified file condition is true, otherwise throw a FileOperationNotAllowedException.
+      * @param condition - the condition that must be true
+      * @param path - the path involved in the operation; this will be included in the 
+      * 		error message if the condition is not true.
+      * @throws FileOperationNotAllowedException - if the condition is not true 
+      */
+     protected void verifyFileCondition(boolean condition, String path) {
+         if (!condition) {
+             throw new FileOperationNotAllowedException(path)
          }
      }
 }

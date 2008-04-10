@@ -19,32 +19,30 @@ import org.mockftpserver.fake.command.AbstractFakeCommandHandlerimport org.mock
 import org.mockftpserver.core.command.ReplyCodes
 
 /**
- * CommandHandler for the USER command. Handler logic:
+ * CommandHandler for the RMD command. Handler logic:
  * <ol>
+ *  <li>If the user has not logged in, then reply with 530</li>
  *  <li>If the required pathname parameter is missing, then reply with 501</li>
- *  <li>If the named user does not need a password for login, then reply with 230</li>
- *  <li>Otherwise, reply with 331</li>
+ *  <li>If the pathname parameter does not specify an existing, empty directory, then reply with 550</li>
+ *  <li>Otherwise, reply with 250</li>
  * </ol>
  * 
  * @version $Revision: $ - $Date: $
  *
  * @author Chris Mair
  */
-class UserCommandHandler extends AbstractFakeCommandHandler {
+class RmdCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
-        def username = getRequiredParameter(command)
+        verifyLoggedIn(session)
+        def path = getRequiredParameter(command)
+
+        verifyFileCondition(fileSystem.exists(path), path)
+        verifyFileCondition(fileSystem.isDirectory(path), path)
+        verifyFileCondition(fileSystem.listNames(path) == [], path)
         
-        // If the UserAccount is configured to not require password for login
-        def userAccount = serverConfiguration.getUserAccount(username)
-        if (userAccount && !userAccount.passwordRequiredForLogin) {
-            session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
-            sendReply(session, ReplyCodes.USER_LOGGED_IN_OK)
-        }
-        else {
-            session.setAttribute(SessionKeys.USERNAME, username)
-            sendReply(session, ReplyCodes.USER_NEED_PASSWORD_OK)
-        }
+        fileSystem.delete(path)
+        sendReply(session, ReplyCodes.RMD_OK)
     }
 
 }
