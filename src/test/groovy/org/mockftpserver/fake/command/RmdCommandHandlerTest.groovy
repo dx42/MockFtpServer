@@ -44,13 +44,13 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     
     void testHandleCommand_PathDoesNotExistInFileSystem() {
         commandHandler.handleCommand(createCommand([DIR]), session)        
-        assertSessionReply(ReplyCodes.FILE_OPERATION_NOT_ALLOWED, DIR)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
 	}
     
     void testHandleCommand_PathSpecifiesAFile() {
         assert fileSystem.createFile(DIR)
         commandHandler.handleCommand(createCommand([DIR]), session)        
-        assertSessionReply(ReplyCodes.FILE_OPERATION_NOT_ALLOWED, DIR)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
         assert fileSystem.exists(DIR)
 	}
     
@@ -58,16 +58,11 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         final FILE = DIR + "/file.txt"
         assert fileSystem.createFile(FILE)
         commandHandler.handleCommand(createCommand([DIR]), session)        
-        assertSessionReply(ReplyCodes.FILE_OPERATION_NOT_ALLOWED, DIR)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
         assert fileSystem.exists(DIR)
         assert fileSystem.exists(FILE)
 	}
     
-    void testHandleCommand_NotLoggedIn() {
-        session.removeAttribute(SessionKeys.USER_ACCOUNT)
-        testHandleCommand_MissingRequiredLogin()    
-    }
-
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])
     }

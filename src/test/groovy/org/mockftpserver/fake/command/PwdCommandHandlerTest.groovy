@@ -43,14 +43,20 @@ class PwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 	}
     
     void testHandleCommand_CurrentDirectoryNotSet() {
-        testHandleCommand_MissingRequiredSessionAttribute()
+		commandHandler.handleCommand(createValidCommand(), session)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR)
     }
 
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
     
-	CommandHandler createCommandHandler() {
+    void setUp() {
+        super.setUp()
+        this.commandHandlerRequiresLogin = false
+    }
+
+    CommandHandler createCommandHandler() {
 	    new PwdCommandHandler()
 	}
 	

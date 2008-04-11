@@ -19,30 +19,34 @@ import org.mockftpserver.fake.command.AbstractFakeCommandHandlerimport org.mock
 import org.mockftpserver.core.command.ReplyCodes
 
 /**
- * CommandHandler for the RMD command. Handler logic:
+ * CommandHandler for the RNTO command. Handler logic:
  * <ol>
  *  <li>If the user has not logged in, then reply with 530</li>
- *  <li>If the required pathname parameter is missing, then reply with 501</li>
- *  <li>If the pathname parameter does not specify an existing, empty directory, then reply with 550</li>
- *  <li>Otherwise, reply with 250</li>
+ *  <li>If this command was not preceded by a valid RNFR command, then reply with 503</li>
+ *  <li>If the required TO pathname parameter is missing, then reply with 501</li>
+ *  <li>If the TO pathname parameter does not specify a valid filename, then reply with 553</li>
+ *  <li>If the TO pathname parameter specifies an existing directory, then reply with 553</li>
+ *  <li>If the rename operation fails, then reply with 553</li>
+ *  <li>Otherwise, reply with 250 and remove the FROM path stored in the session by the RNFR command</li>
  * </ol>
  * 
  * @version $Revision: $ - $Date: $
  *
  * @author Chris Mair
  */
-class RmdCommandHandler extends AbstractFakeCommandHandler {
+class RntoCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
-        def path = getRequiredParameter(command)
+        def toPath = getRequiredParameter(command)
+        def fromPath = getRequiredSessionAttribute(session, SessionKeys.RENAME_FROM)
 
-        verifyForExistingFile(fileSystem.exists(path), path)
-        verifyForExistingFile(fileSystem.isDirectory(path), path)
-        verifyForExistingFile(fileSystem.listNames(path) == [], path)
-        
-        fileSystem.delete(path)
-        sendReply(session, ReplyCodes.RMD_OK)
+        verifyForNewFile(!fileSystem.isDirectory(toPath), toPath)
+        verifyForNewFile(fileSystem.rename(fromPath, toPath), toPath)
+
+        // TODO use custom message, including FROM and TO path?
+        session.removeAttribute(SessionKeys.RENAME_FROM)
+        sendReply(session, ReplyCodes.RNTO_OK)
     }
 
 }

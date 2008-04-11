@@ -19,30 +19,29 @@ import org.mockftpserver.fake.command.AbstractFakeCommandHandlerimport org.mock
 import org.mockftpserver.core.command.ReplyCodes
 
 /**
- * CommandHandler for the RMD command. Handler logic:
+ * CommandHandler for the RNFR command. Handler logic:
  * <ol>
  *  <li>If the user has not logged in, then reply with 530</li>
- *  <li>If the required pathname parameter is missing, then reply with 501</li>
- *  <li>If the pathname parameter does not specify an existing, empty directory, then reply with 550</li>
- *  <li>Otherwise, reply with 250</li>
+ *  <li>If the required FROM pathname parameter is missing, then reply with 501</li>
+ *  <li>If the FROM pathname parameter does not specify a valid file, then reply with 550</li>
+ *  <li>Otherwise, reply with 350 and store the FROM path in the session</li>
  * </ol>
  * 
  * @version $Revision: $ - $Date: $
  *
  * @author Chris Mair
  */
-class RmdCommandHandler extends AbstractFakeCommandHandler {
+class RnfrCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
-        def path = getRequiredParameter(command)
+        def fromPath = getRequiredParameter(command)
 
-        verifyForExistingFile(fileSystem.exists(path), path)
-        verifyForExistingFile(fileSystem.isDirectory(path), path)
-        verifyForExistingFile(fileSystem.listNames(path) == [], path)
-        
-        fileSystem.delete(path)
-        sendReply(session, ReplyCodes.RMD_OK)
+        verifyForExistingFile(fileSystem.exists(fromPath), fromPath)
+        verifyForExistingFile(fileSystem.isFile(fromPath), fromPath)
+
+        session.setAttribute(SessionKeys.RENAME_FROM, fromPath)
+        sendReply(session, ReplyCodes.RNFR_OK)
     }
 
 }

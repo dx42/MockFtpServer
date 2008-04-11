@@ -19,7 +19,11 @@ import org.mockftpserver.fake.command.AbstractFakeCommandHandlerimport org.mock
 import org.mockftpserver.core.command.ReplyCodes
 
 /**
- * CommandHandler for the PWD command
+ * CommandHandler for the PWD command. Handler logic:
+ * <ol>
+ *  <li>If the required "current directory" property is missing from the session, then reply with 550</li>
+ *  <li>Otherwise, reply with 257 and the current directory</li>
+ * </ol>
  * 
  * @version $Revision: $ - $Date: $
  *
@@ -28,7 +32,8 @@ import org.mockftpserver.core.command.ReplyCodes
 class PwdCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
-        def currentDirectory = getRequiredSessionAttribute(session, SessionKeys.CURRENT_DIRECTORY) 
+        def currentDirectory = session.getAttribute(SessionKeys.CURRENT_DIRECTORY)
+        verifyForExistingFile(currentDirectory, currentDirectory)
         sendReply(session, ReplyCodes.PWD_OK, [currentDirectory])
     }
 

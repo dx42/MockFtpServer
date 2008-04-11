@@ -95,7 +95,7 @@ class DefaultFileSystem implements FileSystem {
              return fileForPath(path).createNewFile()
          }
          catch (IOException e) {
-             throw new InvalidFilenameException(e)
+             throw new InvalidFilenameException(e, path)
          }
      }
 
@@ -115,7 +115,7 @@ class DefaultFileSystem implements FileSystem {
              return new FileOutputStream(fileForPath(path), append)
          }
          catch (FileNotFoundException e) {
-             throw new InvalidFilenameException(e)
+             throw new InvalidFilenameException(e, path)
          }
      }
          
@@ -246,7 +246,7 @@ class DefaultFileSystem implements FileSystem {
              return new File(path).getCanonicalPath()
          }
          catch (IOException e) {
-             throw new InvalidFilenameException(e)
+             throw new InvalidFilenameException(e, path)
          }
      }
 

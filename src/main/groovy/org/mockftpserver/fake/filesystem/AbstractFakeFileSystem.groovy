@@ -447,7 +447,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
       */
      protected void checkForInvalidFilename(String path) {
          if (!isValidName(path)) {
-             throw new InvalidFilenameException("The path [$path] is not valid");
+             throw new InvalidFilenameException(path);
          }
      }
      

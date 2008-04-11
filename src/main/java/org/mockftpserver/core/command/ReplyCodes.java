@@ -65,7 +65,9 @@ public final class ReplyCodes {
     public static final int COMMAND_SYNTAX_ERROR = 501;
     public static final int ILLEGAL_STATE = 503;       // Bad sequence
     public static final int NOT_LOGGED_IN = 530;
-    public static final int FILE_OPERATION_NOT_ALLOWED = 550;
+    public static final int EXISTING_FILE_ERROR = 550;
+    public static final int NEW_FILE_ERROR = 553;
+    public static final int FILENAME_NOT_VALID = 553;
     
     
     /**
