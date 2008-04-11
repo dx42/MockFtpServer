@@ -16,34 +16,37 @@
 package org.mockftpserver.fake.filesystem
 
 /**
- * Exception thrown when a requested operation is not allowed or possible on a directory 
- * or file that should already exist. This type of error typically causes a 550 reply 
- * code from an FTP server. Causes include:
+ * Exception thrown when a requested operation is not allowed or possible on a potentially
+ * new directory or file. This type of error typically causes a 553 reply code from an 
+ * FTP server. Causes include:
  * <ul>
- *   <li>The file/directory does not exist</li>
- *   <li>The existing file/directory does not meet some required condition. e.g., trying to remove a non-empty directory</li>
+ *   <li>The file/directory name is not valid (e.g., contains invalid characters)</li>
+ *   <li>The parent directory for the file/directory does not exist</li>
  *   <li>The specified path is expected to be a file, but actually specifies an existing directory, or vice versa</li>
  * </ul>
  */
-class FileOperationNotAllowedException extends FileSystemException {
+class NewFileOperationException extends FileSystemException {
 
      String path
      
      /**
-      * @param message
+      * @param path
       */
-      FileOperationNotAllowedException(String path) {
-         super(path)
+      NewFileOperationException(String path) {
+         super(msg(path))
          this.path = path
      }
 
      /**
-      * @param message
+      * @param path
       * @param cause
       */
-      FileOperationNotAllowedException(String path, Throwable cause) {
-         super(path, cause)
+      NewFileOperationException(Throwable cause, String path) {
+         super(msg(path), cause)
          this.path = path
      }
 
+      private static String msg(path) {
+          "Error occurred for [$path]"
+      }
 }

@@ -18,7 +18,8 @@ package org.mockftpserver.fake.command
 import org.mockftpserver.fake.ServerConfigurationAware
 import org.mockftpserver.fake.ServerConfiguration
 import org.mockftpserver.fake.filesystem.FileSystem
-import org.mockftpserver.fake.filesystem.FileOperationNotAllowedException
+import org.mockftpserver.fake.filesystem.ExistingFileOperationException
+import org.mockftpserver.fake.filesystem.NewFileOperationException
 import org.mockftpserver.core.CommandSyntaxException
 import org.mockftpserver.core.IllegalStateException
 import org.mockftpserver.core.NotLoggedInException
@@ -28,7 +29,7 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.core.session.SessionKeys
 import org.apache.log4j.Loggerimport java.text.MessageFormat
-
+import org.mockftpserver.fake.filesystem.InvalidFilenameException
 /**
  * Abstract superclass for CommandHandler classes for the "Fake" server.
  * 
@@ -67,9 +68,17 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
              LOG.warn("Error handling command: $command; ${e}")
              sendReply(session, ReplyCodes.NOT_LOGGED_IN)
          }
-         catch(FileOperationNotAllowedException e) {
+         catch(ExistingFileOperationException e) {
              LOG.warn("Error handling command: $command; ${e}; path: ${e.path}")
-             sendReply(session, ReplyCodes.FILE_OPERATION_NOT_ALLOWED, [e.path])
+             sendReply(session, ReplyCodes.EXISTING_FILE_ERROR, [e.path])
+         }
+         catch(NewFileOperationException e) {
+             LOG.warn("Error handling command: $command; ${e}; path: ${e.path}")
+             sendReply(session, ReplyCodes.NEW_FILE_ERROR, [e.path])
+         }
+         catch(InvalidFilenameException e) {
+             LOG.warn("Error handling command: $command; ${e}; path: ${e.path}")
+             sendReply(session, ReplyCodes.FILENAME_NOT_VALID, [e.path])
          }
      }
      
@@ -163,15 +172,32 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
      }
      
      /**
-      * Verify that the specified file condition is true, otherwise throw a FileOperationNotAllowedException.
+      * Verify that the specified condition related to an existing file is true, 
+      * otherwise throw a ExistingFileOperationException.
+      * 
       * @param condition - the condition that must be true
       * @param path - the path involved in the operation; this will be included in the 
       * 		error message if the condition is not true.
-      * @throws FileOperationNotAllowedException - if the condition is not true 
+      * @throws ExistingFileOperationException - if the condition is not true 
       */
-     protected void verifyFileCondition(boolean condition, String path) {
+     protected void verifyForExistingFile(condition, path) {
          if (!condition) {
-             throw new FileOperationNotAllowedException(path)
+             throw new ExistingFileOperationException(path)
+         }
+     }
+
+     /**
+      * Verify that the specified condition related to a new file is true, 
+      * otherwise throw a NewFileOperationException.
+      * 
+      * @param condition - the condition that must be true
+      * @param path - the path involved in the operation; this will be included in the 
+      * 		error message if the condition is not true.
+      * @throws NewFileOperationException - if the condition is not true 
+      */
+     protected void verifyForNewFile(condition, path) {
+         if (!condition) {
+             throw new NewFileOperationException(path)
          }
      }
 }

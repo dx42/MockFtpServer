@@ -19,6 +19,7 @@ import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNamesimport org.mockftpserver.core.session.StubSession
+import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.StubServerConfiguration
 import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.fake.user.UserAccount
@@ -38,6 +39,9 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     protected commandHandler
     protected userAccount
     protected fileSystem
+    
+    // Subclasses can set to false to skip testing CommandHandler behavior when the current user has not yet logged in. 
+    protected commandHandlerRequiresLogin = true
 
     //-------------------------------------------------------------------------
     // Tests (common to all subclasses)
@@ -58,6 +62,18 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
         shouldFailWithMessageContaining("session") { commandHandler.handleCommand(command, null) }
     }
     
+    void testHandleCommand_NotLoggedIn() {
+        if (commandHandlerRequiresLogin) {
+            def command = createValidCommand()
+            session.removeAttribute(SessionKeys.USER_ACCOUNT)
+    		commandHandler.handleCommand(command, session)
+            assertSessionReply(ReplyCodes.NOT_LOGGED_IN)
+        }
+        else {
+            LOG.info("Skipping this test. This CommandHandler does not require that the user is logged in.")
+        }
+    }
+
     //-------------------------------------------------------------------------
     // Abstract Method Declarations (must be implemented by all subclasses)
     //-------------------------------------------------------------------------
@@ -114,16 +130,6 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     }
 
     /**
-     * Perform a test of the handleCommand() method on the specified command
-     * parameters, when the current user has not yet logged in.
-     */
-    protected testHandleCommand_MissingRequiredLogin() {
-        def command = createValidCommand()
-		commandHandler.handleCommand(command, session)
-        assertSessionReply(ReplyCodes.NOT_LOGGED_IN)
-    }
-
-    /**
      * @return a new Command with the specified parameters for this CommandHandler
      */
     protected Command createCommand(List commandParameters) {
@@ -140,15 +146,16 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     
     /**
      * Assert that the specified reply code and message containing text was sent through the session.
-     * @param replyCode - the expected reply code
+     * @param expectedReplyCode - the expected reply code
      * @param text - the text expected within the reply message
      */
-    void assertSessionReply(int replyCode, String text) {
+    void assertSessionReply(int expectedReplyCode, String text) {
 		LOG.info(session)
 		def actual = session.sentReplies[0]
+		assert actual, "No replies sent for $session"
 		def actualReplyCode = actual[0]
 		def actualMessage = actual[1]
-		assert actualReplyCode == replyCode
+		assert actualReplyCode == expectedReplyCode
 		assert actualMessage.contains(text), "[$actualMessage] does not contain[$text]"
     }
  }

@@ -16,21 +16,23 @@
 package org.mockftpserver.fake.filesystem
 
 /**
- * Exception thrown when a path/filename is not valid. Causes include:
+ * Exception thrown when a requested operation is not allowed or possible on a directory 
+ * or file that should already exist. This type of error typically causes a 550 reply 
+ * code from an FTP server. Causes include:
  * <ul>
- *   <li>The filename contains invalid characters</li>
- *   <li>The path specifies a new filename, but its parent directory does not exist</li>
- *   <li>The path is expected to be a file, but actually specifies an existing directory</li>
+ *   <li>The file/directory does not exist</li>
+ *   <li>The existing file/directory does not meet some required condition. e.g., trying to remove a non-empty directory</li>
+ *   <li>The specified path is expected to be a file, but actually specifies an existing directory, or vice versa</li>
  * </ul>
  */
-class InvalidFilenameException extends FileSystemException {
+class ExistingFileOperationException extends FileSystemException {
 
      String path
      
      /**
       * @param path
       */
-      InvalidFilenameException(String path) {
+      ExistingFileOperationException(String path) {
          super(msg(path))
          this.path = path
      }
@@ -39,13 +41,12 @@ class InvalidFilenameException extends FileSystemException {
       * @param path
       * @param cause
       */
-      InvalidFilenameException(Throwable cause, String path) {
+      ExistingFileOperationException(Throwable cause, String path) {
          super(msg(path), cause)
          this.path = path
      }
-     
-     private static String msg(path) {
-         "The path [$path] is not valid"
-     }
 
+      private static String msg(path) {
+          "Error occurred for [$path]"
+      }
 }

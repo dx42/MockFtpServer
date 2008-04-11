@@ -93,6 +93,7 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         userAccount.password = PASSWORD
         
         session.setAttribute(SessionKeys.USERNAME, USERNAME)
+        this.commandHandlerRequiresLogin = false
 	}
 
 	CommandHandler createCommandHandler() {

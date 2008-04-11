@@ -25,34 +25,34 @@ import org.mockftpserver.fake.user.UserAccount
 import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodesimport org.mockftpserver.core.util.AssertFailedException
 
 /**
- * Tests for CwdCommandHandler
+ * Tests for RnfrCommandHandler
  * 
  * @version $Revision: $ - $Date: $
  *
  * @author Chris Mair
  */
-class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class RnfrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
-    def DIR = "/usr"
+    def FILE = "/file.txt"
     
     void testHandleCommand() {
-        assert fileSystem.createDirectory("/usr")
-        commandHandler.handleCommand(createCommand([DIR]), session)        
-        assertSessionReply(ReplyCodes.CWD_OK)
-        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == DIR
+        assert fileSystem.createFile(FILE)
+        commandHandler.handleCommand(createCommand([FILE]), session)        
+        assertSessionReply(ReplyCodes.RNFR_OK)
+        assert session.getAttribute(SessionKeys.RENAME_FROM) == FILE
 	}
     
     void testHandleCommand_PathDoesNotExistInFileSystem() {
-        commandHandler.handleCommand(createCommand([DIR]), session)        
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
-        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
+        commandHandler.handleCommand(createCommand([FILE]), session)        
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, FILE)
+        assert session.getAttribute(SessionKeys.RENAME_FROM) == null
 	}
     
-    void testHandleCommand_PathSpecifiesAFile() {
-        assert fileSystem.createFile(DIR)
-        commandHandler.handleCommand(createCommand([DIR]), session)        
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
-        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
+    void testHandleCommand_PathSpecifiesADirectory() {
+        assert fileSystem.createDirectory(FILE)
+        commandHandler.handleCommand(createCommand([FILE]), session)        
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, FILE)
+        assert session.getAttribute(SessionKeys.RENAME_FROM) == null
 	}
     
     void testHandleCommand_MissingPathParameter() {
@@ -64,11 +64,11 @@ class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     //-------------------------------------------------------------------------
     
 	CommandHandler createCommandHandler() {
-	    new CwdCommandHandler()
+	    new RnfrCommandHandler()
 	}
 	
     Command createValidCommand() {
-        return new Command(CommandNames.CWD, [DIR])
+        return new Command(CommandNames.RNFR, [FILE])
     }
 
     void setUp() {

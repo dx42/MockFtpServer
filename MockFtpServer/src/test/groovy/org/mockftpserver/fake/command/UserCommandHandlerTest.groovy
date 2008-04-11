@@ -73,6 +73,11 @@ class UserCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     // Helper Methods
     //-------------------------------------------------------------------------
     
+    void setUp() {
+        super.setUp()
+        this.commandHandlerRequiresLogin = false
+    }
+
 	CommandHandler createCommandHandler() {
 	    new UserCommandHandler()
 	}

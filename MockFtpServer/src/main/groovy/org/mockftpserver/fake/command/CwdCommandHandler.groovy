@@ -37,8 +37,8 @@ class CwdCommandHandler extends AbstractFakeCommandHandler {
         verifyLoggedIn(session)
         def path = getRequiredParameter(command)
 
-        verifyFileCondition(fileSystem.exists(path), path)
-        verifyFileCondition(fileSystem.isDirectory(path), path)
+        verifyForExistingFile(fileSystem.exists(path), path)
+        verifyForExistingFile(fileSystem.isDirectory(path), path)
 
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, path)
         sendReply(session, ReplyCodes.CWD_OK, [path])
