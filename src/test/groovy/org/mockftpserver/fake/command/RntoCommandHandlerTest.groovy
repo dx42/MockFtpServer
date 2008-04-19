@@ -31,7 +31,7 @@ import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
  *
  * @author Chris Mair
  */
-class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class RntoCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     def FROM_FILE = "/from.txt"
     def TO_FILE = "/file.txt"
@@ -88,7 +88,6 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void setUp() {
         super.setUp()
-        session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
         session.setAttribute(SessionKeys.RENAME_FROM, FROM_FILE)
     }
     

@@ -31,7 +31,7 @@ import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
  *
  * @author Chris Mair
  */
-class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class CwdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     def DIR = "/usr"
     
@@ -73,7 +73,6 @@ class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void setUp() {
         super.setUp()
-        session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
     }
     
 }

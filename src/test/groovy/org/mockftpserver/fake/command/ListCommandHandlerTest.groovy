@@ -22,61 +22,54 @@ import org.mockftpserver.core.command.CommandNamesimport org.mockftpserver.core
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.StubServerConfiguration
 import org.mockftpserver.fake.user.UserAccount
-import org.mockftpserver.core.command.ReplyCodesimport org.mockftpserver.core.util.AssertFailedException
+import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodesimport org.mockftpserver.core.util.AssertFailedException
 
 /**
- * Tests for RmdCommandHandler
+ * Tests for ListCommandHandler
  * 
  * @version $Revision: $ - $Date: $
  *
  * @author Chris Mair
  */
-class RmdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
+class ListCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     def DIR = "/usr"
     
     void testHandleCommand() {
-        assert fileSystem.createDirectory(DIR)
+//        assert fileSystem.createDirectory("/usr")
         commandHandler.handleCommand(createCommand([DIR]), session)        
-        assertSessionReply(ReplyCodes.RMD_OK)
-        assert fileSystem.exists(DIR) == false
+        assertSessionReply(0, ReplyCodes.SEND_DATA_INITIAL_OK)
+        assertSessionReply(1, ReplyCodes.SEND_DATA_FINAL_OK)
+//        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == DIR
 	}
     
-    void testHandleCommand_PathDoesNotExistInFileSystem() {
-        commandHandler.handleCommand(createCommand([DIR]), session)        
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
-	}
-    
-    void testHandleCommand_PathSpecifiesAFile() {
-        assert fileSystem.createFile(DIR)
-        commandHandler.handleCommand(createCommand([DIR]), session)        
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
-        assert fileSystem.exists(DIR)
-	}
-    
-    void testHandleCommand_DirectoryIsNotEmpty() {
-        final FILE = DIR + "/file.txt"
-        assert fileSystem.createFile(FILE)
-        commandHandler.handleCommand(createCommand([DIR]), session)        
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
-        assert fileSystem.exists(DIR)
-        assert fileSystem.exists(FILE)
-	}
-    
-    void testHandleCommand_MissingPathParameter() {
-        testHandleCommand_MissingRequiredParameter([])
-    }
+//    void testHandleCommand_PathDoesNotExistInFileSystem() {
+//        commandHandler.handleCommand(createCommand([DIR]), session)        
+//        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
+//        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
+//	}
+//    
+//    void testHandleCommand_PathSpecifiesAFile() {
+//        assert fileSystem.createFile(DIR)
+//        commandHandler.handleCommand(createCommand([DIR]), session)        
+//        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
+//        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
+//	}
+//    
+//    void testHandleCommand_MissingPathParameter() {
+//        testHandleCommand_MissingRequiredParameter([])
+//    }
     
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
     
 	CommandHandler createCommandHandler() {
-	    new RmdCommandHandler()
+	    new ListCommandHandler()
 	}
 	
     Command createValidCommand() {
-        return new Command(CommandNames.RMD, [DIR])
+        return new Command(CommandNames.LIST, [DIR])
     }
 
 }

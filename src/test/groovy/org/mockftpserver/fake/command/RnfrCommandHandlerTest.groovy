@@ -22,7 +22,7 @@ import org.mockftpserver.core.command.CommandNamesimport org.mockftpserver.core
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.StubServerConfiguration
 import org.mockftpserver.fake.user.UserAccount
-import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodesimport org.mockftpserver.core.util.AssertFailedException
+import org.mockftpserver.core.command.ReplyCodesimport org.mockftpserver.core.util.AssertFailedException
 
 /**
  * Tests for RnfrCommandHandler
@@ -31,7 +31,7 @@ import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
  *
  * @author Chris Mair
  */
-class RnfrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class RnfrCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     def FILE = "/file.txt"
     
@@ -71,9 +71,4 @@ class RnfrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         return new Command(CommandNames.RNFR, [FILE])
     }
 
-    void setUp() {
-        super.setUp()
-        session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
-    }
-    
 }

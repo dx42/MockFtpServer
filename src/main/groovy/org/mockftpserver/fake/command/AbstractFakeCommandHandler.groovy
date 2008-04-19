@@ -200,4 +200,25 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
              throw new NewFileOperationException(path)
          }
      }
+
+     /**
+      * Return the full, absolute path for the specified abstract pathname.
+      * If path represents an absolute path, then return path as is. Otherwise,
+      * path is relative, so assemble the full path from the current directory
+      * stored in the session and the specified relative path.
+      * @param Session - the Session
+      * @param path - the abstract pathname
+      * @return the resulting full, absolute path
+      */ 
+     protected String getRealPath(Session session, String path) {
+         // TODO assemble from current directory AND relative path unless path is absolute
+         return path ?: session.getAttribute(SessionKeys.CURRENT_DIRECTORY)
+     }
+      
+     /**
+      * Return the end-of-line character(s) used when building multi-line responses 
+      */ 
+     protected String endOfLine() {
+         "\n"
+     }
 }
