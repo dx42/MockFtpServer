@@ -53,7 +53,6 @@ class PwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     
     void setUp() {
         super.setUp()
-        this.commandHandlerRequiresLogin = false
     }
 
     CommandHandler createCommandHandler() {

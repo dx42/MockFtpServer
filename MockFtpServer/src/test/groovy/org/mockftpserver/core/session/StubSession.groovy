@@ -29,6 +29,7 @@ class StubSession implements Session {
 
      Map attributes = [:]
      List sentReplies = [ ]
+     List sentData = [ ]
      
     /**
      * @see org.mockftpserver.core.session.Session#close()
@@ -97,7 +98,7 @@ class StubSession implements Session {
      * @see org.mockftpserver.core.session.Session#sendData(byte[], int)
      */
     public void sendData(byte[] data, int numBytes) {
-
+        sentData << new String(data, 0, numBytes)
     }
 
     /**
@@ -147,7 +148,7 @@ class StubSession implements Session {
     //-------------------------------------------------------------------------
     
     String toString() {
-        "StubSession[sentReplies=$sentReplies]"
+        "StubSession[sentReplies=$sentReplies  sentData=$sentData]"
     }
     
 }

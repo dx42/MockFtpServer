@@ -37,12 +37,8 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     protected session
     protected serverConfiguration
     protected commandHandler
-    protected userAccount
     protected fileSystem
     
-    // Subclasses can set to false to skip testing CommandHandler behavior when the current user has not yet logged in. 
-    protected commandHandlerRequiresLogin = true
-
     //-------------------------------------------------------------------------
     // Tests (common to all subclasses)
     //-------------------------------------------------------------------------
@@ -62,18 +58,6 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
         shouldFailWithMessageContaining("session") { commandHandler.handleCommand(command, null) }
     }
     
-    void testHandleCommand_NotLoggedIn() {
-        if (commandHandlerRequiresLogin) {
-            def command = createValidCommand()
-            session.removeAttribute(SessionKeys.USER_ACCOUNT)
-    		commandHandler.handleCommand(command, session)
-            assertSessionReply(ReplyCodes.NOT_LOGGED_IN)
-        }
-        else {
-            LOG.info("Skipping this test. This CommandHandler does not require that the user is logged in.")
-        }
-    }
-
     //-------------------------------------------------------------------------
     // Abstract Method Declarations (must be implemented by all subclasses)
     //-------------------------------------------------------------------------
@@ -103,7 +87,6 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
 	    
 	    commandHandler = createCommandHandler()
 	    commandHandler.serverConfiguration = serverConfiguration
-	    userAccount = new UserAccount()
 	}
 
     //-------------------------------------------------------------------------
@@ -137,25 +120,44 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     }
     
     /**
-     * Assert that the specified reply code (and default message) was sent through the session.
-     * @param replyCode - the expected reply code
-     */
-    void assertSessionReply(int replyCode) {
-        assertSessionReply(replyCode, replyCode as String)
-    }
-    
-    /**
      * Assert that the specified reply code and message containing text was sent through the session.
      * @param expectedReplyCode - the expected reply code
-     * @param text - the text expected within the reply message
+     * @param text - the text expected within the reply message; defaults to the reply code as a String
      */
-    void assertSessionReply(int expectedReplyCode, String text) {
+    protected assertSessionReply(int expectedReplyCode, String text=expectedReplyCode as String) {
+        assertSessionReply(0, expectedReplyCode, text)
+    }
+     
+    /**
+     * Assert that the specified reply code and message containing text was sent through the session.
+     * @param replyIndex - the index of the reply to compare
+     * @param expectedReplyCode - the expected reply code
+     * @param text - the text expected within the reply message; defaults to the reply code as a String
+     */
+    protected assertSessionReply(int replyIndex, int expectedReplyCode, String text=expectedReplyCode as String) {
 		LOG.info(session)
-		def actual = session.sentReplies[0]
-		assert actual, "No replies sent for $session"
+		def actual = session.sentReplies[replyIndex]
+		assert actual, "No reply for index [$replyIndex] sent for $session"
 		def actualReplyCode = actual[0]
 		def actualMessage = actual[1]
 		assert actualReplyCode == expectedReplyCode
 		assert actualMessage.contains(text), "[$actualMessage] does not contain[$text]"
     }
- }
+     
+    /**
+     * Assert that the specified data was sent through the session.
+     * @param expectedData - the expected data
+     */
+    protected assertSessionData(String expectedData) {
+		def actual = session.sentData[0]
+		assert actual != null, "No data for index [0] sent for $session"
+        assert actual == expectedData
+    }
+     
+    /**
+     * Convenience method to return the end-of-line character(s) for the current CommandHandler.
+     */
+    protected endOfLine() {
+        commandHandler.endOfLine()
+    }
+}
