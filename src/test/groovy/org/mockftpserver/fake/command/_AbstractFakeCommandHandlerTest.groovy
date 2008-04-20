@@ -126,12 +126,12 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
     }
     
     void testGetRealPath() {
-        assert commandHandler.getRealPath(session, "xxx") == "xxx"
+        assert commandHandler.getRealPath(session, "/xxx") == "/xxx"
         
-        session.setAttribute(SessionKeys.CURRENT_DIRECTORY, "xxx")
-        assert commandHandler.getRealPath(session, null) == "xxx"
-        
-        // TODO assemble from current directory AND relative path unless path is absolute
+        session.setAttribute(SessionKeys.CURRENT_DIRECTORY, "/usr/me")
+        assert commandHandler.getRealPath(session, null) == "/usr/me"
+        assert commandHandler.getRealPath(session, "/xxx") == "/xxx"
+        assert commandHandler.getRealPath(session, "xxx") == "/usr/me/xxx"
     }
      
     //-------------------------------------------------------------------------

@@ -98,4 +98,17 @@ class FakeUnixFileSystem extends AbstractFakeFileSystem {
         return result
     }
     
+    /**
+     * Return true if the specified path designates an absolute file path. For Unix
+     * paths, a path is absolute if it starts with the '/' character.
+     * 
+     * @param path - the path
+     * @return true if path is absolute, false otherwise
+     * 
+     * @throws AssertionError - if path is null
+     */
+    boolean isAbsolute(String path) {
+         return isValidName(path)
+    }
+    
 }

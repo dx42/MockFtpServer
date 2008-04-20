@@ -34,9 +34,6 @@ class DefaultFileSystemTest extends AbstractFileSystemTest {
      private File newFile
      private DefaultFileSystem defaultFileSystem
 
-     /**
-      * Constructor. Initialize test-specific values used by superclass.
-      */
      DefaultFileSystemTest() {
          EXISTING_DIR = "testdir"
          EXISTING_FILE = EXISTING_DIR + "/" + EXISTING_FILENAME
@@ -46,60 +43,39 @@ class DefaultFileSystemTest extends AbstractFileSystemTest {
          NO_SUCH_FILE = "x:/xx/yy/zz.txt"
      }
      
-     /**
-      * Test the exists() method, setting the root dir 
-      */
      void testExists_WithRoot() {
          defaultFileSystem.setRoot(EXISTING_DIR)
          assert defaultFileSystem.exists(EXISTING_FILENAME)
      }
 
-     /**
-      * Test the isDirectory() method, settig the root dir 
-      */
      void testIsDirectory_WithRoot() {
          defaultFileSystem.setRoot(EXISTING_DIR)
          assert defaultFileSystem.isDirectory("")
      }
      
-     /**
-      * Test the isFile() method, setting the root dir 
-      */
      void testIsFile_WithRoot() {
          defaultFileSystem.setRoot(EXISTING_DIR)
          assert defaultFileSystem.isFile(EXISTING_FILENAME)
      }
 
-     /**
-      * Test the createDirectory() method, when the root path is non-null 
-      */
      void testCreateDirectory_WithRoot() {
          defaultFileSystem.setRoot(EXISTING_DIR)
          assert defaultFileSystem.createDirectory(NEW_FILENAME)
          assert newFile.exists()
      }
      
-     /**
-      * Test the createFile() method, when the root path is non-null 
-      */
      void testCreateFile_WithRoot() {
          defaultFileSystem.setRoot(EXISTING_DIR)
          assert defaultFileSystem.createFile(NEW_FILENAME)
          assert newFile.exists()
      }
      
-     /**
-      * Test the createInputStream() method, setting the root directory 
-      */
      void testCreateInputStream_WithRoot() {
          defaultFileSystem.setRoot(EXISTING_DIR)
          InputStream input = defaultFileSystem.createInputStream(EXISTING_FILENAME)
          assert EXISTING_FILE_CONTENTS.getBytes() == IoUtil.readBytes(input)
      }
      
-     /**
-      * Test the createOutputStream() method, when the root path is non-null 
-      */
      void testCreateOutputStream_WithRoot() {
          defaultFileSystem.setRoot(EXISTING_DIR)
          OutputStream out = defaultFileSystem.createOutputStream(NEW_FILENAME, false)
@@ -108,9 +84,6 @@ class DefaultFileSystemTest extends AbstractFileSystemTest {
          assert EXISTING_FILE_CONTENTS.getBytes() == readFileContents(EXISTING_DIR + "/" + NEW_FILENAME)
      }
          
-     /**
-      * Test the listNames() method, setting the file system root 
-      */
      void testListNames_WithRoot() {
          assert defaultFileSystem.createDirectory(NEW_DIR)
          assert defaultFileSystem.createFile(NEW_DIR + "/" + FILENAME1)
@@ -120,9 +93,6 @@ class DefaultFileSystemTest extends AbstractFileSystemTest {
          assert [FILENAME1, FILENAME2] as Set == defaultFileSystem.listNames(NEW_DIRNAME) as Set
      }
      
-     /**
-      * Test listFiles() method, setting the root path
-      */
      void testListFiles_WithRoot() {
          assert defaultFileSystem.createDirectory(NEW_DIR)
          assert defaultFileSystem.createFile(NEW_DIR + "/" + FILENAME1)
@@ -133,18 +103,12 @@ class DefaultFileSystemTest extends AbstractFileSystemTest {
          assert [fileInfo1, fileInfo2] == defaultFileSystem.listFiles(NEW_DIRNAME)
      }
      
-     /**
-      * Test the delete() method, setting the root path 
-      */
      void testDelete_WithRoot() {
          assert defaultFileSystem.createFile(NEW_FILE)
          defaultFileSystem.setRoot(EXISTING_DIR)
          assert defaultFileSystem.delete(NEW_FILENAME)
      }
      
-     /**
-      * Test the rename() method, when the root path is non-null 
-      */
      void testRename_WithRoot() {
          defaultFileSystem.setRoot(EXISTING_DIR)
          final String FROM_FILE = NEW_FILENAME + "2"
@@ -160,9 +124,6 @@ class DefaultFileSystemTest extends AbstractFileSystemTest {
      
      private static final String SEP = File.separator
     
-     /**
-      * Test the path() method 
-      */
      void testPath() {
         assert "" == fileSystem.path(null, null)
         assert "abc" == fileSystem.path(null, "abc")
@@ -177,10 +138,6 @@ class DefaultFileSystemTest extends AbstractFileSystemTest {
         assert "abc/def" == fileSystem.path("abc", "/def")
      }
 
-    /**
-     * Test the normalize() method
-     * TODO Test passing in an illegal(?) path that causes an IOException 
-     */
     void testNormalize() {
         assertEquals("<empty>", absPath(""), fileSystem.normalize(""))
         assertEquals("abc", absPath("abc"), fileSystem.normalize("abc"))
@@ -195,9 +152,6 @@ class DefaultFileSystemTest extends AbstractFileSystemTest {
         assertEquals("z:/abc", p("z:","abc"), fileSystem.normalize("z:/abc").toLowerCase())
     }
     
-    /**
-     * Test the getName() method 
-     */
     void testGetName() {
         assertEquals("<empty>", "", fileSystem.getName(""))
         assertEquals("abc", "abc", fileSystem.getName("abc"))
@@ -211,9 +165,6 @@ class DefaultFileSystemTest extends AbstractFileSystemTest {
         assertEquals("c:/abc/def", "def", fileSystem.getName("c:/abc/def"))
     }
     
-    /**
-     * Test the getParent() method 
-     */
     void testGetParent() {
         assertEquals("<empty>", null, fileSystem.getParent(""))
         assertEquals("abc", null, fileSystem.getParent("abc"))
@@ -226,6 +177,20 @@ class DefaultFileSystemTest extends AbstractFileSystemTest {
         assertEquals("c:\\abc\\def", "c:" + SEP + "abc", fileSystem.getParent("c:\\abc\\def"))
         assertEquals("c:/abc/def", "c:" + SEP + "abc", fileSystem.getParent("c:/abc/def"))
     }
+    
+    void testIsAbsolute() {
+        def absPath = new File(".").absolutePath
+        assert fileSystem.isAbsolute(absPath)
+        
+        assert !fileSystem.isAbsolute("abc")
+        assert !fileSystem.isAbsolute("c:usr")
+        
+        shouldFailWithMessageContaining("path") { fileSystem.isAbsolute(null) }
+    }
+    
+    //-------------------------------------------------------------------------
+    // Helper Methods
+    //-------------------------------------------------------------------------
     
     /**
      * Return the specified paths concatenated with the system-dependent separator in between

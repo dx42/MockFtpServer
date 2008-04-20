@@ -31,36 +31,6 @@ import java.util.List
 public interface FileSystem {
 
     /**
-     * Return true if there exists a file or directory at the specified path
-     * 
-     * @param path - the path
-     * @return true if the file/directory exists
-     * 
-     * @throws AssertionError - if path is null
-     */
-    public boolean exists(String path)
-
-    /**
-     * Return true if the specified path designates an existing directory, false otherwise
-     * 
-     * @param path - the path
-     * @return true if path is a directory, false otherwise
-     * 
-     * @throws AssertionError - if path is null
-     */
-    public boolean isDirectory(String path)
-
-    /**
-     * Return true if the specified path designates an existing file, false otherwise
-     * 
-     * @param path - the path
-     * @return true if path is a file, false otherwise
-     * 
-     * @throws AssertionError - if path is null
-     */
-    public boolean isFile(String path)
-
-    /**
      * Creates an empty file with the specified pathname.
      * 
      * @param path - the path of the filename to create
@@ -151,6 +121,47 @@ public interface FileSystem {
     //-------------------------------------------------------------------------
     // Path-related Methods
     //-------------------------------------------------------------------------
+
+    /**
+     * Return true if there exists a file or directory at the specified path
+     * 
+     * @param path - the path
+     * @return true if the file/directory exists
+     * 
+     * @throws AssertionError - if path is null
+     */
+    public boolean exists(String path)
+
+    /**
+     * Return true if the specified path designates an existing directory, false otherwise
+     * 
+     * @param path - the path
+     * @return true if path is a directory, false otherwise
+     * 
+     * @throws AssertionError - if path is null
+     */
+    public boolean isDirectory(String path)
+
+    /**
+     * Return true if the specified path designates an existing file, false otherwise
+     * 
+     * @param path - the path
+     * @return true if path is a file, false otherwise
+     * 
+     * @throws AssertionError - if path is null
+     */
+    public boolean isFile(String path)
+
+     /**
+      * Return true if the specified path designates an absolute file path. What
+      * constitutes an absolute path is dependent on the file system implementation.
+      * 
+      * @param path - the path
+      * @return true if path is absolute, false otherwise
+      * 
+      * @throws AssertionError - if path is null
+      */
+     public boolean isAbsolute(String path)
 
     /**
      * Build a path from the two path components. Concatenate path1 and path2. Insert the file system-dependent
