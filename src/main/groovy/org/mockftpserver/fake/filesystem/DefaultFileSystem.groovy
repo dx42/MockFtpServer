@@ -27,9 +27,6 @@ import java.util.Arrays
 import java.util.Collections
 import java.util.List
 
-import org.mockftpserver.core.util.Assert
-import org.mockftpserver.core.util.AssertFailedException
-
 /**
  * Implementation of the FileSystem interface that uses a real underlying file system.
  * You can optionally set a root of this virtual filesystem within the "real" filesystem by setting
@@ -52,7 +49,7 @@ class DefaultFileSystem implements FileSystem {
       * @see org.mockftpserver.fake.filesystem.FileSystem#exists(java.lang.String)
       */
      public boolean exists(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          return fileForPath(path).exists()
      }
 
@@ -60,7 +57,7 @@ class DefaultFileSystem implements FileSystem {
       * @see org.mockftpserver.fake.filesystem.FileSystem#isDirectory(java.lang.String)
       */
      public boolean isDirectory(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          return fileForPath(path).isDirectory()
      }
 
@@ -68,7 +65,7 @@ class DefaultFileSystem implements FileSystem {
       * @see org.mockftpserver.fake.filesystem.FileSystem#isFile(java.lang.String)
       */
      public boolean isFile(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          return fileForPath(path).isFile()
      }
 
@@ -76,7 +73,7 @@ class DefaultFileSystem implements FileSystem {
       * @see org.mockftpserver.fake.filesystem.FileSystem#createDirectory(java.lang.String)
       */
      public boolean createDirectory(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          return fileForPath(path).mkdir()
      }
 
@@ -86,11 +83,11 @@ class DefaultFileSystem implements FileSystem {
       * @param path - the path of the filename to create
       * @return true if and only if the file was created false otherwise
       * 
-      * @throws AssertFailedException - if path is null
+      * @throws AssertionError - if path is null
       * @throws InvalidFilenameException - if an I/O error occurs indicating that the file path is not valid
       */
      public boolean createFile(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          try {
              return fileForPath(path).createNewFile()
          }
@@ -104,13 +101,13 @@ class DefaultFileSystem implements FileSystem {
       * @param path - the path of the file
       * @param append - true if the OutputStream should append to the end of the file if the file already exists
       * 
-      * @throws AssertFailedException - if path is null
+      * @throws AssertionError - if path is null
       * @throws FileNotFoundException - wraps a FileNotFoundException if thrown
       * 
       * @see org.mockftpserver.fake.filesystem.FileSystem#createOutputStream(java.lang.String, boolean)
       */
      public OutputStream createOutputStream(String path, boolean append) {
-         Assert.notNull(path, "path")
+         assert path != null
          try {
              return new FileOutputStream(fileForPath(path), append)
          }
@@ -123,13 +120,13 @@ class DefaultFileSystem implements FileSystem {
       * Create and return a new InputStream for reading from the file at the specified path
       * @param path - the path of the file
       * 
-      * @throws AssertFailedException - if path is null
+      * @throws AssertionError - if path is null
       * @throws FileSystemException - wraps a FileNotFoundException if thrown
       * 
       * @see org.mockftpserver.fake.filesystem.FileSystem#createInputStream(java.lang.String)
       */
      public InputStream createInputStream(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          try {
              return new FileInputStream(fileForPath(path))
          }
@@ -142,7 +139,7 @@ class DefaultFileSystem implements FileSystem {
       * @see org.mockftpserver.fake.filesystem.FileSystem#listFiles(java.lang.String)
       */
      public List listFiles(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          def files = fileForPath(path).listFiles()
          List fileInfoList = []
          if (files != null) {
@@ -158,7 +155,7 @@ class DefaultFileSystem implements FileSystem {
       * @see org.mockftpserver.fake.filesystem.FileSystem#listNames(java.lang.String)
       */
      public List listNames(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          def filenames = fileForPath(path).list()
          return (filenames == null) ? [] : filenames as List
      }
@@ -167,7 +164,7 @@ class DefaultFileSystem implements FileSystem {
       * @see org.mockftpserver.fake.filesystem.FileSystem#delete(java.lang.String)
       */
      public boolean delete(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          return fileForPath(path).delete()
      }
 
@@ -175,8 +172,8 @@ class DefaultFileSystem implements FileSystem {
       * @see org.mockftpserver.fake.filesystem.FileSystem#rename(java.lang.String, java.lang.String)
       */
      public boolean rename(String fromPath, String toPath) {
-         Assert.notNull(fromPath, "fromPath")
-         Assert.notNull(toPath, "toPath")
+         assert fromPath != null
+         assert toPath != null
          File toFile = fileForPath(toPath)
          return fileForPath(fromPath).renameTo(toFile)
      }
@@ -207,7 +204,7 @@ class DefaultFileSystem implements FileSystem {
       * @see org.mockftpserver.fake.filesystem.FileSystem#getName(java.lang.String)
       */
      public String getName(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          return new File(path).getName()
      }
 
@@ -221,27 +218,27 @@ class DefaultFileSystem implements FileSystem {
       * @param path - the path
       * @return the parent of the specified path, or null if <code>path</code> has no parent
       * 
-      * @throws AssertFailedException - if path is null
+      * @throws AssertionError - if path is null
       * 
       * @see org.mockftpserver.fake.filesystem.FileSystem#getParent(java.lang.String)
       */
      public String getParent(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          return new File(path).getParent()
      }
 
      /**
       * Return the standard, normalized form of the path. 
-      * @param path
-      * @return
+      * @param path - the abstract path
+      * @return the normalized path
       * 
-      * @throws AssertFailedException - if path is null
+      * @throws AssertionError - if path is null
       * @throws InvalidFilenameException - if an IOException occurs while determining the canonical path from the real" file system.
       * 
       * @see org.mockftpserver.fake.filesystem.FileSystem#normalize(java.lang.String)
       */
      public String normalize(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          try {
              return new File(path).getCanonicalPath()
          }

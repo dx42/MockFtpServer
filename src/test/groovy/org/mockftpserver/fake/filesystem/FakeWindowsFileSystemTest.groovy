@@ -15,7 +15,6 @@
  */
 package org.mockftpserver.fake.filesystem;
 
-import org.mockftpserver.core.util.AssertFailedException
 import org.mockftpserver.core.util.IoUtil
 import org.mockftpserver.fake.filesystem.AbstractFakeFileSystemTest
 

@@ -19,7 +19,6 @@ import java.io.ByteArrayInputStream
 import java.io.InputStream
 
 import org.apache.log4j.Logger
-import org.mockftpserver.core.util.AssertFailedException
 import org.mockftpserver.test.AbstractGroovyTest
 
 /**
@@ -46,7 +45,7 @@ public class IoUtilTest extends AbstractGroovyTest {
      * Test the readBytes() method, passing in a null 
      */
     void testReadBytes_Null() {
-        shouldFail(AssertFailedException) { IoUtil.readBytes(null) }
+        shouldFailWithMessageContaining("input") { IoUtil.readBytes(null) }
     }
     
 }

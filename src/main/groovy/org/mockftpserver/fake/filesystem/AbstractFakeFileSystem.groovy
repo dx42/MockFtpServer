@@ -23,10 +23,7 @@ import java.util.HashMap
 import java.util.Iterator
 import java.util.List
 import java.util.Map
-
 import org.apache.log4j.Logger
-import org.mockftpserver.core.util.Assert
-import org.mockftpserver.core.util.AssertFailedException
 
 /**
  * Abstract superclass for implementation of the FileSystem interface that manage the files 
@@ -76,11 +73,11 @@ abstract class AbstractFakeFileSystem implements FileSystem {
       * @param path - the path of the filename to create
       * @return true if and only if the file was created false otherwise
       * 
-      * @throws AssertFailedException - if path is null
+      * @throws AssertionError - if path is null
       * @throws FileSystemException - if an I/O error occurs
       */
      public boolean createFile(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          checkForInvalidFilename(path)
 
          // TODO Consider refactoring into adEntry()
@@ -110,12 +107,12 @@ abstract class AbstractFakeFileSystem implements FileSystem {
       * @param path - the path of the directory to create
       * @return true if and only if the directory was created false otherwise
       * 
-      * @throws AssertFailedException - if path is null
+      * @throws AssertionError - if path is null
       * 
       * @see org.mockftpserver.fake.filesystem.FileSystem#createDirectory(java.lang.String)
       */
      public boolean createDirectory(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          String normalizedPath = normalize(path)
          
          if (!parentDirectoryExists(path)) {
@@ -142,7 +139,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
       * Create and return a new InputStream for reading from the file at the specified path
       * @param path - the path of the file
       * 
-      * @throws AssertFailedException - if path is null
+      * @throws AssertionError - if path is null
       * @throws FileSystemException - wraps a FileNotFoundException if thrown
       * 
       * @see org.mockftpserver.fake.filesystem.FileSystem#createInputStream(java.lang.String)
@@ -159,7 +156,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
       * @param path - the path of the file
       * @param append - true if the OutputStream should append to the end of the file if the file already exists
       * 
-      * @throws AssertFailedException - if path is null
+      * @throws AssertionError - if path is null
       * @throws FileSystemException - wraps a FileNotFoundException if thrown
       * 
       * @see org.mockftpserver.fake.filesystem.FileSystem#createOutputStream(java.lang.String,boolean)
@@ -185,16 +182,15 @@ abstract class AbstractFakeFileSystem implements FileSystem {
       * @param path - the path of the file or directory to delete
       * @return true if the file or directory is successfully deleted
       * 
-      * @throws AssertFailedException - if path is null
+      * @throws AssertionError - if path is null
       * 
       * @see org.mockftpserver.fake.filesystem.FileSystem#delete(java.lang.String)
       */
      public boolean delete(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          String key = normalize(path)
          AbstractFileSystemEntry entry = getEntry(key)
 
-         println "entry=${entry}  hasChildren=${hasChildren(path)}"
          if (entry != null && !hasChildren(path)) {
              entries.remove(key)
              return true
@@ -208,12 +204,12 @@ abstract class AbstractFakeFileSystem implements FileSystem {
       * @param path - the path
       * @return true if the file/directory exists
       * 
-      * @throws AssertFailedException - if path is null
+      * @throws AssertionError - if path is null
       * 
       * @see org.mockftpserver.fake.filesystem.FileSystem#exists(java.lang.String)
       */
      public boolean exists(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          return getEntry(path) != null
      }
 
@@ -223,12 +219,12 @@ abstract class AbstractFakeFileSystem implements FileSystem {
       * @param path - the path
       * @return true if path is a directory, false otherwise
       * 
-      * @throws AssertFailedException - if path is null
+      * @throws AssertionError - if path is null
       * 
       * @see org.mockftpserver.fake.filesystem.FileSystem#isDirectory(java.lang.String)
       */
      public boolean isDirectory(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          AbstractFileSystemEntry entry = getEntry(path)
          return entry != null && entry.isDirectory()
      }
@@ -239,12 +235,12 @@ abstract class AbstractFakeFileSystem implements FileSystem {
       * @param path - the path
       * @return true if path is a file, false otherwise
       * 
-      * @throws AssertFailedException - if path is null
+      * @throws AssertionError - if path is null
       * 
       * @see org.mockftpserver.fake.filesystem.FileSystem#isFile(java.lang.String)
       */
      public boolean isFile(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          AbstractFileSystemEntry entry = getEntry(path)
          return entry != null && !entry.isDirectory()
      }
@@ -284,7 +280,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
       * @return the List of filenames (not including paths) for all files in the specified directory
       *         may be empty
       * 
-      * @throws AssertFailedException - if path is null
+      * @throws AssertionError - if path is null
       * 
       * @see org.mockftpserver.fake.filesystem.FileSystem#listNames(java.lang.String)
       */
@@ -307,10 +303,11 @@ abstract class AbstractFakeFileSystem implements FileSystem {
       * @param toPath - the target (new) path + filename
       * @return true if the file or directory is successfully renamed
       * 
-      * @throws AssertFailedException - if fromPath or toPath is null
+      * @throws AssertionError - if fromPath or toPath is null
       */
      public boolean rename(String fromPath, String toPath) {
-         Assert.notNull(toPath, "toPath")
+         assert toPath != null
+         assert fromPath != null
 
          AbstractFileSystemEntry entry = getEntry(fromPath)
          
@@ -328,7 +325,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
              children.each { childPath ->
                  AbstractFileSystemEntry child = getRequiredEntry(childPath)
                  String normalizedChildPath = normalize(child.getPath())
-                 Assert.isTrue(normalizedChildPath.startsWith(normalizedFromPath), "Starts with FROM path")
+                 assert normalizedChildPath.startsWith(normalizedFromPath), "Starts with FROM path"
                  String childToPath = normalizedToPath + normalizedChildPath.substring(normalizedFromPath.length())
                  renamePath(child, childToPath)
              }
@@ -393,7 +390,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      * @param path - the path
      * @return the path in a standard, unique, canonical form
      * 
-     * @throws AssertFailedException - if path is null
+     * @throws AssertionError - if path is null
      */
     String normalize(String path) {
         return componentsToPath(normalizedComponents(path))
@@ -409,7 +406,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      * @param path - the path
      * @return the parent of the specified path, or null if <code>path</code> has no parent
      * 
-     * @throws AssertFailedException - if path is null
+     * @throws AssertionError - if path is null
      */
     String getParent(String path) {
          def parts = normalizedComponents(path)
@@ -432,7 +429,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      * @see File#getName()         
      */
     String getName(String path) {
-        Assert.notNull(path, "path")
+        assert path != null
         def normalized = normalize(path)
         int separatorIndex = normalized.lastIndexOf(this.separator)
         return (separatorIndex == -1) ? normalized : normalized.substring(separatorIndex+1)
@@ -503,21 +500,21 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      }
 
      /**
-      * Throw AssertFailedException if the path is null. Throw FileSystemException if the specified
+      * Throw AssertionError if the path is null. Throw FileSystemException if the specified
       * path does not exist.
       * 
       * @param path - the path
-      * @throws AssertFailedException - if the specified path is null
+      * @throws AssertionError - if the specified path is null
       * @throws FileSystemException - if the specified path does not exist
       */
      private void verifyPathExists(String path) {
-         Assert.notNull(path, "path")
+         assert path != null
          getRequiredEntry(path)
      }
 
      /**
       * Verify that the path refers to an existing directory (if isDirectory==true) or an existing
-      * file (if isDirectory==false). Throw AssertFailedException if the path is null. Throw
+      * file (if isDirectory==false). Throw AssertionError if the path is null. Throw
       * FileSystemException if the specified path does not exist or is not a directory/file as
       * specified by isDirectory.
       * 
@@ -525,12 +522,12 @@ abstract class AbstractFakeFileSystem implements FileSystem {
       * @param isDirectory - true if the path should reference a directory false if it should be a
       *        file
       * 
-      * @throws AssertFailedException - if the specified path is null
+      * @throws AssertionError - if the specified path is null
       * @throws FileSystemException - if the specified path does not exist or is not a directory/file
       *         as expected
       */
      private void verifyIsDirectory(String path, boolean isDirectory) {
-         Assert.notNull(path, "path")
+         assert path != null
          AbstractFileSystemEntry entry = getRequiredEntry(path)
          if (entry.isDirectory() != isDirectory) {
              throw new FileSystemException("Path [" + path + "] is directory is " + entry.isDirectory())

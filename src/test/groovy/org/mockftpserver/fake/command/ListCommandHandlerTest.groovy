@@ -22,8 +22,7 @@ import org.mockftpserver.core.command.CommandNamesimport org.mockftpserver.core
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.StubServerConfiguration
 import org.mockftpserver.fake.user.UserAccount
-import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodesimport org.mockftpserver.core.util.AssertFailedException
-
+import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
 /**
  * Tests for ListCommandHandler
  * 

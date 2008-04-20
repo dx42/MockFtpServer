@@ -15,9 +15,6 @@
  */
 package org.mockftpserver.core.util
 
-import org.mockftpserver.core.util.Assert
-import org.mockftpserver.core.util.AssertFailedException
-
 /**
  * Contains static I/O-related utility methods.
  * 
@@ -33,11 +30,11 @@ class IoUtil {
      * @param in - the InputStream to read
      * @return the contents of the InputStream as a byte[]
      * 
-     * @throws AssertFailedException - if the InputStream is null
+     * @throws AssertionError - if the InputStream is null
      * @throws IOException
      */
      static byte[] readBytes(InputStream input) {
-        Assert.notNull(input, "in")
+        assert input != null
         ByteArrayOutputStream outBytes = new ByteArrayOutputStream()
 
         try {

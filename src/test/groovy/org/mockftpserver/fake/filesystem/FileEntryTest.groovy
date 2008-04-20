@@ -17,10 +17,7 @@ package org.mockftpserver.fake.filesystem
 
 import java.io.IOException
 import java.io.OutputStream
-import org.mockftpserver.core.util.AssertFailedException
-import org.mockftpserver.core.util.IoUtil
-import org.apache.log4j.Logger
-import org.mockftpserver.core.util.AssertFailedException
+import org.mockftpserver.core.util.IoUtilimport org.apache.log4j.Logger
 
 /**
  * Tests for FileEntry
@@ -67,14 +64,14 @@ public class FileEntryTest extends AbstractFileSystemEntryTest {
      * Test the setContents(String) method, passing in null 
      */
     void testSetContents_NullString() {
-        shouldFail(AssertFailedException) { entry.setContents((String)null) }
+        shouldFailWithMessageContaining("contents") { entry.setContents((String)null) }
     }
     
     /**
      * Test the setContents(byte[]) method, passing in null 
      */
     void testSetContents_NullBytes() {
-        shouldFail(AssertFailedException) { entry.setContents((byte[])null) }
+        shouldFailWithMessageContaining("contents") { entry.setContents((byte[])null) }
     }
     
     /**
