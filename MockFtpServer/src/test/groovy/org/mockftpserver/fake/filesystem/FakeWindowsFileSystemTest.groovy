@@ -43,9 +43,6 @@ class FakeWindowsFileSystemTest extends AbstractFakeFileSystemTest {
      // Tests
      // -------------------------------------------------------------------------
 
-     /**
-      * Test adding other roots to the file system
-      */
      void testOtherRoots() {
          final String X = "x:/"
          final String Y = "y:\\"
@@ -59,9 +56,6 @@ class FakeWindowsFileSystemTest extends AbstractFakeFileSystemTest {
          assertTrue(Y, fileSystem.exists(Y))
      }
 
-     /**
-      * Test the path() method 
-      */
      void testPath() {
          assert fileSystem.path(null, null) == ""
          assert fileSystem.path(null, "abc") == "abc"
@@ -76,9 +70,6 @@ class FakeWindowsFileSystemTest extends AbstractFakeFileSystemTest {
          assert fileSystem.path("abc", "/def") == "abc/def"
      }
 
-     /**
-      * Test the normalize() method
-      */
      void testNormalize() {
          assert fileSystem.normalize("a:\\") == "a:\\"
          assert fileSystem.normalize("a:/") == "a:\\"
@@ -94,9 +85,6 @@ class FakeWindowsFileSystemTest extends AbstractFakeFileSystemTest {
          assert fileSystem.normalize("z:/abc").toLowerCase() == p("z:","abc")
      }
      
-     /**
-      * Test the getName() method 
-      */
      void testGetName() {
          assert fileSystem.getName("l:\\") == ""
          assert fileSystem.getName("m:\\abc") == "abc"
@@ -104,9 +92,6 @@ class FakeWindowsFileSystemTest extends AbstractFakeFileSystemTest {
          assert fileSystem.getName("o:/abc/def") == "def"
      }
      
-     /**
-      * Test the getParent() method 
-      */
      public void testGetParent() {
          assert fileSystem.getParent("p:/") == null
          assert fileSystem.getParent("q:\\abc") == "q:\\"
@@ -114,9 +99,6 @@ class FakeWindowsFileSystemTest extends AbstractFakeFileSystemTest {
          assert fileSystem.getParent("s:\\abc/def") == p("s:","abc")
      }
      
-     /**
-      * Test the isValidName() method
-      */
      void testIsValidName() {
          // \/:*?"<>|
          [ "a:\\abc",
@@ -125,7 +107,8 @@ class FakeWindowsFileSystemTest extends AbstractFakeFileSystemTest {
            "e:/abc\\d!ef",
            "f:\\abc\\def\\h(ij)",
            "g:\\abc",
-           "z:/abc/def"
+           "z:/abc/def",
+           "\\\\shared"
            ].each {
              assert fileSystem.isValidName(it), "[$it]"    
            }
@@ -145,6 +128,19 @@ class FakeWindowsFileSystemTest extends AbstractFakeFileSystemTest {
            ].each {
              assert !fileSystem.isValidName(it), "[$it]"    
          }
+     }
+     
+     void testIsAbsolute() {
+         assert fileSystem.isAbsolute("c:\\")
+         assert fileSystem.isAbsolute("x:\\Documents")
+         assert fileSystem.isAbsolute("a:/")
+         assert fileSystem.isAbsolute("\\\\shared\\docs")
+         
+         assert !fileSystem.isAbsolute("abc")
+         assert !fileSystem.isAbsolute("/usr")
+         assert !fileSystem.isAbsolute("c:usr")
+         
+         shouldFailWithMessageContaining("path") { fileSystem.isAbsolute(null) }
      }
      
      //-------------------------------------------------------------------------

@@ -39,9 +39,6 @@ class FakeUnixFileSystemTest extends AbstractFakeFileSystemTest {
          NO_SUCH_FILE = "/xx/yy/zz.txt"
      }
      
-     /**
-      * Test the path() method 
-      */
      void testPath() {
          assert fileSystem.path(null, null) == ""
          assert fileSystem.path(null, "abc") == "abc"
@@ -56,9 +53,6 @@ class FakeUnixFileSystemTest extends AbstractFakeFileSystemTest {
          assert fileSystem.path("abc", "/def") == "abc/def"
      }
 
-     /**
-      * Test the normalize() method
-      */
      void testNormalize() {
          assert fileSystem.normalize("/") == "/"
          assert fileSystem.normalize("/aBc") == p("aBc") 
@@ -69,9 +63,6 @@ class FakeUnixFileSystemTest extends AbstractFakeFileSystemTest {
          assert fileSystem.normalize("/abc/def/./gHI") == p("abc","def","gHI")
      }
      
-     /**
-      * Test the getName() method 
-      */
      void testGetName() {
          assert fileSystem.getName("/") == ""
          assert fileSystem.getName("/aBC") == "aBC"
@@ -79,18 +70,12 @@ class FakeUnixFileSystemTest extends AbstractFakeFileSystemTest {
          assert fileSystem.getName("/abc/def/../GHI") == "GHI"
      }
      
-     /**
-      * Test the getParent() method 
-      */
      public void testGetParent() {
          assert fileSystem.getParent("/") == null
          assert fileSystem.getParent("/abc") == "/"
          assert fileSystem.getParent("/abc/def") == p("abc") 
      }
      
-     /**
-      * Test the isValidName() method
-      */
      void testIsValidName() {
          [ "/abc",
            "/ABC/def",
@@ -110,6 +95,16 @@ class FakeUnixFileSystemTest extends AbstractFakeFileSystemTest {
              assert !fileSystem.isValidName(it), "[$it]"    
          }
      }
+
+     void testIsAbsolute() {
+         assert fileSystem.isAbsolute("/")
+         assert fileSystem.isAbsolute("/abc")
+
+         assert !fileSystem.isAbsolute("abc")
+         assert !fileSystem.isAbsolute("c:\\usr")
+         
+         shouldFailWithMessageContaining("path") { fileSystem.isAbsolute(null) }
+     }
      
     //-----------------------------------------------------------------------------------
     // Helper Methods
@@ -117,7 +112,6 @@ class FakeUnixFileSystemTest extends AbstractFakeFileSystemTest {
     
     /**
      * Return a new instance of the FileSystem implementation class under test
-     * 
      * @return a new FileSystem instance
      */
     protected FileSystem createFileSystem() {

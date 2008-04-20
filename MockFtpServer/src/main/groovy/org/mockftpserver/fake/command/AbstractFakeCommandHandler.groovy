@@ -30,6 +30,7 @@ import org.mockftpserver.core.session.Session
 import org.mockftpserver.core.session.SessionKeys
 import org.apache.log4j.Loggerimport java.text.MessageFormat
 import org.mockftpserver.fake.filesystem.InvalidFilenameException
+
 /**
  * Abstract superclass for CommandHandler classes for the "Fake" server.
  * 
@@ -41,7 +42,6 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
 
      final Logger LOG = Logger.getLogger(this.class)
      ServerConfiguration serverConfiguration
-     protected FileSystem fileSystem
      
      /**
       * Use template method to centralize and ensure common validation
@@ -51,8 +51,6 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
          assert command != null
          assert session != null
 
-         fileSystem = serverConfiguration.fileSystem
-         
          try {
              handle(command, session)
          }
@@ -80,6 +78,13 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
              LOG.warn("Error handling command: $command; ${e}; path: ${e.path}")
              sendReply(session, ReplyCodes.FILENAME_NOT_VALID, [e.path])
          }
+     }
+
+     /**
+      * Convenience method to return the FileSystem stored in the ServerConfiguration
+      */
+     protected FileSystem getFileSystem() {
+         serverConfiguration.fileSystem
      }
      
      /**
@@ -203,16 +208,23 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
 
      /**
       * Return the full, absolute path for the specified abstract pathname.
-      * If path represents an absolute path, then return path as is. Otherwise,
-      * path is relative, so assemble the full path from the current directory
-      * stored in the session and the specified relative path.
+      * If path is null, return the current directory (stored in the session). If 
+      * path represents an absolute path, then return path as is. Otherwise, path 
+      * is relative, so assemble the full path from the current directory
+      * and the specified relative path.
       * @param Session - the Session
-      * @param path - the abstract pathname
+      * @param path - the abstract pathname; may be null
       * @return the resulting full, absolute path
       */ 
      protected String getRealPath(Session session, String path) {
-         // TODO assemble from current directory AND relative path unless path is absolute
-         return path ?: session.getAttribute(SessionKeys.CURRENT_DIRECTORY)
+         def currentDirectory = session.getAttribute(SessionKeys.CURRENT_DIRECTORY)
+         if (path == null) {
+             return currentDirectory 
+         }
+         if (fileSystem.isAbsolute(path)) {
+             return path
+         }
+         return fileSystem.path(currentDirectory, path)
      }
       
      /**

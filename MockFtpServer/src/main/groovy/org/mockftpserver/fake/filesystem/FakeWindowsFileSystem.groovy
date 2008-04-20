@@ -24,6 +24,8 @@ import java.io.IOException
  * <ul>
  *   <li>Filenames are case-insensitive (and normalized to lower-case)</li>
  *   <li>Either forward slashes (/) or backward slashes (\) are valid path separators (but are normalized to '\')</li>  
+ *   <li>An absolute path starts with a drive specifier (e.g. 'a:' or 'c:') followed 
+ *   		by '\' or '/', or else if it starts with "\\"</li>  
  * </ul>
  * 
  * @version $Revision: $ - $Date: $
@@ -33,6 +35,8 @@ import java.io.IOException
 class FakeWindowsFileSystem extends AbstractFakeFileSystem {
 
     public static final String SEPARATOR = "\\"
+    static final VALID_PATTERN = /\p{Alpha}\:(\\|(\\[^\\\:\*\?\<\>\|\"]+)+)/ 
+    static final LAN_PREFIX = "\\\\"
     
     //-------------------------------------------------------------------------
     // Abstract Method Implementations
@@ -46,7 +50,7 @@ class FakeWindowsFileSystem extends AbstractFakeFileSystem {
         // \/:*?"<>|
         assert path != null    
         def standardized = path.replace("/", "\\")
-        return standardized ==~ /\p{Alpha}\:(\\|(\\[^\\\:\*\?\<\>\|\"]+)+)/
+        return (standardized ==~ VALID_PATTERN) || standardized.startsWith(LAN_PREFIX)
     }
     
     /**
@@ -99,4 +103,18 @@ class FakeWindowsFileSystem extends AbstractFakeFileSystem {
         return result
     }
     
-}
+    /**
+     * Return true if the specified path designates an absolute file path. For Windows
+     * paths, a path is absolute if it starts with a drive specifier followed by 
+     * '\' or '/', or if it starts with "\\". 
+     * 
+     * @param path - the path
+     * @return true if path is absolute, false otherwise
+     * 
+     * @throws AssertionError - if path is null
+     */
+    boolean isAbsolute(String path) {
+        return isValidName(path) 
+    }
+ 
+ }

@@ -275,6 +275,22 @@ class DefaultFileSystem implements FileSystem {
          return buf.toString()
      }
 
+     /**
+      * Return true if the specified path designates an absolute file path. For Unix 
+      * paths, a path is absolute if it starts with the '/' character. For Windows
+      * paths, a path is absolute if it starts with a drive specifier followed by 
+      * '\' or '/', or if it starts with "\\". 
+      * 
+      * @param path - the path
+      * @return true if path is absolute, false otherwise
+      * 
+      * @throws AssertionError - if path is null
+      */
+     boolean isAbsolute(String path) {
+          assert path != null
+          return fileForPath(path).isAbsolute()
+     }
+      
      // -------------------------------------------------------------------------
      // Internal Helper Methods
      // -------------------------------------------------------------------------
