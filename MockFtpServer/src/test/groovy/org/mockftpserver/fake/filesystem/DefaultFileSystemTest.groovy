@@ -15,15 +15,7 @@
  */
 package org.mockftpserver.fake.filesystem
 
-import java.io.File
-import java.io.FileInputStream
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
-import java.util.HashSet
-
 import org.apache.log4j.Logger
-import org.mockftpserver.core.util.AssertFailedException
 import org.mockftpserver.core.util.IoUtil
 
 /**
@@ -335,7 +327,7 @@ class DefaultFileSystemTest extends AbstractFileSystemTest {
       * @param path - the path of the file
       * @return the contents of the file as a byte[]
       * 
-      * @throws AssertFailedException - if path is null
+      * @throws AssertionError - if path is null
       */
      private byte[] readFileContents(String path) {
          InputStream input = new FileInputStream(path)

@@ -18,8 +18,6 @@ package org.mockftpserver.fake.filesystem
 import java.io.File
 import java.io.IOException
 
-import org.mockftpserver.core.util.Assert
-
 /**
  * Implementation of the {@link FileSystem} interface that simulates a Microsoft
  * Windows file system. The rules for file and directory names include: 
@@ -44,10 +42,10 @@ class FakeWindowsFileSystem extends AbstractFakeFileSystem {
         return SEPARATOR
     }
     
-    protected boolean isValidName(String name) {
+    protected boolean isValidName(String path) {
         // \/:*?"<>|
-        Assert.notNull(name, "name")        
-        def standardized = name.replace("/", "\\")
+        assert path != null    
+        def standardized = path.replace("/", "\\")
         return standardized ==~ /\p{Alpha}\:(\\|(\\[^\\\:\*\?\<\>\|\"]+)+)/
     }
     
@@ -79,7 +77,7 @@ class FakeWindowsFileSystem extends AbstractFakeFileSystem {
      * the returned List does not include path separator characters. 
      */
     protected List normalizedComponents(String path) {
-        Assert.notNull(path, "path")
+        assert path != null
         checkForInvalidFilename(path)
         def p = path.replace("/", this.separator)
         

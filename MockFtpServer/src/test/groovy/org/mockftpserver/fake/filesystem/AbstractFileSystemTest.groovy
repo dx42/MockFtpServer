@@ -25,7 +25,6 @@ import java.util.HashSet
 import java.util.List
 
 import org.apache.log4j.Logger
-import org.mockftpserver.core.util.AssertFailedException
 import org.mockftpserver.core.util.IoUtil
 import org.mockftpserver.test.AbstractGroovyTest
 
@@ -69,8 +68,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
          assert fileSystem.exists(EXISTING_FILE)
          assert fileSystem.exists(EXISTING_DIR)
 
-         def e = shouldThrow(AssertFailedException) { fileSystem.exists(null) }
-         assert e.message.contains("path")
+         shouldFailWithMessageContaining("path") { fileSystem.exists(null) }
      }
 
      /**
@@ -82,8 +80,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
          assert !fileSystem.isDirectory(NO_SUCH_DIR)
          assert !fileSystem.isDirectory(NO_SUCH_FILE)
          
-         def e = shouldThrow(AssertFailedException) { fileSystem.isDirectory(null) }
-         assert e.message.contains("path")
+         shouldFailWithMessageContaining("path") { fileSystem.isDirectory(null) }
      }
      
      /**
@@ -95,8 +92,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
          assert !fileSystem.isFile(NO_SUCH_DIR)
          assert !fileSystem.isFile(NO_SUCH_FILE)
          
-         def e = shouldThrow(AssertFailedException) { fileSystem.isFile(null) }
-         assert e.message.contains("path")
+         shouldFailWithMessageContaining("path") { fileSystem.isFile(null) }
      }
          
      /**
@@ -113,8 +109,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
          // The parent of the path does not exist
          assert !fileSystem.createDirectory(NEW_DIR + "/abc/def"), "Parent does not exist"
 
-         def e = shouldThrow(AssertFailedException) { fileSystem.createDirectory(null) }
-         assert e.message.contains("path")
+         shouldFailWithMessageContaining("path") { fileSystem.createDirectory(null) }
      }
 
      /**
@@ -133,7 +128,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
          shouldFail(FileSystemException) { fileSystem.createFile(NO_SUCH_DIR) }
          shouldFail(InvalidFilenameException) { fileSystem.createFile(ILLEGAL_FILE) }
          
-         shouldFail(AssertFailedException) { fileSystem.createFile(null) }
+         shouldFailWithMessageContaining("path") { fileSystem.createFile(null) }
      }
 
      /**
@@ -147,7 +142,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
          shouldFail(FileSystemException) { fileSystem.createInputStream(EXISTING_DIR) }
          shouldFail(FileSystemException) { fileSystem.createInputStream("") }
          
-         shouldFail(AssertFailedException) { fileSystem.createInputStream(null) }
+         shouldFailWithMessageContaining("path") { fileSystem.createInputStream(null) }
      }
      
      /**
@@ -201,21 +196,21 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
       * Test the createOutputStream() method, passing in a null path
       */
      void testCreateOutputStream_NullPath() {
-         shouldFail(AssertFailedException) { fileSystem.createOutputStream(null, true) }
+         shouldFailWithMessageContaining("path") { fileSystem.createOutputStream(null, true) }
      }
 
      /**
       * Test the rename() method, passing in a null fromPath
       */
      void testRename_NullFromPath() {
-         shouldFail(AssertFailedException) { fileSystem.rename(null, FILENAME1) }
+         shouldFailWithMessageContaining("fromPath") { fileSystem.rename(null, FILENAME1) }
      }
 
      /**
       * Test the rename() method, passing in a null toPath
       */
      void testRename_NullToPath() {
-         shouldFail(AssertFailedException) { fileSystem.rename(FILENAME1, null) }
+         shouldFailWithMessageContaining("toPath") { fileSystem.rename(FILENAME1, null) }
      }
 
      /**
@@ -237,8 +232,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
          assert [] == fileSystem.listNames(NO_SUCH_DIR)
          assert [] == fileSystem.listNames(NEW_DIR + "/" + FILENAME1)
          
-         def e = shouldThrow(AssertFailedException) { fileSystem.listNames(null) }
-         assert e.message.contains("path")
+         shouldFailWithMessageContaining("path") { fileSystem.listNames(null) }
      }
 
      /**
@@ -266,8 +260,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
          
          assert fileSystem.listFiles(NO_SUCH_DIR) == []
          
-         def e = shouldThrow(AssertFailedException) { fileSystem.listFiles(null) }
-         assert e.message.contains("path")
+         shouldFailWithMessageContaining("path") { fileSystem.listFiles(null) }
      }
          
      /**
@@ -290,8 +283,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
          assert !fileSystem.delete(NEW_DIR), "Directory containing files"
          assert fileSystem.exists(NEW_DIR)
 
-         def e = shouldThrow(AssertFailedException) { fileSystem.delete(null) }
-         assert e.message.contains("path")
+         shouldFailWithMessageContaining("path") { fileSystem.delete(null) }
      }
          
      /**
@@ -358,14 +350,14 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
       * Test the getName() method, passing in a null 
       */
      void testGetName_Null() {
-         shouldFail(AssertFailedException) { fileSystem.getName(null) }
+         shouldFailWithMessageContaining("path") { fileSystem.getName(null) }
      }
 
      /**
       * Test the getParent() method, passing in a null 
       */
      void testGetParent_Null() {
-         shouldFail(AssertFailedException) { fileSystem.getParent(null) }
+         shouldFailWithMessageContaining("path") { fileSystem.getParent(null) }
      }
 
      /**
@@ -379,7 +371,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
       * Test the normalize() method, passing in a null 
       */
      void testNormalize_Null() {
-         shouldFail(AssertFailedException) { fileSystem.normalize(null) }
+         shouldFailWithMessageContaining("path") { fileSystem.normalize(null) }
      }
      
      //-------------------------------------------------------------------------

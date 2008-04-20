@@ -21,8 +21,6 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.util.List
 
-import org.mockftpserver.core.util.AssertFailedException
-
 /**
  * Interface for a file system for managing files and directories.
  * 
@@ -38,7 +36,7 @@ public interface FileSystem {
      * @param path - the path
      * @return true if the file/directory exists
      * 
-     * @throws AssertFailedException - if path is null
+     * @throws AssertionError - if path is null
      */
     public boolean exists(String path)
 
@@ -48,7 +46,7 @@ public interface FileSystem {
      * @param path - the path
      * @return true if path is a directory, false otherwise
      * 
-     * @throws AssertFailedException - if path is null
+     * @throws AssertionError - if path is null
      */
     public boolean isDirectory(String path)
 
@@ -58,7 +56,7 @@ public interface FileSystem {
      * @param path - the path
      * @return true if path is a file, false otherwise
      * 
-     * @throws AssertFailedException - if path is null
+     * @throws AssertionError - if path is null
      */
     public boolean isFile(String path)
 
@@ -68,7 +66,7 @@ public interface FileSystem {
      * @param path - the path of the filename to create
      * @return true if and only if the file was created false otherwise
      * 
-     * @throws AssertFailedException - if path is null
+     * @throws AssertionError - if path is null
      * @throws FileSystemException - if an I/O error occurs
      */
     public boolean createFile(String path)
@@ -79,7 +77,7 @@ public interface FileSystem {
      * @param path - the path of the directory to create
      * @return true if and only if the directory was created false otherwise
      * 
-     * @throws AssertFailedException - if path is null
+     * @throws AssertionError - if path is null
      */
     public boolean createDirectory(String path)
 
@@ -88,7 +86,7 @@ public interface FileSystem {
      * @param path - the path of the file
      * @param append - true if the OutputStream should append to the end of the file if the file already exists
      * 
-     * @throws AssertFailedException - if path is null
+     * @throws AssertionError - if path is null
      * @throws FileSystemException - wraps a FileNotFoundException if thrown
      */
     public OutputStream createOutputStream(String path, boolean append)
@@ -97,7 +95,7 @@ public interface FileSystem {
      * Create and return a new InputStream for reading from the file at the specified path
      * @param path - the path of the file
      * 
-     * @throws AssertFailedException - if path is null
+     * @throws AssertionError - if path is null
      * @throws FileSystemException - wraps a FileNotFoundException if thrown
      */
     public InputStream createInputStream(String path)
@@ -120,7 +118,7 @@ public interface FileSystem {
      * @return the List of filenames (not including paths) for all files in the specified directory
      *         may be empty
      * 
-     * @throws AssertFailedException - if path is null
+     * @throws AssertionError - if path is null
      */
     public List listNames(String path)
 
@@ -132,7 +130,7 @@ public interface FileSystem {
      * @param path - the path of the file or directory to delete
      * @return true if the file or directory is successfully deleted
      * 
-     * @throws AssertFailedException - if path is null
+     * @throws AssertionError - if path is null
      */
     public boolean delete(String path)
 
@@ -146,7 +144,7 @@ public interface FileSystem {
      * @param toPath - the target (new) path + filename
      * @return true if the file or directory is successfully renamed
      * 
-     * @throws AssertFailedException - if fromPath or toPath is null
+     * @throws AssertionError - if fromPath or toPath is null
      */
     public boolean rename(String fromPath, String toPath)
 
@@ -188,7 +186,7 @@ public interface FileSystem {
      * @param path - the path
      * @return the parent of the specified path, or null if <code>path</code> has no parent
      * 
-     * @throws AssertFailedException - if path is null
+     * @throws AssertionError - if path is null
      */
     public String getParent(String path)
 
@@ -197,7 +195,7 @@ public interface FileSystem {
      * @param path
      * @return
      * 
-     * @throws AssertFailedException - if path is null
+     * @throws AssertionError - if path is null
      * @throws FileSystemException - if an IOException occurs while determining the canonical path from the real" file system.
      */
     public String normalize(String path)

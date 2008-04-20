@@ -21,8 +21,6 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 
-import org.mockftpserver.core.util.Assert
-
 /**
  * File system entry representing a file
  * 
@@ -82,7 +80,7 @@ public class FileEntry extends AbstractFileSystemEntry {
      * @param contents - the String whose bytes are used as the contents
      */
     void setContents(String contents) {
-        Assert.notNull(contents, "contents")
+        assert contents != null
         setContentsInternal(contents.getBytes())
     }
     
@@ -91,7 +89,7 @@ public class FileEntry extends AbstractFileSystemEntry {
      * @param contents - the byte[] used as the contents
      */
     void setContents(byte[] contents) {
-        Assert.notNull(contents, "contents")
+        assert contents != null
         // Copy the bytes[] to guard against subsequent modification of the source array
         setContentsInternal(new String(contents).getBytes())
     }
