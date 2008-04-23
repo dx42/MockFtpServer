@@ -239,15 +239,16 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
       * Test listFiles() method 
       */
      void testListFiles() {
+         final DATE = new Date()
          assert fileSystem.createDirectory(NEW_DIR)
          assert [] == fileSystem.listFiles(NEW_DIR)
 
          assert fileSystem.createFile(NEW_DIR + "/" + FILENAME1)
-         FileInfo fileInfo1 = new FileInfo(FILENAME1, 0)
+         FileInfo fileInfo1 = FileInfo.forFile(FILENAME1, 0, DATE)
          assert [fileInfo1] == fileSystem.listFiles(NEW_DIR)
 
          assert fileSystem.createFile(NEW_DIR + "/" + FILENAME2)
-         FileInfo fileInfo2 = new FileInfo(FILENAME2, 0)
+         FileInfo fileInfo2 = FileInfo.forFile(FILENAME2, 0, DATE)
          assert [fileInfo1, fileInfo2] as Set == fileSystem.listFiles(NEW_DIR) as Set
 
          // Write to the file to get a non-zero length
@@ -255,8 +256,12 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
          OutputStream out = fileSystem.createOutputStream(NEW_DIR + "/" + FILENAME1, false)
          out.write(CONTENTS)
          out.close()
-         fileInfo1 = new FileInfo(FILENAME1, CONTENTS.length)
+         fileInfo1 = FileInfo.forFile(FILENAME1, CONTENTS.length, DATE)
          assert [fileInfo1, fileInfo2] as Set == fileSystem.listFiles(NEW_DIR) as Set
+         
+         assert fileSystem.createDirectory(NEW_DIR + "/" + DIR1)
+         FileInfo fileInfo3 = FileInfo.forDirectory(DIR1, DATE)
+         assert [fileInfo1, fileInfo2, fileInfo3] as Set == fileSystem.listFiles(NEW_DIR) as Set
          
          assert fileSystem.listFiles(NO_SUCH_DIR) == []
          

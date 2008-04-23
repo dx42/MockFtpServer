@@ -26,47 +26,69 @@ import org.mockftpserver.test.AbstractGroovyTest
  */
 public final class FileInfoTest extends AbstractGroovyTest {
 
-    private static final String PATH = "a/b/c/def.txt"
+    private static final String NAME = "def.txt"
     private static final long LENGTH = 1234567L
+    private static final Date LAST_MODIFIED = new Date()
 
-    private FileInfo fileInfo
+    private FileInfo fileInfoFile
+    private FileInfo fileInfoDirectory
 
     /**
-     * Test the constructor
+     * Test the forFile() constructor
      */
-    void testConstructor() {
-        assert fileInfo.getPath() == PATH
-        assert fileInfo.getLength() == LENGTH
+    void testFileConstructor() {
+        assert fileInfoFile.isDirectory() == false
+        assert fileInfoFile.getName() == NAME
+        assert fileInfoFile.getLength() == LENGTH
+        assert fileInfoFile.lastModified == LAST_MODIFIED
+    }
+    
+    /**
+     * Test the forDirectory() constructor
+     */
+    void testDirectoryConstructor() {
+        assert fileInfoDirectory.isDirectory()
+        assert fileInfoDirectory.getName() == NAME
+        assert fileInfoDirectory.getLength() == 0
+        assert fileInfoDirectory.lastModified == LAST_MODIFIED
     }
     
     /**
      * Test the equals() method 
      */
     void testEquals() {
-        assert fileInfo.equals(fileInfo)
-        assert fileInfo.equals(new FileInfo(PATH, LENGTH))
-        assert !fileInfo.equals(new FileInfo("xyz", LENGTH))
-        assert !fileInfo.equals(new FileInfo(PATH, 999L))
-        assert !fileInfo.equals("ABC")
-        assert !fileInfo.equals(null)
+        assert fileInfoFile.equals(fileInfoFile)
+        assert fileInfoFile.equals(FileInfo.forFile(NAME, LENGTH, LAST_MODIFIED))
+        assert fileInfoFile.equals(FileInfo.forFile(NAME, LENGTH, new Date())) // lastModified ignored
+
+        assert !fileInfoFile.equals(FileInfo.forFile("xyz", LENGTH, LAST_MODIFIED))
+        assert !fileInfoFile.equals(FileInfo.forFile(NAME, 999L, LAST_MODIFIED))
+        assert !fileInfoFile.equals("ABC")
+        assert !fileInfoFile.equals(null)
     }
     
     /**
      * Test the hashCode() method 
      */
     void testHashCode() {
-        assert fileInfo.hashCode() == fileInfo.hashCode()
-        assert fileInfo.hashCode() == new FileInfo(PATH, LENGTH).hashCode()
-        assert fileInfo.hashCode() != new FileInfo("xyz", LENGTH).hashCode()
+        assert fileInfoFile.hashCode() == fileInfoFile.hashCode()
+        assert fileInfoFile.hashCode() == FileInfo.forFile(NAME, LENGTH, LAST_MODIFIED).hashCode()
+        assert fileInfoFile.hashCode() == FileInfo.forFile(NAME, LENGTH, new Date()).hashCode()  // lastModified ignored
+        
+        assert fileInfoFile.hashCode() != FileInfo.forFile("xyz", LENGTH, LAST_MODIFIED).hashCode()
+        assert fileInfoFile.hashCode() != FileInfo.forFile(NAME, 33, LAST_MODIFIED).hashCode()
+        
+        assert fileInfoDirectory.hashCode() == FileInfo.forDirectory(NAME, LAST_MODIFIED).hashCode()
     }
     
     /**
      * Test the toString() method 
      */
     void testToString() {
-        String toString = fileInfo.toString() 
-        assert toString.indexOf(PATH) != -1
-        assert toString.indexOf(Long.toString(LENGTH)) != -1
+        String toString = fileInfoFile.toString() 
+        assert toString.contains(NAME)
+        assert toString.contains(Long.toString(LENGTH))
+        assert toString.contains(LAST_MODIFIED.toString())
     }
 
     /**
@@ -74,6 +96,7 @@ public final class FileInfoTest extends AbstractGroovyTest {
      */
     void setUp() {
         super.setUp()
-        fileInfo = new FileInfo(PATH, LENGTH)
+        fileInfoFile = FileInfo.forFile(NAME, LENGTH, LAST_MODIFIED)
+        fileInfoDirectory = FileInfo.forDirectory(NAME, LAST_MODIFIED)
     }
 }

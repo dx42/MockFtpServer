@@ -50,7 +50,7 @@ class DirectoryEntry extends AbstractFileSystemEntry {
      * @see java.lang.Object#toString()
      */
     String toString() {
-        return "Directory[" + getPath() + "]"
+        "Directory['${getPath()}' lastModified=$lastModified]"
     }
     
 }

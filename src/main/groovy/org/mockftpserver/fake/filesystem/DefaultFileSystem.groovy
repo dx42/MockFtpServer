@@ -144,7 +144,10 @@ class DefaultFileSystem implements FileSystem {
          List fileInfoList = []
          if (files != null) {
              files.each { file ->
-                 FileInfo fileInfo = new FileInfo(file.getName(), file.length())
+                 
+                 FileInfo fileInfo = (file.isDirectory())  \
+                     ? FileInfo.forDirectory(file.getName(), new Date(file.lastModified()))  \
+                     : FileInfo.forFile(file.getName(), file.length(), new Date(file.lastModified()))
                  fileInfoList.add(fileInfo)
              }
          }

@@ -148,4 +148,11 @@ public class FileEntry extends AbstractFileSystemEntry {
         this.out = null
     }
     
+    /**
+     * @see java.lang.Object#toString()
+     */
+    String toString() {
+        "File['${getPath()}' size=${getSize()} lastModified=$lastModified]"
+    }
+    
 }

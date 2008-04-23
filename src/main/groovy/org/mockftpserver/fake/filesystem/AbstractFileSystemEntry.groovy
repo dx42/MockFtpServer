@@ -25,6 +25,7 @@ package org.mockftpserver.fake.filesystem
 abstract class AbstractFileSystemEntry {
 
     String path
+    Date lastModified
 
     /**
      * Construct a new instance without setting its path

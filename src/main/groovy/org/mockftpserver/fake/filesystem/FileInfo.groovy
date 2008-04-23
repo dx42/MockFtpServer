@@ -24,30 +24,39 @@ package org.mockftpserver.fake.filesystem
  */
 class FileInfo {
 
-    //private String filename
-    //private String parentDirectory
-    private String path
-    private long length
+    final String name
+    final long length
+    final boolean directory
+    final Date lastModified
+
+    /**
+     * Construct and return a new instance representing a directory entry.
+     * @param name - the directory name
+     * @param lastModified - the lastModified Date for the directory
+     * @return a new FileInfo instance representing a directory
+     */
+    static FileInfo forDirectory(String name, Date lastModified) {
+        return new FileInfo(true, name, 0, lastModified)
+    }
     
-    FileInfo(String path, long length) {
-        this.path = path
+    /**
+     * Construct and return a new instance representing a file entry.
+     * @param name - the directory name
+     * @param length - the length of the file in bytes
+     * @param lastModified - the lastModified Date for the directory
+     * @return a new FileInfo instance representing a directory
+     */
+    static FileInfo forFile(String name, long length, Date lastModified) {
+        return new FileInfo(false, name, length, lastModified)
+    }
+    
+    private FileInfo(boolean directory, String name, long length, Date lastModified) {
+        this.directory = directory
+        this.name = name
         this.length = length
+        this.lastModified = lastModified
     }
 
-    /**
-     * @return the length
-     */
-    long getLength() {
-        return length
-    }
-
-    /**
-     * @return the path
-     */
-    String getPath() {
-        return path
-    }
-    
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
@@ -58,10 +67,14 @@ class FileInfo {
     }
     
     /**
+     * Return the hash code for this object. Note that only the directory (boolean),
+     * name and length properties affect the hash code value. The lastModified
+     * property is ignored.
+     * 
      * @see java.lang.Object#hashCode()
      */
     int hashCode() {
-        String str = path + ":" + length
+        String str = [directory, name, length].join(":")
         return str.hashCode()
     }
     
@@ -69,6 +82,6 @@ class FileInfo {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        return "FileInfo[path=" + path + ", length=" + length + "]"
+        "FileInfo[isDirectory=$directory name=$name length=$length lastModified=${lastModified}]"
     }
 }

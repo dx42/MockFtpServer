@@ -86,21 +86,23 @@ class DefaultFileSystemTest extends AbstractFileSystemTest {
          
      void testListNames_WithRoot() {
          assert defaultFileSystem.createDirectory(NEW_DIR)
-         assert defaultFileSystem.createFile(NEW_DIR + "/" + FILENAME1)
-         assert defaultFileSystem.createFile(NEW_DIR + "/" + FILENAME2)
+         assert defaultFileSystem.createFile(p(NEW_DIR, FILENAME1))
+         assert defaultFileSystem.createFile(p(NEW_DIR, FILENAME2))
 
          defaultFileSystem.setRoot(EXISTING_DIR)
+         LOG.info(defaultFileSystem.listNames(NEW_DIRNAME))
          assert [FILENAME1, FILENAME2] as Set == defaultFileSystem.listNames(NEW_DIRNAME) as Set
      }
      
      void testListFiles_WithRoot() {
+         final DATE = new Date()
          assert defaultFileSystem.createDirectory(NEW_DIR)
-         assert defaultFileSystem.createFile(NEW_DIR + "/" + FILENAME1)
-         FileInfo fileInfo1 = new FileInfo(FILENAME1, 0)
-         assert defaultFileSystem.createFile(NEW_DIR + "/" + FILENAME2)
-         FileInfo fileInfo2 = new FileInfo(FILENAME2, 0)
+         assert defaultFileSystem.createFile(p(NEW_DIR,FILENAME1))
+         FileInfo fileInfo1 = FileInfo.forFile(FILENAME1, 0, DATE)
+         assert defaultFileSystem.createFile(p(NEW_DIR, FILENAME2))
+         FileInfo fileInfo2 = FileInfo.forFile(FILENAME2, 0, DATE)
          defaultFileSystem.setRoot(EXISTING_DIR)
-         assert [fileInfo1, fileInfo2] == defaultFileSystem.listFiles(NEW_DIRNAME)
+         assert [fileInfo1, fileInfo2] as Set == defaultFileSystem.listFiles(NEW_DIRNAME) as Set
      }
      
      void testDelete_WithRoot() {

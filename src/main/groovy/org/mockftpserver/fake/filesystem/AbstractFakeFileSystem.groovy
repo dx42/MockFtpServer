@@ -262,8 +262,11 @@ abstract class AbstractFakeFileSystem implements FileSystem {
              children.each { childPath ->
                  if (normalizedPath.equals(getParent(childPath))) {
                      AbstractFileSystemEntry entry = getRequiredEntry(childPath)
-                     long size = entry.isDirectory() ? 0L : ((FileEntry)entry).getSize()
-                     FileInfo fileInfo = new FileInfo(getName(entry.getPath()), size)
+                     def name = getName(entry.getPath())
+                     def lastModified = entry.lastModified
+                     FileInfo fileInfo = entry.isDirectory()  \
+                         ? FileInfo.forDirectory(name, entry.lastModified)  \
+                         : FileInfo.forFile(name, ((FileEntry)entry).getSize(), entry.lastModified)
                      fileInfoList.add(fileInfo)
                  }
              }
