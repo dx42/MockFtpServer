@@ -140,20 +140,32 @@ class DefaultFileSystem implements FileSystem {
       */
      public List listFiles(String path) {
          assert path != null
-         def files = fileForPath(path).listFiles()
+         File pathFile = fileForPath(path)
+         
+         if (pathFile.isFile()) {
+             return [buildFileInfoForFile(pathFile)]
+         }
+         
+         def files = pathFile.listFiles()
          List fileInfoList = []
          if (files != null) {
              files.each { file ->
-                 
-                 FileInfo fileInfo = (file.isDirectory())  \
-                     ? FileInfo.forDirectory(file.getName(), new Date(file.lastModified()))  \
-                     : FileInfo.forFile(file.getName(), file.length(), new Date(file.lastModified()))
-                 fileInfoList.add(fileInfo)
+                 fileInfoList.add(buildFileInfoForFile(file))
              }
          }
          return fileInfoList
      }
 
+     /**
+      * Build a FileInfo based on the file or directory represented by the File object
+      * @param file - the File object for the file or directory
+      */ 
+     private FileInfo buildFileInfoForFile(File file) {
+         file.isDirectory()  \
+             ? FileInfo.forDirectory(file.getName(), new Date(file.lastModified()))  \
+             : FileInfo.forFile(file.getName(), file.length(), new Date(file.lastModified()))
+     }
+     
      /**
       * @see org.mockftpserver.fake.filesystem.FileSystem#listNames(java.lang.String)
       */

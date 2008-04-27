@@ -36,7 +36,7 @@ class NlstCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     
     void testHandleCommand_SingleFile() {
         assert fileSystem.createFile("/usr/f1.txt")
-        handleCommandAndVerifySessionReplies()
+        handleCommandAndVerifySendDataReplies([DIR])
         assertSessionData("f1.txt")
 	}
 
@@ -45,34 +45,34 @@ class NlstCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         assert fileSystem.createDirectory("/usr/OtherFiles")
         assert fileSystem.createFile("/usr/f2.txt")
         assert fileSystem.createDirectory("/usr/Archive")
-        handleCommandAndVerifySessionReplies()
+        handleCommandAndVerifySendDataReplies([DIR])
         
         def EXPECTED = [ "f1.txt", "OtherFiles", "f2.txt", "Archive" ] as Set
-        def actual = session.sentData[0].tokenize(endOfLine()) as Set
-        LOG.info("actual=$actual")
-        assert actual == EXPECTED
+        def actualLines = session.sentData[0].tokenize(endOfLine()) as Set
+        LOG.info("actualLines=$actualLines")
+        assert actualLines == EXPECTED
 	}
 
     void testHandleCommand_NoPath_UseCurrentDirectory() {
         assert fileSystem.createFile("/usr/f1.txt")
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
-        handleCommandAndVerifySessionReplies([])
+        handleCommandAndVerifySendDataReplies([])
         assertSessionData("f1.txt")
 	}
 
     void testHandleCommand_EmptyDirectory() {
-        handleCommandAndVerifySessionReplies()
+        handleCommandAndVerifySendDataReplies([DIR])
         assertSessionData("")
 	}
     
     void testHandleCommand_PathSpecifiesAFile() {
         assert fileSystem.createFile("/usr/f1.txt")
-        handleCommandAndVerifySessionReplies(["/usr/f1.txt"])
+        handleCommandAndVerifySendDataReplies(["/usr/f1.txt"])
         assertSessionData("")
 	}
     
     void testHandleCommand_PathDoesNotExist() {
-        handleCommandAndVerifySessionReplies(["/DoesNotExist"])
+        handleCommandAndVerifySendDataReplies(["/DoesNotExist"])
         assertSessionData("")
 	}
     
@@ -92,11 +92,5 @@ class NlstCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         super.setUp()
         assert fileSystem.createDirectory("/usr")
     }
-    
-    private handleCommandAndVerifySessionReplies(parameters=[DIR]) {
-        commandHandler.handleCommand(createCommand(parameters), session)        
-        assertSessionReply(0, ReplyCodes.SEND_DATA_INITIAL_OK)
-        assertSessionReply(1, ReplyCodes.SEND_DATA_FINAL_OK)
-    }
-    
+   
 }

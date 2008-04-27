@@ -25,7 +25,7 @@ package org.mockftpserver.fake.filesystem
 class FileInfo {
 
     final String name
-    final long length
+    final long size
     final boolean directory
     final Date lastModified
 
@@ -42,18 +42,18 @@ class FileInfo {
     /**
      * Construct and return a new instance representing a file entry.
      * @param name - the directory name
-     * @param length - the length of the file in bytes
+     * @param size - the length of the file in bytes
      * @param lastModified - the lastModified Date for the directory
      * @return a new FileInfo instance representing a directory
      */
-    static FileInfo forFile(String name, long length, Date lastModified) {
-        return new FileInfo(false, name, length, lastModified)
+    static FileInfo forFile(String name, long size, Date lastModified) {
+        return new FileInfo(false, name, size, lastModified)
     }
     
-    private FileInfo(boolean directory, String name, long length, Date lastModified) {
+    private FileInfo(boolean directory, String name, long size, Date lastModified) {
         this.directory = directory
         this.name = name
-        this.length = length
+        this.size = size
         this.lastModified = lastModified
     }
 
@@ -74,7 +74,7 @@ class FileInfo {
      * @see java.lang.Object#hashCode()
      */
     int hashCode() {
-        String str = [directory, name, length].join(":")
+        String str = [directory, name, size].join(":")
         return str.hashCode()
     }
     
@@ -82,6 +82,6 @@ class FileInfo {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        "FileInfo[isDirectory=$directory name=$name length=$length lastModified=${lastModified}]"
+        "FileInfo[isDirectory=$directory name=$name size=$size lastModified=${lastModified}]"
     }
 }
