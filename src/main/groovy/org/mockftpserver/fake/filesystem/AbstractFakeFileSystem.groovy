@@ -246,32 +246,46 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      }
 
      /**
-      * Return the List of FileInfo objects for the files in the specified directory path. If the
-      * path does not refer to a valid directory, then an empty List is returned.
+      * Return the List of FileInfo objects for the files in the specified directory 
+      * or file path. If the path specifies a single file, then return a list with
+      * a single FileInfo object representing that file. If the path does not refer 
+      * to a valid or existing directory or file, then an empty List is returned.
       * 
-      * @param path - the path of the directory whose contents should be returned
-      * @return the List of FileInfo objects for all files in the specified directory may be empty
+      * @param path - the path of the directory or file whose information should be returned
+      * @return the List of FileInfo objects for the specified directory or file; may be empty
       * 
       * @see org.mockftpserver.fake.filesystem.FileSystem#listFiles(java.lang.String)
       */
      public List listFiles(String path) {
+         if (isFile(path)) {
+             return [buildFileInfoForPath(path)]
+         }
+          
          String normalizedPath = normalize(path)
-         List fileInfoList = new ArrayList()
+         List fileInfoList = []
          List children = children(path)
          if (children != null) {
              children.each { childPath ->
                  if (normalizedPath.equals(getParent(childPath))) {
-                     AbstractFileSystemEntry entry = getRequiredEntry(childPath)
-                     def name = getName(entry.getPath())
-                     def lastModified = entry.lastModified
-                     FileInfo fileInfo = entry.isDirectory()  \
-                         ? FileInfo.forDirectory(name, entry.lastModified)  \
-                         : FileInfo.forFile(name, ((FileEntry)entry).getSize(), entry.lastModified)
+                     def fileInfo = buildFileInfoForPath(childPath)
                      fileInfoList.add(fileInfo)
                  }
              }
          }
          return fileInfoList
+     }
+      
+     /**
+      * Build a FileInfo based on the file or directory specified by the path
+      * @param path - the path for the file or directory
+      */ 
+     protected FileInfo buildFileInfoForPath(String path) {
+         AbstractFileSystemEntry entry = getRequiredEntry(path)
+         def name = getName(entry.getPath())
+         def lastModified = entry.lastModified
+         entry.isDirectory()  \
+             ? FileInfo.forDirectory(name, entry.lastModified)  \
+             : FileInfo.forFile(name, ((FileEntry)entry).getSize(), entry.lastModified)
      }
 
      /**

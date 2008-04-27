@@ -243,11 +243,14 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
          assert fileSystem.createDirectory(NEW_DIR)
          assert [] == fileSystem.listFiles(NEW_DIR)
 
-         assert fileSystem.createFile(NEW_DIR + "/" + FILENAME1)
+         assert fileSystem.createFile(p(NEW_DIR,FILENAME1))
          FileInfo fileInfo1 = FileInfo.forFile(FILENAME1, 0, DATE)
          assert [fileInfo1] == fileSystem.listFiles(NEW_DIR)
 
-         assert fileSystem.createFile(NEW_DIR + "/" + FILENAME2)
+         // Specify a filename instead of a directory name
+         assert [fileInfo1] == fileSystem.listFiles(p(NEW_DIR,FILENAME1))
+
+         assert fileSystem.createFile(p(NEW_DIR, FILENAME2))
          FileInfo fileInfo2 = FileInfo.forFile(FILENAME2, 0, DATE)
          assert [fileInfo1, fileInfo2] as Set == fileSystem.listFiles(NEW_DIR) as Set
 
@@ -259,7 +262,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
          fileInfo1 = FileInfo.forFile(FILENAME1, CONTENTS.length, DATE)
          assert [fileInfo1, fileInfo2] as Set == fileSystem.listFiles(NEW_DIR) as Set
          
-         assert fileSystem.createDirectory(NEW_DIR + "/" + DIR1)
+         assert fileSystem.createDirectory(p(NEW_DIR,DIR1))
          FileInfo fileInfo3 = FileInfo.forDirectory(DIR1, DATE)
          assert [fileInfo1, fileInfo2, fileInfo3] as Set == fileSystem.listFiles(NEW_DIR) as Set
          
@@ -410,5 +413,10 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
       * @throws IOException
       */
      protected abstract void verifyFileContents(FileSystem fileSystem, String path, String contents) throws Exception
+
+     protected String p(String[] paths) {
+         return paths.join("/")
+     }
+
      
 }

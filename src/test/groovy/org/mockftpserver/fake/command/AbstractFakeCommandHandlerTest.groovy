@@ -155,9 +155,30 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     }
      
     /**
+     * Execute the handleCommand() method with the specified parameters and 
+     * assert that the standard SEND DATA replies were sent through the session.
+     * @param parameters - the command parameters to use
+     */
+    protected handleCommandAndVerifySendDataReplies(parameters=[]) {
+        commandHandler.handleCommand(createCommand(parameters), session)        
+        assertSessionReply(0, ReplyCodes.SEND_DATA_INITIAL_OK)
+        assertSessionReply(1, ReplyCodes.SEND_DATA_FINAL_OK)
+    }
+    
+    /**
      * Convenience method to return the end-of-line character(s) for the current CommandHandler.
      */
     protected endOfLine() {
         commandHandler.endOfLine()
     }
+    
+    /**
+     * Return the specified paths concatenated with the path separator in between
+     * @param paths - the varargs list of path components to concatenate
+     * @return p[0] + '/' + p[1] + '/' + p[2] + ...
+     */
+    protected String p(String[] paths) {
+        return paths.join("/")
+    }
+    
 }

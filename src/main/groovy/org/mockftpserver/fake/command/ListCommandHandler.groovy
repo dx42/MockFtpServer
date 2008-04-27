@@ -17,7 +17,7 @@ package org.mockftpserver.fake.command
 
 import org.mockftpserver.fake.command.AbstractFakeCommandHandlerimport org.mockftpserver.core.command.Commandimport org.mockftpserver.core.session.Sessionimport org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.core.command.ReplyCodes
-
+import org.mockftpserver.fake.filesystem.FileInfoimport java.text.SimpleDateFormat
 /**
  * CommandHandler for the LIST command. Handler logic:
  * <ol>
@@ -38,21 +38,32 @@ import org.mockftpserver.core.command.ReplyCodes
  */
 class ListCommandHandler extends AbstractFakeCommandHandler {
 
+    static final DATE_FORMAT = "MM/dd/yyyy hh:mm aa"
+    static final SIZE_WIDTH = 15
+     
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
         sendReply(session, ReplyCodes.SEND_DATA_INITIAL_OK)
 
-        // TODO ...
+        def path = getRealPath(session, command.getParameter(0))
+        def fileEntries = this.fileSystem.listFiles(path)
+        def lines = fileEntries.collect { directoryListing(it) }
+        def result = lines.join(endOfLine())
+        session.sendData(result.toString().getBytes(), result.length())
         
         sendReply(session, ReplyCodes.SEND_DATA_FINAL_OK)
-
-//        def path = getRequiredParameter(command)
-//
-//        verifyForExistingFile(fileSystem.exists(path), path)
-//        verifyForExistingFile(fileSystem.isDirectory(path), path)
-//
-//        session.setAttribute(SessionKeys.CURRENT_DIRECTORY, path)
-//        sendReply(session, ReplyCodes.CWD_OK, [path])
     }
 
+    /**
+     * Format and return a directory listing String for a single file/directory
+     * entry represented by the specified FileInfo.
+     * TODO Consider making this filesystem-dependent
+     */
+    protected String directoryListing(FileInfo fileInfo) {
+        def dateFormat = new SimpleDateFormat(DATE_FORMAT)
+        def dateStr = dateFormat.format(fileInfo.lastModified)
+        def dirOrSize = fileInfo.directory ? "<DIR>".padRight(SIZE_WIDTH) : fileInfo.size.toString().padLeft(SIZE_WIDTH)
+        return "$dateStr  $dirOrSize  ${fileInfo.name}"
+    }
+    
 }
