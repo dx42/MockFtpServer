@@ -35,12 +35,21 @@ class CwdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     def DIR = "/usr"
     
     void testHandleCommand() {
-        assert fileSystem.createDirectory("/usr")
+        assert fileSystem.createDirectory(DIR)
         commandHandler.handleCommand(createCommand([DIR]), session)        
         assertSessionReply(ReplyCodes.CWD_OK)
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == DIR
 	}
     
+    void testHandleCommand_PathIsRelative() {
+        def SUB = "sub"
+        assert fileSystem.createDirectory(p(DIR,SUB))
+        session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
+        commandHandler.handleCommand(createCommand([SUB]), session)        
+        assertSessionReply(ReplyCodes.CWD_OK)
+        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == p(DIR,SUB)
+	}
+
     void testHandleCommand_PathDoesNotExistInFileSystem() {
         commandHandler.handleCommand(createCommand([DIR]), session)        
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)

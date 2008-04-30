@@ -75,7 +75,8 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
              sendReply(session, ReplyCodes.NEW_FILE_ERROR, [e.path])
          }
          catch(InvalidFilenameException e) {
-             LOG.warn("Error handling command: $command; ${e}; path: ${e.path}")
+             e.printStackTrace()
+             LOG.warn("Error handling command: $command; ${e}")
              sendReply(session, ReplyCodes.FILENAME_NOT_VALID, [e.path])
          }
      }

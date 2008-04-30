@@ -77,7 +77,6 @@ class FakeUnixFileSystem extends AbstractFakeFileSystem {
      */
     protected List normalizedComponents(String path) {
         assert path != null
-        checkForInvalidFilename(path)
         def p = path.replace("/", this.separator)
         
         // TODO better way to do this
