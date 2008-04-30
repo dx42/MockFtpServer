@@ -29,6 +29,7 @@ import org.mockftpserver.core.command.ReplyCodes
  *  <li>If the rename operation fails, then reply with 553</li>
  *  <li>Otherwise, reply with 250 and remove the FROM path stored in the session by the RNFR command</li>
  * </ol>
+ * The supplied pathname may be absolute or relative to the current directory.
  * 
  * @version $Revision: $ - $Date: $
  *
@@ -38,7 +39,7 @@ class RntoCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
-        def toPath = getRequiredParameter(command)
+        def toPath = getRealPath(session, getRequiredParameter(command))
         def fromPath = getRequiredSessionAttribute(session, SessionKeys.RENAME_FROM)
 
         verifyForNewFile(!fileSystem.isDirectory(toPath), toPath)

@@ -26,6 +26,7 @@ import org.mockftpserver.core.command.ReplyCodes
  *  <li>If the FROM pathname parameter does not specify a valid file, then reply with 550</li>
  *  <li>Otherwise, reply with 350 and store the FROM path in the session</li>
  * </ol>
+ * The supplied pathname may be absolute or relative to the current directory.
  * 
  * @version $Revision: $ - $Date: $
  *
@@ -35,7 +36,7 @@ class RnfrCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
-        def fromPath = getRequiredParameter(command)
+        def fromPath = getRealPath(session, getRequiredParameter(command))
 
         verifyForExistingFile(fileSystem.exists(fromPath), fromPath)
         verifyForExistingFile(fileSystem.isFile(fromPath), fromPath)

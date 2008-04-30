@@ -41,6 +41,15 @@ class RmdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         assert fileSystem.exists(DIR) == false
 	}
     
+    void testHandleCommand_PathIsRelative() {
+        def SUB = "sub"
+        assert fileSystem.createDirectory(p(DIR,SUB))
+        session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
+        commandHandler.handleCommand(createCommand([SUB]), session)        
+        assertSessionReply(ReplyCodes.RMD_OK)
+        assert fileSystem.exists(p(DIR,SUB)) == false
+	}
+
     void testHandleCommand_PathDoesNotExistInFileSystem() {
         commandHandler.handleCommand(createCommand([DIR]), session)        
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)

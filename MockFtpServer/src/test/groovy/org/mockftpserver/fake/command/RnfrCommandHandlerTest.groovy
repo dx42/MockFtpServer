@@ -41,6 +41,14 @@ class RnfrCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         assert session.getAttribute(SessionKeys.RENAME_FROM) == FILE
 	}
     
+    void testHandleCommand_PathIsRelative() {
+        assert fileSystem.createFile(FILE)
+        session.setAttribute(SessionKeys.CURRENT_DIRECTORY, "/")
+        commandHandler.handleCommand(createCommand(["file.txt"]), session)        
+        assertSessionReply(ReplyCodes.RNFR_OK)
+        assert session.getAttribute(SessionKeys.RENAME_FROM) == FILE
+	}
+    
     void testHandleCommand_PathDoesNotExistInFileSystem() {
         commandHandler.handleCommand(createCommand([FILE]), session)        
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, FILE)

@@ -26,6 +26,7 @@ import org.mockftpserver.core.command.ReplyCodes
  *  <li>If the pathname parameter does not specify an existing, empty directory, then reply with 550</li>
  *  <li>Otherwise, reply with 250</li>
  * </ol>
+ * The supplied pathname may be absolute or relative to the current directory.
  * 
  * @version $Revision: $ - $Date: $
  *
@@ -35,7 +36,7 @@ class RmdCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
-        def path = getRequiredParameter(command)
+        def path = getRealPath(session, getRequiredParameter(command))
 
         verifyForExistingFile(fileSystem.exists(path), path)
         verifyForExistingFile(fileSystem.isDirectory(path), path)
