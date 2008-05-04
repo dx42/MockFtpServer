@@ -30,6 +30,7 @@ class StubSession implements Session {
      Map attributes = [:]
      List sentReplies = [ ]
      List sentData = [ ]
+     byte[] dataToRead
      
     /**
      * @see org.mockftpserver.core.session.Session#close()
@@ -84,7 +85,7 @@ class StubSession implements Session {
      * @see org.mockftpserver.core.session.Session#readData()
      */
     public byte[] readData() {
-        return null
+        return dataToRead
     }
 
     /**

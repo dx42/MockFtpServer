@@ -120,6 +120,15 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     }
     
     /**
+     * Invoke the handleCommand() method for the current CommandHandler, passing in
+     * the specified parameters
+     * @param parameters - the List of command parameters; may be empty, but not null
+     */
+    protected void handleCommand(List parameters) {
+        commandHandler.handleCommand(createCommand(parameters), session)
+    }
+    
+    /**
      * Assert that the specified reply code and message containing text was sent through the session.
      * @param expectedReplyCode - the expected reply code
      * @param text - the text expected within the reply message; defaults to the reply code as a String
@@ -157,14 +166,23 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     /**
      * Execute the handleCommand() method with the specified parameters and 
      * assert that the standard SEND DATA replies were sent through the session.
-     * @param parameters - the command parameters to use
+     * @param parameters - the command parameters to use; defaults to []
+     * @param finalReplyCode - the expected final reply code; defaults to ReplyCodes.SEND_DATA_FINAL_OK
      */
-    protected handleCommandAndVerifySendDataReplies(parameters=[]) {
+    protected handleCommandAndVerifySendDataReplies(parameters=[], int finalReplyCode=ReplyCodes.SEND_DATA_FINAL_OK) {
         commandHandler.handleCommand(createCommand(parameters), session)        
         assertSessionReply(0, ReplyCodes.SEND_DATA_INITIAL_OK)
-        assertSessionReply(1, ReplyCodes.SEND_DATA_FINAL_OK)
+        assertSessionReply(1, finalReplyCode)
     }
     
+     /**
+      * Set the current directory within the session
+      * @param path - the new path value for the current directory 
+      */
+     protected void setCurrentDirectory(String path) {
+         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, path)
+     }
+     
     /**
      * Convenience method to return the end-of-line character(s) for the current CommandHandler.
      */
@@ -178,7 +196,7 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
      * @return p[0] + '/' + p[1] + '/' + p[2] + ...
      */
     protected String p(String[] paths) {
-        return paths.join("/")
+        return paths.join("/").replace("//", "/")
     }
     
 }
