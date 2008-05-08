@@ -22,7 +22,7 @@ import org.mockftpserver.core.command.CommandNamesimport org.mockftpserver.core
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.StubServerConfiguration
 import org.mockftpserver.fake.user.UserAccount
-import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
+import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodesimport org.mockftpserver.fake.filesystem.FileSystemimport org.mockftpserver.fake.filesystem.FileSystemExceptionimport org.mockftpserver.fake.filesystem.FakeUnixFileSystemimport org.mockftpserver.fake.filesystem.FakeUnixFileSystem
 /**
  * Tests for StorCommandHandler
  * 
@@ -70,6 +70,21 @@ class StorCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         def NO_SUCH_DIR = "/path/DoesNotExist"
         handleCommand([p(NO_SUCH_DIR,FILENAME)])
         assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, NO_SUCH_DIR)
+	}
+    
+    void testHandleCommand_CreateOutputStreamThrowsException() {
+        // Override createOutputStream() method to throw exception
+        def emc = new ExpandoMetaClass(fileSystem.class, false)
+        emc.createOutputStream = { String path, boolean append -> 
+            println "Calling createOutputStream() - throwing exception"
+            throw new FileSystemException("bad") 
+        }
+        emc.initialize()
+        fileSystem.metaClass = emc
+
+        handleCommand([FILE])
+        assertSessionReply(0, ReplyCodes.SEND_DATA_INITIAL_OK)
+        assertSessionReply(1, ReplyCodes.NEW_FILE_ERROR)
 	}
     
     //-------------------------------------------------------------------------

@@ -18,7 +18,7 @@ package org.mockftpserver.fake.command
 import org.mockftpserver.fake.command.AbstractFakeCommandHandlerimport org.mockftpserver.core.command.Commandimport org.mockftpserver.core.session.Sessionimport org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
-
+import org.mockftpserver.fake.filesystem.FileSystemException
 /**
  * CommandHandler for the STOR command. Handler logic:
  * <ol>
@@ -45,9 +45,15 @@ class StorCommandHandler extends AbstractFakeCommandHandler {
         
         sendReply(session, ReplyCodes.SEND_DATA_INITIAL_OK)
         def contents = session.readData()
-        def out = fileSystem.createOutputStream(path, false)
-        out.withStream { it.write(contents) }
-        sendReply(session, ReplyCodes.SEND_DATA_FINAL_OK)
+        try {
+            def out = fileSystem.createOutputStream(path, false)
+            out.withStream { it.write(contents) }
+            sendReply(session, ReplyCodes.SEND_DATA_FINAL_OK)
+        }
+        catch(FileSystemException e) {
+            LOG.warn("Error handling command: $command; ${e}; path: ${path}")
+            sendReply(session, ReplyCodes.NEW_FILE_ERROR, [path])
+        }
     }
 
 }
