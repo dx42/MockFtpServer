@@ -35,7 +35,7 @@ class FakeWindowsFileSystemTest extends AbstractFakeFileSystemTest {
          NEW_FILE = "d:/NewFile.txt"
          EXISTING_DIR = "d:/"
          EXISTING_FILE = "d:/ExistingFile.txt"
-         NO_SUCH_DIR = "x:/xx/yy"
+         NO_SUCH_DIR = 'x:/xx/yy'
          NO_SUCH_FILE = "x:/xx/yy/zz.txt"
      }
      
@@ -73,16 +73,16 @@ class FakeWindowsFileSystemTest extends AbstractFakeFileSystemTest {
      void testNormalize() {
          assert fileSystem.normalize("a:\\") == "a:\\"
          assert fileSystem.normalize("a:/") == "a:\\"
-         assert fileSystem.normalize("b:/abc") == p("b:","abc")
-         assert fileSystem.normalize("c:\\abc\\def") == p("c:","abc","def")
-         assert fileSystem.normalize("d:/abc/def") == p("d:","abc","def")
-         assert fileSystem.normalize("e:\\abc/def/..") == p("e:","abc")
-         assert fileSystem.normalize("f:/abc/def/../ghi") == p("f:","abc","ghi")
-         assert fileSystem.normalize("g:\\abc\\def\\.") == p("g:","abc","def")
-         assert fileSystem.normalize("h:/abc\\def\\./ghi") == p("h:","abc","def", "ghi")
-         assert fileSystem.normalize("c:\\abc").toLowerCase() == p("c:","abc")
-         assert fileSystem.normalize("c:/abc").toLowerCase() == p("c:","abc")
-         assert fileSystem.normalize("z:/abc").toLowerCase() == p("z:","abc")
+         assert fileSystem.normalize("b:/abc") == path("b:","abc")
+         assert fileSystem.normalize("c:\\abc\\def") == path("c:","abc","def")
+         assert fileSystem.normalize("d:/abc/def") == path("d:","abc","def")
+         assert fileSystem.normalize("e:\\abc/def/..") == path("e:","abc")
+         assert fileSystem.normalize("f:/abc/def/../ghi") == path("f:","abc","ghi")
+         assert fileSystem.normalize("g:\\abc\\def\\.") == path("g:","abc","def")
+         assert fileSystem.normalize("h:/abc\\def\\./ghi") == path("h:","abc","def", "ghi")
+         assert fileSystem.normalize("c:\\abc").toLowerCase() == path("c:","abc")
+         assert fileSystem.normalize("c:/abc").toLowerCase() == path("c:","abc")
+         assert fileSystem.normalize("z:/abc").toLowerCase() == path("z:","abc")
      }
      
      void testGetName() {
@@ -95,8 +95,8 @@ class FakeWindowsFileSystemTest extends AbstractFakeFileSystemTest {
      public void testGetParent() {
          assert fileSystem.getParent("p:/") == null
          assert fileSystem.getParent("q:\\abc") == "q:\\"
-         assert fileSystem.getParent("r:/abc\\def") == p("r:","abc") 
-         assert fileSystem.getParent("s:\\abc/def") == p("s:","abc")
+         assert fileSystem.getParent("r:/abc\\def") == path("r:","abc")
+         assert fileSystem.getParent("s:\\abc/def") == path("s:","abc")
      }
      
      void testIsValidName() {
@@ -167,14 +167,13 @@ class FakeWindowsFileSystemTest extends AbstractFakeFileSystemTest {
         return fs
     }
     
-     /**
-      * Return the specified paths concatenated with the system-dependent separator in between
-      * @param p1 - the first path
-      * @param p2 - the second path
-      * @return p1 + SEPARATOR + p2
-      */
-     private String p(String[] paths) {
-         return paths.join(SEP)
-     }
-
- }
+    /**
+     * Return the specified paths concatenated with the system-dependent separator in between
+     * @param p1 - the first path
+     * @param p2 - the second path
+     * @return p1 + SEPARATOR + p2
+     */
+    private String path(String[] paths) {
+        return paths.join(SEP)
+    }
+}
