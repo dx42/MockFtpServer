@@ -55,12 +55,12 @@ class FakeUnixFileSystemTest extends AbstractFakeFileSystemTest {
 
      void testNormalize() {
          assert fileSystem.normalize("/") == "/"
-         assert fileSystem.normalize("/aBc") == p("aBc") 
-         assert fileSystem.normalize("/abc/DEF") == p("abc","DEF")
-         assert fileSystem.normalize("/Abc/def/..") == p("Abc")
-         assert fileSystem.normalize("/abc/def/../ghi") == p("abc","ghi")
-         assert fileSystem.normalize("/abc/def/.") == p("abc","def")
-         assert fileSystem.normalize("/abc/def/./gHI") == p("abc","def","gHI")
+         assert fileSystem.normalize("/aBc") == "/aBc"
+         assert fileSystem.normalize("/abc/DEF") == "/abc/DEF"
+         assert fileSystem.normalize("/Abc/def/..") == "/Abc"
+         assert fileSystem.normalize("/abc/def/../ghi") == "/abc/ghi"
+         assert fileSystem.normalize("/abc/def/.") == "/abc/def"
+         assert fileSystem.normalize("/abc/def/./gHI") == "/abc/def/gHI"
      }
      
      void testGetName() {
@@ -73,7 +73,7 @@ class FakeUnixFileSystemTest extends AbstractFakeFileSystemTest {
      public void testGetParent() {
          assert fileSystem.getParent("/") == null
          assert fileSystem.getParent("/abc") == "/"
-         assert fileSystem.getParent("/abc/def") == p("abc") 
+         assert fileSystem.getParent("/abc/def") == "/abc" 
      }
      
      void testIsValidName() {
@@ -121,14 +121,4 @@ class FakeUnixFileSystemTest extends AbstractFakeFileSystemTest {
         return fs
     }
     
-     /**
-      * Return the specified paths concatenated with the system-dependent separator in between
-      * @param p1 - the first path
-      * @param p2 - the second path
-      * @return SEPARATOR + p1 + SEPARATOR + p2
-      */
-     private String p(String[] paths) {
-         return SEP + paths.join(SEP)
-     }
-
- }
+}
