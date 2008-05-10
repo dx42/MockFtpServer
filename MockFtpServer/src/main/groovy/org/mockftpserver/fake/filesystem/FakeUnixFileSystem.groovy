@@ -26,7 +26,7 @@ import java.io.IOException
  *   <li>Forward slashes (/) are the only valid path separators</li>  
  * </ul>
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

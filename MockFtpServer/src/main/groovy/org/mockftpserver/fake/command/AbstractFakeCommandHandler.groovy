@@ -34,7 +34,7 @@ import org.mockftpserver.fake.filesystem.InvalidFilenameException
 /**
  * Abstract superclass for CommandHandler classes for the "Fake" server.
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

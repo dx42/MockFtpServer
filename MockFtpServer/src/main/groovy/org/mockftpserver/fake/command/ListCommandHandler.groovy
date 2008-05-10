@@ -32,7 +32,7 @@ import org.mockftpserver.fake.filesystem.FileInfoimport java.text.SimpleDateFor
  *  <li>Send a final reply with 226</li>
  * </ol>
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

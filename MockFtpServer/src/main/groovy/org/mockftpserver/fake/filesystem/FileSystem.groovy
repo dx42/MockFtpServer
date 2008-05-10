@@ -24,7 +24,7 @@ import java.util.List
 /**
  * Interface for a file system for managing files and directories.
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

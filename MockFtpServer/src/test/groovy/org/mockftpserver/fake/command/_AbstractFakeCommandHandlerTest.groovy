@@ -35,7 +35,7 @@ import org.mockftpserver.core.session.SessionKeys
 /**
  * Tests for AbstractFakeCommandHandler
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

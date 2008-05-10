@@ -32,7 +32,7 @@ import org.mockftpserver.test.AbstractGroovyTest
  * Abstract superclass for tests of FileSystem implementation classes. Contains common
  * tests and test infrastructure. 
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

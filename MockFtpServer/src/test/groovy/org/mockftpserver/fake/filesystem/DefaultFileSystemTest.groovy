@@ -21,7 +21,7 @@ import org.mockftpserver.core.util.IoUtil
 /**
  * Tests for DefaultFileSystem
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

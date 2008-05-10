@@ -21,7 +21,7 @@ import org.mockftpserver.core.MockFtpServerException
  * Represents an error indicating that the current user has not yet logged in, but
  * is required to in order to invoke the requested command.
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

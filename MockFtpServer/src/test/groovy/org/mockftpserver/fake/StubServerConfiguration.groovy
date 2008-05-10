@@ -22,7 +22,7 @@ import org.mockftpserver.fake.user.UserAccount
 /**
  * Stub implementation of the {@link ServerConfiguration} interface for testing
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

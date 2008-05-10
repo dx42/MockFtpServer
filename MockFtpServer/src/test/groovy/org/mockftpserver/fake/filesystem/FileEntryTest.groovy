@@ -22,7 +22,7 @@ import org.mockftpserver.core.util.IoUtilimport org.apache.log4j.Logger
 /**
  * Tests for FileEntry
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

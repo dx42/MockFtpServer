@@ -19,7 +19,7 @@ package org.mockftpserver.test;
 /**
  * Contains static test utility method to determine FTP server port number to use for tests  
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

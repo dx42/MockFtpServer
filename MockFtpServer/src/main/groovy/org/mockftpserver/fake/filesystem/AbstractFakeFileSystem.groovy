@@ -29,7 +29,7 @@ import org.apache.log4j.Logger
  * Abstract superclass for implementation of the FileSystem interface that manage the files 
  * and directories in memory, simulating a real file system.
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

@@ -18,7 +18,7 @@ package org.mockftpserver.fake.filesystem
 /**
  * Tests for DirectoryEntry
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

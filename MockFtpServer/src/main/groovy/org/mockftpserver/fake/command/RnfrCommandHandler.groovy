@@ -28,7 +28,7 @@ import org.mockftpserver.core.command.ReplyCodes
  * </ol>
  * The supplied pathname may be absolute or relative to the current directory.
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

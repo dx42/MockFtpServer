@@ -20,7 +20,7 @@ import org.mockftpserver.test.AbstractGroovyTest
 /**
  * Tests for FileInfo
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

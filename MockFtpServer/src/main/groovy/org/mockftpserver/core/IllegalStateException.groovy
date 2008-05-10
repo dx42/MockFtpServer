@@ -21,7 +21,7 @@ import org.mockftpserver.core.MockFtpServerException
  * Represents an error indicating that the server is in an illegal state, or
  * that a server command is invoked when its preconditions have not been met.
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
