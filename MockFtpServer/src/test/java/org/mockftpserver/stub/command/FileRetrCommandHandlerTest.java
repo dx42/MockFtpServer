@@ -15,16 +15,14 @@
  */
 package org.mockftpserver.stub.command;
 
-import java.util.Arrays;
-
-
 import org.apache.log4j.Logger;
 import org.easymock.ArgumentsMatcher;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
 import org.mockftpserver.core.util.AssertFailedException;
-import org.mockftpserver.stub.command.FileRetrCommandHandler;
+
+import java.util.Arrays;
 
 /**
  * Tests for the FileRetrCommandHandler class
@@ -46,7 +44,7 @@ public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest
      */
     public void testConstructor_String_Null() {
         try {
-            new FileRetrCommandHandler((String)null);
+            new FileRetrCommandHandler(null);
             fail("Expected AssertFailedException");
         }
         catch (AssertFailedException expected) {
@@ -117,7 +115,7 @@ public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest
         session.sendReply(ReplyCodes.SEND_DATA_FINAL_OK, replyTextFor(ReplyCodes.SEND_DATA_FINAL_OK));
         replay(session);
         
-        commandHandler.setFile("Sample.data");
+        commandHandler.setFile("Sample.jpg");
         Command command = new Command(CommandNames.RETR, array(FILENAME1));
         commandHandler.handleCommand(command, session);
         verify(session);
@@ -161,7 +159,7 @@ public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest
 //     * Create a sample binary file; 5 buffers full plus 3 extra bytes
 //     */
 //    private void createSampleFile() {
-//        final String FILE_PATH = "test/org.mockftpserver/command/Sample.data";
+//        final String FILE_PATH = "test/org.mockftpserver/command/Sample.jpg";
 //        final byte[] BUFFER = new byte[FileRetrCommandHandler.BUFFER_SIZE];
 //        Arrays.fill(BUFFER, BYTE1);
 //
