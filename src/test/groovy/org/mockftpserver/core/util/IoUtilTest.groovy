@@ -24,7 +24,7 @@ import org.mockftpserver.test.AbstractGroovyTest
 /**
  * Tests for the IoUtil class
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

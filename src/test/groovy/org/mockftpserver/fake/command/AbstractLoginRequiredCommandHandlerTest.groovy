@@ -22,7 +22,7 @@ import org.mockftpserver.fake.user.UserAccount
 /**
  * Abstract superclass for tests of CommandHandler classes that require a user login.
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

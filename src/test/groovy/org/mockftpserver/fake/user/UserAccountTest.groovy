@@ -20,7 +20,7 @@ import org.mockftpserver.test.*
 /**
  * Tests for UserAccount
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

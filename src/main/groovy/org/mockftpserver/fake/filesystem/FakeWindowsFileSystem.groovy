@@ -28,7 +28,7 @@ import java.io.IOException
  *   		by '\' or '/', or else if it starts with "\\"</li>  
  * </ul>
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

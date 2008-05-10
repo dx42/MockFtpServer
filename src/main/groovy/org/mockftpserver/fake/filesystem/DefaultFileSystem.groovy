@@ -33,7 +33,7 @@ import java.util.List
  * the <code>root</code> property. If this value is non-null, then all paths are considered relative 
  * to this root path.
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

@@ -21,7 +21,7 @@ import org.mockftpserver.core.MockFtpServerException
  * Represents an error indicating that a server command has been received that
  * has invalid syntax. For instance, the command may be missing a required parameter.
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

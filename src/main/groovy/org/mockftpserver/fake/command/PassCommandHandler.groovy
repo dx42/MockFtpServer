@@ -28,7 +28,7 @@ import org.mockftpserver.core.command.ReplyCodes
  *  <li>Otherwise, reply with 250</li>
  * </ol>
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

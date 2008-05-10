@@ -26,7 +26,7 @@ import org.mockftpserver.core.command.ReplyCodes
 /**
  * Tests for RmdCommandHandler
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

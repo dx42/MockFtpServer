@@ -18,7 +18,7 @@ package org.mockftpserver.fake.filesystem
 /**
  * The abstract superclass for concrete file system entry classes representing files and directories.
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

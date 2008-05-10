@@ -20,7 +20,7 @@ import org.mockftpserver.core.MockFtpServerException
 /**
  * Represents an error that occurs while performing a FileSystem operation.
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

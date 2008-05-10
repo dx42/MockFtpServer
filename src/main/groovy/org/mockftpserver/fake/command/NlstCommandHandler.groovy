@@ -33,7 +33,7 @@ import org.mockftpserver.core.session.SessionKeys
  * </ol>
  * The directory listing sent includes filenames only, separated by end-of-line characters.
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

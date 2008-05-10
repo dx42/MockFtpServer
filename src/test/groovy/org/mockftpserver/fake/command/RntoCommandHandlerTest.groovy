@@ -26,7 +26,7 @@ import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
 /**
  * Tests for RntoCommandHandler
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

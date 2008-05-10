@@ -21,7 +21,7 @@ import java.util.Set
 /**
  * Stub implementation of the {@link Session} interface for testing
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

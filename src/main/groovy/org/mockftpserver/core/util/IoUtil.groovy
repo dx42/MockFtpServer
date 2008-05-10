@@ -18,7 +18,7 @@ package org.mockftpserver.core.util
 /**
  * Contains static I/O-related utility methods.
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

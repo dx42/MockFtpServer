@@ -22,7 +22,7 @@ import org.mockftpserver.test.AbstractGroovyTest
 /**
  * Abstract test superclass for subclasses of AbstractFileSystemEntry
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

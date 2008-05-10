@@ -19,7 +19,7 @@ import org.mockftpserver.test.LoggingUtil
 import org.apache.log4j.Logger/**
  * Abstract superclass for Groovy tests
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */

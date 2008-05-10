@@ -28,7 +28,7 @@ import org.mockftpserver.fake.filesystem.FakeUnixFileSystem
 /**
  * Abstract superclass for CommandHandler tests
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

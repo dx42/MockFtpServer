@@ -26,7 +26,7 @@ import org.mockftpserver.core.command.ReplyCodes
  *  <li>Otherwise, reply with 331</li>
  * </ol>
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

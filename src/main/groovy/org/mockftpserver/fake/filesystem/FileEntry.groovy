@@ -24,7 +24,7 @@ import java.io.OutputStream
 /**
  * File system entry representing a file
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

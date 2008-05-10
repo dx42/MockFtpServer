@@ -21,7 +21,7 @@ import org.mockftpserver.fake.filesystem.AbstractFakeFileSystemTest
 /**
  * Tests for FakeWindowsFileSystem.
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

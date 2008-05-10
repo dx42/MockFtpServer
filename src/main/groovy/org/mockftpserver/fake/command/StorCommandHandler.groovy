@@ -30,7 +30,7 @@ import org.mockftpserver.fake.filesystem.FileSystemException
  *  <li>Send a final reply with 226</li>
  * </ol>
  * 
- * @version $Revision: $ - $Date: $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
