@@ -33,7 +33,7 @@ class ExistingFileOperationException extends FileSystemException {
       * @param path
       */
       ExistingFileOperationException(String path) {
-         super(msg(path))
+         super(path, msg(path))
          this.path = path
      }
 
@@ -42,7 +42,7 @@ class ExistingFileOperationException extends FileSystemException {
       * @param cause
       */
       ExistingFileOperationException(Throwable cause, String path) {
-         super(msg(path), cause)
+         super(path, msg(path), cause)
          this.path = path
      }
 

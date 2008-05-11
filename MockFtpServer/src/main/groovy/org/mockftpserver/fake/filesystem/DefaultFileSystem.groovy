@@ -15,18 +15,6 @@
  */
 package org.mockftpserver.fake.filesystem
 
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
-import java.util.ArrayList
-import java.util.Arrays
-import java.util.Collections
-import java.util.List
-
 /**
  * Implementation of the FileSystem interface that uses a real underlying file system.
  * You can optionally set a root of this virtual filesystem within the "real" filesystem by setting
@@ -92,7 +80,7 @@ class DefaultFileSystem implements FileSystem {
              return fileForPath(path).createNewFile()
          }
          catch (IOException e) {
-             throw new InvalidFilenameException(e, path)
+             throw new InvalidFilenameException(path, e)
          }
      }
 
@@ -112,7 +100,7 @@ class DefaultFileSystem implements FileSystem {
              return new FileOutputStream(fileForPath(path), append)
          }
          catch (FileNotFoundException e) {
-             throw new InvalidFilenameException(e, path)
+             throw new InvalidFilenameException(path, e)
          }
      }
          
@@ -131,7 +119,7 @@ class DefaultFileSystem implements FileSystem {
              return new FileInputStream(fileForPath(path))
          }
          catch (FileNotFoundException e) {
-             throw new FileSystemException(e)
+             throw new FileSystemException(path, e)
          }
      }
          
@@ -258,7 +246,7 @@ class DefaultFileSystem implements FileSystem {
              return new File(path).getCanonicalPath()
          }
          catch (IOException e) {
-             throw new InvalidFilenameException(e, path)
+             throw new InvalidFilenameException(path, e)
          }
      }
 
