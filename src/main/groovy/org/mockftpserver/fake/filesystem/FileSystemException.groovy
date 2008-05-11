@@ -26,26 +26,36 @@ import org.mockftpserver.core.MockFtpServerException
  */
 public class FileSystemException extends MockFtpServerException {
 
+    /** The path involved in the file system operation that caused the exception */
+    String path
+
     /**
-     * @param message
+     * Construct a new instance for the specified path and message
+     * @param path - the path involved in the file system operation that caused the exception
+     * @param message - the exception message; defaults to path
      */
-    FileSystemException(String message) {
+    FileSystemException(String path, String message=path) {
         super(message)
+        this.path = path
     }
 
     /**
-     * @param cause
+     * @param path - the path involved in the file system operation that caused the exception
+     * @param cause - the exception cause, wrapped by this exception
      */
-    FileSystemException(Throwable cause) {
+    FileSystemException(String path, Throwable cause) {
         super(cause)
+        this.path = path
     }
 
     /**
-     * @param message
-     * @param cause
+     * @param path - the path involved in the file system operation that caused the exception
+     * @param message - the exception message
+     * @param cause - the exception cause, wrapped by this exception
      */
-    FileSystemException(String message, Throwable cause) {
+    FileSystemException(String path, String message, Throwable cause) {
         super(message, cause)
+        this.path = path
     }
 
 }

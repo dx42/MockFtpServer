@@ -15,14 +15,6 @@
  */
 package org.mockftpserver.fake.filesystem
 
-import java.io.InputStream
-import java.io.OutputStream
-import java.util.ArrayList
-import java.util.Collections
-import java.util.HashMap
-import java.util.Iterator
-import java.util.List
-import java.util.Map
 import org.apache.log4j.Logger
 
 /**
@@ -55,7 +47,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      public void addEntry(AbstractFileSystemEntry entry) {
          def normalized = normalize(entry.path)
          if (entries.get(normalized) != null) {
-             throw new FileSystemException("The path [" + normalized + "] already exists")
+             throw new FileSystemException(normalized, "The path [" + normalized + "] already exists")
          }
 
          // Make sure parent directory exists, if there is a parent
@@ -82,14 +74,14 @@ abstract class AbstractFakeFileSystem implements FileSystem {
 
          // TODO Consider refactoring into adEntry()
          if (!parentDirectoryExists(path)) {
+             String parent = getParent(path)
              if (createParentDirectoriesAutomatically) {
-                 String parent = getParent(path)
                  if (!createDirectory(parent)) {
                      return false
                  }
              }
              else {
-                 throw new FileSystemException("Parent directory does not exist: " + getParent(path))
+                 throw new FileSystemException(parent, "Parent directory does not exist: " + parent)
              }
          }
          
@@ -501,7 +493,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      protected AbstractFileSystemEntry getRequiredEntry(String path) {
          AbstractFileSystemEntry entry = getEntry(path)
          if (entry == null) {
-             throw new FileSystemException("The path [" + normalize(path) + "] does not exist")
+             throw new FileSystemException(path, "The path [" + normalize(path) + "] does not exist")
          }
          return entry
      }
@@ -547,7 +539,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
          assert path != null
          AbstractFileSystemEntry entry = getRequiredEntry(path)
          if (entry.isDirectory() != isDirectory) {
-             throw new FileSystemException("Path [" + path + "] is directory is " + entry.isDirectory())
+             throw new FileSystemException(path, "Path [" + path + "] is directory is " + entry.isDirectory())
          }
      }
 
@@ -558,7 +550,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
       */
      private void verifyParentDirectoryExists(String path) throws FileSystemException {
          if (!parentDirectoryExists(path)) {
-             throw new FileSystemException("Parent directory does not exist: " + getParent(path))
+             throw new FileSystemException(path, "Parent directory does not exist: " + getParent(path))
          }
      }
 

@@ -27,23 +27,19 @@ package org.mockftpserver.fake.filesystem
  */
 class NewFileOperationException extends FileSystemException {
 
-     String path
-     
      /**
-      * @param path
+      * @param path - the path involved in the file system operation that caused the exception
       */
       NewFileOperationException(String path) {
-         super(msg(path))
-         this.path = path
+         super(path, msg(path))
      }
 
      /**
-      * @param path
-      * @param cause
+      * @param path - the path involved in the file system operation that caused the exception
+      * @param cause - the exception cause, wrapped by this exception
       */
-      NewFileOperationException(Throwable cause, String path) {
-         super(msg(path), cause)
-         this.path = path
+      NewFileOperationException(String path, Throwable cause) {
+         super(path, msg(path), cause)
      }
 
       private static String msg(path) {

@@ -25,23 +25,19 @@ package org.mockftpserver.fake.filesystem
  */
 class InvalidFilenameException extends FileSystemException {
 
-     String path
-     
      /**
-      * @param path
+      * @param path - the path involved in the file system operation that caused the exception
       */
       InvalidFilenameException(String path) {
-         super(msg(path))
-         this.path = path
+         super(path, msg(path))
      }
 
      /**
-      * @param path
-      * @param cause
+      * @param path - the path involved in the file system operation that caused the exception
+      * @param cause - the exception cause, wrapped by this exception
       */
-      InvalidFilenameException(Throwable cause, String path) {
-         super(msg(path), cause)
-         this.path = path
+      InvalidFilenameException(String path, Throwable cause) {
+         super(path, msg(path), cause)
      }
      
      private static String msg(path) {
