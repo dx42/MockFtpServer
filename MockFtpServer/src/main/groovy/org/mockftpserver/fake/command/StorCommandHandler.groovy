@@ -15,10 +15,11 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.fake.command.AbstractFakeCommandHandlerimport org.mockftpserver.core.command.Commandimport org.mockftpserver.core.session.Sessionimport org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.ReplyCodes
-import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.fake.filesystem.FileSystemException
+import org.mockftpserver.core.session.Session
+import org.mockftpserver.fake.command.AbstractFakeCommandHandler
+
 /**
  * CommandHandler for the STOR command. Handler logic:
  * <ol>
@@ -29,7 +30,7 @@ import org.mockftpserver.fake.filesystem.FileSystemException
  *  <li>If file write/store fails, then reply with 553 and terminate</li>
  *  <li>Send a final reply with 226</li>
  * </ol>
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -42,18 +43,14 @@ class StorCommandHandler extends AbstractFakeCommandHandler {
         verifyForNewFile(!fileSystem.isDirectory(path), path)
         def parent = fileSystem.getParent(path)
         verifyForNewFile(fileSystem.isDirectory(parent), parent)
-        
+
+        this.replyCodeForFileSystemException = ReplyCodes.NEW_FILE_ERROR
+
         sendReply(session, ReplyCodes.SEND_DATA_INITIAL_OK)
         def contents = session.readData()
-        try {
-            def out = fileSystem.createOutputStream(path, false)
-            out.withStream { it.write(contents) }
-            sendReply(session, ReplyCodes.SEND_DATA_FINAL_OK)
-        }
-        catch(FileSystemException e) {
-            LOG.warn("Error handling command: $command; ${e}; path: ${path}")
-            sendReply(session, ReplyCodes.NEW_FILE_ERROR, [path])
-        }
+        def out = fileSystem.createOutputStream(path, false)
+        out.withStream { it.write(contents) }
+        sendReply(session, ReplyCodes.SEND_DATA_FINAL_OK)
     }
 
 }

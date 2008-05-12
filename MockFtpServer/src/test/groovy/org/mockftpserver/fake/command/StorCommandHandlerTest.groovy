@@ -23,7 +23,7 @@ import org.mockftpserver.fake.filesystem.FileSystemException
 
 /**
  * Tests for StorCommandHandler
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -32,67 +32,64 @@ class StorCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     def DIR = "/"
     def FILENAME = "file.txt"
-    def FILE = p(DIR,FILENAME)
+    def FILE = p(DIR, FILENAME)
     def CONTENTS = "abc"
 
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])
     }
-    
+
     void testHandleCommand_AbsolutePath() {
         session.dataToRead = CONTENTS.bytes
         handleCommandAndVerifySendDataReplies([FILE])
         assert fileSystem.isFile(FILE)
-        
+
         def contents = fileSystem.createInputStream(FILE).text
         assert contents == CONTENTS
-	}
+    }
 
     void testHandleCommand_RelativePath() {
         setCurrentDirectory(DIR)
         session.dataToRead = CONTENTS.bytes
         handleCommandAndVerifySendDataReplies([FILENAME])
         assert fileSystem.isFile(FILE)
-        
+
         def contents = fileSystem.createInputStream(FILE).text
         assert contents == CONTENTS
-	}
+    }
 
     void testHandleCommand_PathSpecifiesAnExistingDirectory() {
         assert fileSystem.createDirectory(FILE)
-        commandHandler.handleCommand(createCommand([FILE]), session)        
+        commandHandler.handleCommand(createCommand([FILE]), session)
         assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, FILE)
-	}
-    
+    }
+
     void testHandleCommand_ParentDirectoryDoesNotExist() {
         def NO_SUCH_DIR = "/path/DoesNotExist"
-        handleCommand([p(NO_SUCH_DIR,FILENAME)])
+        handleCommand([p(NO_SUCH_DIR, FILENAME)])
         assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, NO_SUCH_DIR)
-	}
-    
+    }
+
     void testHandleCommand_CreateOutputStreamThrowsException() {
-        // Override createOutputStream() method to throw exception
-        def emc = new ExpandoMetaClass(fileSystem.class, false)
-        emc.createOutputStream = { String path, boolean append -> 
+        def newMethod = {String path, boolean append ->
             println "Calling createOutputStream() - throwing exception"
-            throw new FileSystemException("bad") 
+            throw new FileSystemException("bad")
         }
-        emc.initialize()
-        fileSystem.metaClass = emc
+        overrideMethod(fileSystem, "createOutputStream", newMethod)
 
         handleCommand([FILE])
         assertSessionReply(0, ReplyCodes.SEND_DATA_INITIAL_OK)
         assertSessionReply(1, ReplyCodes.NEW_FILE_ERROR)
-	}
-    
+    }
+
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
-    
-	CommandHandler createCommandHandler() {
-	    new StorCommandHandler()
-	}
-	
+
+    CommandHandler createCommandHandler() {
+        new StorCommandHandler()
+    }
+
     Command createValidCommand() {
         return new Command(CommandNames.STOR, [FILE])
     }
@@ -101,5 +98,5 @@ class StorCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         super.setUp()
         assert fileSystem.createDirectory(DIR)
     }
-   
+
 }
