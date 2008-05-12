@@ -18,10 +18,12 @@ package org.mockftpserver.fake.command
 import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
-import org.mockftpserver.core.command.CommandNamesimport org.mockftpserver.core.session.StubSession
+import org.mockftpserver.core.command.CommandNames
+import org.mockftpserver.core.session.StubSession
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.StubServerConfiguration
-import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
+import org.apache.log4j.Logger
+import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.fake.user.UserAccount
 import org.mockftpserver.fake.filesystem.FakeUnixFileSystem
 
@@ -175,6 +177,19 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
         assertSessionReply(1, finalReplyCode)
     }
     
+    /**
+     * Override the named method for the specified object instance
+     * @param object - the object instance
+     * @param methodName - the name of the method to override
+     * @param newMethod - the Closure representing the new method for this single instance
+     */
+    protected void overrideMethod(object, String methodName, Closure newMethod) {
+        def emc = new ExpandoMetaClass(object.class, false)
+        emc."$methodName" = newMethod
+        emc.initialize()
+        object.metaClass = emc
+    }
+
      /**
       * Set the current directory within the session
       * @param path - the new path value for the current directory 
