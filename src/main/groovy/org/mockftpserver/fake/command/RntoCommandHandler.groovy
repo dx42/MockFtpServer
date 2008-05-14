@@ -15,7 +15,10 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.fake.command.AbstractFakeCommandHandlerimport org.mockftpserver.core.command.Commandimport org.mockftpserver.core.session.Sessionimport org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.fake.command.AbstractFakeCommandHandler
+import org.mockftpserver.core.command.Command
+import org.mockftpserver.core.session.Session
+import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.core.command.ReplyCodes
 
 /**
@@ -42,8 +45,9 @@ class RntoCommandHandler extends AbstractFakeCommandHandler {
         def toPath = getRealPath(session, getRequiredParameter(command))
         def fromPath = getRequiredSessionAttribute(session, SessionKeys.RENAME_FROM)
 
-        verifyForNewFile(!fileSystem.isDirectory(toPath), toPath)
-        verifyForNewFile(fileSystem.rename(fromPath, toPath), toPath)
+        this.replyCodeForFileSystemException = ReplyCodes.NEW_FILE_ERROR
+        verifyFileSystemCondition(!fileSystem.isDirectory(toPath), toPath)
+        verifyFileSystemCondition(fileSystem.rename(fromPath, toPath), toPath)
 
         // TODO use custom message, including FROM and TO path?
         session.removeAttribute(SessionKeys.RENAME_FROM)
