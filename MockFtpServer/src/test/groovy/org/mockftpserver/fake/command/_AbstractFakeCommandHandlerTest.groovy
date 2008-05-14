@@ -118,16 +118,10 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
         commandHandler.verifyLoggedIn(session)        // no exception expected
     }
 
-    void testVerifyForNewFile() {
-        commandHandler.verifyForNewFile(true, PATH)    // no exception expected
-        shouldFail(NewFileOperationException) { commandHandler.verifyForNewFile(false, PATH) }
-        shouldFail(NewFileOperationException) { commandHandler.verifyForNewFile([], PATH) }
-    }
-
-    void testVerifyForExistingFile() {
-        commandHandler.verifyForExistingFile(true, PATH)    // no exception expected
-        shouldFail(ExistingFileOperationException) { commandHandler.verifyForExistingFile(false, PATH) }
-        shouldFail(ExistingFileOperationException) { commandHandler.verifyForExistingFile([], PATH) }
+    void testVerifyFileSystemCondition() {
+        commandHandler.verifyFileSystemCondition(true, PATH)    // no exception expected
+        shouldFail(FileSystemException) { commandHandler.verifyFileSystemCondition(false, PATH) }
+        shouldFail(FileSystemException) { commandHandler.verifyFileSystemCondition([], PATH) }
     }
 
     void testGetRealPath() {

@@ -39,12 +39,12 @@ class StorCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
-        def path = getRealPath(session, getRequiredParameter(command))
-        verifyForNewFile(!fileSystem.isDirectory(path), path)
-        def parent = fileSystem.getParent(path)
-        verifyForNewFile(fileSystem.isDirectory(parent), parent)
-
         this.replyCodeForFileSystemException = ReplyCodes.NEW_FILE_ERROR
+
+        def path = getRealPath(session, getRequiredParameter(command))
+        verifyFileSystemCondition(!fileSystem.isDirectory(path), path)
+        def parent = fileSystem.getParent(path)
+        verifyFileSystemCondition(fileSystem.isDirectory(parent), parent)
 
         sendReply(session, ReplyCodes.SEND_DATA_INITIAL_OK)
         def contents = session.readData()

@@ -15,7 +15,10 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.fake.command.AbstractFakeCommandHandlerimport org.mockftpserver.core.command.Commandimport org.mockftpserver.core.session.Sessionimport org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.fake.command.AbstractFakeCommandHandler
+import org.mockftpserver.core.command.Command
+import org.mockftpserver.core.session.Session
+import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.core.command.ReplyCodes
 
 /**
@@ -38,8 +41,9 @@ class RnfrCommandHandler extends AbstractFakeCommandHandler {
         verifyLoggedIn(session)
         def fromPath = getRealPath(session, getRequiredParameter(command))
 
-        verifyForExistingFile(fileSystem.exists(fromPath), fromPath)
-        verifyForExistingFile(fileSystem.isFile(fromPath), fromPath)
+        this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
+        verifyFileSystemCondition(fileSystem.exists(fromPath), fromPath)
+        verifyFileSystemCondition(fileSystem.isFile(fromPath), fromPath)
 
         session.setAttribute(SessionKeys.RENAME_FROM, fromPath)
         sendReply(session, ReplyCodes.RNFR_OK)

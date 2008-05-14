@@ -196,32 +196,17 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
     }
 
     /**
-     * Verify that the specified condition related to an existing file is true,
-     * otherwise throw a ExistingFileOperationException.
+     * Verify that the specified condition related to the file system is true,
+     * otherwise throw a FileSystemException.
      *
      * @param condition - the condition that must be true
      * @param path - the path involved in the operation; this will be included in the
      * 		error message if the condition is not true.
-     * @throws ExistingFileOperationException - if the condition is not true
+     * @throws FileSystemException - if the condition is not true
      */
-    protected void verifyForExistingFile(condition, path) {
+    protected void verifyFileSystemCondition(condition, path) {
         if (!condition) {
-            throw new ExistingFileOperationException(path)
-        }
-    }
-
-    /**
-     * Verify that the specified condition related to a new file is true,
-     * otherwise throw a NewFileOperationException.
-     *
-     * @param condition - the condition that must be true
-     * @param path - the path involved in the operation; this will be included in the
-     * 		error message if the condition is not true.
-     * @throws NewFileOperationException - if the condition is not true
-     */
-    protected void verifyForNewFile(condition, path) {
-        if (!condition) {
-            throw new NewFileOperationException(path)
+            throw new FileSystemException((String)path, (String)path)
         }
     }
 

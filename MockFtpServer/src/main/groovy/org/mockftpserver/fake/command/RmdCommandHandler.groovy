@@ -15,7 +15,10 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.fake.command.AbstractFakeCommandHandlerimport org.mockftpserver.core.command.Commandimport org.mockftpserver.core.session.Sessionimport org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.fake.command.AbstractFakeCommandHandler
+import org.mockftpserver.core.command.Command
+import org.mockftpserver.core.session.Session
+import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.core.command.ReplyCodes
 
 /**
@@ -38,9 +41,10 @@ class RmdCommandHandler extends AbstractFakeCommandHandler {
         verifyLoggedIn(session)
         def path = getRealPath(session, getRequiredParameter(command))
 
-        verifyForExistingFile(fileSystem.exists(path), path)
-        verifyForExistingFile(fileSystem.isDirectory(path), path)
-        verifyForExistingFile(fileSystem.listNames(path) == [], path)
+        this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
+        verifyFileSystemCondition(fileSystem.exists(path), path)
+        verifyFileSystemCondition(fileSystem.isDirectory(path), path)
+        verifyFileSystemCondition(fileSystem.listNames(path) == [], path)
         
         fileSystem.delete(path)
         sendReply(session, ReplyCodes.RMD_OK)

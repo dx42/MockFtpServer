@@ -15,7 +15,10 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.fake.command.AbstractFakeCommandHandlerimport org.mockftpserver.core.command.Commandimport org.mockftpserver.core.session.Sessionimport org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.fake.command.AbstractFakeCommandHandler
+import org.mockftpserver.core.command.Command
+import org.mockftpserver.core.session.Session
+import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.core.command.ReplyCodes
 
 /**
@@ -33,7 +36,8 @@ class PwdCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         def currentDirectory = session.getAttribute(SessionKeys.CURRENT_DIRECTORY)
-        verifyForExistingFile(currentDirectory, currentDirectory)
+        this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
+        verifyFileSystemCondition(currentDirectory, currentDirectory)
         sendReply(session, ReplyCodes.PWD_OK, [currentDirectory])
     }
 
