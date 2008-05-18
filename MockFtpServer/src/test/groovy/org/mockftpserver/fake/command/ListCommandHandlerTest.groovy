@@ -15,14 +15,17 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.test.AbstractGroovyTest
+import java.text.SimpleDateFormat
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
-import org.mockftpserver.core.command.CommandNamesimport org.mockftpserver.core.session.StubSession
+import org.mockftpserver.core.command.CommandNames
+import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.fake.StubServerConfiguration
-import org.mockftpserver.fake.user.UserAccount
-import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodesimport org.mockftpserver.fake.filesystem.FileInfoimport java.text.SimpleDateFormatimport org.mockftpserver.fake.filesystem.FileEntryimport org.mockftpserver.fake.filesystem.DirectoryEntry
+import org.mockftpserver.fake.filesystem.DirectoryEntry
+import org.mockftpserver.fake.filesystem.FileEntry
+import org.mockftpserver.fake.filesystem.FileInfo
+import org.mockftpserver.fake.filesystem.FileSystemException
+
 /**
  * Tests for ListCommandHandler
  * 
@@ -91,6 +94,12 @@ class ListCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         assertSessionData("")
 	}
     
+    void testHandleCommand_ListFilesThrowsException() {
+        overrideMethodToThrowFileSystemException("listFiles")
+        handleCommand([DIR])
+        assertSessionReplies([ReplyCodes.SEND_DATA_INITIAL_OK, ReplyCodes.SYSTEM_ERROR])
+    }
+
     void testDirectoryListing_File() {
         def fileInfo = FileInfo.forFile(NAME, SIZE, LAST_MODIFIED)
         def sizeStr = SIZE.toString().padLeft(SIZE_WIDTH)

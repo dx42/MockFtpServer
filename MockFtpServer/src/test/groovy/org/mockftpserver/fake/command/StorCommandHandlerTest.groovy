@@ -78,8 +78,7 @@ class StorCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         overrideMethod(fileSystem, "createOutputStream", newMethod)
 
         handleCommand([FILE])
-        assertSessionReply(0, ReplyCodes.SEND_DATA_INITIAL_OK)
-        assertSessionReply(1, ReplyCodes.NEW_FILE_ERROR)
+        assertSessionReplies([ReplyCodes.SEND_DATA_INITIAL_OK, ReplyCodes.NEW_FILE_ERROR])
     }
 
     //-------------------------------------------------------------------------

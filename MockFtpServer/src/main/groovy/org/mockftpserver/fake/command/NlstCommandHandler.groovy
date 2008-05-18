@@ -15,7 +15,10 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.fake.command.AbstractFakeCommandHandlerimport org.mockftpserver.core.command.Commandimport org.mockftpserver.core.session.Sessionimport org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.fake.command.AbstractFakeCommandHandler
+import org.mockftpserver.core.command.Command
+import org.mockftpserver.core.session.Session
+import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 /**
@@ -23,6 +26,7 @@ import org.mockftpserver.core.session.SessionKeys
  * <ol>
  *  <li>If the user has not logged in, then reply with 530 and terminate</li>
  *  <li>Send an initial reply of 150</li>
+ *  <li>If an error occurs during processing, then send a reply of 451 and terminate</li>
  *  <li>If the optional pathname parameter is missing, then send a directory listing for 
  *  		the current directory across the data connection</li>
  *  <li>Otherwise, if the optional pathname parameter specifies a directory or group of files, 
@@ -43,6 +47,7 @@ class NlstCommandHandler extends AbstractFakeCommandHandler {
         verifyLoggedIn(session)
         sendReply(session, ReplyCodes.SEND_DATA_INITIAL_OK)
 
+        this.replyCodeForFileSystemException = ReplyCodes.SYSTEM_ERROR
         def path = getRealPath(session, command.getParameter(0))
         def names = this.fileSystem.listNames(path)
         def directoryListing = names.join(endOfLine())

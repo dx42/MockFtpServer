@@ -62,6 +62,7 @@ public final class ReplyCodes {
     public static final int CONNECT_OK = 220;
 
     // GENERIC
+    public static final int SYSTEM_ERROR = 451;
     public static final int COMMAND_SYNTAX_ERROR = 501;
     public static final int ILLEGAL_STATE = 503;       // Bad sequence
     public static final int NOT_LOGGED_IN = 530;
