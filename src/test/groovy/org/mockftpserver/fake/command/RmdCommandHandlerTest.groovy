@@ -15,14 +15,13 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
-import org.mockftpserver.core.command.CommandNamesimport org.mockftpserver.core.session.StubSession
+import org.mockftpserver.core.command.CommandNames
+import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.fake.StubServerConfiguration
-import org.mockftpserver.fake.user.UserAccount
-import org.mockftpserver.core.command.ReplyCodes
+import org.mockftpserver.fake.filesystem.FileSystemException
+
 /**
  * Tests for RmdCommandHandler
  * 
@@ -75,6 +74,18 @@ class RmdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         testHandleCommand_MissingRequiredParameter([])
     }
     
+    void testHandleCommand_ListNamesThrowsException() {
+        overrideMethodToThrowFileSystemException("listNames")
+        handleCommand([DIR])
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR)
+    }
+
+    void testHandleCommand_DeleteThrowsException() {
+        overrideMethodToThrowFileSystemException("delete")
+        handleCommand([DIR])
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR)
+    }
+
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
