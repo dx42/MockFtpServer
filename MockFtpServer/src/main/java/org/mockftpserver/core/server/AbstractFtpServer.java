@@ -123,48 +123,7 @@ public abstract class AbstractFtpServer implements Runnable {
      * reply text ResourceBundle.
      */
     public AbstractFtpServer() {
-//        replyTextBundle = ResourceBundle.getBundle(REPLY_TEXT_BASENAME);
-
         commandHandlers = new HashMap();
-
-//        PwdCommandHandler pwdCommandHandler = new ConnectCommandHandler();
-//
-//        // Initialize the default CommandHandler mappings
-//        setCommandHandler(CommandNames.ABOR, new AborCommandHandler());
-//        setCommandHandler(CommandNames.ACCT, new AcctCommandHandler());
-//        setCommandHandler(CommandNames.ALLO, new AlloCommandHandler());
-//        setCommandHandler(CommandNames.APPE, new AppeCommandHandler());
-//        setCommandHandler(CommandNames.PWD, pwdCommandHandler);            // same as XPWD
-//        setCommandHandler(CommandNames.CONNECT, new ConnectCommandHandler());
-//        setCommandHandler(CommandNames.CWD, new CwdCommandHandler());
-//        setCommandHandler(CommandNames.CDUP, new CdupCommandHandler());
-//        setCommandHandler(CommandNames.DELE, new DeleCommandHandler());
-//        setCommandHandler(CommandNames.HELP, new HelpCommandHandler());
-//        setCommandHandler(CommandNames.LIST, new ListCommandHandler());
-//        setCommandHandler(CommandNames.MKD, new MkdCommandHandler());
-//        setCommandHandler(CommandNames.MODE, new ModeCommandHandler());
-//        setCommandHandler(CommandNames.NOOP, new NoopCommandHandler());
-//        setCommandHandler(CommandNames.NLST, new NlstCommandHandler());
-//        setCommandHandler(CommandNames.PASS, new PassCommandHandler());
-//        setCommandHandler(CommandNames.PASV, new PasvCommandHandler());
-//        setCommandHandler(CommandNames.PORT, new PortCommandHandler());
-//        setCommandHandler(CommandNames.RETR, new RetrCommandHandler());
-//        setCommandHandler(CommandNames.QUIT, new QuitCommandHandler());
-//        setCommandHandler(CommandNames.REIN, new ReinCommandHandler());
-//        setCommandHandler(CommandNames.REST, new RestCommandHandler());
-//        setCommandHandler(CommandNames.RMD, new RmdCommandHandler());
-//        setCommandHandler(CommandNames.RNFR, new RnfrCommandHandler());
-//        setCommandHandler(CommandNames.RNTO, new RntoCommandHandler());
-//        setCommandHandler(CommandNames.SITE, new SiteCommandHandler());
-//        setCommandHandler(CommandNames.SMNT, new SmntCommandHandler());
-//        setCommandHandler(CommandNames.STAT, new StatCommandHandler());
-//        setCommandHandler(CommandNames.STOR, new StorCommandHandler());
-//        setCommandHandler(CommandNames.STOU, new StouCommandHandler());
-//        setCommandHandler(CommandNames.STRU, new StruCommandHandler());
-//        setCommandHandler(CommandNames.SYST, new SystCommandHandler());
-//        setCommandHandler(CommandNames.TYPE, new TypeCommandHandler());
-//        setCommandHandler(CommandNames.USER, new UserCommandHandler());
-//        setCommandHandler(CommandNames.XPWD, pwdCommandHandler);           // same as PWD
     }
 
     /**
@@ -172,11 +131,14 @@ public abstract class AbstractFtpServer implements Runnable {
      */
     public void start() {
         serverThread = new Thread(this);
-        serverThread.start();
 
-        // Wait until the thread is initialized
         synchronized (startLock) {
             try {
+                // Start here in case server thread runs faster than main thread.
+                // See https://sourceforge.net/tracker/?func=detail&atid=1006533&aid=1925590&group_id=208647
+                serverThread.start();
+
+                // Wait until the server thread is initialized
                 startLock.wait();
             }
             catch (InterruptedException e) {
