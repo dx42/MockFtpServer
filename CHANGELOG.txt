@@ -1,6 +1,13 @@
 MockFtpServer Change Log
 -------------------------------------------------------------------------------
 
+Changes in version 1.2.2 (27 May 2008)
+------------------------------------------
+- BUG FIX: Move serverThread.start() into synchronized block to avoid server hang if
+  server thread runs faster than main thread.
+  See https://sourceforge.net/tracker/?func=detail&atid=1006533&aid=1925590&group_id=208647
+
+
 Changes in version 1.2.1 (10 Mar 2008)
 ------------------------------------------
 - Change Maven POM (pom.xml) to enable sync-ing with central Maven repository (ibiblio).
