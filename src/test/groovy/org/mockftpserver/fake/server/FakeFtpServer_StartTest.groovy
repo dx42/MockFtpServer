@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 the original author or authors.
+ * Copyright 2008 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,25 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.stub;
+package org.mockftpserver.fake.server
 
-import org.mockftpserver.core.server.AbstractFtpServer;
-import org.mockftpserver.core.server.AbstractFtpServer_StartTest;
+import org.mockftpserver.core.server.AbstractFtpServer
+import org.mockftpserver.core.server.AbstractFtpServer_StartTest
 
 /**
- * Tests for StubFtpServer that require the StubFtpServer thread to be started.
+ * Tests for FakeFtpServer that require the server thread to be started.
+ *
+ * @version $Revision: 54 $ - $Date: 2008-05-13 21:54:53 -0400 (Tue, 13 May 2008) $
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
-public final class StubFtpServer_StartTest extends AbstractFtpServer_StartTest {
-
-    //-------------------------------------------------------------------------
-    // Abstract method implementations
-    //-------------------------------------------------------------------------
+class FakeFtpServer_StartTest extends AbstractFtpServer_StartTest {
 
     protected AbstractFtpServer createFtpServer() {
-        return new StubFtpServer();
+        return new FakeFtpServer();
     }
 
 }

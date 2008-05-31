@@ -29,9 +29,9 @@ import org.mockftpserver.fake.ServerConfiguration
 import org.mockftpserver.fake.ServerConfigurationAware
 import org.mockftpserver.fake.filesystem.ExistingFileOperationException
 import org.mockftpserver.fake.filesystem.FileSystem
+import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.InvalidFilenameException
 import org.mockftpserver.fake.filesystem.NewFileOperationException
-import org.mockftpserver.fake.filesystem.FileSystemException
 
 /**
  * Abstract superclass for CommandHandler classes for the "Fake" server.
@@ -46,7 +46,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
     ServerConfiguration serverConfiguration
 
     /**
-     * Reply code sent back when a FileSystemException is caught by the {@link #handleCommand(Command, Session)}
+     * Reply code sent back when a FileSystemException is caught by the  {@link #handleCommand(Command, Session)}
      * This defaults to ReplyCodes.EXISTING_FILE_ERROR (550). 
      */
     int replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
@@ -120,7 +120,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
         assertValidReplyCode(replyCode);
 
         String key = Integer.toString(replyCode);
-        String text = serverConfiguration.getTextForReplyCode(replyCode)
+        String text = getTextForReplyCode(replyCode)
 
         String replyText = (args) ? MessageFormat.format(text, args as Object[]) : text;
 
@@ -140,7 +140,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
      * @param args - the optional args for the reply (message)
      *
      */
-    private handleException(Command command, Session session, Throwable exception, int replyCode, args=[]) {
+    private handleException(Command command, Session session, Throwable exception, int replyCode, args = []) {
         LOG.warn("Error handling command: $command; ${exception}", exception)
         sendReply(session, replyCode, args)
     }
@@ -206,7 +206,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
      */
     protected void verifyFileSystemCondition(condition, path) {
         if (!condition) {
-            throw new FileSystemException((String)path, (String)path)
+            throw new FileSystemException((String) path, (String) path)
         }
     }
 
@@ -237,4 +237,16 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
     protected String endOfLine() {
         "\n"
     }
+
+    private String getTextForReplyCode(int replyCode) {
+        try {
+            return serverConfiguration.replyTextBundle.getString(Integer.toString(replyCode))
+        }
+        catch (MissingResourceException e) {
+            // No reply text is mapped for the specified key
+            LOG.warn("No reply text defined for reply code [${replyCode as String}]");
+            return null;
+        }
+    }
+
 }
