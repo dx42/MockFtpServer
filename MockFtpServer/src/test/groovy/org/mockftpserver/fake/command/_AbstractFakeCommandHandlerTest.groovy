@@ -144,6 +144,7 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
         serverConfiguration = new StubServerConfiguration()
         fileSystem = new FakeUnixFileSystem()
         serverConfiguration.setFileSystem(fileSystem)
+
         serverConfiguration.setTextForReplyCode(REPLY_CODE, MSG)
 
         commandHandler.serverConfiguration = serverConfiguration
@@ -157,7 +158,7 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
      * Assert that when the CommandHandler handleCommand() method throws the
      * specified exception, that the expected reply is sent through the session.
      */
-    private void assertHandleCommandReplyCode(Throwable exception, int expected, text=null) {
+    private void assertHandleCommandReplyCode(Throwable exception, int expected, text = null) {
         commandHandler.exception = exception
         def command = new Command("C1", ["abc"])
         session.sentReplies.clear()
@@ -166,7 +167,7 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
         assert sentReply == expected
         if (text) {
             def sentMessage = session.sentReplies[0][1]
-            assert sentMessage.contains(text), "sentMessage=[$sentMessage] text=[$text]" 
+            assert sentMessage.contains(text), "sentMessage=[$sentMessage] text=[$text]"
         }
     }
 

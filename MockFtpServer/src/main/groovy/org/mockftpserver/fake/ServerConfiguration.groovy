@@ -20,17 +20,17 @@ import org.mockftpserver.fake.user.UserAccount
 
 /**
  * Interface for objects that provide access to server-specific information.
+ *
+ * @version $Revision$ - $Date$
+ *
+ * @author Chris Mair
  */
 interface ServerConfiguration {
-    
+
     FileSystem getFileSystem()
-    void setFileSystem(FileSystem fileSystem)
+
+    UserAccount getUserAccount(String username)
 
     ResourceBundle getReplyTextBundle()
-    void setReplyTextBundle(ResourceBundle resourceBundle)
-    
-    UserAccount getUserAccount(String username)
-    
-    String getTextForReplyCode(int replyCode)
-    
+
 }

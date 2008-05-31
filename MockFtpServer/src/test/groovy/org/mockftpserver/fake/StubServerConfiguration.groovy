@@ -15,41 +15,57 @@
  */
 package org.mockftpserver.fake
 
-import org.mockftpserver.fake.filesystem.FileSystem
 import org.mockftpserver.fake.ServerConfiguration
+import org.mockftpserver.fake.filesystem.FileSystem
 import org.mockftpserver.fake.user.UserAccount
 
 /**
- * Stub implementation of the {@link ServerConfiguration} interface for testing
- * 
+ * Stub implementation of the   {@link ServerConfiguration}   interface for testing
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
 class StubServerConfiguration implements ServerConfiguration {
 
-     ResourceBundle replyTextBundle
-     Map userAccounts = [:]
-     private Map textForReplyCodeMap = [:]
-     FileSystem fileSystem
-     
-     UserAccount getUserAccount(String username) {
-         userAccounts[username]
-     }
-     
-     String getTextForReplyCode(int replyCode) {
-         return textForReplyCodeMap[replyCode] ?: "$replyCode {0}"
-     }
+    ResourceBundle replyTextBundle
+    Map userAccounts = [:]
+    private Map textForReplyCodeMap = [:]
+    FileSystem fileSystem
 
-     //-------------------------------------------------------------------------
-     // Stub-specific API - Helper methods not part of ServerConfiguration interface
-     //-------------------------------------------------------------------------
+    UserAccount getUserAccount(String username) {
+        (UserAccount) userAccounts[username]
+    }
 
-     /**
-      * Set the text to be returned for the specified reply code by the 
-      * {@link #getTextForReplyCode(int)} method.
-      */
-     void setTextForReplyCode(int replyCode, String text) {
-         textForReplyCodeMap[replyCode] = text
-     }
+    ResourceBundle getReplyTextBundle() {
+        return new TestResources(map: textForReplyCodeMap)
+    }
+
+    //-------------------------------------------------------------------------
+    // Stub-specific API - Helper methods not part of ServerConfiguration interface
+    //-------------------------------------------------------------------------
+
+    /**
+     * Set the text to be returned for the specified reply code by the
+     * {@link #getReplyTextBundle()}   method.
+     */
+    void setTextForReplyCode(int replyCode, String text) {
+        textForReplyCodeMap[replyCode as String] = text
+    }
+}
+
+/**
+ * Map-based implementation of ResourceBundle for testing
+ */
+class TestResources extends ResourceBundle {
+
+    Map map
+
+    Object handleGetObject(String key) {
+        return map[key] ?: "$key {0}".toString()
+    }
+
+    public Enumeration getKeys() {
+        return new Vector(map.keySet()).elements()
+    }
 }
