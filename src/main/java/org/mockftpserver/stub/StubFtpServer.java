@@ -22,7 +22,6 @@ import org.mockftpserver.core.server.AbstractFtpServer;
 import org.mockftpserver.stub.command.*;
 
 import java.util.Map;
-import java.util.ResourceBundle;
 
 /**
  * <b>StubFtpServer</b> is the top-level class for a "stub" implementation of an FTP Server,
@@ -82,15 +81,11 @@ import java.util.ResourceBundle;
  */
 public class StubFtpServer extends AbstractFtpServer {
 
-    ResourceBundle replyTextBundle;             // non-private for testing only
-
     /**
      * Create a new instance. Initialize the default command handlers and
      * reply text ResourceBundle.
      */
     public StubFtpServer() {
-        replyTextBundle = ResourceBundle.getBundle(REPLY_TEXT_BASENAME);
-
         PwdCommandHandler pwdCommandHandler = new PwdCommandHandler();
 
         // Initialize the default CommandHandler mappings
@@ -131,22 +126,12 @@ public class StubFtpServer extends AbstractFtpServer {
         setCommandHandler(CommandNames.XPWD, pwdCommandHandler);           // same as PWD
     }
 
-    /**
-     * Set the reply text ResourceBundle to a new ResourceBundle with the specified base name,
-     * accessible on the CLASSPATH. See {@link ResourceBundle#getBundle(String)}.
-     *
-     * @param baseName - the base name of the resource bundle, a fully qualified class name
-     */
-    public void setReplyTextBaseName(String baseName) {
-        replyTextBundle = ResourceBundle.getBundle(baseName);
-    }
-
     //-------------------------------------------------------------------------
     // Abstract method implementation
     //-------------------------------------------------------------------------
 
     protected void initializeCommandHandler(CommandHandler commandHandler) {
-        ReplyTextBundleUtil.setReplyTextBundleIfAppropriate(commandHandler, replyTextBundle);
+        ReplyTextBundleUtil.setReplyTextBundleIfAppropriate(commandHandler, getReplyTextBundle());
     }
 
 }

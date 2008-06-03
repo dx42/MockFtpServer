@@ -15,28 +15,26 @@
  */
 package org.mockftpserver.core.session
 
-import java.net.InetAddress
-import java.util.Set
-
 /**
- * Stub implementation of the {@link Session} interface for testing
- * 
+ * Stub implementation of the   {@link Session}   interface for testing
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
 class StubSession implements Session {
 
-     Map attributes = [:]
-     List sentReplies = [ ]
-     List sentData = [ ]
-     byte[] dataToRead
-     
+    Map attributes = [:]
+    List sentReplies = []
+    List sentData = []
+    byte[] dataToRead
+    boolean closed
+
     /**
      * @see org.mockftpserver.core.session.Session#close()
      */
     public void close() {
-
+        closed = true
     }
 
     /**
@@ -96,7 +94,7 @@ class StubSession implements Session {
     }
 
     /**
-     * @see org.mockftpserver.core.session.Session#sendData(byte[], int)
+     * @see org.mockftpserver.core.session.Session#sendData(byte [], int)
      */
     public void sendData(byte[] data, int numBytes) {
         sentData << new String(data, 0, numBytes)
@@ -147,9 +145,9 @@ class StubSession implements Session {
     //-------------------------------------------------------------------------
     // Stub-specific API - Helper methods not part of Session interface
     //-------------------------------------------------------------------------
-    
+
     String toString() {
-        "StubSession[sentReplies=$sentReplies  sentData=$sentData]"
+        "StubSession[sentReplies=$sentReplies  sentData=$sentData  attributes=$attributes  closed=$closed]"
     }
-    
+
 }
