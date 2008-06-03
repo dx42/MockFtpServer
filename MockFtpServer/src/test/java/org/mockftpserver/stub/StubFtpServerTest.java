@@ -58,7 +58,7 @@ public final class StubFtpServerTest extends AbstractFtpServerTest {
     public void testSetCommandHandler_NullReplyTextBundle() {
         stubFtpServer.setCommandHandler("ZZZ", commandHandler);
         assertSame("commandHandler", commandHandler, stubFtpServer.getCommandHandler("ZZZ"));
-        assertSame("replyTextBundle", stubFtpServer.replyTextBundle, commandHandler.getReplyTextBundle());
+        assertSame("replyTextBundle", stubFtpServer.getReplyTextBundle(), commandHandler.getReplyTextBundle());
     }
 
     /**
@@ -116,7 +116,7 @@ public final class StubFtpServerTest extends AbstractFtpServerTest {
 
     protected void verifyCommandHandlerInitialized(CommandHandler commandHandler) {
         AbstractStubCommandHandler stubCommandHandler = (AbstractStubCommandHandler) commandHandler;
-        assertSame("replyTextBundle", stubFtpServer.replyTextBundle, stubCommandHandler.getReplyTextBundle());
+        assertSame("replyTextBundle", stubFtpServer.getReplyTextBundle(), stubCommandHandler.getReplyTextBundle());
     }
 
 }

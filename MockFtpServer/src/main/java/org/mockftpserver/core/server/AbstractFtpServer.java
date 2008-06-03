@@ -108,7 +108,7 @@ public abstract class AbstractFtpServer implements Runnable {
 
     private ServerSocketFactory serverSocketFactory = new DefaultServerSocketFactory();
     private ServerSocket serverSocket = null;
-    ResourceBundle replyTextBundle;             // non-private for testing only
+    private ResourceBundle replyTextBundle;
     private volatile boolean terminate = false;
     private Map commandHandlers;
     private Thread serverThread;
@@ -123,6 +123,7 @@ public abstract class AbstractFtpServer implements Runnable {
      * reply text ResourceBundle.
      */
     public AbstractFtpServer() {
+        replyTextBundle = ResourceBundle.getBundle(REPLY_TEXT_BASENAME);
         commandHandlers = new HashMap();
     }
 
@@ -287,6 +288,15 @@ public abstract class AbstractFtpServer implements Runnable {
      */
     public void setReplyTextBaseName(String baseName) {
         replyTextBundle = ResourceBundle.getBundle(baseName);
+    }
+
+    /**
+     * Return the ReplyText ResourceBundle. Set the bundle through the  {@link #setReplyTextBaseName(String)}  method.
+     *
+     * @return the reply text ResourceBundle
+     */
+    public ResourceBundle getReplyTextBundle() {
+        return replyTextBundle;
     }
 
     /**

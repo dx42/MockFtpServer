@@ -21,7 +21,10 @@ import org.mockftpserver.core.server.AbstractFtpServer
 import org.mockftpserver.fake.ServerConfiguration
 import org.mockftpserver.fake.ServerConfigurationAware
 import org.mockftpserver.fake.command.ConnectCommandHandler
+import org.mockftpserver.fake.command.PassCommandHandler
 import org.mockftpserver.fake.command.PwdCommandHandler
+import org.mockftpserver.fake.command.QuitCommandHandler
+import org.mockftpserver.fake.command.UserCommandHandler
 import org.mockftpserver.fake.filesystem.FileSystem
 import org.mockftpserver.fake.user.UserAccount
 
@@ -38,13 +41,13 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
 
     FileSystem fileSystem
     Map userAccounts = [:]
-    private ResourceBundle replyTextBundle;
 
     FakeFtpServer() {
-        replyTextBundle = ResourceBundle.getBundle(REPLY_TEXT_BASENAME);
-
         setCommandHandler(CommandNames.CONNECT, new ConnectCommandHandler());
+        setCommandHandler(CommandNames.PASS, new PassCommandHandler());
         setCommandHandler(CommandNames.PWD, new PwdCommandHandler());
+        setCommandHandler(CommandNames.QUIT, new QuitCommandHandler());
+        setCommandHandler(CommandNames.USER, new UserCommandHandler());
     }
 
     /**
@@ -64,20 +67,4 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
         userAccounts[username]
     }
 
-    /**
-     * Set the reply text ResourceBundle to a new ResourceBundle with the specified base name,
-     * accessible on the CLASSPATH. See  {@link ResourceBundle#getBundle(String)} .
-     * @param baseName - the base name of the resource bundle, a fully qualified class name
-     */
-    void setReplyTextBaseName(String baseName) {
-        replyTextBundle = ResourceBundle.getBundle(baseName)
-    }
-
-    /**
-     * Return the ReplyText ResourceBundle. Set the bundle through the  {@link #setReplyTextBaseName(String)}  method.
-     * @return the reply text ResourceBundle
-     */
-    ResourceBundle getReplyTextBundle() {
-        return replyTextBundle;
-    }
 }
