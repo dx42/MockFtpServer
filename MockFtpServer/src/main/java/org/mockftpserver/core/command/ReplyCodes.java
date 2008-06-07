@@ -16,11 +16,10 @@
 package org.mockftpserver.core.command;
 
 /**
- * Reply Code constants. 
- * 
- * @version $Revision$ - $Date$
+ * Reply Code constants.
  *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class ReplyCodes {
 
@@ -55,7 +54,8 @@ public final class ReplyCodes {
     public static final int USER_LOGGED_IN_OK = 230;
     public static final int USER_NEED_PASSWORD_OK = 331;
     public static final int USER_NO_SUCH_USER = 530;
-    
+    public static final int USER_ACCOUNT_NOT_VALID = 530;
+
     public static final int SEND_DATA_INITIAL_OK = 150;
     public static final int SEND_DATA_FINAL_OK = 226;
 
@@ -69,8 +69,8 @@ public final class ReplyCodes {
     public static final int EXISTING_FILE_ERROR = 550;
     public static final int NEW_FILE_ERROR = 553;
     public static final int FILENAME_NOT_VALID = 553;
-    
-    
+
+
     /**
      * Private constructor. This class should not be instantiated.
      */

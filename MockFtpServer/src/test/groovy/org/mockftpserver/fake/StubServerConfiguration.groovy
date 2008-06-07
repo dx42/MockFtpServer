@@ -20,7 +20,7 @@ import org.mockftpserver.fake.filesystem.FileSystem
 import org.mockftpserver.fake.user.UserAccount
 
 /**
- * Stub implementation of the   {@link ServerConfiguration}   interface for testing
+ * Stub implementation of the    {@link ServerConfiguration}    interface for testing
  *
  * @version $Revision$ - $Date$
  *
@@ -46,12 +46,13 @@ class StubServerConfiguration implements ServerConfiguration {
     //-------------------------------------------------------------------------
 
     /**
-     * Set the text to be returned for the specified reply code by the
-     * {@link #getReplyTextBundle()}   method.
+     * Set the text to be returned for the specified key by the
+     * {@link #getReplyTextBundle()}  resource bundle.
      */
-    void setTextForReplyCode(int replyCode, String text) {
-        textForReplyCodeMap[replyCode as String] = text
+    void setTextForKey(key, String text) {
+        textForReplyCodeMap[key.toString()] = text
     }
+
 }
 
 /**

@@ -15,19 +15,23 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.fake.command.AbstractFakeCommandHandlerimport org.mockftpserver.core.command.Commandimport org.mockftpserver.core.session.Sessionimport org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.ReplyCodes
+import org.mockftpserver.core.session.Session
+import org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.fake.command.AbstractFakeCommandHandler
+
 
 /**
  * CommandHandler for the PASS command. Handler logic:
  * <ol>
- *  <li>If the required pathname parameter is missing, then reply with 501</li>
+ *  <li>If the required password parameter is missing, then reply with 501</li>
  *  <li>If this command was not preceded by a valid USER command, then reply with 503</li>
- *  <li>If the named user does not exist, then reply with 530</li>
+ *  <li>If the user account configured for the named user does not exist or is not valid, then reply with 530</li>
  *  <li>If the specified password is not correct, then reply with 530</li>
  *  <li>Otherwise, reply with 250</li>
  * </ol>
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -37,19 +41,15 @@ class PassCommandHandler extends AbstractFakeCommandHandler {
     protected void handle(Command command, Session session) {
         def password = getRequiredParameter(command)
         def username = getRequiredSessionAttribute(session, SessionKeys.USERNAME)
-        
-        def userAccount = serverConfiguration.getUserAccount(username)
-        if (userAccount == null) {
-            sendReply(session, ReplyCodes.PASS_LOG_IN_FAILED)
-            return
-        }
-        
-        if (userAccount.isValidPassword(password)) {
-            sendReply(session, ReplyCodes.PASS_OK)
-            session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
-        }
-        else {
-            sendReply(session, ReplyCodes.PASS_LOG_IN_FAILED)
+
+        if (validateUserAccount(username, session)) {
+            def userAccount = serverConfiguration.getUserAccount(username)
+            if (userAccount.isValidPassword(password)) {
+                login(userAccount, session)
+            }
+            else {
+                sendReply(session, ReplyCodes.PASS_LOG_IN_FAILED)
+            }
         }
     }
 

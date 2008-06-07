@@ -15,17 +15,16 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
-import org.mockftpserver.core.command.CommandNamesimport org.mockftpserver.core.session.StubSession
+import org.mockftpserver.core.command.CommandNames
+import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.fake.StubServerConfiguration
 import org.mockftpserver.fake.user.UserAccount
-import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
+
 /**
  * Tests for UserCommandHandler
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -33,53 +32,89 @@ import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
 class UserCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     def USERNAME = "user123"
-    
+    def HOME_DIRECTORY = "/"
+    UserAccount userAccount
+
     void testHandleCommand_UserExists() {
-        serverConfiguration.userAccounts[USERNAME] = new UserAccount()
-		commandHandler.handleCommand(createCommand([USERNAME]), session)
+        serverConfiguration.userAccounts[USERNAME] = userAccount
+        commandHandler.handleCommand(createCommand([USERNAME]), session)
         assertSessionReply(ReplyCodes.USER_NEED_PASSWORD_OK)
         assertUsernameInSession(true)
-	}
+        assertCurrentDirectory(null)
+    }
 
     void testHandleCommand_NoSuchUser() {
-		commandHandler.handleCommand(createCommand([USERNAME]), session)
-		// Will return OK, even if username is not recognized
-        assertSessionReply(ReplyCodes.USER_NEED_PASSWORD_OK) 
+        commandHandler.handleCommand(createCommand([USERNAME]), session)
+        // Will return OK, even if username is not recognized
+        assertSessionReply(ReplyCodes.USER_NEED_PASSWORD_OK)
         assertUsernameInSession(true)
-	}
+        assertCurrentDirectory(null)
+    }
 
     void testHandleCommand_PasswordNotRequiredForLogin() {
-        def userAccount = new UserAccount(passwordRequiredForLogin:false)
+        userAccount.passwordRequiredForLogin = false
         serverConfiguration.userAccounts[USERNAME] = userAccount
 
         commandHandler.handleCommand(createCommand([USERNAME]), session)
         assertSessionReply(ReplyCodes.USER_LOGGED_IN_OK)
         assert session.getAttribute(SessionKeys.USER_ACCOUNT) == userAccount
         assertUsernameInSession(false)
-	}
+        assertCurrentDirectory(HOME_DIRECTORY)
+    }
+
+    void testHandleCommand_UserExists_HomeDirectoryNotDefinedForUser() {
+        userAccount.homeDirectory = ''
+        serverConfiguration.userAccounts[USERNAME] = userAccount
+        commandHandler.handleCommand(createCommand([USERNAME]), session)
+        assertSessionReply(ReplyCodes.USER_ACCOUNT_NOT_VALID, "userAccountNotValid")
+        assertUsernameInSession(false)
+        assertCurrentDirectory(null)
+    }
+
+    void testHandleCommand_UserExists_HomeDirectoryDoesNotExist() {
+        userAccount.homeDirectory = '/abc/def'
+        serverConfiguration.userAccounts[USERNAME] = userAccount
+        commandHandler.handleCommand(createCommand([USERNAME]), session)
+        assertSessionReply(ReplyCodes.USER_ACCOUNT_NOT_VALID, "homeDirectoryNotValid")
+        assertUsernameInSession(false)
+        assertCurrentDirectory(null)
+    }
 
     void testHandleCommand_MissingUsernameParameter() {
         testHandleCommand_MissingRequiredParameter([])
         assertUsernameInSession(false)
+        assertCurrentDirectory(null)
     }
-    
+
     void testHandleCommand_EmptyUsernameParameter() {
         testHandleCommand_MissingRequiredParameter([""])
         assertUsernameInSession(false)
+        assertCurrentDirectory(null)
+    }
+
+    //-------------------------------------------------------------------------
+    // Abstract and Overridden Methods
+    //-------------------------------------------------------------------------
+
+    void setUp() {
+        super.setUp()
+
+        fileSystem.createDirectory(HOME_DIRECTORY)
+        userAccount = new UserAccount(username: USERNAME, homeDirectory: HOME_DIRECTORY)
+    }
+
+    CommandHandler createCommandHandler() {
+        new UserCommandHandler()
+    }
+
+    Command createValidCommand() {
+        return new Command(CommandNames.USER, [USERNAME])
     }
 
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
-    
-	CommandHandler createCommandHandler() {
-	    new UserCommandHandler()
-	}
-	
-    Command createValidCommand() {
-        return new Command(CommandNames.USER, [USERNAME])
-    }
-    
+
     /**
      * Assert that the Username is stored in the session, depending on the value of isUsernameInSession.
      * @param isUsernameInSession - true if the Username is expected in the session; false if it is not expected
@@ -87,5 +122,13 @@ class UserCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     private void assertUsernameInSession(boolean isUsernameInSession) {
         def expectedValue = isUsernameInSession ? USERNAME : null
         assert session.getAttribute(SessionKeys.USERNAME) == expectedValue
+    }
+
+    /**
+     * Assert that the current directory is set in the session, but only if currentDirectory is not null.
+     * @param currentDirectory - the curent directory expected in the session; null if it is not expected
+     */
+    private void assertCurrentDirectory(String currentDirectory) {
+        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == currentDirectory
     }
 }
