@@ -15,17 +15,16 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
-import org.mockftpserver.core.command.CommandNamesimport org.mockftpserver.core.session.StubSession
+import org.mockftpserver.core.command.CommandNames
+import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.fake.StubServerConfiguration
 import org.mockftpserver.fake.user.UserAccount
-import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
+
 /**
  * Tests for PassCommandHandler
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -34,74 +33,107 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     def USERNAME = "user123"
     def PASSWORD = "password123"
-    def userAccount
-    
+    def HOME_DIRECTORY = "/"
+    UserAccount userAccount
+
     void testHandleCommand_UserExists_PasswordCorrect() {
         serverConfiguration.userAccounts[USERNAME] = userAccount
-		commandHandler.handleCommand(createCommand([PASSWORD]), session)
+        commandHandler.handleCommand(createCommand([PASSWORD]), session)
         assertSessionReply(ReplyCodes.PASS_OK)
         assertUserAccountInSession(true)
-	}
+        assertCurrentDirectory(HOME_DIRECTORY)
+    }
 
     void testHandleCommand_UserExists_PasswordIncorrect() {
         serverConfiguration.userAccounts[USERNAME] = userAccount
-		commandHandler.handleCommand(createCommand(["wrong"]), session)
+        commandHandler.handleCommand(createCommand(["wrong"]), session)
         assertSessionReply(ReplyCodes.PASS_LOG_IN_FAILED)
         assertUserAccountInSession(false)
+        assertCurrentDirectory(null)
     }
 
     void testHandleCommand_UserExists_PasswordWrongButIgnored() {
         userAccount.passwordCheckedDuringValidation = false
         serverConfiguration.userAccounts[USERNAME] = userAccount
-		commandHandler.handleCommand(createCommand(["wrong"]), session)
+        commandHandler.handleCommand(createCommand(["wrong"]), session)
         assertSessionReply(ReplyCodes.PASS_OK)
         assertUserAccountInSession(true)
+        assertCurrentDirectory(HOME_DIRECTORY)
     }
-        
-    void testHandleCommand_UserDoesNotExist() {
-		commandHandler.handleCommand(createCommand([PASSWORD]), session)
-        assertSessionReply(ReplyCodes.PASS_LOG_IN_FAILED)
+
+    void testHandleCommand_UserExists_HomeDirectoryNotDefinedForUserAccount() {
+        userAccount.homeDirectory = ''
+        serverConfiguration.userAccounts[USERNAME] = userAccount
+        commandHandler.handleCommand(createCommand([PASSWORD]), session)
+        assertSessionReply(ReplyCodes.USER_ACCOUNT_NOT_VALID, "userAccountNotValid")
         assertUserAccountInSession(false)
+        assertCurrentDirectory(null)
+    }
+
+    void testHandleCommand_UserExists_HomeDirectoryDoesNotExist() {
+        userAccount.homeDirectory = '/abc/def'
+        serverConfiguration.userAccounts[USERNAME] = userAccount
+        commandHandler.handleCommand(createCommand([PASSWORD]), session)
+        assertSessionReply(ReplyCodes.USER_ACCOUNT_NOT_VALID, "homeDirectoryNotValid")
+        assertUserAccountInSession(false)
+        assertCurrentDirectory(null)
+    }
+
+    void testHandleCommand_UserDoesNotExist() {
+        commandHandler.handleCommand(createCommand([PASSWORD]), session)
+        assertSessionReply(ReplyCodes.USER_ACCOUNT_NOT_VALID, "userAccountNotValid")
+        assertUserAccountInSession(false)
+        assertCurrentDirectory(null)
     }
 
     void testHandleCommand_UsernameNotSetInSession() {
         session.removeAttribute(SessionKeys.USERNAME)
         testHandleCommand_MissingRequiredSessionAttribute()
         assertUserAccountInSession(false)
-	}
+        assertCurrentDirectory(null)
+    }
 
     void testHandleCommand_MissingPasswordParameter() {
         testHandleCommand_MissingRequiredParameter([])
         assertUserAccountInSession(false)
+        assertCurrentDirectory(null)
     }
-    
+
     void testHandleCommand_EmptyPasswordParameter() {
         testHandleCommand_MissingRequiredParameter([""])
         assertUserAccountInSession(false)
+        assertCurrentDirectory(null)
     }
-    
-    //-------------------------------------------------------------------------
-    // Helper Methods
-    //-------------------------------------------------------------------------
-    
-	void setUp() {
-	    super.setUp()
 
-	    userAccount = new UserAccount()
+    //-------------------------------------------------------------------------
+    // Abstract and Overridden Methods
+    //-------------------------------------------------------------------------
+
+    void setUp() {
+        super.setUp()
+
+        fileSystem.createDirectory(HOME_DIRECTORY)
+
+        userAccount = new UserAccount()
         userAccount.username = USERNAME
         userAccount.password = PASSWORD
-        
-        session.setAttribute(SessionKeys.USERNAME, USERNAME)
-	}
+        userAccount.homeDirectory = HOME_DIRECTORY
 
-	CommandHandler createCommandHandler() {
-	    new PassCommandHandler()
-	}
-	
+        session.setAttribute(SessionKeys.USERNAME, USERNAME)
+    }
+
+    CommandHandler createCommandHandler() {
+        new PassCommandHandler()
+    }
+
     Command createValidCommand() {
         return new Command(CommandNames.PASS, [PASSWORD])
     }
-    
+
+    //-------------------------------------------------------------------------
+    // Helper Methods
+    //-------------------------------------------------------------------------
+
     /**
      * Assert that the UserAccount object is in the session, depending on the value of isUserAccountInSession.
      * @param isUserAccountInSession - true if the UserAccount is expected in the session; false if it is not expected
@@ -109,5 +141,13 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     private void assertUserAccountInSession(boolean isUserAccountInSession) {
         def expectedValue = isUserAccountInSession ? userAccount : null
         assert session.getAttribute(SessionKeys.USER_ACCOUNT) == expectedValue
+    }
+
+    /**
+     * Assert that the current directory is set in the session, but only if currentDirectory is not null.
+     * @param currentDirectory - the curent directory expected in the session; null if it is not expected
+     */
+    private void assertCurrentDirectory(String currentDirectory) {
+        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == currentDirectory
     }
 }

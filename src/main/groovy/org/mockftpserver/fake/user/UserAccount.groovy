@@ -30,22 +30,22 @@ package org.mockftpserver.fake.user
  * value is ignored, and the <code>isValidPassword()</code> method just returns <code<true</code>. 
  */
 class UserAccount {
-    
+
     String username
     String password
     String homeDirectory
     boolean passwordRequiredForLogin = true
     boolean passwordCheckedDuringValidation = true
-    
+
     /**
      * Return true if the specified password is the correct, valid password for this user account.
      * This implementation uses standard (case-sensitive) String comparison. Subclasses can provide
      * custom comparison behavior, for instance using encrypted password values, by overriding this
      * method.
-     * 
+     *
      * @param password - the password to compare against the configured value
      * @return true if the password is correct and valid
-     * 
+     *
      * @throws AssertionError - if the username property is null
      */
     boolean isValidPassword(String password) {
@@ -54,19 +54,26 @@ class UserAccount {
     }
 
     /**
+     * @return true if this UserAccount object is valid; i.e. if the homeDirectory is non-null and non-empty.
+     */
+    boolean isValid() {
+        return homeDirectory
+    }
+
+    /**
      * @return the String representation of this object
      */
     String toString() {
         "UserAccount[username=$username; password=$password; homeDirectory=$homeDirectory; " +
-            "passwordRequiredForLogin=$passwordRequiredForLogin]"
+                "passwordRequiredForLogin=$passwordRequiredForLogin]"
     }
-    
+
     /**
      * Return true if the specified password matches the password configured for this user account.
      * This implementation uses standard (case-sensitive) String comparison. Subclasses can provide
      * custom comparison behavior, for instance using encrypted password values, by overriding this
      * method.
-     * 
+     *
      * @param password - the password to compare against the configured value
      * @return true if the passwords match
      */

@@ -32,6 +32,8 @@ import org.mockftpserver.fake.filesystem.FileSystem
 import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.InvalidFilenameException
 import org.mockftpserver.fake.filesystem.NewFileOperationException
+import org.mockftpserver.fake.user.UserAccount
+
 
 /**
  * Abstract superclass for CommandHandler classes for the "Fake" server.
@@ -46,7 +48,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
     ServerConfiguration serverConfiguration
 
     /**
-     * Reply code sent back when a FileSystemException is caught by the  {@link #handleCommand(Command, Session)}
+     * Reply code sent back when a FileSystemException is caught by the   {@link #handleCommand(Command, Session)}
      * This defaults to ReplyCodes.EXISTING_FILE_ERROR (550). 
      */
     int replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
@@ -105,6 +107,37 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
      * Send a reply for this command on the control connection.
      *
      * The reply code is designated by the <code>replyCode</code> property, and the reply text
+     * is retrieved from the <code>replyText</code> ResourceBundle, using the specified messageKey.
+     *
+     * @param session - the Session
+     * @param replyCode - the reply code
+     * @param messageKey - the resource bundle key for the reply text
+     * @param args - the optional message arguments; defaults to []
+     *
+     * @throws AssertionError - if session is null
+     *
+     * @see MessageFormat
+     */
+    protected void sendReply(Session session, int replyCode, String messageKey, List args = []) {
+        assert session
+        assertValidReplyCode(replyCode);
+
+        String key = Integer.toString(replyCode);
+        String text = getTextForKey(messageKey)
+
+        String replyText = (args) ? MessageFormat.format(text, args as Object[]) : text;
+
+        String replyTextToLog = (replyText == null) ? "" : " " + replyText;
+        // TODO change to LOG.debug()
+        def argsToLog = (args) ? " args=$args" : ""
+        LOG.info("Sending reply [" + replyCode + replyTextToLog + "]" + argsToLog);
+        session.sendReply(replyCode, replyText);
+    }
+
+    /**
+     * Send a reply for this command on the control connection.
+     *
+     * The reply code is designated by the <code>replyCode</code> property, and the reply text
      * is retrieved from the <code>replyText</code> ResourceBundle, using the reply code as the key.
      *
      * @param session - the Session
@@ -115,20 +148,8 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
      *
      * @see MessageFormat
      */
-    protected void sendReply(Session session, int replyCode, args = []) {
-        assert session
-        assertValidReplyCode(replyCode);
-
-        String key = Integer.toString(replyCode);
-        String text = getTextForReplyCode(replyCode)
-
-        String replyText = (args) ? MessageFormat.format(text, args as Object[]) : text;
-
-        String replyTextToLog = (replyText == null) ? "" : " " + replyText;
-        // TODO change to LOG.debug()
-        def argsToLog = (args) ? " args=$args" : ""
-        LOG.info("Sending reply [" + replyCode + replyTextToLog + "]" + argsToLog);
-        session.sendReply(replyCode, replyText);
+    protected void sendReply(Session session, int replyCode, List args = []) {
+        sendReply(session, replyCode, replyCode.toString(), args)
     }
 
     /**
@@ -238,15 +259,58 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
         "\n"
     }
 
-    private String getTextForReplyCode(int replyCode) {
+    private String getTextForKey(key) {
         try {
-            return serverConfiguration.replyTextBundle.getString(Integer.toString(replyCode))
+            return serverConfiguration.replyTextBundle.getString(key.toString())
         }
         catch (MissingResourceException e) {
             // No reply text is mapped for the specified key
-            LOG.warn("No reply text defined for reply code [${replyCode as String}]");
+            LOG.warn("No reply text defined for key [${key.toString()}]");
             return null;
         }
+    }
+
+    // -------------------------------------------------------------------------
+    // Login Support (used by USER and PASS commands)
+    // -------------------------------------------------------------------------
+
+    /**
+     * Validate the UserAccount for the specified username. If valid, return true. If the UserAccount does
+     * not exist or is invalid, log an error message, send back a reply code of 530 with an appropriate
+     * error message, and return false. A UserAccount is considered invalid if the homeDirectory property
+     * is not set or is set to a non-existent directory.
+     * @param username - the username
+     * @param session - the session; used to send back an error reply if necessary
+     * @return true only if the UserAccount for the named user is valid
+     */
+    protected boolean validateUserAccount(String username, Session session) {
+        def userAccount = serverConfiguration.getUserAccount(username)
+        if (userAccount == null || !userAccount.valid) {
+            LOG.error("UserAccount missing or not valid for username [$username]: $userAccount")
+            sendReply(session, ReplyCodes.USER_ACCOUNT_NOT_VALID, "userAccountNotValid", [username])
+            return false
+        }
+
+        def home = userAccount.homeDirectory
+        if (!getFileSystem().isDirectory(home)) {
+            LOG.error("Home directory configured for username [$username] is not valid: $home")
+            sendReply(session, ReplyCodes.USER_ACCOUNT_NOT_VALID, "homeDirectoryNotValid", [username, home])
+            return false
+        }
+
+        return true
+    }
+
+    /**
+     * Log in the specified user for the current session. Send back a reply of 230 and set the UserAccount
+     * and current directory (homeDirectory) in the session
+     * @param userAccount - the userAccount for the user to be logged in
+     * @param session - the session
+     */
+    protected void login(UserAccount userAccount, Session session) {
+        sendReply(session, ReplyCodes.PASS_OK)
+        session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
+        session.setAttribute(SessionKeys.CURRENT_DIRECTORY, userAccount.homeDirectory)
     }
 
 }

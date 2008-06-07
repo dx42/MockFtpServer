@@ -15,11 +15,11 @@
  */
 package org.mockftpserver.fake.user
 
-import org.mockftpserver.test.*
+import org.mockftpserver.test.AbstractGroovyTest
 
 /**
  * Tests for UserAccount
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -31,25 +31,25 @@ class UserAccountTest extends AbstractGroovyTest {
     private static final HOME_DIR = "/usr/user123"
 
     private UserAccount userAccount
-    
+
     void testIsValidPassword() {
         userAccount.username = USERNAME
         userAccount.password = PASSWORD
         assert userAccount.isValidPassword(PASSWORD)
-        
+
         assert userAccount.isValidPassword("") == false
         assert userAccount.isValidPassword("wrong") == false
         assert userAccount.isValidPassword(null) == false
     }
-    
+
     void testIsValidPassword_UsernameNullOrEmpty() {
         userAccount.password = PASSWORD
         shouldFail(AssertionError) { userAccount.isValidPassword(PASSWORD) }
 
         userAccount.username = ''
         shouldFail(AssertionError) { userAccount.isValidPassword(PASSWORD) }
-	}
-    
+    }
+
     void testIsValidPassword_OverrideComparePassword() {
         def customUserAccount = new CustomUserAccount()
         customUserAccount.username = USERNAME
@@ -58,14 +58,22 @@ class UserAccountTest extends AbstractGroovyTest {
         assert customUserAccount.isValidPassword(PASSWORD) == false
         assert customUserAccount.isValidPassword(PASSWORD + "123")
     }
-    
+
     void testIsValidPassword_PasswordNotCheckedDuringValidation() {
         userAccount.username = USERNAME
         userAccount.password = PASSWORD
         userAccount.passwordCheckedDuringValidation = false
         assert userAccount.isValidPassword("wrong")
     }
-    
+
+    void testIsValid() {
+        assert !userAccount.valid
+        userAccount.homeDirectory = ""
+        assert !userAccount.valid
+        userAccount.homeDirectory = "/abc"
+        assert userAccount.valid
+    }
+
     void setUp() {
         userAccount = new UserAccount()
     }

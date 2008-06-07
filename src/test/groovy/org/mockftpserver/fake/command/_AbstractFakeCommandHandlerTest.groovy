@@ -42,9 +42,11 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
 
     static PATH = "some/path"
     static REPLY_CODE = 99
+    static MESSAGE_KEY = "99.WithFilename"
     static ARG = "ABC"
     static MSG = "text {0}"
     static MSG_WITH_ARG = "text ABC"
+    static MSG_FOR_KEY = "some other message"
     private AbstractFakeCommandHandler commandHandler
     private session
     private serverConfiguration
@@ -85,6 +87,14 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
 
         shouldFail { commandHandler.sendReply(null, REPLY_CODE) }
         shouldFail { commandHandler.sendReply(session, 0) }
+    }
+
+    void testSendReply_MessageKey() {
+        commandHandler.sendReply(session, REPLY_CODE, MESSAGE_KEY)
+        assert session.sentReplies[0] == [REPLY_CODE, MSG_FOR_KEY], session.sentReplies[0]
+
+        shouldFail { commandHandler.sendReply(null, REPLY_CODE, MESSAGE_KEY) }
+        shouldFail { commandHandler.sendReply(session, 0, MESSAGE_KEY) }
     }
 
     void testAssertValidReplyCode() {
@@ -145,7 +155,8 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
         fileSystem = new FakeUnixFileSystem()
         serverConfiguration.setFileSystem(fileSystem)
 
-        serverConfiguration.setTextForReplyCode(REPLY_CODE, MSG)
+        serverConfiguration.setTextForKey(REPLY_CODE, MSG)
+        serverConfiguration.setTextForKey(MESSAGE_KEY, MSG_FOR_KEY)
 
         commandHandler.serverConfiguration = serverConfiguration
     }

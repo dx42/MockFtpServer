@@ -15,17 +15,21 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.fake.command.AbstractFakeCommandHandlerimport org.mockftpserver.core.command.Commandimport org.mockftpserver.core.session.Sessionimport org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.ReplyCodes
+import org.mockftpserver.core.session.Session
+import org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
 /**
  * CommandHandler for the USER command. Handler logic:
  * <ol>
  *  <li>If the required pathname parameter is missing, then reply with 501</li>
+ *  <li>If the user account configured for the named user is not valid, then reply with 530</li>
  *  <li>If the named user does not need a password for login, then reply with 230</li>
  *  <li>Otherwise, reply with 331</li>
  * </ol>
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -34,17 +38,21 @@ class UserCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         def username = getRequiredParameter(command)
-        
-        // If the UserAccount is configured to not require password for login
         def userAccount = serverConfiguration.getUserAccount(username)
-        if (userAccount && !userAccount.passwordRequiredForLogin) {
-            session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
-            sendReply(session, ReplyCodes.USER_LOGGED_IN_OK)
+
+        if (userAccount) {
+            if (!validateUserAccount(username, session)) {
+                return
+            }
+
+            // If the UserAccount is configured to not require password for login
+            if (!userAccount.passwordRequiredForLogin) {
+                login(userAccount, session)
+                return
+            }
         }
-        else {
-            session.setAttribute(SessionKeys.USERNAME, username)
-            sendReply(session, ReplyCodes.USER_NEED_PASSWORD_OK)
-        }
+        session.setAttribute(SessionKeys.USERNAME, username)
+        sendReply(session, ReplyCodes.USER_NEED_PASSWORD_OK)
     }
 
 }

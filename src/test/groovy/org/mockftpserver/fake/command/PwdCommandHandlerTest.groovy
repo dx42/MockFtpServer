@@ -15,17 +15,15 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
-import org.mockftpserver.core.command.CommandNamesimport org.mockftpserver.core.session.StubSession
+import org.mockftpserver.core.command.CommandNames
+import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.fake.StubServerConfiguration
-import org.mockftpserver.fake.user.UserAccount
-import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
+
 /**
  * Tests for PwdCommandHandler
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -33,31 +31,31 @@ import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
 class PwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     def DIR = "/usr/abc"
-    
+
     void testHandleCommand() {
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
-        serverConfiguration.setTextForReplyCode(ReplyCodes.PWD_OK, "dir={0}")
-        commandHandler.handleCommand(createCommand([]), session)        
+        serverConfiguration.setTextForKey(ReplyCodes.PWD_OK, "dir={0}")
+        commandHandler.handleCommand(createCommand([]), session)
         assertSessionReply(ReplyCodes.PWD_OK, "dir=${DIR}")
-	}
-    
+    }
+
     void testHandleCommand_CurrentDirectoryNotSet() {
-		commandHandler.handleCommand(createValidCommand(), session)
+        commandHandler.handleCommand(createValidCommand(), session)
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR)
     }
 
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
-    
+
     void setUp() {
         super.setUp()
     }
 
     CommandHandler createCommandHandler() {
-	    new PwdCommandHandler()
-	}
-	
+        new PwdCommandHandler()
+    }
+
     Command createValidCommand() {
         return new Command(CommandNames.PWD, [])
     }
