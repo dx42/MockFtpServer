@@ -20,13 +20,10 @@ import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.server.AbstractFtpServer
 import org.mockftpserver.fake.ServerConfiguration
 import org.mockftpserver.fake.ServerConfigurationAware
-import org.mockftpserver.fake.command.ConnectCommandHandler
-import org.mockftpserver.fake.command.PassCommandHandler
-import org.mockftpserver.fake.command.PwdCommandHandler
-import org.mockftpserver.fake.command.QuitCommandHandler
-import org.mockftpserver.fake.command.UserCommandHandler
+import org.mockftpserver.fake.command.*
 import org.mockftpserver.fake.filesystem.FileSystem
 import org.mockftpserver.fake.user.UserAccount
+
 
 /**
  * "Fake" implementation of an FTP server.
@@ -44,9 +41,17 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
 
     FakeFtpServer() {
         setCommandHandler(CommandNames.CONNECT, new ConnectCommandHandler());
+        setCommandHandler(CommandNames.CWD, new CwdCommandHandler());
+        setCommandHandler(CommandNames.DELE, new DeleCommandHandler());
+        setCommandHandler(CommandNames.LIST, new ListCommandHandler());
+        setCommandHandler(CommandNames.NLST, new NlstCommandHandler());
         setCommandHandler(CommandNames.PASS, new PassCommandHandler());
         setCommandHandler(CommandNames.PWD, new PwdCommandHandler());
         setCommandHandler(CommandNames.QUIT, new QuitCommandHandler());
+        setCommandHandler(CommandNames.RMD, new RmdCommandHandler());
+        setCommandHandler(CommandNames.RNFR, new RnfrCommandHandler());
+        setCommandHandler(CommandNames.RNTO, new RntoCommandHandler());
+        setCommandHandler(CommandNames.STOR, new StorCommandHandler());
         setCommandHandler(CommandNames.USER, new UserCommandHandler());
     }
 

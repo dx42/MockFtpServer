@@ -15,71 +15,83 @@
  */
 package org.mockftpserver.test
 
+import org.apache.log4j.Logger
 import org.mockftpserver.test.LoggingUtil
-import org.apache.log4j.Logger/**
+
+
+/**
  * Abstract superclass for Groovy tests
- * 
+ *
  * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
  */
 abstract class AbstractGroovyTest extends GroovyTestCase {
 
-     protected final Logger LOG = Logger.getLogger(this.class)
-     private LoggingUtil testLogger 
-         
-     /** 
-      * Assert that the specified code throws an exception of the specified type. 
-      * @param expectedExceptionClass - the Class of exception that is expected 
-      * @param code - the Closure containing the code to be executed, which is expected to throw an exception of the specified type 
-      * @return the thrown Exception instance 
-      * 
-      * @throws AssertionError - if no exception is thrown by the code or if the thrown exception is not of the expected type 
-      */ 
-     protected Throwable shouldThrow(Class expectedExceptionClass, Closure code) { 
-         def actualException = null 
-         try { 
-             code.call() 
-         } catch (Throwable thrown) { 
-             actualException = thrown 
-         } 
-         assert actualException, "No exception thrown. Expected [${expectedExceptionClass.getName()}]" 
-         assert actualException.class == expectedExceptionClass, "Expected [${expectedExceptionClass.getName()}] but was [${actualException.class.name}]" 
-         return actualException 
-     } 
+    protected final Logger LOG = Logger.getLogger(this.class)
+    private LoggingUtil testLogger
 
-     /** 
-      * Assert that the specified code throws an exception with an error message
-      * containing the specified text. 
-      * @param text - the text expected within the exception message 
-      * @param code - the Closure containing the code to be executed, which is expected to throw an exception of the specified type
-      * @return the message from the thrown Exception 
-      * 
-      * @throws AssertionError - if no exception is thrown by the code or if the thrown 
-      * 	exception message does not contain the expected text 
-      */ 
-     protected String shouldFailWithMessageContaining(String text, Closure code) { 
-          def message = shouldFail(code)
-          assert message.contains(text)
-          return message
-     }
-          
-     //------------------------------------------------------------------------------------ 
-     // Test Setup and Tear Down 
-     //------------------------------------------------------------------------------------ 
-         
-     void setUp() { 
-         testLogger = LoggingUtil.getTestCaseLogger(this) 
-         testLogger.logStartOfTest() 
+    /**
+     * Assert that the specified code throws an exception of the specified type.
+     * @param expectedExceptionClass - the Class of exception that is expected
+     * @param code - the Closure containing the code to be executed, which is expected to throw an exception of the specified type
+     * @return the thrown Exception instance
+     *
+     * @throws AssertionError - if no exception is thrown by the code or if the thrown exception is not of the expected type
+     */
+    protected Throwable shouldThrow(Class expectedExceptionClass, Closure code) {
+        def actualException = null
+        try {
+            code.call()
+        } catch (Throwable thrown) {
+            actualException = thrown
+        }
+        assert actualException, "No exception thrown. Expected [${expectedExceptionClass.getName()}]"
+        assert actualException.class == expectedExceptionClass, "Expected [${expectedExceptionClass.getName()}] but was [${actualException.class.name}]"
+        return actualException
+    }
 
-         super.setUp() 
-     } 
+    /**
+     * Assert that the specified code throws an exception with an error message
+     * containing the specified text.
+     * @param text - the text expected within the exception message
+     * @param code - the Closure containing the code to be executed, which is expected to throw an exception of the specified type
+     * @return the message from the thrown Exception
+     *
+     * @throws AssertionError - if no exception is thrown by the code or if the thrown
+     * 	exception message does not contain the expected text
+     */
+    protected String shouldFailWithMessageContaining(String text, Closure code) {
+        def message = shouldFail(code)
+        assert message.contains(text)
+        return message
+    }
 
-     void tearDown() { 
-         super.tearDown(); 
-         if (testLogger) { 
-             testLogger.logEndOfTest() 
-         } 
-     } 
-         
+    /**
+     * Return the specified paths concatenated with the path separator in between
+     * @param paths - the varargs list of path components to concatenate
+     * @return p[0] + '/' + p[1] + '/' + p[2] + ...
+     */
+    protected static String p(String[] paths) {
+        return paths.join("/").replace("//", "/")
+    }
+
+    //------------------------------------------------------------------------------------
+    // Test Setup and Tear Down
+    //------------------------------------------------------------------------------------
+
+    void setUp() {
+        testLogger = LoggingUtil.getTestCaseLogger(this)
+        testLogger.logStartOfTest()
+
+        super.setUp()
+    }
+
+    void tearDown() {
+        super.tearDown();
+        if (testLogger) {
+            testLogger.logEndOfTest()
+        }
+    }
+
 }

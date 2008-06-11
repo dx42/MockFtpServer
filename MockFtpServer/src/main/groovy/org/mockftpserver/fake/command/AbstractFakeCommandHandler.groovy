@@ -34,7 +34,6 @@ import org.mockftpserver.fake.filesystem.InvalidFilenameException
 import org.mockftpserver.fake.filesystem.NewFileOperationException
 import org.mockftpserver.fake.user.UserAccount
 
-
 /**
  * Abstract superclass for CommandHandler classes for the "Fake" server.
  *
@@ -48,7 +47,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
     ServerConfiguration serverConfiguration
 
     /**
-     * Reply code sent back when a FileSystemException is caught by the   {@link #handleCommand(Command, Session)}
+     * Reply code sent back when a FileSystemException is caught by the     {@link #handleCommand(Command, Session)}
      * This defaults to ReplyCodes.EXISTING_FILE_ERROR (550). 
      */
     int replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
@@ -122,9 +121,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
         assert session
         assertValidReplyCode(replyCode);
 
-        String key = Integer.toString(replyCode);
         String text = getTextForKey(messageKey)
-
         String replyText = (args) ? MessageFormat.format(text, args as Object[]) : text;
 
         String replyTextToLog = (replyText == null) ? "" : " " + replyText;
@@ -227,7 +224,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
      */
     protected void verifyFileSystemCondition(condition, path) {
         if (!condition) {
-            throw new FileSystemException((String) path, (String) path)
+            throw new FileSystemException((String) path, "path [$path]")
         }
     }
 

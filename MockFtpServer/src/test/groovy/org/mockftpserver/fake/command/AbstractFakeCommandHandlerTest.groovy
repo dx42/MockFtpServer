@@ -22,8 +22,9 @@ import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.core.session.StubSession
 import org.mockftpserver.fake.StubServerConfiguration
 import org.mockftpserver.fake.filesystem.FakeUnixFileSystem
-import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.fake.filesystem.FileSystemException
+import org.mockftpserver.test.AbstractGroovyTest
+
 
 /**
  * Abstract superclass for CommandHandler tests
@@ -227,15 +228,6 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
      */
     protected endOfLine() {
         commandHandler.endOfLine()
-    }
-
-    /**
-     * Return the specified paths concatenated with the path separator in between
-     * @param paths - the varargs list of path components to concatenate
-     * @return p[0] + '/' + p[1] + '/' + p[2] + ...
-     */
-    protected String p(String[] paths) {
-        return paths.join("/").replace("//", "/")
     }
 
 }
