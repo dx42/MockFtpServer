@@ -36,7 +36,7 @@ class PwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
         serverConfiguration.setTextForKey(ReplyCodes.PWD_OK, "dir={0}")
         commandHandler.handleCommand(createCommand([]), session)
-        assertSessionReply(ReplyCodes.PWD_OK, "dir=${DIR}")
+        assertSessionReply(ReplyCodes.PWD_OK, "pwd ${DIR}")
     }
 
     void testHandleCommand_CurrentDirectoryNotSet() {
