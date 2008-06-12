@@ -25,13 +25,13 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.fake.ServerConfiguration
-import org.mockftpserver.fake.ServerConfigurationAware
 import org.mockftpserver.fake.filesystem.ExistingFileOperationException
 import org.mockftpserver.fake.filesystem.FileSystem
 import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.InvalidFilenameException
 import org.mockftpserver.fake.filesystem.NewFileOperationException
+import org.mockftpserver.fake.server.ServerConfiguration
+import org.mockftpserver.fake.server.ServerConfigurationAware
 import org.mockftpserver.fake.user.UserAccount
 
 /**
@@ -47,7 +47,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
     ServerConfiguration serverConfiguration
 
     /**
-     * Reply code sent back when a FileSystemException is caught by the     {@link #handleCommand(Command, Session)}
+     * Reply code sent back when a FileSystemException is caught by the      {@link #handleCommand(Command, Session)}
      * This defaults to ReplyCodes.EXISTING_FILE_ERROR (550). 
      */
     int replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR

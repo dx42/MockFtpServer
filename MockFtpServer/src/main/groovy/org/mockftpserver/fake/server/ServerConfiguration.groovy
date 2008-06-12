@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.fake
+package org.mockftpserver.fake.server
 
 import org.mockftpserver.fake.filesystem.FileSystem
 import org.mockftpserver.fake.user.UserAccount

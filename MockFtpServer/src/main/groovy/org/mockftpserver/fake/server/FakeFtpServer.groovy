@@ -18,12 +18,11 @@ package org.mockftpserver.fake.server
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.server.AbstractFtpServer
-import org.mockftpserver.fake.ServerConfiguration
-import org.mockftpserver.fake.ServerConfigurationAware
 import org.mockftpserver.fake.command.*
 import org.mockftpserver.fake.filesystem.FileSystem
+import org.mockftpserver.fake.server.ServerConfiguration
+import org.mockftpserver.fake.server.ServerConfigurationAware
 import org.mockftpserver.fake.user.UserAccount
-
 
 /**
  * "Fake" implementation of an FTP server.

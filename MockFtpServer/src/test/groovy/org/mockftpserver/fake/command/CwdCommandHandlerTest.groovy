@@ -15,17 +15,15 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
-import org.mockftpserver.core.command.CommandNamesimport org.mockftpserver.core.session.StubSession
+import org.mockftpserver.core.command.CommandNames
+import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.fake.StubServerConfiguration
-import org.mockftpserver.fake.user.UserAccount
-import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
+
 /**
  * Tests for CwdCommandHandler
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -33,48 +31,48 @@ import org.apache.log4j.Loggerimport org.mockftpserver.core.command.ReplyCodes
 class CwdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     def DIR = "/usr"
-    
+
     void testHandleCommand() {
         assert fileSystem.createDirectory(DIR)
-        commandHandler.handleCommand(createCommand([DIR]), session)        
+        commandHandler.handleCommand(createCommand([DIR]), session)
         assertSessionReply(ReplyCodes.CWD_OK)
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == DIR
-	}
-    
+    }
+
     void testHandleCommand_PathIsRelative() {
         def SUB = "sub"
-        assert fileSystem.createDirectory(p(DIR,SUB))
+        assert fileSystem.createDirectory(p(DIR, SUB))
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
-        commandHandler.handleCommand(createCommand([SUB]), session)        
+        commandHandler.handleCommand(createCommand([SUB]), session)
         assertSessionReply(ReplyCodes.CWD_OK)
-        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == p(DIR,SUB)
-	}
+        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == p(DIR, SUB)
+    }
 
     void testHandleCommand_PathDoesNotExistInFileSystem() {
-        commandHandler.handleCommand(createCommand([DIR]), session)        
+        commandHandler.handleCommand(createCommand([DIR]), session)
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
-	}
-    
+    }
+
     void testHandleCommand_PathSpecifiesAFile() {
         assert fileSystem.createFile(DIR)
-        commandHandler.handleCommand(createCommand([DIR]), session)        
+        commandHandler.handleCommand(createCommand([DIR]), session)
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
-	}
-    
+    }
+
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])
     }
-    
+
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
-    
-	CommandHandler createCommandHandler() {
-	    new CwdCommandHandler()
-	}
-	
+
+    CommandHandler createCommandHandler() {
+        new CwdCommandHandler()
+    }
+
     Command createValidCommand() {
         return new Command(CommandNames.CWD, [DIR])
     }
@@ -82,5 +80,5 @@ class CwdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     void setUp() {
         super.setUp()
     }
-    
+
 }

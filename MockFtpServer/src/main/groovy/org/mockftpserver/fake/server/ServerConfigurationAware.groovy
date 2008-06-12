@@ -13,12 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.fake
+package org.mockftpserver.fake.server
 
 /**
  * Interface for classes that provide setter and getter to access a ServerConfiguration instance.
  */
 interface ServerConfigurationAware {
-     ServerConfiguration getServerConfiguration();
-     void setServerConfiguration(ServerConfiguration serverConfiguration);
+    ServerConfiguration getServerConfiguration()
+
+    ;
+
+    void setServerConfiguration(ServerConfiguration serverConfiguration)
+
+    ;
 }

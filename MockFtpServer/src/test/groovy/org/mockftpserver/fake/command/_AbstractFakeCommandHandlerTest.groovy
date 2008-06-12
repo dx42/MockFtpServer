@@ -23,12 +23,12 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.core.session.StubSession
-import org.mockftpserver.fake.StubServerConfiguration
 import org.mockftpserver.fake.filesystem.ExistingFileOperationException
 import org.mockftpserver.fake.filesystem.FakeUnixFileSystem
 import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.InvalidFilenameException
 import org.mockftpserver.fake.filesystem.NewFileOperationException
+import org.mockftpserver.fake.server.StubServerConfiguration
 import org.mockftpserver.test.AbstractGroovyTest
 
 /**
