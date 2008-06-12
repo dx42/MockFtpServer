@@ -15,17 +15,15 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
-import org.mockftpserver.core.command.CommandNamesimport org.mockftpserver.core.session.StubSession
+import org.mockftpserver.core.command.CommandNames
+import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.fake.StubServerConfiguration
-import org.mockftpserver.fake.user.UserAccount
-import org.mockftpserver.core.command.ReplyCodes
+
 /**
  * Tests for RnfrCommandHandler
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -33,47 +31,47 @@ import org.mockftpserver.core.command.ReplyCodes
 class RnfrCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     def FILE = "/file.txt"
-    
+
     void testHandleCommand() {
         assert fileSystem.createFile(FILE)
-        commandHandler.handleCommand(createCommand([FILE]), session)        
+        commandHandler.handleCommand(createCommand([FILE]), session)
         assertSessionReply(ReplyCodes.RNFR_OK)
         assert session.getAttribute(SessionKeys.RENAME_FROM) == FILE
-	}
-    
+    }
+
     void testHandleCommand_PathIsRelative() {
         assert fileSystem.createFile(FILE)
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, "/")
-        commandHandler.handleCommand(createCommand(["file.txt"]), session)        
+        commandHandler.handleCommand(createCommand(["file.txt"]), session)
         assertSessionReply(ReplyCodes.RNFR_OK)
         assert session.getAttribute(SessionKeys.RENAME_FROM) == FILE
-	}
-    
+    }
+
     void testHandleCommand_PathDoesNotExistInFileSystem() {
-        commandHandler.handleCommand(createCommand([FILE]), session)        
+        commandHandler.handleCommand(createCommand([FILE]), session)
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, FILE)
         assert session.getAttribute(SessionKeys.RENAME_FROM) == null
-	}
-    
+    }
+
     void testHandleCommand_PathSpecifiesADirectory() {
         assert fileSystem.createDirectory(FILE)
-        commandHandler.handleCommand(createCommand([FILE]), session)        
+        commandHandler.handleCommand(createCommand([FILE]), session)
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, FILE)
         assert session.getAttribute(SessionKeys.RENAME_FROM) == null
-	}
-    
+    }
+
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])
     }
-    
+
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
-    
-	CommandHandler createCommandHandler() {
-	    new RnfrCommandHandler()
-	}
-	
+
+    CommandHandler createCommandHandler() {
+        new RnfrCommandHandler()
+    }
+
     Command createValidCommand() {
         return new Command(CommandNames.RNFR, [FILE])
     }
