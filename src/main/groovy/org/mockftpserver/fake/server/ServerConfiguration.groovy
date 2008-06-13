@@ -27,10 +27,24 @@ import org.mockftpserver.fake.user.UserAccount
  */
 interface ServerConfiguration {
 
+    /**
+     * @return the {@link FileSystem}   for this server
+     */
     FileSystem getFileSystem()
 
+    /**
+     * @return the {@link UserAccount}   configured for this server for the specified user name
+     */
     UserAccount getUserAccount(String username)
 
+    /**
+     * @return the {@link ResourceBundle}   used by this server for reply messages
+     */
     ResourceBundle getReplyTextBundle()
+
+    /**
+     * @return the System Name for this server (used by the SYST command)
+     */
+    String getSystemName()
 
 }
