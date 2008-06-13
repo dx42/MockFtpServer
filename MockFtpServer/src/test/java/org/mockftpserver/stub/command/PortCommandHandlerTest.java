@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 the original author or authors.
+ * Copyright 2008 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,28 +15,22 @@
  */
 package org.mockftpserver.stub.command;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import org.apache.log4j.Logger;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
-import org.mockftpserver.core.util.AssertFailedException;
-import org.mockftpserver.stub.command.PortCommandHandler;
+
+import java.net.InetAddress;
 
 /**
  * Tests for the PortCommandHandler class
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class PortCommandHandlerTest extends AbstractCommandHandlerTest {
 
-    private static final Logger LOG = Logger.getLogger(PortCommandHandlerTest.class);
-    private static final String[] PARAMETERS = new String[] { "11", "22", "33", "44", "1", "206" };
-    private static final String[] PARAMETERS_INSUFFICIENT = new String[] {"7", "29", "99", "11", "77"};
+    private static final String[] PARAMETERS = new String[]{"11", "22", "33", "44", "1", "206"};
+    private static final String[] PARAMETERS_INSUFFICIENT = new String[]{"7", "29", "99", "11", "77"};
     private static final int PORT = (1 << 8) + 206;
     private static final InetAddress HOST = inetAddress("11.22.33.44");
 
@@ -55,9 +49,9 @@ public final class PortCommandHandlerTest extends AbstractCommandHandlerTest {
 
         commandHandler.handleCommand(COMMAND, session);
         verify(session);
-        
+
         verifyNumberOfInvocations(commandHandler, 1);
-        verifyTwoDataElements(commandHandler.getInvocation(0), 
+        verifyTwoDataElements(commandHandler.getInvocation(0),
                 PortCommandHandler.HOST_KEY, HOST,
                 PortCommandHandler.PORT_KEY, new Integer(PORT));
     }
@@ -70,87 +64,14 @@ public final class PortCommandHandlerTest extends AbstractCommandHandlerTest {
     }
 
     /**
-     * Test the parseHost() method
-     * @throws UnknownHostException 
-     */
-    public void testParseHost() throws UnknownHostException {
-        InetAddress host = PortCommandHandler.parseHost(PARAMETERS);
-        assertEquals("InetAddress", HOST, host);
-    }
-    
-    /**
-     * Test the parsePortNumber() method
-     */
-    public void testParsePortNumber() {
-        int portNumber = PortCommandHandler.parsePortNumber(PARAMETERS);
-        assertEquals("portNumber", PORT, portNumber);
-    }
-    
-    /**
-     * Test the parseHost() method, passing in null
-     * @throws UnknownHostException 
-     */
-    public void testParseHost_Null() throws UnknownHostException {
-        try {
-            PortCommandHandler.parseHost(null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
-    }
-        
-    /**
-     * Test the parseHost() method, passing in a String[] with not enough parameters
-     * @throws UnknownHostException 
-     */
-    public void testParseHost_InsufficientParameters() throws UnknownHostException {
-        try {
-            PortCommandHandler.parseHost(PARAMETERS_INSUFFICIENT);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
-    }
-        
-    /**
-     * Test the parsePortNumber() method, passing in null
-     * @throws UnknownHostException 
-     */
-    public void testParsePortNumber_Null() throws UnknownHostException {
-        try {
-            PortCommandHandler.parsePortNumber(null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
-    }
-        
-    /**
-     * Test the parsePortNumber() method, passing in a String[] with not enough parameters
-     * @throws UnknownHostException 
-     */
-    public void testParsePortNumber_InsufficientParameters() throws UnknownHostException {
-        try {
-            PortCommandHandler.parsePortNumber(PARAMETERS_INSUFFICIENT);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
-    }
-        
-    /**
      * Perform initialization before each test
-     * 
+     *
      * @see org.mockftpserver.stub.command.AbstractCommandHandlerTest#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
         commandHandler = new PortCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
-   }
+    }
 
 }
