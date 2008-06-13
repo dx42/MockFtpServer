@@ -24,6 +24,7 @@ import org.mockftpserver.fake.server.ServerConfiguration
 import org.mockftpserver.fake.server.ServerConfigurationAware
 import org.mockftpserver.fake.user.UserAccount
 
+
 /**
  * "Fake" implementation of an FTP server.
  *
@@ -37,6 +38,7 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
 
     FileSystem fileSystem
     Map userAccounts = [:]
+    String systemName = "WINDOWS"
 
     FakeFtpServer() {
         setCommandHandler(CommandNames.CONNECT, new ConnectCommandHandler());
@@ -51,6 +53,7 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
         setCommandHandler(CommandNames.RNFR, new RnfrCommandHandler());
         setCommandHandler(CommandNames.RNTO, new RntoCommandHandler());
         setCommandHandler(CommandNames.STOR, new StorCommandHandler());
+        setCommandHandler(CommandNames.SYST, new SystCommandHandler());
         setCommandHandler(CommandNames.USER, new UserCommandHandler());
     }
 

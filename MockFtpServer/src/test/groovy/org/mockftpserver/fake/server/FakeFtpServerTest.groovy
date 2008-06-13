@@ -23,6 +23,7 @@ import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 import org.mockftpserver.fake.user.UserAccount
 
+
 /**
  * Tests for FakeFtpServer.
  *
@@ -62,6 +63,12 @@ class FakeFtpServerTest extends AbstractFtpServerTest {
         def userAccounts = ["abc": userAccount]
         ftpServer.userAccounts = userAccounts
         assert ftpServer.getUserAccount("abc") == userAccount
+    }
+
+    void testSystemName() {
+        assert ftpServer.systemName == "WINDOWS"
+        ftpServer.systemName = "abc"
+        assert ftpServer.systemName == "abc"
     }
 
     void testReplyText() {
