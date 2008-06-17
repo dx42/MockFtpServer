@@ -17,12 +17,13 @@ package org.mockftpserver.fake.server
 
 import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.net.ftp.FTPFile
+import org.mockftpserver.fake.filesystem.DirectoryEntry
 import org.mockftpserver.fake.filesystem.FakeWindowsFileSystem
+import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystem
 import org.mockftpserver.fake.user.UserAccount
 import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.test.PortTestUtil
-
 
 /**
  * Integration tests for FakeFtpServer.
@@ -87,21 +88,21 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         verifyReplyCode("deleteFile", 250);
     }
 
-//    void testList() {
-//        def DATA = "abc"
-//        def LAST_MODIFIED = new Date()
-//        def NAME2 = "archive"
-//        fileSystem.addEntry(new FileEntry(path:p(SUBDIR,FILENAME1), lastModified:LAST_MODIFIED, contents:DATA))
-//        fileSystem.addEntry(new DirectoryEntry(path:p(SUBDIR,NAME2), lastModified:LAST_MODIFIED))
-//
-//        ftpClientConnectAndLogin()
-//
-//        FTPFile[] files = ftpClient.listFiles()
-//        assertEquals("number of files", 2, files.length)
-//        verifyFTPFile(files[0], FTPFile.FILE_TYPE, FILENAME1, DATA.size())
-//        verifyFTPFile(files[1], FTPFile.DIRECTORY_TYPE, NAME2, 0)
-//        verifyReplyCode("list", 226)
-//    }
+    void testList() {
+        def DATA = "abc"
+        def LAST_MODIFIED = new Date()
+        def NAME2 = "archive"
+        fileSystem.addEntry(new FileEntry(path: p(SUBDIR, FILENAME1), lastModified: LAST_MODIFIED, contents: DATA))
+        fileSystem.addEntry(new DirectoryEntry(path: p(SUBDIR, NAME2), lastModified: LAST_MODIFIED))
+
+        ftpClientConnectAndLogin()
+
+        FTPFile[] files = ftpClient.listFiles(SUBDIR)
+        assertEquals("number of files", 2, files.length)
+        verifyFTPFile(files[0], FTPFile.FILE_TYPE, FILENAME1, DATA.size())
+        verifyFTPFile(files[1], FTPFile.DIRECTORY_TYPE, NAME2, 0)
+        verifyReplyCode("list", 226)
+    }
 
     // -------------------------------------------------------------------------
     // Test setup and tear-down

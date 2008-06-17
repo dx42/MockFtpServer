@@ -16,6 +16,7 @@
 package org.mockftpserver.core.util;
 
 import org.apache.log4j.Logger;
+import org.mockftpserver.core.CommandSyntaxException;
 import org.mockftpserver.test.AbstractTest;
 
 import java.net.InetAddress;
@@ -61,9 +62,9 @@ public final class PortParserTest extends AbstractTest {
     public void testParseHost_Null() throws UnknownHostException {
         try {
             PortParser.parseHost(null);
-            fail("Expected AssertFailedException");
+            fail("Expected CommandSyntaxException");
         }
-        catch (AssertFailedException expected) {
+        catch (CommandSyntaxException expected) {
             LOG.info("Expected: " + expected);
         }
     }
@@ -76,9 +77,9 @@ public final class PortParserTest extends AbstractTest {
     public void testParseHost_InsufficientParameters() throws UnknownHostException {
         try {
             PortParser.parseHost(PARAMETERS_INSUFFICIENT);
-            fail("Expected AssertFailedException");
+            fail("Expected CommandSyntaxException");
         }
-        catch (AssertFailedException expected) {
+        catch (CommandSyntaxException expected) {
             LOG.info("Expected: " + expected);
         }
     }
@@ -91,9 +92,9 @@ public final class PortParserTest extends AbstractTest {
     public void testParsePortNumber_Null() throws UnknownHostException {
         try {
             PortParser.parsePortNumber(null);
-            fail("Expected AssertFailedException");
+            fail("Expected CommandSyntaxException");
         }
-        catch (AssertFailedException expected) {
+        catch (CommandSyntaxException expected) {
             LOG.info("Expected: " + expected);
         }
     }
@@ -106,9 +107,9 @@ public final class PortParserTest extends AbstractTest {
     public void testParsePortNumber_InsufficientParameters() throws UnknownHostException {
         try {
             PortParser.parsePortNumber(PARAMETERS_INSUFFICIENT);
-            fail("Expected AssertFailedException");
+            fail("Expected CommandSyntaxException");
         }
-        catch (AssertFailedException expected) {
+        catch (CommandSyntaxException expected) {
             LOG.info("Expected: " + expected);
         }
     }

@@ -16,7 +16,7 @@
 package org.mockftpserver.core.session
 
 /**
- * Stub implementation of the   {@link Session}   interface for testing
+ * Stub implementation of the    {@link Session}    interface for testing
  *
  * @version $Revision$ - $Date$
  *
@@ -29,6 +29,8 @@ class StubSession implements Session {
     List sentData = []
     byte[] dataToRead
     boolean closed
+    InetAddress clientDataHost
+    int clientDataPort
 
     /**
      * @see org.mockftpserver.core.session.Session#close()
@@ -115,20 +117,6 @@ class StubSession implements Session {
     }
 
     /**
-     * @see org.mockftpserver.core.session.Session#setClientDataHost(java.net.InetAddress)
-     */
-    public void setClientDataHost(InetAddress clientHost) {
-
-    }
-
-    /**
-     * @see org.mockftpserver.core.session.Session#setClientDataPort(int)
-     */
-    public void setClientDataPort(int clientDataPort) {
-
-    }
-
-    /**
      * @see org.mockftpserver.core.session.Session#switchToPassiveMode()
      */
     public int switchToPassiveMode() {
@@ -147,7 +135,8 @@ class StubSession implements Session {
     //-------------------------------------------------------------------------
 
     String toString() {
-        "StubSession[sentReplies=$sentReplies  sentData=$sentData  attributes=$attributes  closed=$closed]"
+        "StubSession[sentReplies=$sentReplies  sentData=$sentData  attributes=$attributes  closed=$closed  " +
+                "clientDataHost=$clientDataHost  clientDataPort=$clientDataPort]"
     }
 
 }

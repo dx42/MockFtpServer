@@ -15,27 +15,28 @@
  */
 package org.mockftpserver.core.command;
 
+import org.mockftpserver.core.CommandSyntaxException;
+import org.mockftpserver.core.util.Assert;
+
 import java.util.Arrays;
 import java.util.List;
-
-import org.mockftpserver.core.util.Assert;
 
 /**
  * Represents a command received from an FTP client, containing a command name and parameters.
  * Objects of this class are immutable.
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class Command {
 
     private String name;
     private String[] parameters;
-    
+
     /**
      * Construct a new immutable instance with the specified command name and parameters
-     * @param name - the command name; may not be null
+     *
+     * @param name       - the command name; may not be null
      * @param parameters - the command parameters; may be empty; may not be null
      */
     public Command(String name, String[] parameters) {
@@ -47,20 +48,21 @@ public final class Command {
 
     /**
      * Construct a new immutable instance with the specified command name and parameters
-     * @param name - the command name; may not be null
+     *
+     * @param name       - the command name; may not be null
      * @param parameters - the command parameters; may be empty; may not be null
      */
     public Command(String name, List parameters) {
         this(name, (String[]) parameters.toArray(new String[parameters.size()]));
     }
-    
+
     /**
      * @return the name
      */
     public String getName() {
         return name;
     }
-    
+
     /**
      * @return the parameters
      */
@@ -70,9 +72,11 @@ public final class Command {
 
     /**
      * Get the String value of the parameter at the specified index
+     *
      * @param index - the index
      * @return the parameter value as a String
-     * @throws AssertFailedException if the parameter index is invalid or the value is not a valid String
+     * @throws org.mockftpserver.core.util.AssertFailedException
+     *          if the parameter index is invalid or the value is not a valid String
      */
     public String getRequiredString(int index) {
         assertValidIndex(index);
@@ -81,6 +85,7 @@ public final class Command {
 
     /**
      * Get the String value of the parameter at the specified index; return null if no parameter exists for the index
+     *
      * @param index - the index
      * @return the parameter value as a String, or null if this Command does not have a parameter for that index
      */
@@ -91,6 +96,7 @@ public final class Command {
     /**
      * Get the String value of the parameter at the specified index; return null if no
      * parameter exists for the index. This is an alias for {@link #getParameter(int)}.
+     *
      * @param index - the index
      * @return the parameter value as a String, or null if this Command does not have a parameter for that index
      */
@@ -118,9 +124,10 @@ public final class Command {
         String str = name + Arrays.asList(parameters);
         return str.hashCode();
     }
-    
+
     /**
      * Return the String representation of this object
+     *
      * @see java.lang.Object#toString()
      */
     public String toString() {
@@ -129,14 +136,16 @@ public final class Command {
 
     /**
      * Return the name, normalized to a common format - convert to upper case.
+     *
      * @return the name converted to upper case
      */
     public static String normalizeName(String name) {
         return name.toUpperCase();
     }
-    
+
     /**
      * Construct a shallow copy of the specified array
+     *
      * @param array - the array to copy
      * @return a new array with the same contents
      */
@@ -145,14 +154,18 @@ public final class Command {
         System.arraycopy(array, 0, newArray, 0, array.length);
         return newArray;
     }
-    
+
     /**
      * Assert that the index is valid
+     *
      * @param index - the index
-     * @throws AssertFailedException if the parameter index is invalid
+     * @throws org.mockftpserver.core.CommandSyntaxException
+     *          - if the parameter index is invalid
      */
     private void assertValidIndex(int index) {
-        Assert.isTrue(index >= 0 && index < parameters.length, "The parameter index " + index + " is not valid for " + this);
+        if (index < 0 || index >= parameters.length) {
+            throw new CommandSyntaxException("The parameter index " + index + " is not valid for " + this);
+        }
     }
-    
+
 }
