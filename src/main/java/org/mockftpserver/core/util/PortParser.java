@@ -15,9 +15,12 @@
  */
 package org.mockftpserver.core.util;
 
+import org.mockftpserver.core.CommandSyntaxException;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Utility class for parsing port values from command arguments.
@@ -94,12 +97,13 @@ public final class PortParser {
      * Verify that the parameters is not null and contains the required number of elements
      *
      * @param parameters - the String[] of command parameters
-     * @throws org.mockftpserver.core.util.AssertFailedException
-     *          - if parameters is null or contains an insufficient number of elements
+     * @throws CommandSyntaxException - if parameters is null or contains an insufficient number of elements
      */
     private static void verifySufficientParameters(String[] parameters) {
-        Assert.notNull(parameters, "parameters");
-        Assert.isTrue(parameters.length >= 6, "The PORT command must contain least be 6 parameters: " + Arrays.asList(parameters));
+        if (parameters == null || parameters.length < 6) {
+            List parms = parameters == null ? null : Arrays.asList(parameters);
+            throw new CommandSyntaxException("The PORT command must contain least be 6 parameters: " + parms);
+        }
     }
 
 }

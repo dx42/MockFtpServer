@@ -15,13 +15,13 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.fake.command.AbstractFakeCommandHandler
-import org.mockftpserver.core.command.Command
-import org.mockftpserver.core.session.Session
-import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.core.command.ReplyCodes
-import org.mockftpserver.fake.filesystem.FileInfo
 import java.text.SimpleDateFormat
+import org.mockftpserver.core.command.Command
+import org.mockftpserver.core.command.ReplyCodes
+import org.mockftpserver.core.session.Session
+import org.mockftpserver.fake.command.AbstractFakeCommandHandler
+import org.mockftpserver.fake.filesystem.FileInfo
+
 /**
  * CommandHandler for the LIST command. Handler logic:
  * <ol>
@@ -36,16 +36,17 @@ import java.text.SimpleDateFormat
  *  		for the specified file across the data connection</li>
  *  <li>Send a final reply with 226</li>
  * </ol>
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
 class ListCommandHandler extends AbstractFakeCommandHandler {
 
-    static final DATE_FORMAT = "MM/dd/yyyy hh:mm aa"
+    //static final DATE_FORMAT = "MM/dd/yyyy hh:mm aa"
+    static final DATE_FORMAT = "MM-dd-yy hh:mmaa"
     static final SIZE_WIDTH = 15
-     
+
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
         sendReply(session, ReplyCodes.SEND_DATA_INITIAL_OK)
@@ -55,8 +56,12 @@ class ListCommandHandler extends AbstractFakeCommandHandler {
         def fileEntries = this.fileSystem.listFiles(path)
         def lines = fileEntries.collect { directoryListing(it) }
         def result = lines.join(endOfLine())
+
+        session.openDataConnection();
+        LOG.info("Sending [$result]")
         session.sendData(result.toString().getBytes(), result.length())
-        
+        session.closeDataConnection();
+
         sendReply(session, ReplyCodes.SEND_DATA_FINAL_OK)
     }
 
@@ -71,5 +76,5 @@ class ListCommandHandler extends AbstractFakeCommandHandler {
         def dirOrSize = fileInfo.directory ? "<DIR>".padRight(SIZE_WIDTH) : fileInfo.size.toString().padLeft(SIZE_WIDTH)
         return "$dateStr  $dirOrSize  ${fileInfo.name}"
     }
-    
+
 }
