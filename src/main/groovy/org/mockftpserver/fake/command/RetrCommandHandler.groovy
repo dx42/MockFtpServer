@@ -18,8 +18,8 @@ package org.mockftpserver.fake.command
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
-import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 import org.mockftpserver.core.util.IoUtil
+import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
 /**
  * CommandHandler for the RETR command. Handler logic:
@@ -48,10 +48,12 @@ class RetrCommandHandler extends AbstractFakeCommandHandler {
 
         sendReply(session, ReplyCodes.SEND_DATA_INITIAL_OK)
         def input = fileSystem.createInputStream(path)
+        session.openDataConnection();
         input.withStream {
             def bytes = IoUtil.readBytes(it)
-            session.sendData(bytes, bytes.length) 
+            session.sendData(bytes, bytes.length)
         }
+        session.closeDataConnection();
         sendReply(session, ReplyCodes.SEND_DATA_FINAL_OK)
     }
 
