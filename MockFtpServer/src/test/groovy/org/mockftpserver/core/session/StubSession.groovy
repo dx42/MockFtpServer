@@ -16,7 +16,7 @@
 package org.mockftpserver.core.session
 
 /**
- * Stub implementation of the    {@link Session}    interface for testing
+ * Stub implementation of the     {@link Session}     interface for testing
  *
  * @version $Revision$ - $Date$
  *
@@ -31,6 +31,7 @@ class StubSession implements Session {
     boolean closed
     InetAddress clientDataHost
     int clientDataPort
+    boolean dataConnectionOpen = false
 
     /**
      * @see org.mockftpserver.core.session.Session#close()
@@ -43,7 +44,7 @@ class StubSession implements Session {
      * @see org.mockftpserver.core.session.Session#closeDataConnection()
      */
     public void closeDataConnection() {
-
+        dataConnectionOpen = false
     }
 
     /**
@@ -78,13 +79,14 @@ class StubSession implements Session {
      * @see org.mockftpserver.core.session.Session#openDataConnection()
      */
     public void openDataConnection() {
-
+        dataConnectionOpen = true
     }
 
     /**
      * @see org.mockftpserver.core.session.Session#readData()
      */
     public byte[] readData() {
+        assert dataConnectionOpen, "The data connection must be OPEN"
         return dataToRead
     }
 
@@ -99,6 +101,7 @@ class StubSession implements Session {
      * @see org.mockftpserver.core.session.Session#sendData(byte [], int)
      */
     public void sendData(byte[] data, int numBytes) {
+        assert dataConnectionOpen, "The data connection must be OPEN"
         sentData << new String(data, 0, numBytes)
     }
 

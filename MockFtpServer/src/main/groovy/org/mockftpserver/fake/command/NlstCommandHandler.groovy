@@ -15,12 +15,11 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 import org.mockftpserver.core.command.Command
-import org.mockftpserver.core.session.Session
-import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.core.command.ReplyCodes
-import org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.core.session.Session
+import org.mockftpserver.fake.command.AbstractFakeCommandHandler
+
 /**
  * CommandHandler for the NLST command. Handler logic:
  * <ol>
@@ -36,7 +35,7 @@ import org.mockftpserver.core.session.SessionKeys
  *  <li>Send a final reply with 226</li>
  * </ol>
  * The directory listing sent includes filenames only, separated by end-of-line characters.
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -51,8 +50,10 @@ class NlstCommandHandler extends AbstractFakeCommandHandler {
         def path = getRealPath(session, command.getParameter(0))
         def names = this.fileSystem.listNames(path)
         def directoryListing = names.join(endOfLine())
+        session.openDataConnection();
         session.sendData(directoryListing.getBytes(), directoryListing.length())
-        
+        session.closeDataConnection();
+
         sendReply(session, ReplyCodes.SEND_DATA_FINAL_OK)
     }
 

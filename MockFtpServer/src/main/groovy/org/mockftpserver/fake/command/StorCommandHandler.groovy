@@ -47,7 +47,11 @@ class StorCommandHandler extends AbstractFakeCommandHandler {
         verifyFileSystemCondition(fileSystem.isDirectory(parent), parent)
 
         sendReply(session, ReplyCodes.SEND_DATA_INITIAL_OK)
+
+        session.openDataConnection();
         def contents = session.readData()
+        session.closeDataConnection();
+
         def out = fileSystem.createOutputStream(path, false)
         out.withStream { it.write(contents) }
         sendReply(session, ReplyCodes.SEND_DATA_FINAL_OK)
