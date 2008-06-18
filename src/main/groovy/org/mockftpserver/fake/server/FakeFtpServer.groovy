@@ -24,6 +24,7 @@ import org.mockftpserver.fake.server.ServerConfiguration
 import org.mockftpserver.fake.server.ServerConfigurationAware
 import org.mockftpserver.fake.user.UserAccount
 
+
 /**
  * "Fake" implementation of an FTP server.
  *
@@ -40,21 +41,22 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
     String systemName = "WINDOWS"
 
     FakeFtpServer() {
-        setCommandHandler(CommandNames.CONNECT, new ConnectCommandHandler());
-        setCommandHandler(CommandNames.CWD, new CwdCommandHandler());
-        setCommandHandler(CommandNames.DELE, new DeleCommandHandler());
-        setCommandHandler(CommandNames.LIST, new ListCommandHandler());
-        setCommandHandler(CommandNames.NLST, new NlstCommandHandler());
-        setCommandHandler(CommandNames.PASS, new PassCommandHandler());
-        setCommandHandler(CommandNames.PWD, new PwdCommandHandler());
-        setCommandHandler(CommandNames.PORT, new PortCommandHandler());
-        setCommandHandler(CommandNames.QUIT, new QuitCommandHandler());
-        setCommandHandler(CommandNames.RMD, new RmdCommandHandler());
-        setCommandHandler(CommandNames.RNFR, new RnfrCommandHandler());
-        setCommandHandler(CommandNames.RNTO, new RntoCommandHandler());
-        setCommandHandler(CommandNames.STOR, new StorCommandHandler());
-        setCommandHandler(CommandNames.SYST, new SystCommandHandler());
-        setCommandHandler(CommandNames.USER, new UserCommandHandler());
+        setCommandHandler(CommandNames.CONNECT, new ConnectCommandHandler())
+        setCommandHandler(CommandNames.CWD, new CwdCommandHandler())
+        setCommandHandler(CommandNames.DELE, new DeleCommandHandler())
+        setCommandHandler(CommandNames.LIST, new ListCommandHandler())
+        setCommandHandler(CommandNames.NLST, new NlstCommandHandler())
+        setCommandHandler(CommandNames.PASS, new PassCommandHandler())
+        setCommandHandler(CommandNames.PWD, new PwdCommandHandler())
+        setCommandHandler(CommandNames.PORT, new PortCommandHandler())
+        setCommandHandler(CommandNames.QUIT, new QuitCommandHandler())
+        setCommandHandler(CommandNames.RETR, new RetrCommandHandler())
+        setCommandHandler(CommandNames.RMD, new RmdCommandHandler())
+        setCommandHandler(CommandNames.RNFR, new RnfrCommandHandler())
+        setCommandHandler(CommandNames.RNTO, new RntoCommandHandler())
+        setCommandHandler(CommandNames.STOR, new StorCommandHandler())
+        setCommandHandler(CommandNames.SYST, new SystCommandHandler())
+        setCommandHandler(CommandNames.USER, new UserCommandHandler())
     }
 
     /**
