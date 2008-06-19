@@ -46,6 +46,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
     static final FILENAME1 = "abc.txt"
     static final FILENAME2 = "SomeOtherFile.xml"
     static final FILE1 = p(HOME_DIR, FILENAME1)
+    static final SYSTEM_NAME = "WINDOWS"
 
     private FakeFtpServer ftpServer
     private FTPClient ftpClient
@@ -128,6 +129,24 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         assert outputStream.toString() == ASCII_DATA
     }
 
+    void testRmd() {
+        ftpClientConnectAndLogin()
+
+        assert ftpClient.removeDirectory(SUBDIR)
+        verifyReplyCode("removeDirectory", 250)
+    }
+
+    void testRename() {                 // RNFR and RNTO
+        fileSystem.createFile(FILE1)
+
+        ftpClientConnectAndLogin()
+
+        assert ftpClient.rename(FILE1, FILE1 + "NEW")
+        verifyReplyCode("rename", 250)
+        assert !fileSystem.exists(FILE1)
+        assert fileSystem.exists(FILE1 + "NEW")
+    }
+
     void testStor() {
         ftpClientConnectAndLogin()
 
@@ -137,6 +156,15 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         def contents = fileSystem.createInputStream(FILE1).text
         LOG.info("File contents=[" + contents + "]")
         assert contents == ASCII_DATA
+    }
+
+    void testSyst() {
+        ftpClientConnectAndLogin()
+
+        def systemName = ftpClient.getSystemName()
+        LOG.info("system name = [$systemName]")
+        assert systemName.contains('"' + SYSTEM_NAME + '"')
+        verifyReplyCode("getSystemName", 215);
     }
 
     // -------------------------------------------------------------------------
@@ -155,7 +183,8 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         }
 
         ftpServer = new FakeFtpServer()
-        ftpServer.setServerControlPort(PortTestUtil.getFtpServerControlPort())
+        ftpServer.serverControlPort = PortTestUtil.getFtpServerControlPort()
+        ftpServer.systemName = SYSTEM_NAME
 
         fileSystem = new FakeWindowsFileSystem()
         fileSystem.createParentDirectoriesAutomatically = true
