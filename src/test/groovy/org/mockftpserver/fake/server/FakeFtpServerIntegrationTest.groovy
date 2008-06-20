@@ -104,6 +104,15 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         verifyReplyCode("list", 226)
     }
 
+    void testMkd() {
+        ftpClientConnectAndLogin()
+
+        def DIR = p(HOME_DIR, 'NewDir')
+        assert ftpClient.makeDirectory(DIR)
+        verifyReplyCode("makeDirectory", 257)
+        assert fileSystem.isDirectory(DIR)
+    }
+
     void testNlst() {
         fileSystem.addEntry(new FileEntry(path: p(SUBDIR, FILENAME1)))
         fileSystem.addEntry(new DirectoryEntry(path: p(SUBDIR, SUBDIR_NAME2)))

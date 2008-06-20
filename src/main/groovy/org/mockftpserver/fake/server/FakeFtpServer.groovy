@@ -24,7 +24,6 @@ import org.mockftpserver.fake.server.ServerConfiguration
 import org.mockftpserver.fake.server.ServerConfigurationAware
 import org.mockftpserver.fake.user.UserAccount
 
-
 /**
  * "Fake" implementation of an FTP server.
  *
@@ -45,6 +44,7 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
         setCommandHandler(CommandNames.CWD, new CwdCommandHandler())
         setCommandHandler(CommandNames.DELE, new DeleCommandHandler())
         setCommandHandler(CommandNames.LIST, new ListCommandHandler())
+        setCommandHandler(CommandNames.MKD, new MkdCommandHandler())
         setCommandHandler(CommandNames.NLST, new NlstCommandHandler())
         setCommandHandler(CommandNames.PASS, new PassCommandHandler())
         setCommandHandler(CommandNames.PWD, new PwdCommandHandler())
