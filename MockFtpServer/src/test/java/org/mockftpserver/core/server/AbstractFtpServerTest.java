@@ -126,6 +126,13 @@ public abstract class AbstractFtpServerTest extends AbstractTest {
         assertSame("zzz", commandHandler, ftpServer.getCommandHandler("zzz"));
     }
 
+    /**
+     * Test calling stop() for a server that was never started.
+     */
+    public void testStopWithoutStart() {
+        ftpServer.stop();
+    }
+
     //-------------------------------------------------------------------------
     // Test setup
     //-------------------------------------------------------------------------

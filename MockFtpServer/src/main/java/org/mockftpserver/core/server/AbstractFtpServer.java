@@ -226,7 +226,9 @@ public abstract class AbstractFtpServer implements Runnable {
         terminate = true;
 
         try {
-            serverThread.join();
+            if (serverThread != null) {
+                serverThread.join();
+            }
         }
         catch (InterruptedException e) {
             e.printStackTrace();
