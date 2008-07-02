@@ -15,8 +15,6 @@
  */
 package org.mockftpserver.stub.command;
 
-import java.util.StringTokenizer;
-
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.InvocationRecord;
@@ -24,20 +22,21 @@ import org.mockftpserver.core.command.ReplyCodes;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.Assert;
 
+import java.util.StringTokenizer;
+
 /**
  * CommandHandler for the ALLO (Allocate) command. Send back a reply code of 200.
- * <p>
+ * <p/>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
- *    <li>{@link #NUMBER_OF_BYTES_KEY} ("numberOfBytes") - the number of bytes submitted 
- *              on the invocation (the first command parameter)
- *    <li>{@link #RECORD_SIZE_KEY} ("recordSize") - the record size optionally submitted 
- *              on the invocation (the second command parameter)
+ * <li>{@link #NUMBER_OF_BYTES_KEY} ("numberOfBytes") - the number of bytes submitted
+ * on the invocation (the first command parameter)
+ * <li>{@link #RECORD_SIZE_KEY} ("recordSize") - the record size optionally submitted
+ * on the invocation (the second command parameter)
  * </ul>
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class AlloCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
@@ -46,29 +45,28 @@ public final class AlloCommandHandler extends AbstractStubCommandHandler impleme
     private static final String RECORD_SIZE_DELIMITER = " R ";
 
     /**
-     * Constructor. Initialize the replyCode. 
+     * Constructor. Initialize the replyCode.
      */
     public AlloCommandHandler() {
         setReplyCode(ReplyCodes.ALLO_OK);
     }
-    
+
     /**
-     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(Command, Session, InvocationRecord)
+     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session)
      */
     public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
-        String parametersString = command.getRequiredString(0);
+        String parametersString = command.getRequiredParameter(0);
 
         if (parametersString.indexOf(RECORD_SIZE_DELIMITER) == -1) {
             invocationRecord.set(NUMBER_OF_BYTES_KEY, Integer.valueOf(parametersString));
-        }
-        else {
+        } else {
             // If the recordSize delimiter (" R ") is specified, then it must be followed by the recordSize.
             StringTokenizer tokenizer = new StringTokenizer(parametersString, RECORD_SIZE_DELIMITER);
             invocationRecord.set(NUMBER_OF_BYTES_KEY, Integer.valueOf(tokenizer.nextToken()));
             Assert.isTrue(tokenizer.hasMoreTokens(), "Missing record size: [" + parametersString + "]");
             invocationRecord.set(RECORD_SIZE_KEY, Integer.valueOf(tokenizer.nextToken()));
         }
-        
+
         sendReply(session);
     }
 

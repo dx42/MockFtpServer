@@ -47,7 +47,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
     ServerConfiguration serverConfiguration
 
     /**
-     * Reply code sent back when a FileSystemException is caught by the      {@link #handleCommand(Command, Session)}
+     * Reply code sent back when a FileSystemException is caught by the         {@link #handleCommand(Command, Session)}
      * This defaults to ReplyCodes.EXISTING_FILE_ERROR (550). 
      */
     int replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
@@ -171,21 +171,6 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
      */
     protected void assertValidReplyCode(int replyCode) {
         assert replyCode > 0, "The number [" + replyCode + "] is not a valid reply code"
-    }
-
-    /**
-     * Return the value of the command's parameter at the specified index.
-     * @param command - the Command
-     * @param index - the index of the parameter to retrieve; defaults to zero
-     * @return the value of the command parameter
-     * @throws CommandSyntaxException if the Command does not have a parameter at that index
-     */
-    protected String getRequiredParameter(Command command, int index = 0) {
-        String value = command.getParameter(index)
-        if (!value) {
-            throw new CommandSyntaxException("$command missing required parameter at index [$index]")
-        }
-        return value
     }
 
     /**

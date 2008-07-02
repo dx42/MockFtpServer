@@ -22,18 +22,17 @@ import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.core.session.Session;
 
 /**
- * CommandHandler for the STOR (Store) command. Send back two replies on the control connection: a 
- * reply code of 150 and another of 226. 
- * <p>
+ * CommandHandler for the STOR (Store) command. Send back two replies on the control connection: a
+ * reply code of 150 and another of 226.
+ * <p/>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
- *    <li>{@link #PATHNAME_KEY} ("pathname") - the pathname of the directory submitted on the invocation (the first command parameter)
- *    <li>{@link #FILE_CONTENTS_KEY} ("fileContents") - the file contents (<code>byte[]</code>) sent on the data connection
+ * <li>{@link #PATHNAME_KEY} ("pathname") - the pathname of the directory submitted on the invocation (the first command parameter)
+ * <li>{@link #FILE_CONTENTS_KEY} ("fileContents") - the file contents (<code>byte[]</code>) sent on the data connection
  * </ul>
  *
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class StorCommandHandler extends AbstractStubDataCommandHandler implements CommandHandler {
 
@@ -41,15 +40,15 @@ public final class StorCommandHandler extends AbstractStubDataCommandHandler imp
     public static final String FILE_CONTENTS_KEY = "filecontents";
 
     private static final Logger LOG = Logger.getLogger(StorCommandHandler.class);
-    
+
     /**
      * @see org.mockftpserver.stub.command.AbstractStubDataCommandHandler#beforeProcessData(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session, org.mockftpserver.core.command.InvocationRecord)
      */
     protected void beforeProcessData(Command command, Session session, InvocationRecord invocationRecord) throws Exception {
-        String filename = command.getRequiredString(0);
+        String filename = command.getRequiredParameter(0);
         invocationRecord.set(PATHNAME_KEY, filename);
     }
-    
+
     /**
      * @see org.mockftpserver.stub.command.AbstractStubDataCommandHandler#processData(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session, org.mockftpserver.core.command.InvocationRecord)
      */

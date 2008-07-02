@@ -78,7 +78,7 @@ public final class Command {
      * @throws org.mockftpserver.core.util.AssertFailedException
      *          if the parameter index is invalid or the value is not a valid String
      */
-    public String getRequiredString(int index) {
+    public String getRequiredParameter(int index) {
         assertValidIndex(index);
         return parameters[index];
     }

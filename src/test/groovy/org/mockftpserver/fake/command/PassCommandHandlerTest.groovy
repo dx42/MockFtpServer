@@ -22,6 +22,8 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.user.UserAccount
 
+
+
 /**
  * Tests for PassCommandHandler
  *
@@ -95,12 +97,6 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_MissingPasswordParameter() {
         testHandleCommand_MissingRequiredParameter([])
-        assertUserAccountInSession(false)
-        assertCurrentDirectory(null)
-    }
-
-    void testHandleCommand_EmptyPasswordParameter() {
-        testHandleCommand_MissingRequiredParameter([""])
         assertUserAccountInSession(false)
         assertCurrentDirectory(null)
     }

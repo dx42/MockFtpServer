@@ -89,21 +89,21 @@ public final class CommandTest extends AbstractTest {
     }
 
     /**
-     * Test the getRequiredString method
+     * Test the getRequiredParameter method
      */
-    public void testGetRequiredString() {
+    public void testGetRequiredParameter() {
         Command command = new Command("abc", array("123", "456"));
-        assertEquals("123", "123", command.getRequiredString(0));
-        assertEquals("456", "456", command.getRequiredString(1));
+        assertEquals("123", "123", command.getRequiredParameter(0));
+        assertEquals("456", "456", command.getRequiredParameter(1));
     }
 
     /**
-     * Test the getRequiredString method, when the index is not valid
+     * Test the getRequiredParameter method, when the index is not valid
      */
-    public void testGetRequiredString_IndexNotValid() {
+    public void testGetRequiredParameter_IndexNotValid() {
         Command command = new Command("abc", array("123", "456"));
         try {
-            command.getRequiredString(2);
+            command.getRequiredParameter(2);
             fail("Expected CommandSyntaxException");
         }
         catch (CommandSyntaxException expected) {

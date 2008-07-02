@@ -21,6 +21,8 @@ import org.mockftpserver.core.session.Session
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
+
+
 /**
  * CommandHandler for the USER command. Handler logic:
  * <ol>
@@ -37,7 +39,7 @@ import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 class UserCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
-        def username = getRequiredParameter(command)
+        def username = command.getRequiredParameter(0)
         def userAccount = serverConfiguration.getUserAccount(username)
 
         if (userAccount) {

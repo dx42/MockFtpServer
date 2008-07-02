@@ -23,32 +23,31 @@ import org.mockftpserver.core.session.Session;
 
 /**
  * CommandHandler for the MODE command. Send back a reply code of 200.
- * <p>
+ * <p/>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
- *    <li>{@link #MODE_KEY} ("mode") - the code for the transmission mode submitted on the invocation (the first command parameter)
+ * <li>{@link #MODE_KEY} ("mode") - the code for the transmission mode submitted on the invocation (the first command parameter)
  * </ul>
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class ModeCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
     public static final String MODE_KEY = "mode";
 
     /**
-     * Constructor. Initialize the replyCode. 
+     * Constructor. Initialize the replyCode.
      */
     public ModeCommandHandler() {
         setReplyCode(ReplyCodes.MODE_OK);
     }
-    
+
     /**
-     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(Command, Session, InvocationRecord)
+     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session)
      */
     public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
-        invocationRecord.set(MODE_KEY, command.getRequiredString(0));
+        invocationRecord.set(MODE_KEY, command.getRequiredParameter(0));
         sendReply(session);
     }
 

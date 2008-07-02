@@ -23,32 +23,31 @@ import org.mockftpserver.core.session.Session;
 
 /**
  * CommandHandler for the REST (Restart of interrupted transfer) command. Send back a reply code of 350.
- * <p>
+ * <p/>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
- *    <li>{@link #MARKER_KEY} ("marker") - the server marker submitted on the invocation (the first command parameter)
+ * <li>{@link #MARKER_KEY} ("marker") - the server marker submitted on the invocation (the first command parameter)
  * </ul>
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class RestCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
     public static final String MARKER_KEY = "marker";
 
     /**
-     * Constructor. Initialize the replyCode. 
+     * Constructor. Initialize the replyCode.
      */
     public RestCommandHandler() {
         setReplyCode(ReplyCodes.REST_OK);
     }
-    
+
     /**
-     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(Command, Session, InvocationRecord)
+     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session)
      */
     public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
-        String marker = command.getRequiredString(0);
+        String marker = command.getRequiredParameter(0);
         invocationRecord.set(MARKER_KEY, marker);
         sendReply(session, marker);
     }

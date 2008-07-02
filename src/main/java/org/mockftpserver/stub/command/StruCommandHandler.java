@@ -23,32 +23,31 @@ import org.mockftpserver.core.session.Session;
 
 /**
  * CommandHandler for the STRU (File Structure) command. Send back a reply code of 200.
- * <p>
+ * <p/>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
- *    <li>{@link #FILE_STRUCTURE_KEY} ("fileStructure") - the file structure code submitted on the invocation (the first command parameter)
+ * <li>{@link #FILE_STRUCTURE_KEY} ("fileStructure") - the file structure code submitted on the invocation (the first command parameter)
  * </ul>
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class StruCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
     public static final String FILE_STRUCTURE_KEY = "fileStructure";
 
     /**
-     * Constructor. Initialize the replyCode. 
+     * Constructor. Initialize the replyCode.
      */
     public StruCommandHandler() {
         setReplyCode(ReplyCodes.STRU_OK);
     }
-    
+
     /**
-     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(Command, Session, InvocationRecord)
+     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session)
      */
     public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
-        invocationRecord.set(FILE_STRUCTURE_KEY, command.getRequiredString(0));
+        invocationRecord.set(FILE_STRUCTURE_KEY, command.getRequiredParameter(0));
         sendReply(session);
     }
 

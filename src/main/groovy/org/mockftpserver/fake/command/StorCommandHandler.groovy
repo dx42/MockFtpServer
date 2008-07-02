@@ -20,6 +20,8 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
+
+
 /**
  * CommandHandler for the STOR command. Handler logic:
  * <ol>
@@ -41,7 +43,7 @@ class StorCommandHandler extends AbstractFakeCommandHandler {
         verifyLoggedIn(session)
         this.replyCodeForFileSystemException = ReplyCodes.NEW_FILE_ERROR
 
-        def path = getRealPath(session, getRequiredParameter(command))
+        def path = getRealPath(session, command.getRequiredParameter(0))
         verifyFileSystemCondition(!fileSystem.isDirectory(path), path)
         def parent = fileSystem.getParent(path)
         verifyFileSystemCondition(fileSystem.isDirectory(parent), parent)
