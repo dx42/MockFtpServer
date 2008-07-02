@@ -22,6 +22,7 @@ import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
 
+
 /**
  * CommandHandler for the PASS command. Handler logic:
  * <ol>
@@ -39,7 +40,7 @@ import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 class PassCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
-        def password = getRequiredParameter(command)
+        def password = command.getRequiredParameter(0)
         def username = getRequiredSessionAttribute(session, SessionKeys.USERNAME)
 
         if (validateUserAccount(username, session)) {

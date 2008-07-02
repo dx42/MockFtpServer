@@ -22,34 +22,33 @@ import org.mockftpserver.core.command.ReplyCodes;
 import org.mockftpserver.core.session.Session;
 
 /**
- * CommandHandler for the PASS (Password) command. Send back a reply code of 230. 
- * <p>
+ * CommandHandler for the PASS (Password) command. Send back a reply code of 230.
+ * <p/>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
- *    <li>"password" - the password submitted on the invocation (the first command parameter)
+ * <li>"password" - the password submitted on the invocation (the first command parameter)
  * </ul>
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class PassCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
     public static final String PASSWORD_KEY = "password";
 
     /**
-     * Constructor. Initialize the replyCode. 
+     * Constructor. Initialize the replyCode.
      */
     public PassCommandHandler() {
         setReplyCode(ReplyCodes.PASS_OK);
     }
-    
+
     /**
-     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(Command, Session, InvocationRecord)
+     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session)
      */
     public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
-        invocationRecord.set(PASSWORD_KEY, command.getRequiredString(0));
+        invocationRecord.set(PASSWORD_KEY, command.getRequiredParameter(0));
         sendReply(session);
     }
-    
+
 }

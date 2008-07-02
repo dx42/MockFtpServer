@@ -23,15 +23,14 @@ import org.mockftpserver.core.session.Session;
 
 /**
  * CommandHandler for the SMNT (Structure Mount) command. Send back a reply code of 250.
- * <p>
+ * <p/>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
- *    <li>{@link #PATHNAME_KEY} ("pathname") - the pathname of the directory submitted on the invocation (the first command parameter)
+ * <li>{@link #PATHNAME_KEY} ("pathname") - the pathname of the directory submitted on the invocation (the first command parameter)
  * </ul>
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class SmntCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
@@ -43,13 +42,13 @@ public final class SmntCommandHandler extends AbstractStubCommandHandler impleme
     public SmntCommandHandler() {
         setReplyCode(ReplyCodes.SMNT_OK);
     }
-    
+
     /**
-     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(Command, Session, InvocationRecord)
+     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session)
      */
     public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
-        invocationRecord.set(PATHNAME_KEY, command.getRequiredString(0));
+        invocationRecord.set(PATHNAME_KEY, command.getRequiredParameter(0));
         sendReply(session);
     }
-    
+
 }

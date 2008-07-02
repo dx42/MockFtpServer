@@ -15,11 +15,11 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 import org.mockftpserver.core.command.Command
-import org.mockftpserver.core.session.Session
-import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.core.command.ReplyCodes
+import org.mockftpserver.core.session.Session
+import org.mockftpserver.fake.command.AbstractFakeCommandHandler
+
 
 /**
  * CommandHandler for the RMD command. Handler logic:
@@ -30,7 +30,7 @@ import org.mockftpserver.core.command.ReplyCodes
  *  <li>Otherwise, reply with 250</li>
  * </ol>
  * The supplied pathname may be absolute or relative to the current directory.
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -39,13 +39,13 @@ class RmdCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
-        def path = getRealPath(session, getRequiredParameter(command))
+        def path = getRealPath(session, command.getRequiredParameter(0))
 
         this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
         verifyFileSystemCondition(fileSystem.exists(path), path)
         verifyFileSystemCondition(fileSystem.isDirectory(path), path)
         verifyFileSystemCondition(fileSystem.listNames(path) == [], path)
-        
+
         fileSystem.delete(path)
         sendReply(session, ReplyCodes.RMD_OK)
     }

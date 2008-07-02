@@ -15,11 +15,12 @@
  */
 package org.mockftpserver.fake.command
 
-import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 import org.mockftpserver.core.command.Command
+import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.core.command.ReplyCodes
+import org.mockftpserver.fake.command.AbstractFakeCommandHandler
+
 
 /**
  * CommandHandler for the RNTO command. Handler logic:
@@ -33,7 +34,7 @@ import org.mockftpserver.core.command.ReplyCodes
  *  <li>Otherwise, reply with 250 and remove the FROM path stored in the session by the RNFR command</li>
  * </ol>
  * The supplied pathname may be absolute or relative to the current directory.
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -42,7 +43,7 @@ class RntoCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
-        def toPath = getRealPath(session, getRequiredParameter(command))
+        def toPath = getRealPath(session, command.getRequiredParameter(0))
         def fromPath = getRequiredSessionAttribute(session, SessionKeys.RENAME_FROM)
 
         this.replyCodeForFileSystemException = ReplyCodes.NEW_FILE_ERROR

@@ -20,6 +20,8 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
+
+
 /**
  * CommandHandler for the DELE command. Handler logic:
  * <ol>
@@ -38,7 +40,7 @@ class DeleCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
-        def path = getRealPath(session, getRequiredParameter(command))
+        def path = getRealPath(session, command.getRequiredParameter(0))
 
         this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
         verifyFileSystemCondition(fileSystem.isFile(path), path)

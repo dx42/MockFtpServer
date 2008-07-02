@@ -21,6 +21,7 @@ import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
 
+
 /**
  * CommandHandler for the MKD command. Handler logic:
  * <ol>
@@ -40,7 +41,7 @@ class MkdCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
-        def path = getRealPath(session, getRequiredParameter(command))
+        def path = getRealPath(session, command.getRequiredParameter(0))
         def parent = fileSystem.getParent(path)
 
         this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR

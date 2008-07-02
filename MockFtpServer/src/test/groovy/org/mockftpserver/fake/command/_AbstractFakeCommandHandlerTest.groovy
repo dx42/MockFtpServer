@@ -31,6 +31,8 @@ import org.mockftpserver.fake.filesystem.NewFileOperationException
 import org.mockftpserver.fake.server.StubServerConfiguration
 import org.mockftpserver.test.AbstractGroovyTest
 
+
+
 /**
  * Tests for AbstractFakeCommandHandler
  *
@@ -100,16 +102,6 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
     void testAssertValidReplyCode() {
         commandHandler.assertValidReplyCode(1)        // no exception expected
         shouldFail { commandHandler.assertValidReplyCode(0) }
-    }
-
-    void testGetRequiredParameter() {
-        def command = new Command("C1", ["abc"])
-        assert commandHandler.getRequiredParameter(command) == "abc"
-        assert commandHandler.getRequiredParameter(command, 0) == "abc"
-        shouldFail(CommandSyntaxException) { commandHandler.getRequiredParameter(command, 1) }
-
-        command = new Command("C1", [])
-        shouldFail(CommandSyntaxException) { commandHandler.getRequiredParameter(command) }
     }
 
     void testGetRequiredSessionAttribute() {
