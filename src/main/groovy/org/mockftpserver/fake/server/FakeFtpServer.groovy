@@ -42,6 +42,7 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
     FakeFtpServer() {
         setCommandHandler(CommandNames.CONNECT, new ConnectCommandHandler())
         setCommandHandler(CommandNames.CWD, new CwdCommandHandler())
+        setCommandHandler(CommandNames.CDUP, new CdupCommandHandler())
         setCommandHandler(CommandNames.DELE, new DeleCommandHandler())
         setCommandHandler(CommandNames.LIST, new ListCommandHandler())
         setCommandHandler(CommandNames.MKD, new MkdCommandHandler())
