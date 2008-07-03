@@ -22,6 +22,7 @@ import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 import org.mockftpserver.fake.filesystem.FileInfo
 
+
 /**
  * CommandHandler for the LIST command. Handler logic:
  * <ol>
@@ -49,7 +50,7 @@ class ListCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
-        sendReply(session, ReplyCodes.SEND_DATA_INITIAL_OK)
+        sendReply(session, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
 
         this.replyCodeForFileSystemException = ReplyCodes.SYSTEM_ERROR
         def path = getRealPath(session, command.getParameter(0))
@@ -62,7 +63,7 @@ class ListCommandHandler extends AbstractFakeCommandHandler {
         session.sendData(result.toString().getBytes(), result.length())
         session.closeDataConnection();
 
-        sendReply(session, ReplyCodes.SEND_DATA_FINAL_OK)
+        sendReply(session, ReplyCodes.TRANSFER_DATA_FINAL_OK)
     }
 
     /**

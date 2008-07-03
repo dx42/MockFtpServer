@@ -26,19 +26,18 @@ import java.util.Arrays;
 
 /**
  * Tests for the FileRetrCommandHandler class
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest {
 
     private static final Logger LOG = Logger.getLogger(FileRetrCommandHandlerTest.class);
-    private static final byte BYTE1 = (byte)7;
-    private static final byte BYTE2 = (byte)21;
-    
+    private static final byte BYTE1 = (byte) 7;
+    private static final byte BYTE2 = (byte) 21;
+
     private FileRetrCommandHandler commandHandler;
-    
+
     /**
      * Test the constructor that takes a String, passing in a null
      */
@@ -51,7 +50,7 @@ public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest
             LOG.info("Expected: " + expected);
         }
     }
-    
+
     /**
      * Test the setFile(String) method, passing in a null
      */
@@ -64,32 +63,33 @@ public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest
             LOG.info("Expected: " + expected);
         }
     }
-    
+
     /**
      * Test the handleCommand(Command,Session) method. Create a temporary (binary) file, and
-     * make sure its contents are written back 
+     * make sure its contents are written back
+     *
      * @throws Exception
      */
     public void testHandleCommand() throws Exception {
 
-         final byte[] BUFFER = new byte[FileRetrCommandHandler.BUFFER_SIZE];
-         Arrays.fill(BUFFER, BYTE1);
+        final byte[] BUFFER = new byte[FileRetrCommandHandler.BUFFER_SIZE];
+        Arrays.fill(BUFFER, BYTE1);
 
-        session.sendReply(ReplyCodes.SEND_DATA_INITIAL_OK, replyTextFor(ReplyCodes.SEND_DATA_INITIAL_OK));
+        session.sendReply(ReplyCodes.TRANSFER_DATA_INITIAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_INITIAL_OK));
         session.openDataConnection();
 
         ArgumentsMatcher matcher = new ArgumentsMatcher() {
             int counter = -1;   // will increment for each invocation
+
             public boolean matches(Object[] expected, Object[] actual) {
                 counter++;
-                byte[] buffer = (byte[])actual[0];
-                int expectedLength = ((Integer)expected[1]).intValue();
-                int actualLength = ((Integer)actual[1]).intValue();
+                byte[] buffer = (byte[]) actual[0];
+                int expectedLength = ((Integer) expected[1]).intValue();
+                int actualLength = ((Integer) actual[1]).intValue();
                 LOG.info("invocation #" + counter + " expected=" + expectedLength + " actualLength=" + actualLength);
                 if (counter < 5) {
                     assertEquals("buffer for invocation #" + counter, BUFFER, buffer);
-                }
-                else {
+                } else {
                     // TODO Got two invocations here; only expected one
                     //assertEquals("length for invocation #" + counter, expectedLength, actualLength);
                     assertEquals("buffer[0]", BYTE2, buffer[0]);
@@ -98,6 +98,7 @@ public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest
                 }
                 return true;
             }
+
             public String toString(Object[] args) {
                 return args[0].getClass().getName() + " " + args[1].toString();
             }
@@ -110,20 +111,20 @@ public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest
         session.sendData(BUFFER, 512);
         session.sendData(BUFFER, 512);
         session.sendData(BUFFER, 3);
-        
+
         session.closeDataConnection();
-        session.sendReply(ReplyCodes.SEND_DATA_FINAL_OK, replyTextFor(ReplyCodes.SEND_DATA_FINAL_OK));
+        session.sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_FINAL_OK));
         replay(session);
-        
+
         commandHandler.setFile("Sample.jpg");
         Command command = new Command(CommandNames.RETR, array(FILENAME1));
         commandHandler.handleCommand(command, session);
         verify(session);
-        
+
         verifyNumberOfInvocations(commandHandler, 1);
         verifyOneDataElement(commandHandler.getInvocation(0), FileRetrCommandHandler.PATHNAME_KEY, FILENAME1);
     }
-    
+
     /**
      * Test the handleCommand() method, when no pathname parameter has been specified
      */
@@ -144,9 +145,10 @@ public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest
             LOG.info("Expected: " + expected);
         }
     }
-    
+
     /**
      * Perform initialization before each test
+     *
      * @see org.mockftpserver.stub.command.AbstractCommandHandlerTest#setUp()
      */
     protected void setUp() throws Exception {

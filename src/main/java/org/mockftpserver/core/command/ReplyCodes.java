@@ -56,8 +56,8 @@ public final class ReplyCodes {
     public static final int USER_NO_SUCH_USER = 530;
     public static final int USER_ACCOUNT_NOT_VALID = 530;
 
-    public static final int SEND_DATA_INITIAL_OK = 150;
-    public static final int SEND_DATA_FINAL_OK = 226;
+    public static final int TRANSFER_DATA_INITIAL_OK = 150;
+    public static final int TRANSFER_DATA_FINAL_OK = 226;
 
     public static final int CONNECT_OK = 220;
 

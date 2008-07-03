@@ -19,14 +19,12 @@ import org.easymock.MockControl;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
-import org.mockftpserver.stub.command.ListCommandHandler;
 
 /**
  * Tests for the ListCommandHandler class
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class ListCommandHandlerTest extends AbstractCommandHandlerTest {
 
@@ -34,37 +32,39 @@ public final class ListCommandHandlerTest extends AbstractCommandHandlerTest {
 
     /**
      * Test the handleCommand() method
+     *
      * @throws Exception
      */
     public void testHandleCommand() throws Exception {
         final String DIR_LISTING = " directory listing\nabc.txt\ndef.log\n";
         final String DIR_LISTING_TRIMMED = DIR_LISTING.trim();
-        ((ListCommandHandler)commandHandler).setDirectoryListing(DIR_LISTING);
+        ((ListCommandHandler) commandHandler).setDirectoryListing(DIR_LISTING);
 
         for (int i = 0; i < 2; i++) {
-            session.sendReply(ReplyCodes.SEND_DATA_INITIAL_OK, replyTextFor(ReplyCodes.SEND_DATA_INITIAL_OK));
+            session.sendReply(ReplyCodes.TRANSFER_DATA_INITIAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_INITIAL_OK));
             session.openDataConnection();
             byte[] bytes = DIR_LISTING_TRIMMED.getBytes();
             session.sendData(bytes, bytes.length);
             control(session).setMatcher(MockControl.ARRAY_MATCHER);
             session.closeDataConnection();
-            session.sendReply(ReplyCodes.SEND_DATA_FINAL_OK, replyTextFor(ReplyCodes.SEND_DATA_FINAL_OK));
+            session.sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_FINAL_OK));
         }
         replay(session);
-        
+
         Command command1 = new Command(CommandNames.LIST, array(DIR1));
         Command command2 = new Command(CommandNames.LIST, EMPTY);
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
         verify(session);
-        
+
         verifyNumberOfInvocations(commandHandler, 2);
         verifyOneDataElement(commandHandler.getInvocation(0), ListCommandHandler.PATHNAME_KEY, DIR1);
         verifyOneDataElement(commandHandler.getInvocation(1), ListCommandHandler.PATHNAME_KEY, null);
     }
-    
+
     /**
      * Perform initialization before each test
+     *
      * @see org.mockftpserver.stub.command.AbstractCommandHandlerTest#setUp()
      */
     protected void setUp() throws Exception {

@@ -20,11 +20,10 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.fake.filesystem.FileSystemException
 
 /**
  * Tests for NlstCommandHandler
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -32,12 +31,12 @@ import org.mockftpserver.fake.filesystem.FileSystemException
 class NlstCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     def DIR = "/usr"
-    
+
     void testHandleCommand_SingleFile() {
         assert fileSystem.createFile("/usr/f1.txt")
         handleCommandAndVerifySendDataReplies([DIR])
         assertSessionData("f1.txt")
-	}
+    }
 
     void testHandleCommand_FilesAndDirectories() {
         assert fileSystem.createFile("/usr/f1.txt")
@@ -45,50 +44,50 @@ class NlstCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         assert fileSystem.createFile("/usr/f2.txt")
         assert fileSystem.createDirectory("/usr/Archive")
         handleCommandAndVerifySendDataReplies([DIR])
-        
-        def EXPECTED = [ "f1.txt", "OtherFiles", "f2.txt", "Archive" ] as Set
+
+        def EXPECTED = ["f1.txt", "OtherFiles", "f2.txt", "Archive"] as Set
         def actualLines = session.sentData[0].tokenize(endOfLine()) as Set
         LOG.info("actualLines=$actualLines")
         assert actualLines == EXPECTED
-	}
+    }
 
     void testHandleCommand_NoPath_UseCurrentDirectory() {
         assert fileSystem.createFile("/usr/f1.txt")
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
         handleCommandAndVerifySendDataReplies([])
         assertSessionData("f1.txt")
-	}
+    }
 
     void testHandleCommand_EmptyDirectory() {
         handleCommandAndVerifySendDataReplies([DIR])
         assertSessionData("")
-	}
-    
+    }
+
     void testHandleCommand_PathSpecifiesAFile() {
         assert fileSystem.createFile("/usr/f1.txt")
         handleCommandAndVerifySendDataReplies(["/usr/f1.txt"])
         assertSessionData("")
-	}
-    
+    }
+
     void testHandleCommand_PathDoesNotExist() {
         handleCommandAndVerifySendDataReplies(["/DoesNotExist"])
         assertSessionData("")
-	}
-    
+    }
+
     void testHandleCommand_ListNamesThrowsException() {
         overrideMethodToThrowFileSystemException("listNames")
         handleCommand([DIR])
-        assertSessionReplies([ReplyCodes.SEND_DATA_INITIAL_OK, ReplyCodes.SYSTEM_ERROR])
+        assertSessionReplies([ReplyCodes.TRANSFER_DATA_INITIAL_OK, ReplyCodes.SYSTEM_ERROR])
     }
 
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
-    
-	CommandHandler createCommandHandler() {
-	    new NlstCommandHandler()
-	}
-	
+
+    CommandHandler createCommandHandler() {
+        new NlstCommandHandler()
+    }
+
     Command createValidCommand() {
         return new Command(CommandNames.NLST, [DIR])
     }
@@ -97,5 +96,5 @@ class NlstCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         super.setUp()
         assert fileSystem.createDirectory("/usr")
     }
-   
+
 }

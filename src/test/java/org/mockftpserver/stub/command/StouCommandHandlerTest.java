@@ -18,14 +18,12 @@ package org.mockftpserver.stub.command;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
-import org.mockftpserver.stub.command.StouCommandHandler;
 
 /**
  * Tests for the StouCommandHandler class
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class StouCommandHandlerTest extends AbstractCommandHandlerTest {
 
@@ -33,7 +31,7 @@ public final class StouCommandHandlerTest extends AbstractCommandHandlerTest {
 
     /**
      * Perform initialization before each test
-     * 
+     *
      * @see org.mockftpserver.stub.command.AbstractCommandHandlerTest#setUp()
      */
     protected void setUp() throws Exception {
@@ -49,12 +47,12 @@ public final class StouCommandHandlerTest extends AbstractCommandHandlerTest {
         final String DATA = "ABC";
         final String FILENAME = "abc.txt";
 
-        session.sendReply(ReplyCodes.SEND_DATA_INITIAL_OK, replyTextFor(ReplyCodes.SEND_DATA_INITIAL_OK));
+        session.sendReply(ReplyCodes.TRANSFER_DATA_INITIAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_INITIAL_OK));
         session.openDataConnection();
         session.readData();
         control(session).setReturnValue(DATA.getBytes());
         session.closeDataConnection();
-        session.sendReply(ReplyCodes.SEND_DATA_FINAL_OK, formattedReplyTextFor("226.WithFilename", FILENAME));
+        session.sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, formattedReplyTextFor("226.WithFilename", FILENAME));
         replay(session);
 
         Command command = new Command(CommandNames.STOU, array(FILENAME1));

@@ -20,6 +20,7 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
+
 /**
  * CommandHandler for the NLST command. Handler logic:
  * <ol>
@@ -44,7 +45,7 @@ class NlstCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
-        sendReply(session, ReplyCodes.SEND_DATA_INITIAL_OK)
+        sendReply(session, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
 
         this.replyCodeForFileSystemException = ReplyCodes.SYSTEM_ERROR
         def path = getRealPath(session, command.getParameter(0))
@@ -54,7 +55,7 @@ class NlstCommandHandler extends AbstractFakeCommandHandler {
         session.sendData(directoryListing.getBytes(), directoryListing.length())
         session.closeDataConnection();
 
-        sendReply(session, ReplyCodes.SEND_DATA_FINAL_OK)
+        sendReply(session, ReplyCodes.TRANSFER_DATA_FINAL_OK)
     }
 
 }
