@@ -18,8 +18,9 @@ package org.mockftpserver.fake.command
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
-import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.core.command.ReplyCodes
+import org.mockftpserver.fake.filesystem.FileEntry
+
 
 /**
  * Tests for RetrCommandHandler
@@ -58,7 +59,7 @@ class RetrCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     void testHandleCommand_CreateInputStreamThrowsException() {
         overrideMethodToThrowFileSystemException("createInputStream")
         handleCommand([FILE])
-        assertSessionReplies([ReplyCodes.SEND_DATA_INITIAL_OK, ReplyCodes.EXISTING_FILE_ERROR])
+        assertSessionReplies([ReplyCodes.TRANSFER_DATA_INITIAL_OK, ReplyCodes.EXISTING_FILE_ERROR])
     }
 
     //-------------------------------------------------------------------------

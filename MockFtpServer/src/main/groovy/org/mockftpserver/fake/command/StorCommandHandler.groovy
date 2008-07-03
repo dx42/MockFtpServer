@@ -21,7 +21,6 @@ import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
 
-
 /**
  * CommandHandler for the STOR command. Handler logic:
  * <ol>
@@ -48,7 +47,7 @@ class StorCommandHandler extends AbstractFakeCommandHandler {
         def parent = fileSystem.getParent(path)
         verifyFileSystemCondition(fileSystem.isDirectory(parent), parent)
 
-        sendReply(session, ReplyCodes.SEND_DATA_INITIAL_OK)
+        sendReply(session, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
 
         session.openDataConnection();
         def contents = session.readData()
@@ -56,7 +55,7 @@ class StorCommandHandler extends AbstractFakeCommandHandler {
 
         def out = fileSystem.createOutputStream(path, false)
         out.withStream { it.write(contents) }
-        sendReply(session, ReplyCodes.SEND_DATA_FINAL_OK)
+        sendReply(session, ReplyCodes.TRANSFER_DATA_FINAL_OK)
     }
 
 }

@@ -24,11 +24,10 @@ import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.filesystem.DirectoryEntry
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileInfo
-import org.mockftpserver.fake.filesystem.FileSystemException
 
 /**
  * Tests for ListCommandHandler
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -40,15 +39,15 @@ class ListCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     private static final NAME = "abc.txt"
     private static final LAST_MODIFIED = new Date()
     private static final SIZE = 1000
-    
+
     def dateFormat
     def lastModifiedFormatted
-    
+
     void testHandleCommand_SingleFile() {
-        fileSystem.addEntry(new FileEntry(path:p(DIR,NAME), lastModified:LAST_MODIFIED, contents:"abc"))
+        fileSystem.addEntry(new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc"))
         handleCommandAndVerifySendDataReplies([DIR])
         assertSessionData(listingForFile(LAST_MODIFIED, "abc".size(), NAME),)
-	}
+    }
 
     void testHandleCommand_FilesAndDirectories() {
         def NAME1 = "abc.txt"
@@ -56,48 +55,48 @@ class ListCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         def NAME3 = "another_file.doc"
         def DATA1 = "abc"
         def DATA3 = "".padRight(1000, 'x')
-        fileSystem.addEntry(new FileEntry(path:p(DIR,NAME1), lastModified:LAST_MODIFIED, contents:DATA1))
-        fileSystem.addEntry(new DirectoryEntry(path:p(DIR,NAME2), lastModified:LAST_MODIFIED))
-        fileSystem.addEntry(new FileEntry(path:p(DIR,NAME3), lastModified:LAST_MODIFIED, contents:DATA3))
+        fileSystem.addEntry(new FileEntry(path: p(DIR, NAME1), lastModified: LAST_MODIFIED, contents: DATA1))
+        fileSystem.addEntry(new DirectoryEntry(path: p(DIR, NAME2), lastModified: LAST_MODIFIED))
+        fileSystem.addEntry(new FileEntry(path: p(DIR, NAME3), lastModified: LAST_MODIFIED, contents: DATA3))
 
         handleCommandAndVerifySendDataReplies([DIR])
-                
+
         def actualLines = session.sentData[0].tokenize(endOfLine()) as Set
         LOG.info("actualLines=$actualLines")
         def EXPECTED = [
-            listingForFile(LAST_MODIFIED, DATA1.size(), NAME1),
-            listingForDirectory(LAST_MODIFIED, NAME2),
-            listingForFile(LAST_MODIFIED, DATA3.size(), NAME3) ] as Set
+                listingForFile(LAST_MODIFIED, DATA1.size(), NAME1),
+                listingForDirectory(LAST_MODIFIED, NAME2),
+                listingForFile(LAST_MODIFIED, DATA3.size(), NAME3)] as Set
         assert actualLines == EXPECTED
-	}
-    
+    }
+
     void testHandleCommand_NoPath_UseCurrentDirectory() {
-        fileSystem.addEntry(new FileEntry(path:p(DIR,NAME), lastModified:LAST_MODIFIED, contents:"abc"))
+        fileSystem.addEntry(new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc"))
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
         handleCommandAndVerifySendDataReplies([])
         assertSessionData(listingForFile(LAST_MODIFIED, "abc".size(), NAME),)
-	}
+    }
 
     void testHandleCommand_EmptyDirectory() {
         handleCommandAndVerifySendDataReplies([DIR])
         assertSessionData("")
-	}
-    
+    }
+
     void testHandleCommand_PathSpecifiesAFile() {
-        fileSystem.addEntry(new FileEntry(path:p(DIR,NAME), lastModified:LAST_MODIFIED, contents:"abc"))
-        handleCommandAndVerifySendDataReplies([p(DIR,NAME)])
+        fileSystem.addEntry(new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc"))
+        handleCommandAndVerifySendDataReplies([p(DIR, NAME)])
         assertSessionData(listingForFile(LAST_MODIFIED, "abc".size(), NAME),)
-	}
-    
+    }
+
     void testHandleCommand_PathDoesNotExist() {
         handleCommandAndVerifySendDataReplies(["/DoesNotExist"])
         assertSessionData("")
-	}
-    
+    }
+
     void testHandleCommand_ListFilesThrowsException() {
         overrideMethodToThrowFileSystemException("listFiles")
         handleCommand([DIR])
-        assertSessionReplies([ReplyCodes.SEND_DATA_INITIAL_OK, ReplyCodes.SYSTEM_ERROR])
+        assertSessionReplies([ReplyCodes.TRANSFER_DATA_INITIAL_OK, ReplyCodes.SYSTEM_ERROR])
     }
 
     void testDirectoryListing_File() {
@@ -105,25 +104,25 @@ class ListCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         def sizeStr = SIZE.toString().padLeft(SIZE_WIDTH)
         def expected = "$lastModifiedFormatted  $sizeStr  $NAME"
         def actual = commandHandler.directoryListing(fileInfo)
-        assert actual == expected 
+        assert actual == expected
     }
-    
+
     void testDirectoryListing_Directory() {
         def fileInfo = FileInfo.forDirectory(NAME, LAST_MODIFIED)
         def dirStr = "<DIR>".padRight(SIZE_WIDTH)
         def expected = "$lastModifiedFormatted  $dirStr  $NAME"
         def actual = commandHandler.directoryListing(fileInfo)
-        assert actual == expected 
+        assert actual == expected
     }
-    
+
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
-    
-	CommandHandler createCommandHandler() {
-	    new ListCommandHandler()
-	}
-	
+
+    CommandHandler createCommandHandler() {
+        new ListCommandHandler()
+    }
+
     Command createValidCommand() {
         return new Command(CommandNames.LIST, [DIR])
     }
@@ -134,7 +133,7 @@ class ListCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         dateFormat = new SimpleDateFormat(ListCommandHandler.DATE_FORMAT)
         lastModifiedFormatted = dateFormat.format(LAST_MODIFIED)
     }
-    
+
     private String listingForFile(lastModified, size, name) {
         def lastModifiedFormatted = dateFormat.format(lastModified)
         "$lastModifiedFormatted  ${size.toString().padLeft(SIZE_WIDTH)}  $name"
@@ -142,7 +141,7 @@ class ListCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     private String listingForDirectory(lastModified, name) {
         def lastModifiedFormatted = dateFormat.format(lastModified)
-        "$lastModifiedFormatted  ${'<DIR>'.padRight(SIZE_WIDTH)}  $name"    
+        "$lastModifiedFormatted  ${'<DIR>'.padRight(SIZE_WIDTH)}  $name"
     }
 
 }

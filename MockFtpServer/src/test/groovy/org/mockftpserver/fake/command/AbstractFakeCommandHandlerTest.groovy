@@ -25,6 +25,7 @@ import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.server.StubServerConfiguration
 import org.mockftpserver.test.AbstractGroovyTest
 
+
 /**
  * Abstract superclass for CommandHandler tests
  *
@@ -185,11 +186,11 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
      * Execute the handleCommand() method with the specified parameters and 
      * assert that the standard SEND DATA replies were sent through the session.
      * @param parameters - the command parameters to use; defaults to []
-     * @param finalReplyCode - the expected final reply code; defaults to ReplyCodes.SEND_DATA_FINAL_OK
+     * @param finalReplyCode - the expected final reply code; defaults to ReplyCodes.TRANSFER_DATA_FINAL_OK
      */
-    protected handleCommandAndVerifySendDataReplies(parameters = [], int finalReplyCode = ReplyCodes.SEND_DATA_FINAL_OK) {
+    protected handleCommandAndVerifySendDataReplies(parameters = [], int finalReplyCode = ReplyCodes.TRANSFER_DATA_FINAL_OK) {
         commandHandler.handleCommand(createCommand(parameters), session)
-        assertSessionReplies([ReplyCodes.SEND_DATA_INITIAL_OK, finalReplyCode])
+        assertSessionReplies([ReplyCodes.TRANSFER_DATA_INITIAL_OK, finalReplyCode])
     }
 
     /**

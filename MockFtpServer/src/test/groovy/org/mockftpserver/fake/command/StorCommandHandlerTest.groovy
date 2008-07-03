@@ -21,6 +21,7 @@ import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.fake.filesystem.FileSystemException
 
+
 /**
  * Tests for StorCommandHandler
  *
@@ -78,7 +79,7 @@ class StorCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         overrideMethod(fileSystem, "createOutputStream", newMethod)
 
         handleCommand([FILE])
-        assertSessionReplies([ReplyCodes.SEND_DATA_INITIAL_OK, ReplyCodes.NEW_FILE_ERROR])
+        assertSessionReplies([ReplyCodes.TRANSFER_DATA_INITIAL_OK, ReplyCodes.NEW_FILE_ERROR])
     }
 
     //-------------------------------------------------------------------------
