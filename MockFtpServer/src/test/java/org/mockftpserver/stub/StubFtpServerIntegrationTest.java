@@ -15,11 +15,6 @@
  */
 package org.mockftpserver.stub;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
@@ -29,27 +24,20 @@ import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.core.command.SimpleCompositeCommandHandler;
 import org.mockftpserver.core.command.StaticReplyCommandHandler;
-import org.mockftpserver.stub.StubFtpServer;
-import org.mockftpserver.stub.command.AppeCommandHandler;
-import org.mockftpserver.stub.command.CwdCommandHandler;
-import org.mockftpserver.stub.command.HelpCommandHandler;
-import org.mockftpserver.stub.command.ListCommandHandler;
-import org.mockftpserver.stub.command.NlstCommandHandler;
-import org.mockftpserver.stub.command.PwdCommandHandler;
-import org.mockftpserver.stub.command.RetrCommandHandler;
-import org.mockftpserver.stub.command.StatCommandHandler;
-import org.mockftpserver.stub.command.StorCommandHandler;
-import org.mockftpserver.stub.command.StouCommandHandler;
+import org.mockftpserver.stub.command.*;
 import org.mockftpserver.test.AbstractTest;
 import org.mockftpserver.test.IntegrationTest;
 import org.mockftpserver.test.PortTestUtil;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 /**
  * Tests for StubFtpServer using the Apache Jakarta Commons Net FTP client.
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class StubFtpServerIntegrationTest extends AbstractTest implements IntegrationTest {
 
@@ -69,7 +57,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
     //-------------------------------------------------------------------------
     // Tests
     //-------------------------------------------------------------------------
-    
+
     /**
      * Test connecting and logging in
      */
@@ -153,7 +141,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         ftpClientConnect();
 
         ftpClient.enterLocalPassiveMode();
-        
+
         // Set directory listing
         ListCommandHandler listCommandHandler = (ListCommandHandler) stubFtpServer.getCommandHandler(CommandNames.LIST);
         listCommandHandler.setDirectoryListing("11-09-01 12:30PM  406348 File2350.log");
@@ -286,7 +274,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         // CDUP
         boolean success = ftpClient.changeToParentDirectory();
         assertTrue("Unable to CDUP", success);
-        verifyReplyCode("changeToParentDirectory", 250);
+        verifyReplyCode("changeToParentDirectory", 200);
     }
 
     /**
@@ -428,7 +416,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
     public void testStou() throws Exception {
         StouCommandHandler stouCommandHandler = (StouCommandHandler) stubFtpServer.getCommandHandler(CommandNames.STOU);
         stouCommandHandler.setFilename(FILENAME);
-        
+
         ftpClientConnect();
 
         // Stor a File (STOU)
@@ -445,7 +433,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
      */
     public void testAppe() throws Exception {
         AppeCommandHandler appeCommandHandler = (AppeCommandHandler) stubFtpServer.getCommandHandler(CommandNames.APPE);
-        
+
         ftpClientConnect();
 
         // Append a File (APPE)
@@ -480,7 +468,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
 
     /**
      * Test Mode (MODE)
-    */
+     */
     public void testMode() throws Exception {
         ftpClientConnect();
 
@@ -513,7 +501,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         simpleCompositeCommandHandler.addCommandHandler(commandHandler1);
         simpleCompositeCommandHandler.addCommandHandler(commandHandler2);
         stubFtpServer.setCommandHandler("CWD", simpleCompositeCommandHandler);
-        
+
         // Connect
         ftpClientConnect();
 
@@ -521,7 +509,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         assertFalse("first", ftpClient.changeWorkingDirectory("dir1/dir2"));
         assertTrue("first", ftpClient.changeWorkingDirectory("dir1/dir2"));
     }
-    
+
     /**
      * Test site parameters (SITE)
      */
@@ -565,13 +553,14 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         assertEquals("reiN", 220, ftpClient.sendCommand("reiN"));
         assertEquals("Rein", 220, ftpClient.sendCommand("Rein"));
     }
-    
+
     // -------------------------------------------------------------------------
     // Test setup and tear-down
     // -------------------------------------------------------------------------
 
     /**
      * Perform initialization before each test
+     *
      * @see org.mockftpserver.test.AbstractTest#setUp()
      */
     protected void setUp() throws Exception {
@@ -591,6 +580,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
 
     /**
      * Perform cleanup after each test
+     *
      * @see org.mockftpserver.test.AbstractTest#tearDown()
      */
     protected void tearDown() throws Exception {
@@ -608,11 +598,11 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
     private void ftpClientConnect() throws IOException {
         ftpClient.connect(SERVER, PortTestUtil.getFtpServerControlPort());
     }
-    
+
     /**
      * Assert that the FtpClient reply code is equal to the expected value
-     * 
-     * @param operation - the description of the operation performed; used in the error message
+     *
+     * @param operation         - the description of the operation performed; used in the error message
      * @param expectedReplyCode - the expected FtpClient reply code
      */
     private void verifyReplyCode(String operation, int expectedReplyCode) {
@@ -623,11 +613,11 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
 
     /**
      * Verify that the FTPFile has the specified properties
-     * 
+     *
      * @param ftpFile - the FTPFile to verify
-     * @param type - the expected file type
-     * @param name - the expected file name
-     * @param size - the expected file size (will be zero for a directory)
+     * @param type    - the expected file type
+     * @param name    - the expected file name
+     * @param size    - the expected file size (will be zero for a directory)
      */
     private void verifyFTPFile(FTPFile ftpFile, int type, String name, long size) {
         LOG.info(ftpFile);

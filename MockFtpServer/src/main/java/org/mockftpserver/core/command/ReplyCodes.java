@@ -26,7 +26,7 @@ public final class ReplyCodes {
     public static final int ABOR_OK = 226;
     public static final int ACCT_OK = 230;
     public static final int ALLO_OK = 200;
-    public static final int CDUP_OK = 250;
+    public static final int CDUP_OK = 200;
     public static final int CWD_OK = 250;
     public static final int DELE_OK = 250;
     public static final int HELP_OK = 214;

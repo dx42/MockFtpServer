@@ -39,7 +39,8 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
     static final PASSWORD = "password"
     static final ASCII_DATA = "abcdef\tghijklmnopqr"
     static final BINARY_DATA = new byte[256]
-    static final HOME_DIR = "c:/home"
+    static final ROOT_DIR = "c:/"
+    static final HOME_DIR = p(ROOT_DIR, "home")
     static final SUBDIR_NAME = 'sub'
     static final SUBDIR_NAME2 = "archive"
     static final SUBDIR = p(HOME_DIR, SUBDIR_NAME)
@@ -74,6 +75,12 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         ftpClientConnectAndLogin()
         assert ftpClient.printWorkingDirectory() == HOME_DIR
         verifyReplyCode("printWorkingDirectory", 257)
+    }
+
+    void testCdup() {
+        ftpClientConnectAndLogin()
+        assert ftpClient.changeToParentDirectory()
+        verifyReplyCode("changeToParentDirectory", 200)
     }
 
     void testCwd() {
