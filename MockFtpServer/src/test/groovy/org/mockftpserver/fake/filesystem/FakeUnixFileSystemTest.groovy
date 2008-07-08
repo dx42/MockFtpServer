@@ -13,103 +13,114 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.fake.filesystem;
+package org.mockftpserver.fake.filesystem
 
-import org.mockftpserver.core.util.IoUtil
-import org.mockftpserver.fake.filesystem.AbstractFakeFileSystemTest
+import org.mockftpserver.fake.filesystem.AbstractFakeFileSystemTest;
 
 /**
  * Tests for FakeUnixFileSystem.
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
 class FakeUnixFileSystemTest extends AbstractFakeFileSystemTest {
 
-     private static final String SEP = "/"
-     
-     FakeUnixFileSystemTest() {
-         // These need to be set in the constructor because these values are used in setUp()
-         NEW_DIR = SEP + NEW_DIRNAME
-         NEW_FILE = "/NewFile.txt"
-         EXISTING_DIR = "/"
-         EXISTING_FILE = "/ExistingFile.txt"
-         NO_SUCH_DIR = "/xx/yy"
-         NO_SUCH_FILE = "/xx/yy/zz.txt"
-     }
-     
-     void testPath() {
-         assert fileSystem.path(null, null) == ""
-         assert fileSystem.path(null, "abc") == "abc"
-         assert fileSystem.path("abc", null) == "abc"
-         assert fileSystem.path("", "") == ""
-         assert fileSystem.path("", "abc") == "abc"
-         assert fileSystem.path("abc", "") == "abc"
-         assert fileSystem.path("abc", "DEF") == "abc/DEF"
-         assert fileSystem.path("abc/", "def") == "abc/def"
-         assert fileSystem.path("/abc/", "def") == "/abc/def"
-         assert fileSystem.path("/ABC", "/def") == "/ABC/def"
-         assert fileSystem.path("abc", "/def") == "abc/def"
-     }
+    private static final String SEP = "/"
 
-     void testNormalize() {
-         assert fileSystem.normalize("/") == "/"
-         assert fileSystem.normalize("/aBc") == "/aBc"
-         assert fileSystem.normalize("/abc/DEF") == "/abc/DEF"
-         assert fileSystem.normalize("/Abc/def/..") == "/Abc"
-         assert fileSystem.normalize("/abc/def/../ghi") == "/abc/ghi"
-         assert fileSystem.normalize("/abc/def/.") == "/abc/def"
-         assert fileSystem.normalize("/abc/def/./gHI") == "/abc/def/gHI"
-     }
-     
-     void testGetName() {
-         assert fileSystem.getName("/") == ""
-         assert fileSystem.getName("/aBC") == "aBC"
-         assert fileSystem.getName("/abc/def") == "def"
-         assert fileSystem.getName("/abc/def/../GHI") == "GHI"
-     }
-     
-     public void testGetParent() {
-         assert fileSystem.getParent("/") == null
-         assert fileSystem.getParent("/abc") == "/"
-         assert fileSystem.getParent("/abc/def") == "/abc" 
-     }
-     
-     void testIsValidName() {
-         [ "/abc",
-           "/ABC/def",
-           "/abc/d!ef",
-           "/abc/DEF/h(ij)!@#\$%^&*()-_+=~`,.<>?;:[]{}\\|abc",
-           ].each {
-             assert fileSystem.isValidName(it), "[$it]"    
-           }
-         
-         [ "",
-           "abc",
-           "abc/def",
-           "a:/abc:", 
-           "//a*bc",
-           "C:/?abc",
-           ].each {
-             assert !fileSystem.isValidName(it), "[$it]"    
-         }
-     }
+    FakeUnixFileSystemTest() {
+        // These need to be set in the constructor because these values are used in setUp()
+        NEW_DIR = SEP + NEW_DIRNAME
+        NEW_FILE = "/NewFile.txt"
+        EXISTING_DIR = "/"
+        EXISTING_FILE = "/ExistingFile.txt"
+        NO_SUCH_DIR = "/xx/yy"
+        NO_SUCH_FILE = "/xx/yy/zz.txt"
+    }
 
-     void testIsAbsolute() {
-         assert fileSystem.isAbsolute("/")
-         assert fileSystem.isAbsolute("/abc")
 
-         assert !fileSystem.isAbsolute("abc")
-         assert !fileSystem.isAbsolute("c:\\usr")
-         
-         shouldFailWithMessageContaining("path") { fileSystem.isAbsolute(null) }
-     }
-     
+    void testListNames_FromRoot() {
+        final DIR = '/'
+        final FILENAME = 'abc.txt'
+        final FILE = p(DIR, FILENAME)
+
+        assert !fileSystem.exists(FILE)
+        fileSystem.createFile(FILE)
+        def names = fileSystem.listNames(DIR)
+        assert names.find { it == FILENAME }
+    }
+
+    void testPath() {
+        assert fileSystem.path(null, null) == ""
+        assert fileSystem.path(null, "abc") == "abc"
+        assert fileSystem.path("abc", null) == "abc"
+        assert fileSystem.path("", "") == ""
+        assert fileSystem.path("", "abc") == "abc"
+        assert fileSystem.path("abc", "") == "abc"
+        assert fileSystem.path("abc", "DEF") == "abc/DEF"
+        assert fileSystem.path("abc/", "def") == "abc/def"
+        assert fileSystem.path("/abc/", "def") == "/abc/def"
+        assert fileSystem.path("/ABC", "/def") == "/ABC/def"
+        assert fileSystem.path("abc", "/def") == "abc/def"
+    }
+
+    void testNormalize() {
+        assert fileSystem.normalize("/") == "/"
+        assert fileSystem.normalize("/aBc") == "/aBc"
+        assert fileSystem.normalize("/abc/DEF") == "/abc/DEF"
+        assert fileSystem.normalize("/Abc/def/..") == "/Abc"
+        assert fileSystem.normalize("/abc/def/../ghi") == "/abc/ghi"
+        assert fileSystem.normalize("/abc/def/.") == "/abc/def"
+        assert fileSystem.normalize("/abc/def/./gHI") == "/abc/def/gHI"
+    }
+
+    void testGetName() {
+        assert fileSystem.getName("/") == ""
+        assert fileSystem.getName("/aBC") == "aBC"
+        assert fileSystem.getName("/abc/def") == "def"
+        assert fileSystem.getName("/abc/def/../GHI") == "GHI"
+    }
+
+    public void testGetParent() {
+        assert fileSystem.getParent("/") == null
+        assert fileSystem.getParent("/abc") == "/"
+        assert fileSystem.getParent("/abc/def") == "/abc"
+    }
+
+    void testIsValidName() {
+        ["/abc",
+                "/ABC/def",
+                "/abc/d!ef",
+                "/abc/DEF/h(ij)!@#\$%^&*()-_+=~`,.<>?;:[]{}\\|abc",
+        ].each {
+            assert fileSystem.isValidName(it), "[$it]"
+        }
+
+        ["",
+                "abc",
+                "abc/def",
+                "a:/abc:",
+                "//a*bc",
+                "C:/?abc",
+        ].each {
+            assert !fileSystem.isValidName(it), "[$it]"
+        }
+    }
+
+    void testIsAbsolute() {
+        assert fileSystem.isAbsolute("/")
+        assert fileSystem.isAbsolute("/abc")
+
+        assert !fileSystem.isAbsolute("abc")
+        assert !fileSystem.isAbsolute("c:\\usr")
+
+        shouldFailWithMessageContaining("path") { fileSystem.isAbsolute(null) }
+    }
+
     //-----------------------------------------------------------------------------------
     // Helper Methods
     //-----------------------------------------------------------------------------------
-    
+
     /**
      * Return a new instance of the FileSystem implementation class under test
      * @return a new FileSystem instance
@@ -120,5 +131,5 @@ class FakeUnixFileSystemTest extends AbstractFakeFileSystemTest {
         fs.addEntry(new FileEntry(EXISTING_FILE, EXISTING_FILE_CONTENTS))
         return fs
     }
-    
+
 }

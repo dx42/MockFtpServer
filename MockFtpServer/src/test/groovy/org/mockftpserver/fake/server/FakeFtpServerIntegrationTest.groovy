@@ -95,6 +95,24 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         ftpClientConnectAndLogin()
         assert ftpClient.deleteFile(FILENAME1)
         verifyReplyCode("deleteFile", 250)
+        assert !fileSystem.exists(FILENAME1)
+    }
+
+    void testHelp() {
+        ftpServer.helpText = [a: 'aaa', '': 'default']
+        ftpClientConnect()
+
+        String help = ftpClient.listHelp()
+        assert help.contains('default')
+        verifyReplyCode("listHelp", 214)
+
+        help = ftpClient.listHelp('a')
+        assert help.contains('aaa')
+        verifyReplyCode("listHelp", 214)
+
+        help = ftpClient.listHelp('bad')
+        assert help.contains('bad')
+        verifyReplyCode("listHelp", 214)
     }
 
     void testList() {
@@ -105,7 +123,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         ftpClientConnectAndLogin()
 
         FTPFile[] files = ftpClient.listFiles(SUBDIR)
-        assertEquals("number of files", 2, files.length)
+        assert files.length == 2
         verifyFTPFile(files[0], FTPFile.FILE_TYPE, FILENAME1, ASCII_DATA.size())
         verifyFTPFile(files[1], FTPFile.DIRECTORY_TYPE, SUBDIR_NAME2, 0)
         verifyReplyCode("list", 226)
@@ -127,10 +145,15 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         ftpClientConnectAndLogin()
 
         String[] filenames = ftpClient.listNames(SUBDIR)
-        assertEquals("number of files", 2, filenames.length)
-        assertEquals(filenames[0], FILENAME1)
-        assertEquals(filenames[1], SUBDIR_NAME2)
+        assert filenames == [FILENAME1, SUBDIR_NAME2]
         verifyReplyCode("listNames", 226)
+    }
+
+    void testNoop() {
+        ftpClientConnectAndLogin()
+
+        assert ftpClient.sendNoOp()
+        verifyReplyCode("NOOP", 200)
     }
 
     void testRetr() {
@@ -150,6 +173,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
 
         assert ftpClient.removeDirectory(SUBDIR)
         verifyReplyCode("removeDirectory", 250)
+        assert !fileSystem.exists(SUBDIR)
     }
 
     void testRename() {                 // RNFR and RNTO
@@ -163,6 +187,11 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         assert fileSystem.exists(FILE1 + "NEW")
     }
 
+    void testSite() {
+        ftpClientConnectAndLogin()
+        assert ftpClient.site("parameters,1,2,3") == 200
+    }
+
     void testStor() {
         ftpClientConnectAndLogin()
 
@@ -174,13 +203,28 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         assert contents == ASCII_DATA
     }
 
+    void testStou() {
+        ftpClientConnectAndLogin()
+
+        def inputStream = new ByteArrayInputStream(ASCII_DATA.getBytes())
+        assert ftpClient.storeUniqueFile(FILENAME1, inputStream)
+
+        def names = fileSystem.listNames(HOME_DIR)
+        def filename = names.find {name -> name.startsWith(FILENAME1) }
+        assert filename
+
+        def contents = fileSystem.createInputStream(p(HOME_DIR, filename)).text
+        LOG.info("File contents=[" + contents + "]")
+        assert contents == ASCII_DATA
+    }
+
     void testSyst() {
         ftpClientConnectAndLogin()
 
         def systemName = ftpClient.getSystemName()
         LOG.info("system name = [$systemName]")
         assert systemName.contains('"' + SYSTEM_NAME + '"')
-        verifyReplyCode("getSystemName", 215);
+        verifyReplyCode("getSystemName", 215)
     }
 
     // -------------------------------------------------------------------------

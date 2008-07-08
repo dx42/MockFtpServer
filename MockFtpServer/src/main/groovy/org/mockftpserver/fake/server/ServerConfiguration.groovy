@@ -28,17 +28,17 @@ import org.mockftpserver.fake.user.UserAccount
 interface ServerConfiguration {
 
     /**
-     * @return the {@link FileSystem}   for this server
+     * @return the {@link FileSystem}    for this server
      */
     FileSystem getFileSystem()
 
     /**
-     * @return the {@link UserAccount}   configured for this server for the specified user name
+     * @return the {@link UserAccount}    configured for this server for the specified user name
      */
     UserAccount getUserAccount(String username)
 
     /**
-     * @return the {@link ResourceBundle}   used by this server for reply messages
+     * @return the {@link ResourceBundle}    used by this server for reply messages
      */
     ResourceBundle getReplyTextBundle()
 
@@ -46,5 +46,13 @@ interface ServerConfiguration {
      * @return the System Name for this server (used by the SYST command)
      */
     String getSystemName()
+
+
+    /**
+     * Return the help text for a command or the default help text if no command name is specified
+     * @param name - the command name; may be empty or null to indicate  a request for the default help text
+     * @return the help text for the named command or the default help text if no name is supplied
+     */
+    String getHelpText(String name)
 
 }

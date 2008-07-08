@@ -280,9 +280,9 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         AbstractFileSystemEntry entry = getRequiredEntry(path)
         def name = getName(entry.getPath())
         def lastModified = entry.lastModified
-        entry.isDirectory()   \
-              ? FileInfo.forDirectory(name, entry.lastModified)   \
-              : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified)
+        entry.isDirectory()    \
+               ? FileInfo.forDirectory(name, entry.lastModified)    \
+               : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified)
     }
 
     /**
@@ -592,7 +592,8 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     private List descendents(String path) {
         if (isDirectory(path)) {
             String normalizedPath = normalize(path)
-            String normalizedDirPrefix = normalizedPath + SEPARATOR
+            String separator = (normalizedPath.endsWith(SEPARATOR)) ? '' : SEPARATOR
+            String normalizedDirPrefix = normalizedPath + separator
             List descendents = new ArrayList()
             entries.keySet().each {p ->
                 if (p.startsWith(normalizedDirPrefix) && !normalizedPath.equals(p)) {

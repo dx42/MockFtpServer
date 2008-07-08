@@ -20,7 +20,7 @@ import org.mockftpserver.fake.server.ServerConfiguration
 import org.mockftpserver.fake.user.UserAccount
 
 /**
- * Stub implementation of the       {@link ServerConfiguration}       interface for testing
+ * Stub implementation of the        {@link ServerConfiguration}        interface for testing
  *
  * @version $Revision$ - $Date$
  *
@@ -30,9 +30,10 @@ class StubServerConfiguration implements ServerConfiguration {
 
     ResourceBundle replyTextBundle
     Map userAccounts = [:]
-    private Map textForReplyCodeMap = [:]
+    Map helpText = [:]
     FileSystem fileSystem
     String systemName = "WINDOWS"
+    private Map textForReplyCodeMap = [:]
 
     UserAccount getUserAccount(String username) {
         (UserAccount) userAccounts[username]
@@ -42,13 +43,18 @@ class StubServerConfiguration implements ServerConfiguration {
         return new TestResources(map: textForReplyCodeMap)
     }
 
+    public String getHelpText(String name) {
+        def key = name == null ? '' : name
+        return helpText[key]
+    }
+
     //-------------------------------------------------------------------------
     // Stub-specific API - Helper methods not part of ServerConfiguration interface
     //-------------------------------------------------------------------------
 
     /**
      * Set the text to be returned for the specified key by the
-     * {@link #getReplyTextBundle()}     resource bundle.
+     * {@link #getReplyTextBundle()}      resource bundle.
      */
     void setTextForKey(key, String text) {
         textForReplyCodeMap[key.toString()] = text
