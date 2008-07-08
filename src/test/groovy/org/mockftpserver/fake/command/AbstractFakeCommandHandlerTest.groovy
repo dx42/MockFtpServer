@@ -25,7 +25,6 @@ import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.server.StubServerConfiguration
 import org.mockftpserver.test.AbstractGroovyTest
 
-
 /**
  * Abstract superclass for CommandHandler tests
  *
@@ -146,29 +145,19 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
      */
     protected assertSessionReply(int replyIndex, int expectedReplyCode, String text = expectedReplyCode as String) {
         LOG.info(session)
-        def actual = session.sentReplies[replyIndex]
-        assert actual, "No reply for index [$replyIndex] sent for $session"
-        def actualReplyCode = actual[0]
-        def actualMessage = actual[1]
-        assert actualReplyCode == expectedReplyCode
+        String actualMessage = session.getReplyMessage(replyIndex)
+        assert session.getReplyCode(replyIndex) == expectedReplyCode
         assert actualMessage.contains(text), "[$actualMessage] does not contain [$text]"
     }
 
     /**
-     * Assert that the specified reply codes wre sent through the session.
+     * Assert that the specified reply codes were sent through the session.
      * @param replyCodes - the List of expected sent reply codes
      */
     protected assertSessionReplies(List replyCodes) {
         LOG.info(session)
-
         replyCodes.eachWithIndex {replyCode, replyIndex ->
-            def actual = session.sentReplies[replyIndex]
-            assert actual, "No reply for index [$replyIndex] sent for $session"
-            def actualReplyCode = actual[0]
-            def actualMessage = actual[1]
-            assert actualReplyCode == replyCode
-            def expectedText = replyCode as String
-            assert actualMessage.contains(expectedText), "[$actualMessage] does not contain [$expectedTtext]"
+            assertSessionReply(replyIndex, replyCode)
         }
     }
 

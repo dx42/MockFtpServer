@@ -22,52 +22,27 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.fake.filesystem.FileSystemException
 
 /**
- * Tests for StorCommandHandler
+ * Tests for StouCommandHandler
  *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
-class StorCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
+class StouCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     def DIR = "/"
     def FILENAME = "file.txt"
     def FILE = p(DIR, FILENAME)
     def CONTENTS = "abc"
 
-    void testHandleCommand_MissingPathParameter() {
-        testHandleCommand_MissingRequiredParameter([])
+    void testHandleCommand_SpecifyBaseFilename() {
+        handleCommand([FILENAME])
+        testHandleCommand(FILENAME)
     }
 
-    void testHandleCommand_AbsolutePath() {
-        session.dataToRead = CONTENTS.bytes
-        handleCommandAndVerifySendDataReplies([FILE])
-        assert fileSystem.isFile(FILE)
-
-        def contents = fileSystem.createInputStream(FILE).text
-        assert contents == CONTENTS
-    }
-
-    void testHandleCommand_RelativePath() {
-        setCurrentDirectory(DIR)
-        session.dataToRead = CONTENTS.bytes
-        handleCommandAndVerifySendDataReplies([FILENAME])
-        assert fileSystem.isFile(FILE)
-
-        def contents = fileSystem.createInputStream(FILE).text
-        assert contents == CONTENTS
-    }
-
-    void testHandleCommand_PathSpecifiesAnExistingDirectory() {
-        assert fileSystem.createDirectory(FILE)
-        commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, FILE)
-    }
-
-    void testHandleCommand_ParentDirectoryDoesNotExist() {
-        def NO_SUCH_DIR = "/path/DoesNotExist"
-        handleCommand([p(NO_SUCH_DIR, FILENAME)])
-        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, NO_SUCH_DIR)
+    void testHandleCommand_UseDefaultBaseFilename() {
+        handleCommand([])
+        testHandleCommand('Temp')
     }
 
     void testHandleCommand_CreateOutputStreamThrowsException() {
@@ -77,7 +52,7 @@ class StorCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         }
         overrideMethod(fileSystem, "createOutputStream", newMethod)
 
-        handleCommand([FILE])
+        handleCommand([])
         assertSessionReplies([ReplyCodes.TRANSFER_DATA_INITIAL_OK, ReplyCodes.NEW_FILE_ERROR])
     }
 
@@ -86,16 +61,35 @@ class StorCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     //-------------------------------------------------------------------------
 
     CommandHandler createCommandHandler() {
-        new StorCommandHandler()
+        new StouCommandHandler()
     }
 
     Command createValidCommand() {
-        return new Command(CommandNames.STOR, [FILE])
+        return new Command(CommandNames.STOU, [])
     }
 
     void setUp() {
         super.setUp()
         assert fileSystem.createDirectory(DIR)
+        setCurrentDirectory(DIR)
+        session.dataToRead = CONTENTS.bytes
+        serverConfiguration.setTextForKey('stou', 'STOU {0}')
+    }
+
+    private void testHandleCommand(String expectedBaseName) {
+        assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
+        assertSessionReply(1, ReplyCodes.TRANSFER_DATA_FINAL_OK, 'STOU')
+
+        def names = fileSystem.listNames(DIR)
+        def filename = names.find {name -> name.startsWith(expectedBaseName) }
+        assert filename
+
+        assert session.getReplyMessage(1).contains(filename)
+
+        def absPath = p(DIR, filename)
+        assert fileSystem.exists(absPath)
+        def contents = fileSystem.createInputStream(absPath).text
+        assert contents == CONTENTS
     }
 
 }

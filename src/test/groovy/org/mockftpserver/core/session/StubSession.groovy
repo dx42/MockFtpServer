@@ -16,7 +16,7 @@
 package org.mockftpserver.core.session
 
 /**
- * Stub implementation of the     {@link Session}     interface for testing
+ * Stub implementation of the      {@link Session}      interface for testing
  *
  * @version $Revision$ - $Date$
  *
@@ -25,7 +25,7 @@ package org.mockftpserver.core.session
 class StubSession implements Session {
 
     Map attributes = [:]
-    List sentReplies = []
+    private List sentReplies = []
     List sentData = []
     byte[] dataToRead
     boolean closed
@@ -137,9 +137,36 @@ class StubSession implements Session {
     // Stub-specific API - Helper methods not part of Session interface
     //-------------------------------------------------------------------------
 
+    /**
+     * @return the reply code for the session reply at the specified index
+     */
+    int getReplyCode(int replyIndex) {
+        return getReply(replyIndex)[0]
+    }
+
+    /**
+     * @return the reply message for the session reply at the specified index
+     */
+    String getReplyMessage(int replyIndex) {
+        return getReply(replyIndex)[1]
+    }
+
+    /**
+     * @return the String representation of this object, including property names and values of interest
+     */
     String toString() {
         "StubSession[sentReplies=$sentReplies  sentData=$sentData  attributes=$attributes  closed=$closed  " +
                 "clientDataHost=$clientDataHost  clientDataPort=$clientDataPort]"
+    }
+
+    //-------------------------------------------------------------------------
+    // Internal Helper Methods
+    //-------------------------------------------------------------------------
+
+    private List getReply(int replyIndex) {
+        def reply = sentReplies[replyIndex]
+        assert reply, "No reply for index [$replyIndex] sent for $session"
+        return reply
     }
 
 }

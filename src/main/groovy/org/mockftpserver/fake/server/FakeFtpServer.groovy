@@ -38,15 +38,18 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
     FileSystem fileSystem
     Map userAccounts = [:]
     String systemName = "WINDOWS"
+    Map helpText = [:]
 
     FakeFtpServer() {
         setCommandHandler(CommandNames.CONNECT, new ConnectCommandHandler())
         setCommandHandler(CommandNames.CWD, new CwdCommandHandler())
         setCommandHandler(CommandNames.CDUP, new CdupCommandHandler())
         setCommandHandler(CommandNames.DELE, new DeleCommandHandler())
+        setCommandHandler(CommandNames.HELP, new HelpCommandHandler())
         setCommandHandler(CommandNames.LIST, new ListCommandHandler())
         setCommandHandler(CommandNames.MKD, new MkdCommandHandler())
         setCommandHandler(CommandNames.NLST, new NlstCommandHandler())
+        setCommandHandler(CommandNames.NOOP, new NoopCommandHandler())
         setCommandHandler(CommandNames.PASS, new PassCommandHandler())
         setCommandHandler(CommandNames.PWD, new PwdCommandHandler())
         setCommandHandler(CommandNames.PORT, new PortCommandHandler())
@@ -55,7 +58,9 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
         setCommandHandler(CommandNames.RMD, new RmdCommandHandler())
         setCommandHandler(CommandNames.RNFR, new RnfrCommandHandler())
         setCommandHandler(CommandNames.RNTO, new RntoCommandHandler())
+        setCommandHandler(CommandNames.SITE, new SiteCommandHandler())
         setCommandHandler(CommandNames.STOR, new StorCommandHandler())
+        setCommandHandler(CommandNames.STOU, new StouCommandHandler())
         setCommandHandler(CommandNames.SYST, new SystCommandHandler())
         setCommandHandler(CommandNames.USER, new UserCommandHandler())
     }
@@ -73,8 +78,21 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
         }
     }
 
+    /**
+     * @return the {@link UserAccount}  configured for this server for the specified user name
+     */
     public UserAccount getUserAccount(String username) {
         userAccounts[username]
+    }
+
+    /**
+     * Return the help text for a command or the default help text if no command name is specified
+     * @param name - the command name; may be empty or null to indicate  a request for the default help text
+     * @return the help text for the named command or the default help text if no name is supplied
+     */
+    String getHelpText(String name) {
+        def key = name == null ? '' : name
+        return helpText[key];
     }
 
 }
