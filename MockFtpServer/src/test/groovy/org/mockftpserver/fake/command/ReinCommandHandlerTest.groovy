@@ -19,40 +19,32 @@ import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
-
+import org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.fake.user.UserAccount
 
 /**
- * Tests for StorCommandHandler
+ * Tests for ReinCommandHandler
  *
- * @version $Revision$ - $Date$
+ * @version $Revision: 67 $ - $Date: 2008-06-11 21:38:50 -0400 (Wed, 11 Jun 2008) $
  *
  * @author Chris Mair
  */
-class StorCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
+class ReinCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
-    void testHandleCommand_MissingPathParameter() {
-        testHandleCommand_MissingRequiredParameter([])
+    UserAccount userAccount
+
+    void testHandleCommand_AlreadyLoggedIn() {
+        session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
+        assert isLoggedIn()
+        handleCommand([])
+        assertSessionReply(ReplyCodes.REIN_OK, 'rein')
+        assert !isLoggedIn()
     }
 
-    void testHandleCommand_AbsolutePath() {
-        testHandleCommand([FILE], 'stor', CONTENTS)
-    }
-
-    void testHandleCommand_RelativePath() {
-        setCurrentDirectory(DIR)
-        testHandleCommand([FILENAME], 'stor', CONTENTS)
-    }
-
-    void testHandleCommand_PathSpecifiesAnExistingDirectory() {
-        assert fileSystem.createDirectory(FILE)
-        commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, FILE)
-    }
-
-    void testHandleCommand_ParentDirectoryDoesNotExist() {
-        def NO_SUCH_DIR = "/path/DoesNotExist"
-        handleCommand([p(NO_SUCH_DIR, FILENAME)])
-        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, NO_SUCH_DIR)
+    void testHandleCommand_NotLoggedIn() {
+        handleCommand([])
+        assertSessionReply(ReplyCodes.REIN_OK, 'rein')
+        assert !isLoggedIn()
     }
 
     //-------------------------------------------------------------------------
@@ -60,21 +52,19 @@ class StorCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
     //-------------------------------------------------------------------------
 
     CommandHandler createCommandHandler() {
-        new StorCommandHandler()
+        new ReinCommandHandler()
     }
 
     Command createValidCommand() {
-        return new Command(CommandNames.STOR, [FILE])
+        return new Command(CommandNames.REIN, [])
     }
 
     void setUp() {
         super.setUp()
+        userAccount = new UserAccount(username: 'user')
     }
 
-    protected String verifyOutputFile() {
-        assert fileSystem.isFile(FILE)
-        assert session.getReplyMessage(1).contains(FILENAME)
-        return FILE
+    private boolean isLoggedIn() {
+        return session.getAttribute(SessionKeys.USER_ACCOUNT) != null
     }
-
 }

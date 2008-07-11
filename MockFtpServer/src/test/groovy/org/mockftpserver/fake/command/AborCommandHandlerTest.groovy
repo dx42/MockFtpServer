@@ -20,39 +20,18 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 
-
 /**
- * Tests for StorCommandHandler
+ * Tests for AborCommandHandler
  *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
-class StorCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
+class AborCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
-    void testHandleCommand_MissingPathParameter() {
-        testHandleCommand_MissingRequiredParameter([])
-    }
-
-    void testHandleCommand_AbsolutePath() {
-        testHandleCommand([FILE], 'stor', CONTENTS)
-    }
-
-    void testHandleCommand_RelativePath() {
-        setCurrentDirectory(DIR)
-        testHandleCommand([FILENAME], 'stor', CONTENTS)
-    }
-
-    void testHandleCommand_PathSpecifiesAnExistingDirectory() {
-        assert fileSystem.createDirectory(FILE)
-        commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, FILE)
-    }
-
-    void testHandleCommand_ParentDirectoryDoesNotExist() {
-        def NO_SUCH_DIR = "/path/DoesNotExist"
-        handleCommand([p(NO_SUCH_DIR, FILENAME)])
-        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, NO_SUCH_DIR)
+    void testHandleCommand() {
+        handleCommand([])
+        assertSessionReply(ReplyCodes.ABOR_OK, 'abor')
     }
 
     //-------------------------------------------------------------------------
@@ -60,21 +39,15 @@ class StorCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
     //-------------------------------------------------------------------------
 
     CommandHandler createCommandHandler() {
-        new StorCommandHandler()
+        new AborCommandHandler()
     }
 
     Command createValidCommand() {
-        return new Command(CommandNames.STOR, [FILE])
+        return new Command(CommandNames.ABOR, [])
     }
 
     void setUp() {
         super.setUp()
-    }
-
-    protected String verifyOutputFile() {
-        assert fileSystem.isFile(FILE)
-        assert session.getReplyMessage(1).contains(FILENAME)
-        return FILE
     }
 
 }

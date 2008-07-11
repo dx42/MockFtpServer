@@ -16,16 +16,14 @@
 package org.mockftpserver.fake.command
 
 import org.mockftpserver.core.command.Command
-import org.mockftpserver.core.command.ReplyCodes
-import org.mockftpserver.core.session.Session
-import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
 /**
  * CommandHandler for the STOU command. Handler logic:
  * <ol>
  *  <li>If the user has not logged in, then reply with 530 and terminate</li>
- *  <li>Send an initial reply of 150</li>
  *  <li>Create a new file within the current directory with a unique name</li>
+ *  <li>Send an initial reply of 150</li>
+ *  <li>Read all available bytes from the data connection and write out to the unique file in the server file system</li>
  *  <li>If file write/store fails, then reply with 553 and terminate</li>
  *  <li>Send a final reply with 226, along with the new unique filename</li>
  * </ol>
@@ -34,25 +32,22 @@ import org.mockftpserver.fake.command.AbstractFakeCommandHandler
  *
  * @author Chris Mair
  */
-class StouCommandHandler extends AbstractFakeCommandHandler {
+class StouCommandHandler extends AbstractStoreFileCommandHandler {
 
-    protected void handle(Command command, Session session) {
-        verifyLoggedIn(session)
-        this.replyCodeForFileSystemException = ReplyCodes.NEW_FILE_ERROR
+    /**
+     * @return the message key for the reply message sent with the final (226) reply
+     */
+    protected String getMessageKey() {
+        'stou'
+    }
 
+    /**
+     * Return the path (absolute or relative) for the output file.
+     */
+    protected String getOutputFile(Command command) {
         def baseName = command.getOptionalString(0) ?: 'Temp'
         def suffix = System.currentTimeMillis() as String
-        def fullFilename = baseName + suffix
-        def path = getRealPath(session, fullFilename)
-        sendReply(session, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
-
-        session.openDataConnection();
-        def contents = session.readData()
-        session.closeDataConnection();
-
-        def out = fileSystem.createOutputStream(path, false)
-        out.withStream { it.write(contents) }
-        sendReply(session, ReplyCodes.TRANSFER_DATA_FINAL_OK, 'stou', [fullFilename])
+        return baseName + suffix
     }
 
 }

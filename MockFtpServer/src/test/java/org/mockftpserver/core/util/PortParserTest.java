@@ -114,4 +114,15 @@ public final class PortParserTest extends AbstractTest {
         }
     }
 
+    /**
+     * Test convertHostAndPortToStringOfBytes() method
+     */
+    public void testConvertHostAndPortToStringOfBytes() throws UnknownHostException {
+        int port = (23 << 8) + 77;
+        InetAddress host = InetAddress.getByName("196.168.44.55");
+        String result = PortParser.convertHostAndPortToCommaDelimitedBytes(host, port);
+        LOG.info("result=" + result);
+        assertEquals("result", "196,168,44,55,23,77", result);
+    }
+
 }

@@ -41,6 +41,9 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
     Map helpText = [:]
 
     FakeFtpServer() {
+        setCommandHandler(CommandNames.ABOR, new AborCommandHandler())
+        setCommandHandler(CommandNames.ALLO, new AlloCommandHandler())
+        setCommandHandler(CommandNames.APPE, new AppeCommandHandler())
         setCommandHandler(CommandNames.CONNECT, new ConnectCommandHandler())
         setCommandHandler(CommandNames.CWD, new CwdCommandHandler())
         setCommandHandler(CommandNames.CDUP, new CdupCommandHandler())
@@ -48,12 +51,15 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
         setCommandHandler(CommandNames.HELP, new HelpCommandHandler())
         setCommandHandler(CommandNames.LIST, new ListCommandHandler())
         setCommandHandler(CommandNames.MKD, new MkdCommandHandler())
+        setCommandHandler(CommandNames.MODE, new ModeCommandHandler())
         setCommandHandler(CommandNames.NLST, new NlstCommandHandler())
         setCommandHandler(CommandNames.NOOP, new NoopCommandHandler())
         setCommandHandler(CommandNames.PASS, new PassCommandHandler())
+        setCommandHandler(CommandNames.PASV, new PasvCommandHandler())
         setCommandHandler(CommandNames.PWD, new PwdCommandHandler())
         setCommandHandler(CommandNames.PORT, new PortCommandHandler())
         setCommandHandler(CommandNames.QUIT, new QuitCommandHandler())
+        setCommandHandler(CommandNames.REIN, new ReinCommandHandler())
         setCommandHandler(CommandNames.RETR, new RetrCommandHandler())
         setCommandHandler(CommandNames.RMD, new RmdCommandHandler())
         setCommandHandler(CommandNames.RNFR, new RnfrCommandHandler())
@@ -61,6 +67,7 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
         setCommandHandler(CommandNames.SITE, new SiteCommandHandler())
         setCommandHandler(CommandNames.STOR, new StorCommandHandler())
         setCommandHandler(CommandNames.STOU, new StouCommandHandler())
+        setCommandHandler(CommandNames.STRU, new StruCommandHandler())
         setCommandHandler(CommandNames.SYST, new SystCommandHandler())
         setCommandHandler(CommandNames.USER, new UserCommandHandler())
     }
@@ -79,7 +86,7 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
     }
 
     /**
-     * @return the {@link UserAccount}  configured for this server for the specified user name
+     * @return the {@link UserAccount}   configured for this server for the specified user name
      */
     public UserAccount getUserAccount(String username) {
         userAccounts[username]

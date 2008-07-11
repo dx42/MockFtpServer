@@ -106,4 +106,27 @@ public final class PortParser {
         }
     }
 
+    /**
+     * Convert the InetAddess and port number to a comma-delimited list of byte values,
+     * suitable for the response String from the PASV command.
+     *
+     * @param host - the InetAddress
+     * @param port - the port number
+     * @return the comma-delimited list of byte values, e.g., "196,168,44,55,23,77"
+     */
+    public static String convertHostAndPortToCommaDelimitedBytes(InetAddress host, int port) {
+        StringBuffer buffer = new StringBuffer();
+        byte[] address = host.getAddress();
+        for (int i = 0; i < address.length; i++) {
+            int positiveValue = (address[i] >= 0) ? address[i] : 256 + address[i];
+            buffer.append(positiveValue);
+            buffer.append(",");
+        }
+        int p1 = port >> 8;
+        int p2 = port % 256;
+        buffer.append(String.valueOf(p1));
+        buffer.append(",");
+        buffer.append(String.valueOf(p2));
+        return buffer.toString();
+    }
 }
