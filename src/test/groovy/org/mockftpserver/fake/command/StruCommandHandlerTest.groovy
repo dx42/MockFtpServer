@@ -18,33 +18,20 @@ package org.mockftpserver.fake.command
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
+import org.mockftpserver.core.command.ReplyCodes
 
 /**
- * Tests for StouCommandHandler
+ * Tests for StruCommandHandler
  *
- * @version $Revision$ - $Date$
+ * @version $Revision: 67 $ - $Date: 2008-06-11 21:38:50 -0400 (Wed, 11 Jun 2008) $
  *
  * @author Chris Mair
  */
-class StouCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
+class StruCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
-    def expectedBaseName
-
-    void testHandleCommand_SpecifyBaseFilename() {
-        setCurrentDirectory(DIR)
-        expectedBaseName = FILENAME
-        testHandleCommand([expectedBaseName], 'stou', CONTENTS)
-    }
-
-    void testHandleCommand_UseDefaultBaseFilename() {
-        setCurrentDirectory(DIR)
-        expectedBaseName = 'Temp'
-        testHandleCommand([expectedBaseName], 'stou', CONTENTS)
-    }
-
-    void testHandleCommand_AbsolutePath() {
-        expectedBaseName = FILENAME
-        testHandleCommand([FILE], 'stou', CONTENTS)
+    void testHandleCommand() {
+        handleCommand([])
+        assertSessionReply(ReplyCodes.STRU_OK, 'stru')
     }
 
     //-------------------------------------------------------------------------
@@ -52,23 +39,15 @@ class StouCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
     //-------------------------------------------------------------------------
 
     CommandHandler createCommandHandler() {
-        new StouCommandHandler()
+        new StruCommandHandler()
     }
 
     Command createValidCommand() {
-        return new Command(CommandNames.STOU, [])
+        return new Command(CommandNames.STRU, [])
     }
 
     void setUp() {
         super.setUp()
-        session.dataToRead = CONTENTS.bytes
-    }
-
-    protected String verifyOutputFile() {
-        def names = fileSystem.listNames(DIR)
-        def filename = names.find {name -> name.startsWith(expectedBaseName) }
-        assert filename
-        return p(DIR, filename)
     }
 
 }

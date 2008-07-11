@@ -19,28 +19,34 @@ import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
-
+import org.mockftpserver.fake.filesystem.FileEntry
 
 /**
- * Tests for StorCommandHandler
+ * Tests for AppeCommandHandler
  *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
-class StorCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
+class AppeCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
 
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])
     }
 
     void testHandleCommand_AbsolutePath() {
-        testHandleCommand([FILE], 'stor', CONTENTS)
+        testHandleCommand([FILE], 'appe', CONTENTS)
+    }
+
+    void testHandleCommand_AbsolutePath_FileAlreadyExists() {
+        def ORIGINAL_CONTENTS = '123 456 789'
+        fileSystem.addEntry(new FileEntry(path: FILE, contents: ORIGINAL_CONTENTS))
+        testHandleCommand([FILE], 'appe', ORIGINAL_CONTENTS + CONTENTS)
     }
 
     void testHandleCommand_RelativePath() {
         setCurrentDirectory(DIR)
-        testHandleCommand([FILENAME], 'stor', CONTENTS)
+        testHandleCommand([FILENAME], 'appe', CONTENTS)
     }
 
     void testHandleCommand_PathSpecifiesAnExistingDirectory() {
@@ -60,11 +66,11 @@ class StorCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
     //-------------------------------------------------------------------------
 
     CommandHandler createCommandHandler() {
-        new StorCommandHandler()
+        new AppeCommandHandler()
     }
 
     Command createValidCommand() {
-        return new Command(CommandNames.STOR, [FILE])
+        return new Command(CommandNames.APPE, [FILE])
     }
 
     void setUp() {

@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.server
 
+import org.apache.commons.net.ftp.FTP
 import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.net.ftp.FTPFile
 import org.mockftpserver.fake.filesystem.DirectoryEntry
@@ -56,6 +57,32 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
     //-------------------------------------------------------------------------
     // Tests
     //-------------------------------------------------------------------------
+
+    void testAbor() {
+        ftpClientConnectAndLogin()
+        assert ftpClient.abort()
+        verifyReplyCode("ABOR", 226)
+    }
+
+    void testAllo() {
+        ftpClientConnectAndLogin()
+        assert ftpClient.allocate(99)
+        verifyReplyCode("ALLO", 200)
+    }
+
+    void testAppe() {
+        def ORIGINAL_CONTENTS = '123 456 789'
+        fileSystem.addEntry(new FileEntry(path: FILE1, contents: ORIGINAL_CONTENTS))
+
+        ftpClientConnectAndLogin()
+
+        LOG.info("Put File for local path [$FILE1]")
+        def inputStream = new ByteArrayInputStream(ASCII_DATA.getBytes())
+        assert ftpClient.appendFile(FILE1, inputStream)
+        def contents = fileSystem.createInputStream(FILE1).text
+        LOG.info("File contents=[" + contents + "]")
+        assert contents == ORIGINAL_CONTENTS + ASCII_DATA
+    }
 
     void testLogin() {
         ftpClientConnect()
@@ -138,6 +165,12 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         assert fileSystem.isDirectory(DIR)
     }
 
+    void testMode() {
+        ftpClientConnectAndLogin()
+        assert ftpClient.setFileTransferMode(FTP.STREAM_TRANSFER_MODE);
+        verifyReplyCode("MODE", 200)
+    }
+
     void testNlst() {
         fileSystem.addEntry(new FileEntry(path: p(SUBDIR, FILENAME1)))
         fileSystem.addEntry(new DirectoryEntry(path: p(SUBDIR, SUBDIR_NAME2)))
@@ -151,9 +184,26 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
 
     void testNoop() {
         ftpClientConnectAndLogin()
-
         assert ftpClient.sendNoOp()
         verifyReplyCode("NOOP", 200)
+    }
+
+    void testPasv_Nlst() {
+        fileSystem.addEntry(new FileEntry(path: p(SUBDIR, FILENAME1)))
+        fileSystem.addEntry(new FileEntry(path: p(SUBDIR, FILENAME2)))
+
+        ftpClientConnectAndLogin()
+        ftpClient.enterLocalPassiveMode();
+
+        String[] filenames = ftpClient.listNames(SUBDIR)
+        assert filenames == [FILENAME1, FILENAME2]
+        verifyReplyCode("listNames", 226)
+    }
+
+    void testRein() {
+        ftpClientConnectAndLogin()
+        assert ftpClient.rein() == 220
+        assert ftpClient.cdup() == 530      // now logged out
     }
 
     void testRetr() {
@@ -216,6 +266,12 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         def contents = fileSystem.createInputStream(p(HOME_DIR, filename)).text
         LOG.info("File contents=[" + contents + "]")
         assert contents == ASCII_DATA
+    }
+
+    void testStru() {
+        ftpClientConnectAndLogin()
+        assert ftpClient.setFileStructure(FTP.FILE_STRUCTURE);
+        verifyReplyCode("STRU", 200)
     }
 
     void testSyst() {

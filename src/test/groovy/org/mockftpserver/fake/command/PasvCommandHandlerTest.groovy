@@ -20,39 +20,26 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 
-
 /**
- * Tests for StorCommandHandler
+ * Tests for PasvCommandHandler
  *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
-class StorCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
+class PasvCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
-    void testHandleCommand_MissingPathParameter() {
-        testHandleCommand_MissingRequiredParameter([])
-    }
+    static final PORT = (23 << 8) + 77
+    static final InetAddress SERVER = inetAddress("192.168.0.2")
 
-    void testHandleCommand_AbsolutePath() {
-        testHandleCommand([FILE], 'stor', CONTENTS)
-    }
+    void testHandleCommand() {
+        final HOST_AND_PORT = "192,168,0,2,23,77"
+        session.switchToPassiveModeReturnValue = PORT
+        session.serverHost = SERVER
+        handleCommand([])
 
-    void testHandleCommand_RelativePath() {
-        setCurrentDirectory(DIR)
-        testHandleCommand([FILENAME], 'stor', CONTENTS)
-    }
-
-    void testHandleCommand_PathSpecifiesAnExistingDirectory() {
-        assert fileSystem.createDirectory(FILE)
-        commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, FILE)
-    }
-
-    void testHandleCommand_ParentDirectoryDoesNotExist() {
-        def NO_SUCH_DIR = "/path/DoesNotExist"
-        handleCommand([p(NO_SUCH_DIR, FILENAME)])
-        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, NO_SUCH_DIR)
+        assertSessionReply(ReplyCodes.PASV_OK, HOST_AND_PORT)
+        assert session.switchedToPassiveMode
     }
 
     //-------------------------------------------------------------------------
@@ -60,21 +47,15 @@ class StorCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
     //-------------------------------------------------------------------------
 
     CommandHandler createCommandHandler() {
-        new StorCommandHandler()
+        new PasvCommandHandler()
     }
 
     Command createValidCommand() {
-        return new Command(CommandNames.STOR, [FILE])
+        return new Command(CommandNames.PASV, [])
     }
 
     void setUp() {
         super.setUp()
-    }
-
-    protected String verifyOutputFile() {
-        assert fileSystem.isFile(FILE)
-        assert session.getReplyMessage(1).contains(FILENAME)
-        return FILE
     }
 
 }

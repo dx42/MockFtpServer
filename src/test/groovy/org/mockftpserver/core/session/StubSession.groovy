@@ -16,7 +16,7 @@
 package org.mockftpserver.core.session
 
 /**
- * Stub implementation of the      {@link Session}      interface for testing
+ * Stub implementation of the       {@link Session}       interface for testing
  *
  * @version $Revision$ - $Date$
  *
@@ -32,6 +32,9 @@ class StubSession implements Session {
     InetAddress clientDataHost
     int clientDataPort
     boolean dataConnectionOpen = false
+    int switchToPassiveModeReturnValue
+    boolean switchedToPassiveMode = false
+    InetAddress serverHost
 
     /**
      * @see org.mockftpserver.core.session.Session#close()
@@ -72,7 +75,7 @@ class StubSession implements Session {
      * @see org.mockftpserver.core.session.Session#getServerHost()
      */
     public InetAddress getServerHost() {
-        return null
+        return serverHost
     }
 
     /**
@@ -123,7 +126,8 @@ class StubSession implements Session {
      * @see org.mockftpserver.core.session.Session#switchToPassiveMode()
      */
     public int switchToPassiveMode() {
-        return 0
+        switchedToPassiveMode = true
+        return switchToPassiveModeReturnValue
     }
 
     /**
@@ -165,7 +169,7 @@ class StubSession implements Session {
 
     private List getReply(int replyIndex) {
         def reply = sentReplies[replyIndex]
-        assert reply, "No reply for index [$replyIndex] sent for $session"
+        assert reply, "No reply for index [$replyIndex] sent for ${this}"
         return reply
     }
 

@@ -15,28 +15,24 @@
  */
 package org.mockftpserver.stub.command;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-
 import org.apache.log4j.Logger;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
-import org.mockftpserver.stub.command.PasvCommandHandler;
+
+import java.net.InetAddress;
 
 /**
  * Tests for the PasvCommandHandler class
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class PasvCommandHandlerTest extends AbstractCommandHandlerTest {
 
     private static final Logger LOG = Logger.getLogger(PasvCommandHandlerTest.class);
     private static final int PORT = (23 << 8) + 77;
-    
+
     private PasvCommandHandler commandHandler;
 
     /**
@@ -56,23 +52,14 @@ public final class PasvCommandHandlerTest extends AbstractCommandHandlerTest {
 
         commandHandler.handleCommand(COMMAND, session);
         verify(session);
-        
+
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));
     }
 
     /**
-     * Test convertHostAndPortToStringOfBytes() method
-     */
-    public void testConvertHostAndPortToStringOfBytes() throws UnknownHostException {
-        InetAddress host = InetAddress.getByName("196.168.44.55");
-        String result = PasvCommandHandler.convertHostAndPortToStringOfBytes(host, PORT);
-        LOG.info("result=" + result);
-        assertEquals("result", "196,168,44,55,23,77", result);
-    }
-    
-    /**
      * Perform initialization before each test
+     *
      * @see org.mockftpserver.stub.command.AbstractCommandHandlerTest#setUp()
      */
     protected void setUp() throws Exception {

@@ -18,7 +18,6 @@ package org.mockftpserver.test
 import org.apache.log4j.Logger
 import org.mockftpserver.test.LoggingUtil
 
-
 /**
  * Abstract superclass for Groovy tests
  *
@@ -74,6 +73,16 @@ abstract class AbstractGroovyTest extends GroovyTestCase {
      */
     protected static String p(String[] paths) {
         return paths.join("/").replace("//", "/")
+    }
+
+    /**
+     * Create a new InetAddress from the specified host String, using the
+     * {@link InetAddress#getByName(String)}  method.
+     * @param host
+     * @return an InetAddress for the specified host
+     */
+    protected static InetAddress inetAddress(String host) {
+        return InetAddress.getByName(host);
     }
 
     //------------------------------------------------------------------------------------
