@@ -26,6 +26,7 @@ import org.mockftpserver.fake.user.UserAccount
 import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.test.PortTestUtil
 
+
 /**
  * Integration tests for FakeFtpServer.
  *
@@ -204,6 +205,11 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         ftpClientConnectAndLogin()
         assert ftpClient.rein() == 220
         assert ftpClient.cdup() == 530      // now logged out
+    }
+
+    void testRest() {
+        ftpClientConnectAndLogin()
+        assert ftpClient.rest("marker") == 350
     }
 
     void testRetr() {
