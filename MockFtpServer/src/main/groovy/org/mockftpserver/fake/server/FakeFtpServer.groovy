@@ -60,6 +60,7 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
         setCommandHandler(CommandNames.PORT, new PortCommandHandler())
         setCommandHandler(CommandNames.QUIT, new QuitCommandHandler())
         setCommandHandler(CommandNames.REIN, new ReinCommandHandler())
+        setCommandHandler(CommandNames.REST, new RestCommandHandler())
         setCommandHandler(CommandNames.RETR, new RetrCommandHandler())
         setCommandHandler(CommandNames.RMD, new RmdCommandHandler())
         setCommandHandler(CommandNames.RNFR, new RnfrCommandHandler())
@@ -86,7 +87,7 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
     }
 
     /**
-     * @return the {@link UserAccount}   configured for this server for the specified user name
+     * @return the {@link UserAccount}     configured for this server for the specified user name
      */
     public UserAccount getUserAccount(String username) {
         userAccounts[username]
