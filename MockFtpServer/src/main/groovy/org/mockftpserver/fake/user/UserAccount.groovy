@@ -17,17 +17,22 @@ package org.mockftpserver.fake.user
 
 /**
  * Represents a single user account on the server, including the username, password and home
- * directory.
+ * directory. It also includes several configuration flags, described below.
  * <p>
  * The <code>isValidPassword()</code> method returns true if the specified password matches
  * the password value configured for this user account. This implementation uses the
  * <code>isEquals()</code> method to compare passwords. 
  * <p>
  * If you want to provide a custom comparison, for instance using encrypted passwords, you can
- * override the <code>comparePassword()</code> method to provide your own custom implementation.
+ * subclass this class and override the <code>comparePassword()</code> method to provide your own
+ * custom implementation.
  * <p>
  * If the <code>passwordCheckedDuringValidation</code> property is set to false, then the password
  * value is ignored, and the <code>isValidPassword()</code> method just returns <code<true</code>. 
+ * <p>
+ * The <code>accountRequiredForLogin</code> property defaults to false. If it is set to true, then
+ * it is expected that the login for this account will require an ACCOUNT (ACCT) command after the
+ * PASSWORD (PASS) command is completed.
  */
 class UserAccount {
 
@@ -36,6 +41,7 @@ class UserAccount {
     String homeDirectory
     boolean passwordRequiredForLogin = true
     boolean passwordCheckedDuringValidation = true
+    boolean accountRequiredForLogin = false
 
     /**
      * Return true if the specified password is the correct, valid password for this user account.

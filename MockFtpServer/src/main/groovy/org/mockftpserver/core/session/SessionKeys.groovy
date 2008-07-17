@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- package org.mockftpserver.core.session
+package org.mockftpserver.core.session
 
 /**
  * Constants for names of properties (attributes) stored in the session.
  */
- class SessionKeys {
+class SessionKeys {
 
-     static final USERNAME = "username"
-     static final USER_ACCOUNT = "userAccount"
-     static final CURRENT_DIRECTORY = "currentDirectory"
-     static final RENAME_FROM = "renameFrom"
- 
+    static final USERNAME = "username"
+    static final USER_ACCOUNT = "userAccount"
+    static final CURRENT_DIRECTORY = "currentDirectory"
+    static final RENAME_FROM = "renameFrom"
+    static final ACCOUNT_NAME = "accountName"
+
 }

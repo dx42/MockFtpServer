@@ -22,8 +22,6 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.user.UserAccount
 
-
-
 /**
  * Tests for PassCommandHandler
  *
@@ -42,6 +40,15 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         serverConfiguration.userAccounts[USERNAME] = userAccount
         commandHandler.handleCommand(createCommand([PASSWORD]), session)
         assertSessionReply(ReplyCodes.PASS_OK)
+        assertUserAccountInSession(true)
+        assertCurrentDirectory(HOME_DIRECTORY)
+    }
+
+    void testHandleCommand_UserExists_PasswordCorrect_AccountRequired() {
+        serverConfiguration.userAccounts[USERNAME] = userAccount
+        userAccount.accountRequiredForLogin = true
+        commandHandler.handleCommand(createCommand([PASSWORD]), session)
+        assertSessionReply(ReplyCodes.PASS_NEED_ACCOUNT)
         assertUserAccountInSession(true)
         assertCurrentDirectory(HOME_DIRECTORY)
     }

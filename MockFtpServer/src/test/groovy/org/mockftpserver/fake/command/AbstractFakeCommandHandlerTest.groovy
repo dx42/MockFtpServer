@@ -132,8 +132,9 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
      * Assert that the specified reply code and message containing text was sent through the session.
      * @param expectedReplyCode - the expected reply code
      * @param text - the text expected within the reply message; defaults to the reply code as a String
+     * @deprecated
      */
-    protected assertSessionReply(int expectedReplyCode, String text = expectedReplyCode as String) {
+    protected assertSessionReply(int expectedReplyCode, text = expectedReplyCode as String) {
         assertSessionReply(0, expectedReplyCode, text)
     }
 
@@ -143,11 +144,16 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
      * @param expectedReplyCode - the expected reply code
      * @param text - the text expected within the reply message; defaults to the reply code as a String
      */
-    protected assertSessionReply(int replyIndex, int expectedReplyCode, String text = expectedReplyCode as String) {
+    protected assertSessionReply(int replyIndex, int expectedReplyCode, text = expectedReplyCode as String) {
         LOG.info(session)
         String actualMessage = session.getReplyMessage(replyIndex)
         assert session.getReplyCode(replyIndex) == expectedReplyCode
-        assert actualMessage.contains(text), "[$actualMessage] does not contain [$text]"
+        if (text instanceof List) {
+            text.each { assert actualMessage.contains(it), "[$actualMessage] does not contain [$it]" }
+        }
+        else {
+            assert actualMessage.contains(text), "[$actualMessage] does not contain [$text]"
+        }
     }
 
     /**

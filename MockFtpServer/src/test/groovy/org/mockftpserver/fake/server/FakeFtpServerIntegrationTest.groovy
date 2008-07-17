@@ -26,7 +26,6 @@ import org.mockftpserver.fake.user.UserAccount
 import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.test.PortTestUtil
 
-
 /**
  * Integration tests for FakeFtpServer.
  *
@@ -39,6 +38,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
     static final SERVER = "localhost"
     static final USERNAME = "user123"
     static final PASSWORD = "password"
+    static final ACCOUNT = "account123"
     static final ASCII_DATA = "abcdef\tghijklmnopqr"
     static final BINARY_DATA = new byte[256]
     static final ROOT_DIR = "c:/"
@@ -54,6 +54,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
     private FakeFtpServer ftpServer
     private FTPClient ftpClient
     private FileSystem fileSystem
+    private UserAccount userAccount
 
     //-------------------------------------------------------------------------
     // Tests
@@ -63,6 +64,11 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         ftpClientConnectAndLogin()
         assert ftpClient.abort()
         verifyReplyCode("ABOR", 226)
+    }
+
+    void testAcct() {
+        ftpClientConnectAndLogin()
+        assert ftpClient.acct(ACCOUNT) == 230
     }
 
     void testAllo() {
@@ -83,26 +89,6 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         def contents = fileSystem.createInputStream(FILE1).text
         LOG.info("File contents=[" + contents + "]")
         assert contents == ORIGINAL_CONTENTS + ASCII_DATA
-    }
-
-    void testLogin() {
-        ftpClientConnect()
-        String userAndPassword = USERNAME + "/" + PASSWORD
-        LOG.info("Logging in as " + userAndPassword)
-        assert ftpClient.login(USERNAME, PASSWORD)
-        verifyReplyCode("login with $userAndPassword", 230)
-    }
-
-    void testQuit() {
-        ftpClientConnect()
-        ftpClient.quit()
-        verifyReplyCode("quit", 221)
-    }
-
-    void testPwd() {
-        ftpClientConnectAndLogin()
-        assert ftpClient.printWorkingDirectory() == HOME_DIR
-        verifyReplyCode("printWorkingDirectory", 257)
     }
 
     void testCdup() {
@@ -157,6 +143,21 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         verifyReplyCode("list", 226)
     }
 
+    void testLogin() {
+        ftpClientConnect()
+        LOG.info("Logging in as $USERNAME/$PASSWORD")
+        assert ftpClient.login(USERNAME, PASSWORD)
+        verifyReplyCode("login with $USERNAME/$PASSWORD", 230)
+    }
+
+    void testLogin_WithAccount() {
+        userAccount.accountRequiredForLogin = true
+        ftpClientConnect()
+        LOG.info("Logging in as $USERNAME/$PASSWORD with $ACCOUNT")
+        assert ftpClient.login(USERNAME, PASSWORD, ACCOUNT)
+        verifyReplyCode("login with $USERNAME/$PASSWORD with $ACCOUNT", 230)
+    }
+
     void testMkd() {
         ftpClientConnectAndLogin()
 
@@ -199,6 +200,18 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         String[] filenames = ftpClient.listNames(SUBDIR)
         assert filenames == [FILENAME1, FILENAME2]
         verifyReplyCode("listNames", 226)
+    }
+
+    void testPwd() {
+        ftpClientConnectAndLogin()
+        assert ftpClient.printWorkingDirectory() == HOME_DIR
+        verifyReplyCode("printWorkingDirectory", 257)
+    }
+
+    void testQuit() {
+        ftpClientConnect()
+        ftpClient.quit()
+        verifyReplyCode("quit", 221)
     }
 
     void testRein() {
@@ -313,7 +326,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         fileSystem.createDirectory(SUBDIR)
         ftpServer.fileSystem = fileSystem
 
-        def userAccount = new UserAccount(username: USERNAME, password: PASSWORD,
+        userAccount = new UserAccount(username: USERNAME, password: PASSWORD,
                 passwordRequiredForLogin: true, homeDirectory: HOME_DIR)
         ftpServer.userAccounts[USERNAME] = userAccount
 
