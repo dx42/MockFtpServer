@@ -20,7 +20,6 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 
-
 /**
  * Tests for SystCommandHandler
  *
@@ -35,7 +34,7 @@ class SystCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand() {
         serverConfiguration.systemName = SYSTEM_NAME
         commandHandler.handleCommand(createCommand([]), session)
-        assertSessionReply(ReplyCodes.SYST_OK, "syst ${SYSTEM_NAME}")
+        assertSessionReply(ReplyCodes.SYST_OK, ['syst', SYSTEM_NAME])
     }
 
     //-------------------------------------------------------------------------

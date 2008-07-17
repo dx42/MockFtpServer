@@ -47,7 +47,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
     ServerConfiguration serverConfiguration
 
     /**
-     * Reply code sent back when a FileSystemException is caught by the         {@link #handleCommand(Command, Session)}
+     * Reply code sent back when a FileSystemException is caught by the          {@link #handleCommand(Command, Session)}
      * This defaults to ReplyCodes.EXISTING_FILE_ERROR (550). 
      */
     int replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
@@ -288,9 +288,10 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
      * and current directory (homeDirectory) in the session
      * @param userAccount - the userAccount for the user to be logged in
      * @param session - the session
+     * @param replyCode - the reply code to send
      */
-    protected void login(UserAccount userAccount, Session session) {
-        sendReply(session, ReplyCodes.PASS_OK)
+    protected void login(UserAccount userAccount, Session session, int replyCode) {
+        sendReply(session, replyCode)
         session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, userAccount.homeDirectory)
     }

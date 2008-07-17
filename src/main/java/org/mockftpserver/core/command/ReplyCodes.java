@@ -34,6 +34,7 @@ public final class ReplyCodes {
     public static final int MODE_OK = 200;
     public static final int NOOP_OK = 200;
     public static final int PASS_OK = 230;
+    public static final int PASS_NEED_ACCOUNT = 332;
     public static final int PASS_LOG_IN_FAILED = 530;
     public static final int PASV_OK = 227;
     public static final int PORT_OK = 200;

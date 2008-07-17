@@ -41,6 +41,7 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
     Map helpText = [:]
 
     FakeFtpServer() {
+        setCommandHandler(CommandNames.ACCT, new AcctCommandHandler())
         setCommandHandler(CommandNames.ABOR, new AborCommandHandler())
         setCommandHandler(CommandNames.ALLO, new AlloCommandHandler())
         setCommandHandler(CommandNames.APPE, new AppeCommandHandler())
@@ -87,7 +88,7 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
     }
 
     /**
-     * @return the {@link UserAccount}     configured for this server for the specified user name
+     * @return the {@link UserAccount}      configured for this server for the specified user name
      */
     public UserAccount getUserAccount(String username) {
         userAccounts[username]

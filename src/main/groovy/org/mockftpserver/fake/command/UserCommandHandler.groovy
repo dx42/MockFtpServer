@@ -21,8 +21,6 @@ import org.mockftpserver.core.session.Session
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
-
-
 /**
  * CommandHandler for the USER command. Handler logic:
  * <ol>
@@ -49,7 +47,7 @@ class UserCommandHandler extends AbstractFakeCommandHandler {
 
             // If the UserAccount is configured to not require password for login
             if (!userAccount.passwordRequiredForLogin) {
-                login(userAccount, session)
+                login(userAccount, session, ReplyCodes.USER_LOGGED_IN_OK)
                 return
             }
         }
