@@ -302,6 +302,12 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         verifyReplyCode("getSystemName", 215)
     }
 
+    void testType() {
+        ftpClientConnectAndLogin()
+        assert ftpClient.type(FTP.ASCII_FILE_TYPE)
+        verifyReplyCode("TYPE", 200)
+    }
+
     // -------------------------------------------------------------------------
     // Test setup and tear-down
     // -------------------------------------------------------------------------
