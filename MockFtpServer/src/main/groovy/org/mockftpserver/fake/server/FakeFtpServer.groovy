@@ -71,7 +71,9 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
         setCommandHandler(CommandNames.STOU, new StouCommandHandler())
         setCommandHandler(CommandNames.STRU, new StruCommandHandler())
         setCommandHandler(CommandNames.SYST, new SystCommandHandler())
+        setCommandHandler(CommandNames.TYPE, new TypeCommandHandler())
         setCommandHandler(CommandNames.USER, new UserCommandHandler())
+        setCommandHandler(CommandNames.XPWD, new PwdCommandHandler())
     }
 
     /**
@@ -88,7 +90,7 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
     }
 
     /**
-     * @return the {@link UserAccount}      configured for this server for the specified user name
+     * @return the {@link UserAccount}       configured for this server for the specified user name
      */
     public UserAccount getUserAccount(String username) {
         userAccounts[username]
