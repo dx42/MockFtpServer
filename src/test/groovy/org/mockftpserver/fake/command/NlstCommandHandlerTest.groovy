@@ -66,7 +66,7 @@ class NlstCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     void testHandleCommand_PathSpecifiesAFile() {
         assert fileSystem.createFile("/usr/f1.txt")
         handleCommandAndVerifySendDataReplies(["/usr/f1.txt"])
-        assertSessionData("")
+        assertSessionData("f1.txt")
     }
 
     void testHandleCommand_PathDoesNotExist() {
