@@ -16,6 +16,7 @@
 package org.mockftpserver.fake.filesystem
 
 import org.apache.log4j.Logger
+import org.mockftpserver.core.util.PatternUtil
 
 /**
  * Abstract superclass for implementation of the FileSystem interface that manage the files 
@@ -243,12 +244,12 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     }
 
     /**
-     * Return the List of FileInfo objects for the files in the specified directory
-     * or file path. If the path specifies a single file, then return a list with
-     * a single FileInfo object representing that file. If the path does not refer
-     * to a valid or existing directory or file, then an empty List is returned.
+     * Return the List of FileInfo objects for the files in the specified directory or group of
+     * files. If the path specifies a single file, then return a list with a single FileInfo
+     * object representing that file. If the path does not refer to an existing directory or
+     * group of files, then an empty List is returned.
      *
-     * @param path - the path of the directory or file whose information should be returned
+     * @param path - the path specifying a directory or group of files; may contain wildcards (? or *)
      * @return the List of FileInfo objects for the specified directory or file; may be empty
      *
      * @see org.mockftpserver.fake.filesystem.FileSystem#listFiles(java.lang.String)
@@ -263,10 +264,10 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         List children = children(path)
         if (children != null) {
             children.each {childPath ->
-                if (normalizedPath.equals(getParent(childPath))) {
-                    def fileInfo = buildFileInfoForPath(childPath)
-                    fileInfoList.add(fileInfo)
-                }
+//                if (normalizedPath.equals(getParent(childPath))) {
+                def fileInfo = buildFileInfoForPath(childPath)
+                fileInfoList.add(fileInfo)
+//                }
             }
         }
         return fileInfoList
@@ -280,25 +281,30 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         AbstractFileSystemEntry entry = getRequiredEntry(path)
         def name = getName(entry.getPath())
         def lastModified = entry.lastModified
-        entry.isDirectory()    \
-               ? FileInfo.forDirectory(name, entry.lastModified)    \
-               : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified)
+        entry.isDirectory()     \
+                ? FileInfo.forDirectory(name, entry.lastModified)     \
+                : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified)
     }
 
     /**
-     * Return the List of filenames in the specified directory path. The returned filenames do not
-     * include a path. If the path does not refer to a valid directory, then an empty List is
-     * returned.
+     * Return the List of filenames in the specified directory path or file path. If the path specifies
+     * a single file, then return that single filename. The returned filenames do not
+     * include a path. If the path does not refer to a valid directory or file path, then an empty List
+     * is returned.
      *
-     * @param path - the path of the directory whose contents should be returned
+     * @param path - the path specifying a directory or group of files; may contain wildcards (? or *)
      * @return the List of filenames (not including paths) for all files in the specified directory
-     *         may be empty
+     *         or file path; may be empty
      *
      * @throws AssertionError - if path is null
      *
      * @see org.mockftpserver.fake.filesystem.FileSystem#listNames(java.lang.String)
      */
     public List listNames(String path) {
+        if (isFile(path)) {
+            return [getName(path)]
+        }
+
         List filenames = new ArrayList()
         List children = children(path)
         children.each {childPath ->
@@ -611,12 +617,20 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      * @return the List of the paths for the files and subdirectories that are children
      */
     private List children(String path) {
-        List descendents = descendents(path)
-        List children = new ArrayList()
-        String normalizedPath = normalize(path)
+        def lastComponent = getName(path)
+        def containsWildcards = PatternUtil.containsWildcards(lastComponent)
+        def dir = containsWildcards ? getParent(path) : path
+        def pattern = containsWildcards ? PatternUtil.convertStringWithWildcardsToRegex(getName(path)) : null
+        LOG.info("path=$path  lastComponent=$lastComponent  containsWildcards=$containsWildcards  dir=$dir  pattern=$pattern")
+
+        List descendents = descendents(dir)
+        List children = []
+        String normalizedDir = normalize(dir)
         descendents.each {descendentPath ->
-            if (normalizedPath.equals(getParent(descendentPath))) {
-                children.add(descendentPath)
+            if (normalizedDir.equals(getParent(descendentPath))) {
+                if (!pattern || (pattern && getName(descendentPath) ==~ pattern)) {
+                    children.add(descendentPath)
+                }
             }
         }
         return children

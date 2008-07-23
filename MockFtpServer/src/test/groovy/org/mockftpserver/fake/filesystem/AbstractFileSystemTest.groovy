@@ -34,6 +34,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
     public static final NEW_DIRNAME = "testdir"
     public static final ILLEGAL_FILE = "xx/yy////z!<>?*z.txt"
     public static final EXISTING_FILE_CONTENTS = "abc 123 %^& xxx"
+    public static final DATE = new Date()
 
     // These must be set by the concrete subclass (in its constructor)
     protected String NEW_DIR = null
@@ -206,33 +207,42 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
         shouldFailWithMessageContaining("toPath") { fileSystem.rename(FILENAME1, null) }
     }
 
-    /**
-     * Test the listNames() method
-     */
     void testListNames() {
         assert fileSystem.createDirectory(NEW_DIR)
         assert fileSystem.listNames(NEW_DIR) == []
 
-        assert fileSystem.createFile(NEW_DIR + "/" + FILENAME1)
-        assert fileSystem.createFile(NEW_DIR + "/" + FILENAME2)
-        assert fileSystem.createDirectory(NEW_DIR + "/" + DIR1)
-        assert fileSystem.createFile(NEW_DIR + "/" + DIR1 + "/abc.def")
+        assert fileSystem.createFile(p(NEW_DIR, FILENAME1))
+        assert fileSystem.createFile(p(NEW_DIR, FILENAME2))
+        assert fileSystem.createDirectory(p(NEW_DIR, DIR1))
+        assert fileSystem.createFile(p(NEW_DIR, DIR1, "/abc.def"))
 
         List filenames = fileSystem.listNames(NEW_DIR)
         LOG.info("filenames=" + filenames)
-        assert [FILENAME1, FILENAME2, DIR1] as Set == filenames as Set
+        assertSameIgnoringOrder(filenames, [FILENAME1, FILENAME2, DIR1])
+
+        // Specify a filename instead of a directory name
+        assert [FILENAME1] == fileSystem.listNames(p(NEW_DIR, FILENAME1))
 
         assert [] == fileSystem.listNames(NO_SUCH_DIR)
-        assert [] == fileSystem.listNames(NEW_DIR + "/" + FILENAME1)
 
         shouldFailWithMessageContaining("path") { fileSystem.listNames(null) }
     }
 
-    /**
-     * Test listFiles() method
-     */
+    void testListNames_Wildcards() {
+        assert fileSystem.createDirectory(NEW_DIR)
+        assert fileSystem.createFile(p(NEW_DIR, 'abc.txt'))
+        assert fileSystem.createFile(p(NEW_DIR, 'def.txt'))
+
+        assertSameIgnoringOrder(fileSystem.listNames(p(NEW_DIR, '*.txt')), ['abc.txt', 'def.txt'])
+        assertSameIgnoringOrder(fileSystem.listNames(p(NEW_DIR, '*')), ['abc.txt', 'def.txt'])
+        assertSameIgnoringOrder(fileSystem.listNames(p(NEW_DIR, '???.???')), ['abc.txt', 'def.txt'])
+        assertSameIgnoringOrder(fileSystem.listNames(p(NEW_DIR, '*.exe')), [])
+        assertSameIgnoringOrder(fileSystem.listNames(p(NEW_DIR, 'abc.???')), ['abc.txt'])
+        assertSameIgnoringOrder(fileSystem.listNames(p(NEW_DIR, 'a?c.?xt')), ['abc.txt'])
+        assertSameIgnoringOrder(fileSystem.listNames(p(NEW_DIR, 'd?f.*')), ['def.txt'])
+    }
+
     void testListFiles() {
-        final DATE = new Date()
         assert fileSystem.createDirectory(NEW_DIR)
         assert [] == fileSystem.listFiles(NEW_DIR)
 
@@ -245,7 +255,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
 
         assert fileSystem.createFile(p(NEW_DIR, FILENAME2))
         FileInfo fileInfo2 = FileInfo.forFile(FILENAME2, 0, DATE)
-        assert [fileInfo1, fileInfo2] as Set == fileSystem.listFiles(NEW_DIR) as Set
+        assertSameIgnoringOrder(fileSystem.listFiles(NEW_DIR), [fileInfo1, fileInfo2])
 
         // Write to the file to get a non-zero length
         final byte[] CONTENTS = "1234567890".getBytes()
@@ -253,15 +263,32 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
         out.write(CONTENTS)
         out.close()
         fileInfo1 = FileInfo.forFile(FILENAME1, CONTENTS.length, DATE)
-        assert [fileInfo1, fileInfo2] as Set == fileSystem.listFiles(NEW_DIR) as Set
+        assertSameIgnoringOrder(fileSystem.listFiles(NEW_DIR), [fileInfo1, fileInfo2])
 
         assert fileSystem.createDirectory(p(NEW_DIR, DIR1))
         FileInfo fileInfo3 = FileInfo.forDirectory(DIR1, DATE)
-        assert [fileInfo1, fileInfo2, fileInfo3] as Set == fileSystem.listFiles(NEW_DIR) as Set
+        assertSameIgnoringOrder(fileSystem.listFiles(NEW_DIR), [fileInfo1, fileInfo2, fileInfo3])
 
         assert fileSystem.listFiles(NO_SUCH_DIR) == []
 
         shouldFailWithMessageContaining("path") { fileSystem.listFiles(null) }
+    }
+
+    void testListFiles_Wildcards() {
+        assert fileSystem.createDirectory(NEW_DIR)
+        assert fileSystem.createFile(p(NEW_DIR, 'abc.txt'))
+        assert fileSystem.createFile(p(NEW_DIR, 'def.txt'))
+
+        FileInfo fileInfo1 = FileInfo.forFile('abc.txt', 0, DATE)
+        FileInfo fileInfo2 = FileInfo.forFile('def.txt', 0, DATE)
+
+        assertSameIgnoringOrder(fileSystem.listFiles(p(NEW_DIR, '*.txt')), [fileInfo1, fileInfo2])
+        assertSameIgnoringOrder(fileSystem.listFiles(p(NEW_DIR, '*')), [fileInfo1, fileInfo2])
+        assertSameIgnoringOrder(fileSystem.listFiles(p(NEW_DIR, '???.???')), [fileInfo1, fileInfo2])
+        assertSameIgnoringOrder(fileSystem.listFiles(p(NEW_DIR, '*.exe')), [])
+        assertSameIgnoringOrder(fileSystem.listFiles(p(NEW_DIR, 'abc.???')), [fileInfo1])
+        assertSameIgnoringOrder(fileSystem.listFiles(p(NEW_DIR, 'a?c.?xt')), [fileInfo1])
+        assertSameIgnoringOrder(fileSystem.listFiles(p(NEW_DIR, 'd?f.*')), [fileInfo2])
     }
 
     /**
@@ -391,6 +418,11 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
+
+    protected void assertSameIgnoringOrder(list1, list2) {
+        LOG.info("Comparing $list1 to $list2")
+        assert list1 as Set == list2 as Set, "list1=$list1  list2=$list2"
+    }
 
     /**
      * Return a new instance of the FileSystem implementation class under test

@@ -15,23 +15,17 @@
  */
 package org.mockftpserver.core.util
 
-import java.io.ByteArrayInputStream
-import java.io.InputStream
-
-import org.apache.log4j.Logger
 import org.mockftpserver.test.AbstractGroovyTest
 
 /**
  * Tests for the IoUtil class
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
 public class IoUtilTest extends AbstractGroovyTest {
 
-    private static final LOG = Logger.getLogger(IoUtilTest)
-    
     /**
      * Test the readBytes() method 
      */
@@ -40,12 +34,12 @@ public class IoUtilTest extends AbstractGroovyTest {
         InputStream input = new ByteArrayInputStream(BYTES)
         assert IoUtil.readBytes(input) == BYTES
     }
-    
+
     /**
      * Test the readBytes() method, passing in a null 
      */
     void testReadBytes_Null() {
         shouldFailWithMessageContaining("input") { IoUtil.readBytes(null) }
     }
-    
+
 }
