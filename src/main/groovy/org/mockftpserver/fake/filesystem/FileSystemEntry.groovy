@@ -13,38 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.mockftpserver.fake.filesystem
 
 /**
- * The abstract superclass for concrete file system entry classes representing files and directories.
+ * Interface for an entry within a fake file system, representing a single file or directory.
  *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
-abstract class AbstractFileSystemEntry implements FileSystemEntry {
-
-    String path
-    Date lastModified
+public interface FileSystemEntry {
 
     /**
-     * Construct a new instance without setting its path
+     * Return true if this entry represents a directory, false otherwise
+     * @return true if this file system entry is a directory, false otherwise
      */
-    AbstractFileSystemEntry() {
-    }
+    boolean isDirectory()
 
     /**
-     * Construct a new instance with the specified value for its path 
-     * @param path - the value for path
+     * Return the path for this file system entry
+     * @return the path for this file system entry
      */
-    AbstractFileSystemEntry(String path) {
-        setPath(path)
-    }
+    String getPath()
 
     /**
-     * Abstract method -- must be implemented within concrete subclasses
-     * @return true if this file system entry represents a directory
+     * Set the path for this file system entry
+     * @param path - the new path value for this file system entry
      */
-    abstract boolean isDirectory()
+    void setPath(String path)
+
+    /**
+     * Return the timestamp Date for the last modification of this file system entry
+     * @return the last modified timestamp Date for this file system entry
+     */
+    Date getLastModified()
 
 }

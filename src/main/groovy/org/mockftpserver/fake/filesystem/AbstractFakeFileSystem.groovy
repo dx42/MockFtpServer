@@ -43,9 +43,9 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     /**
      * Add the specified file system entry (file or directory) to this file system
      *
-     * @param entry - the subclass of AbstractFileSystemEntry to add
+     * @param entry - the FileSystemEntry to add
      */
-    public void addEntry(AbstractFileSystemEntry entry) {
+    public void addEntry(FileSystemEntry entry) {
         def normalized = normalize(entry.path)
         if (entries.get(normalized) != null) {
             throw new FileSystemException(normalized, "The path [" + normalized + "] already exists")
@@ -187,7 +187,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     public boolean delete(String path) {
         assert path != null
         String key = normalize(path)
-        AbstractFileSystemEntry entry = getEntry(key)
+        FileSystemEntry entry = getEntry(key)
 
         if (entry != null && !hasChildren(path)) {
             entries.remove(key)
@@ -223,7 +223,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      */
     public boolean isDirectory(String path) {
         assert path != null
-        AbstractFileSystemEntry entry = getEntry(path)
+        FileSystemEntry entry = getEntry(path)
         return entry != null && entry.isDirectory()
     }
 
@@ -239,7 +239,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      */
     public boolean isFile(String path) {
         assert path != null
-        AbstractFileSystemEntry entry = getEntry(path)
+        FileSystemEntry entry = getEntry(path)
         return entry != null && !entry.isDirectory()
     }
 
@@ -278,12 +278,12 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      * @param path - the path for the file or directory
      */
     protected FileInfo buildFileInfoForPath(String path) {
-        AbstractFileSystemEntry entry = getRequiredEntry(path)
+        FileSystemEntry entry = getRequiredEntry(path)
         def name = getName(entry.getPath())
         def lastModified = entry.lastModified
-        entry.isDirectory()     \
-                ? FileInfo.forDirectory(name, entry.lastModified)     \
-                : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified)
+        entry.isDirectory()      \
+                 ? FileInfo.forDirectory(name, entry.lastModified)      \
+                 : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified)
     }
 
     /**
@@ -329,7 +329,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         assert toPath != null
         assert fromPath != null
 
-        AbstractFileSystemEntry entry = getEntry(fromPath)
+        FileSystemEntry entry = getEntry(fromPath)
 
         if (entry != null) {
             String normalizedFromPath = normalize(fromPath)
@@ -343,7 +343,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
 
             List children = descendents(fromPath)
             children.each {childPath ->
-                AbstractFileSystemEntry child = getRequiredEntry(childPath)
+                FileSystemEntry child = getRequiredEntry(childPath)
                 String normalizedChildPath = normalize(child.getPath())
                 assert normalizedChildPath.startsWith(normalizedFromPath), "Starts with FROM path"
                 String childToPath = normalizedToPath + normalizedChildPath.substring(normalizedFromPath.length())
@@ -473,7 +473,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      * @param entry - the file system entry
      * @param toPath - the TO path (normalized)
      */
-    protected void renamePath(AbstractFileSystemEntry entry, String toPath) {
+    protected void renamePath(FileSystemEntry entry, String toPath) {
         def normalizedFrom = normalize(entry.path)
         def normalizedTo = normalize(toPath)
         LOG.info("renaming from [" + normalizedFrom + "] to [" + normalizedTo + "]")
@@ -483,26 +483,26 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     }
 
     /**
-     * Return the AbstractFileSystemEntry for the specified path, or else null
+     * Return the FileSystemEntry for the specified path, or else null
      *
      * @param path - the path
-     * @return the AbstractFileSystemEntry or null if no entry exists for that path
+     * @return the FileSystemEntry or null if no entry exists for that path
      */
-    private AbstractFileSystemEntry getEntry(String path) {
-        return (AbstractFileSystemEntry) entries.get(normalize(path))
+    private FileSystemEntry getEntry(String path) {
+        return (FileSystemEntry) entries.get(normalize(path))
     }
 
     /**
-     * Return the AbstractFileSystemEntry for the specified path throw FileSystemException if the
+     * Return the FileSystemEntry for the specified path throw FileSystemException if the
      * specified path does not exist.
      *
      * @param path - the path
-     * @return the AbstractFileSystemEntry
+     * @return the FileSystemEntry
      *
      * @throws FileSystemException - if the specified path does not exist
      */
-    protected AbstractFileSystemEntry getRequiredEntry(String path) {
-        AbstractFileSystemEntry entry = getEntry(path)
+    protected FileSystemEntry getRequiredEntry(String path) {
+        FileSystemEntry entry = getEntry(path)
         if (entry == null) {
             throw new FileSystemException(path, "The path [" + normalize(path) + "] does not exist")
         }
@@ -539,8 +539,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      * specified by isDirectory.
      *
      * @param path - the path
-     * @param isDirectory - true if the path should reference a directory false if it should be a
-     *        file
+     * @param isDirectory - true if the path should reference a directory false if it should be a file
      *
      * @throws AssertionError - if the specified path is null
      * @throws FileSystemException - if the specified path does not exist or is not a directory/file
@@ -548,7 +547,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      */
     private void verifyIsDirectory(String path, boolean isDirectory) {
         assert path != null
-        AbstractFileSystemEntry entry = getRequiredEntry(path)
+        FileSystemEntry entry = getRequiredEntry(path)
         if (entry.isDirectory() != isDirectory) {
             throw new FileSystemException(path, "Path [" + path + "] is directory is " + entry.isDirectory())
         }
