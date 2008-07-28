@@ -48,13 +48,11 @@ class HelpCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_Unrecognized() {
-        serverConfiguration.setTextForKey('noHelpTextDefined', 'xxx {0}')
         serverConfiguration.helpText = ['': 'default']
         commandHandler.handleCommand(createCommand(['unrecognized']), session)
 
         // Reply text includes the message text and the passed-in command as a message parameter 
-        assertSessionReply(ReplyCodes.HELP_OK, 'xxx')
-        assertSessionReply(ReplyCodes.HELP_OK, 'unrecognized')
+        assertSessionReply(ReplyCodes.HELP_OK, ['noHelpTextDefined', 'unrecognized'])
     }
 
     //-------------------------------------------------------------------------
