@@ -38,11 +38,10 @@ import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 class HelpCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
-        def parm = command.getOptionalString(0)
-        def key = parm ?: ''
+        def key = command.parameters.join(' ')
         def help = serverConfiguration.getHelpText(key)
         if (help == null) {
-            sendReply(session, ReplyCodes.HELP_OK, 'noHelpTextDefined', [parm])
+            sendReply(session, ReplyCodes.HELP_OK, 'noHelpTextDefined', [key])
         }
         else {
             sendReply(session, ReplyCodes.HELP_OK, [help])

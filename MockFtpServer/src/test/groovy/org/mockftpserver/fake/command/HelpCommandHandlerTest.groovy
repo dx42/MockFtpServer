@@ -35,6 +35,12 @@ class HelpCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         assertSessionReply(ReplyCodes.HELP_OK, '_abc')
     }
 
+    void testHandleCommand_MultiWordArg() {
+        serverConfiguration.helpText = ["abc def": 'abcdef']
+        commandHandler.handleCommand(createCommand(['abc', 'def']), session)
+        assertSessionReply(ReplyCodes.HELP_OK, 'abcdef')
+    }
+
     void testHandleCommand_NoArg_UseDefault() {
         serverConfiguration.helpText = ['': 'default']
         commandHandler.handleCommand(createCommand([]), session)
