@@ -20,11 +20,10 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.fake.filesystem.FileSystemException
 
 /**
  * Tests for RmdCommandHandler
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -32,48 +31,48 @@ import org.mockftpserver.fake.filesystem.FileSystemException
 class RmdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     def DIR = "/usr"
-    
+
     void testHandleCommand() {
         assert fileSystem.createDirectory(DIR)
-        commandHandler.handleCommand(createCommand([DIR]), session)        
-        assertSessionReply(ReplyCodes.RMD_OK)
+        commandHandler.handleCommand(createCommand([DIR]), session)
+        assertSessionReply(ReplyCodes.RMD_OK, ['rmd', DIR])
         assert fileSystem.exists(DIR) == false
-	}
-    
+    }
+
     void testHandleCommand_PathIsRelative() {
         def SUB = "sub"
-        assert fileSystem.createDirectory(p(DIR,SUB))
+        assert fileSystem.createDirectory(p(DIR, SUB))
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
-        commandHandler.handleCommand(createCommand([SUB]), session)        
-        assertSessionReply(ReplyCodes.RMD_OK)
-        assert fileSystem.exists(p(DIR,SUB)) == false
-	}
+        commandHandler.handleCommand(createCommand([SUB]), session)
+        assertSessionReply(ReplyCodes.RMD_OK, ['rmd', SUB])
+        assert fileSystem.exists(p(DIR, SUB)) == false
+    }
 
     void testHandleCommand_PathDoesNotExistInFileSystem() {
-        commandHandler.handleCommand(createCommand([DIR]), session)        
+        commandHandler.handleCommand(createCommand([DIR]), session)
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
-	}
-    
+    }
+
     void testHandleCommand_PathSpecifiesAFile() {
         assert fileSystem.createFile(DIR)
-        commandHandler.handleCommand(createCommand([DIR]), session)        
+        commandHandler.handleCommand(createCommand([DIR]), session)
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
         assert fileSystem.exists(DIR)
-	}
-    
+    }
+
     void testHandleCommand_DirectoryIsNotEmpty() {
         final FILE = DIR + "/file.txt"
         assert fileSystem.createFile(FILE)
-        commandHandler.handleCommand(createCommand([DIR]), session)        
+        commandHandler.handleCommand(createCommand([DIR]), session)
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
         assert fileSystem.exists(DIR)
         assert fileSystem.exists(FILE)
-	}
-    
+    }
+
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])
     }
-    
+
     void testHandleCommand_ListNamesThrowsException() {
         overrideMethodToThrowFileSystemException("listNames")
         handleCommand([DIR])
@@ -89,11 +88,11 @@ class RmdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
-    
-	CommandHandler createCommandHandler() {
-	    new RmdCommandHandler()
-	}
-	
+
+    CommandHandler createCommandHandler() {
+        new RmdCommandHandler()
+    }
+
     Command createValidCommand() {
         return new Command(CommandNames.RMD, [DIR])
     }

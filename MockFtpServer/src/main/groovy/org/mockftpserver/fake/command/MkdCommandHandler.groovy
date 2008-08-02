@@ -20,8 +20,6 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
-
-
 /**
  * CommandHandler for the MKD command. Handler logic:
  * <ol>
@@ -49,7 +47,7 @@ class MkdCommandHandler extends AbstractFakeCommandHandler {
         verifyFileSystemCondition(!fileSystem.exists(path), path)
 
         fileSystem.createDirectory(path)
-        sendReply(session, ReplyCodes.MKD_OK)
+        sendReply(session, ReplyCodes.MKD_OK, 'mkd', [path])
     }
 
 }

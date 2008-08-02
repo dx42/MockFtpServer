@@ -20,7 +20,6 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 
-
 /**
  * Tests for SiteCommandHandler
  *
@@ -32,7 +31,7 @@ class SiteCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     void testHandleCommand() {
         commandHandler.handleCommand(createCommand([]), session)
-        assertSessionReply(ReplyCodes.SITE_OK)
+        assertSessionReply(ReplyCodes.SITE_OK, 'site')
     }
 
     //-------------------------------------------------------------------------

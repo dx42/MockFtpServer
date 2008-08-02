@@ -45,10 +45,11 @@ class PassCommandHandler extends AbstractFakeCommandHandler {
             def userAccount = serverConfiguration.getUserAccount(username)
             if (userAccount.isValidPassword(password)) {
                 int replyCode = (userAccount.accountRequiredForLogin) ? ReplyCodes.PASS_NEED_ACCOUNT : ReplyCodes.PASS_OK
-                login(userAccount, session, replyCode)
+                String replyMessageKey = (userAccount.accountRequiredForLogin) ? 'pass.needAccount' : 'pass'
+                login(userAccount, session, replyCode, replyMessageKey)
             }
             else {
-                sendReply(session, ReplyCodes.PASS_LOG_IN_FAILED)
+                sendReply(session, ReplyCodes.PASS_LOG_IN_FAILED, 'pass.loginFailed')
             }
         }
     }

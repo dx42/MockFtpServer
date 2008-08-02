@@ -41,10 +41,10 @@ class HelpCommandHandler extends AbstractFakeCommandHandler {
         def key = command.parameters.join(' ')
         def help = serverConfiguration.getHelpText(key)
         if (help == null) {
-            sendReply(session, ReplyCodes.HELP_OK, 'noHelpTextDefined', [key])
+            sendReply(session, ReplyCodes.HELP_OK, 'help.noHelpTextDefined', [key])
         }
         else {
-            sendReply(session, ReplyCodes.HELP_OK, [help])
+            sendReply(session, ReplyCodes.HELP_OK, 'help', [help])
         }
     }
 

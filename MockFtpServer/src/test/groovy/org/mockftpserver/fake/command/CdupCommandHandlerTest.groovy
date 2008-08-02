@@ -36,7 +36,7 @@ class CdupCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     void testHandleCommand() {
         setCurrentDirectory(SUBDIR)
         commandHandler.handleCommand(createCommand([]), session)
-        assertSessionReply(ReplyCodes.CDUP_OK)
+        assertSessionReply(ReplyCodes.CDUP_OK, ['cdup', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == DIR
     }
 

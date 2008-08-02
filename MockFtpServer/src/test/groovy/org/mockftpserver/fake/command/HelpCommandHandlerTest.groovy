@@ -32,19 +32,19 @@ class HelpCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_Arg() {
         serverConfiguration.helpText = [abc: '_abc']
         commandHandler.handleCommand(createCommand(['abc']), session)
-        assertSessionReply(ReplyCodes.HELP_OK, '_abc')
+        assertSessionReply(ReplyCodes.HELP_OK, ['help', '_abc'])
     }
 
     void testHandleCommand_MultiWordArg() {
         serverConfiguration.helpText = ["abc def": 'abcdef']
         commandHandler.handleCommand(createCommand(['abc', 'def']), session)
-        assertSessionReply(ReplyCodes.HELP_OK, 'abcdef')
+        assertSessionReply(ReplyCodes.HELP_OK, ['help', 'abcdef'])
     }
 
     void testHandleCommand_NoArg_UseDefault() {
         serverConfiguration.helpText = ['': 'default']
         commandHandler.handleCommand(createCommand([]), session)
-        assertSessionReply(ReplyCodes.HELP_OK, 'default')
+        assertSessionReply(ReplyCodes.HELP_OK, ['help', 'default'])
     }
 
     void testHandleCommand_Unrecognized() {
@@ -52,7 +52,7 @@ class HelpCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         commandHandler.handleCommand(createCommand(['unrecognized']), session)
 
         // Reply text includes the message text and the passed-in command as a message parameter 
-        assertSessionReply(ReplyCodes.HELP_OK, ['noHelpTextDefined', 'unrecognized'])
+        assertSessionReply(ReplyCodes.HELP_OK, ['help.noHelpTextDefined', 'unrecognized'])
     }
 
     //-------------------------------------------------------------------------

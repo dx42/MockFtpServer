@@ -20,7 +20,6 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
-
 /**
  * CommandHandler for the RMD command. Handler logic:
  * <ol>
@@ -47,7 +46,7 @@ class RmdCommandHandler extends AbstractFakeCommandHandler {
         verifyFileSystemCondition(fileSystem.listNames(path) == [], path)
 
         fileSystem.delete(path)
-        sendReply(session, ReplyCodes.RMD_OK)
+        sendReply(session, ReplyCodes.RMD_OK, 'rmd', [path])
     }
 
 }

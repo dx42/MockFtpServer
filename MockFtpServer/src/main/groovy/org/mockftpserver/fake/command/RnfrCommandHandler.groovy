@@ -21,7 +21,6 @@ import org.mockftpserver.core.session.Session
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
-
 /**
  * CommandHandler for the RNFR command. Handler logic:
  * <ol>
@@ -47,7 +46,7 @@ class RnfrCommandHandler extends AbstractFakeCommandHandler {
         verifyFileSystemCondition(fileSystem.isFile(fromPath), fromPath)
 
         session.setAttribute(SessionKeys.RENAME_FROM, fromPath)
-        sendReply(session, ReplyCodes.RNFR_OK)
+        sendReply(session, ReplyCodes.RNFR_OK, 'rnfr')
     }
 
 }

@@ -30,7 +30,7 @@ import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 class QuitCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
-        sendReply(session, ReplyCodes.QUIT_OK)
+        sendReply(session, ReplyCodes.QUIT_OK, 'quit')
         session.close()
     }
 

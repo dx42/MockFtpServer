@@ -21,7 +21,6 @@ import org.mockftpserver.core.session.Session
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
-
 /**
  * CommandHandler for the RNTO command. Handler logic:
  * <ol>
@@ -52,7 +51,7 @@ class RntoCommandHandler extends AbstractFakeCommandHandler {
 
         // TODO use custom message, including FROM and TO path?
         session.removeAttribute(SessionKeys.RENAME_FROM)
-        sendReply(session, ReplyCodes.RNTO_OK)
+        sendReply(session, ReplyCodes.RNTO_OK, 'rnto', [fromPath, toPath])
     }
 
 }

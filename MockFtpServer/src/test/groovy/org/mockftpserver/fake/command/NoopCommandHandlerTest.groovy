@@ -20,7 +20,6 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 
-
 /**
  * Tests for NoopCommandHandler
  *
@@ -32,7 +31,7 @@ class NoopCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand() {
         commandHandler.handleCommand(createCommand([]), session)
-        assertSessionReply(ReplyCodes.NOOP_OK)
+        assertSessionReply(ReplyCodes.NOOP_OK, 'noop')
     }
 
     //-------------------------------------------------------------------------
