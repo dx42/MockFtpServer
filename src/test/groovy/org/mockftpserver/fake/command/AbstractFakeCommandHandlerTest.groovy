@@ -189,6 +189,20 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     }
 
     /**
+     * Execute the handleCommand() method with the specified parameters and
+     * assert that the standard SEND DATA replies were sent through the session.
+     * @param parameters - the command parameters to use
+     * @param initialReplyMessageKey - the expected reply message key for the initial reply
+     * @param finalReplyMessageKey -  the expected reply message key for the final reply
+     * @param finalReplyCode - the expected final reply code; defaults to ReplyCodes.TRANSFER_DATA_FINAL_OK
+     */
+    protected handleCommandAndVerifySendDataReplies(parameters, String initialReplyMessageKey, String finalReplyMessageKey, int finalReplyCode = ReplyCodes.TRANSFER_DATA_FINAL_OK) {
+        commandHandler.handleCommand(createCommand(parameters), session)
+        assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK, initialReplyMessageKey)
+        assertSessionReply(1, finalReplyCode, finalReplyMessageKey)
+    }
+
+    /**
      * Override the named method for the specified object instance
      * @param object - the object instance
      * @param methodName - the name of the method to override

@@ -32,7 +32,7 @@ class QuitCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand() {
         assert !session.closed
         commandHandler.handleCommand(createCommand([]), session)
-        assertSessionReply(ReplyCodes.QUIT_OK)
+        assertSessionReply(ReplyCodes.QUIT_OK, 'quit')
         assert session.closed
     }
 

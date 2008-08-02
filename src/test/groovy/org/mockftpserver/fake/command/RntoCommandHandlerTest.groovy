@@ -37,7 +37,7 @@ class RntoCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     void testHandleCommand() {
         assert fileSystem.createFile(FROM_FILE)
         commandHandler.handleCommand(createCommand([TO_FILE]), session)
-        assertSessionReply(ReplyCodes.RNTO_OK)
+        assertSessionReply(ReplyCodes.RNTO_OK, ['rnto', FROM_FILE, TO_FILE])
         assert !fileSystem.exists(FROM_FILE), FROM_FILE
         assert fileSystem.exists(TO_FILE), TO_FILE
         assert session.getAttribute(SessionKeys.RENAME_FROM) == null
@@ -47,7 +47,7 @@ class RntoCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         assert fileSystem.createFile(FROM_FILE)
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, "/")
         commandHandler.handleCommand(createCommand(["file.txt"]), session)
-        assertSessionReply(ReplyCodes.RNTO_OK)
+        assertSessionReply(ReplyCodes.RNTO_OK, ['rnto', FROM_FILE, 'file.txt'])
         assert !fileSystem.exists(FROM_FILE), FROM_FILE
         assert fileSystem.exists(TO_FILE), TO_FILE
         assert session.getAttribute(SessionKeys.RENAME_FROM) == null

@@ -45,7 +45,7 @@ class CdupCommandHandler extends AbstractFakeCommandHandler {
         verifyFileSystemCondition(fileSystem.isDirectory(path), path)
 
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, path)
-        sendReply(session, ReplyCodes.CDUP_OK, [path])
+        sendReply(session, ReplyCodes.CDUP_OK, 'cdup', [path])
     }
 
 }

@@ -47,7 +47,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
     ServerConfiguration serverConfiguration
 
     /**
-     * Reply code sent back when a FileSystemException is caught by the          {@link #handleCommand(Command, Session)}
+     * Reply code sent back when a FileSystemException is caught by the           {@link #handleCommand(Command, Session)}
      * This defaults to ReplyCodes.EXISTING_FILE_ERROR (550). 
      */
     int replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
@@ -269,14 +269,14 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
         def userAccount = serverConfiguration.getUserAccount(username)
         if (userAccount == null || !userAccount.valid) {
             LOG.error("UserAccount missing or not valid for username [$username]: $userAccount")
-            sendReply(session, ReplyCodes.USER_ACCOUNT_NOT_VALID, "userAccountNotValid", [username])
+            sendReply(session, ReplyCodes.USER_ACCOUNT_NOT_VALID, "login.userAccountNotValid", [username])
             return false
         }
 
         def home = userAccount.homeDirectory
         if (!getFileSystem().isDirectory(home)) {
             LOG.error("Home directory configured for username [$username] is not valid: $home")
-            sendReply(session, ReplyCodes.USER_ACCOUNT_NOT_VALID, "homeDirectoryNotValid", [username, home])
+            sendReply(session, ReplyCodes.USER_ACCOUNT_NOT_VALID, "login.homeDirectoryNotValid", [username, home])
             return false
         }
 
@@ -284,14 +284,15 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
     }
 
     /**
-     * Log in the specified user for the current session. Send back a reply of 230 and set the UserAccount
-     * and current directory (homeDirectory) in the session
+     * Log in the specified user for the current session. Send back a reply of 230 with a message indicated
+     * by the replyMessageKey and set the UserAccount and current directory (homeDirectory) in the session.
      * @param userAccount - the userAccount for the user to be logged in
      * @param session - the session
      * @param replyCode - the reply code to send
+     * @param replyMessageKey - the message key for the reply text
      */
-    protected void login(UserAccount userAccount, Session session, int replyCode) {
-        sendReply(session, replyCode)
+    protected void login(UserAccount userAccount, Session session, int replyCode, String replyMessageKey) {
+        sendReply(session, replyCode, replyMessageKey)
         session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, userAccount.homeDirectory)
     }

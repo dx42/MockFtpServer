@@ -34,7 +34,7 @@ class SiteCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
-        sendReply(session, ReplyCodes.SITE_OK)
+        sendReply(session, ReplyCodes.SITE_OK, 'site')
     }
 
 }

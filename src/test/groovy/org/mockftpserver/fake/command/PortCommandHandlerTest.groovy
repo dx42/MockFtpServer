@@ -36,7 +36,7 @@ class PortCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand() {
         commandHandler.handleCommand(createCommand(PARAMETERS), session)
-        assertSessionReply(ReplyCodes.PORT_OK)
+        assertSessionReply(ReplyCodes.PORT_OK, 'port')
         assert session.clientDataPort == PORT
         assert session.clientDataHost == HOST
     }

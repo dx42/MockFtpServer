@@ -42,7 +42,7 @@ class PortCommandHandler extends AbstractFakeCommandHandler {
         LOG.debug("host=" + host + " port=" + port)
         session.setClientDataHost(host)
         session.setClientDataPort(port)
-        sendReply(session, ReplyCodes.PORT_OK)
+        sendReply(session, ReplyCodes.PORT_OK, 'port')
     }
 
 }

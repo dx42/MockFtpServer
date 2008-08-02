@@ -47,12 +47,12 @@ class UserCommandHandler extends AbstractFakeCommandHandler {
 
             // If the UserAccount is configured to not require password for login
             if (!userAccount.passwordRequiredForLogin) {
-                login(userAccount, session, ReplyCodes.USER_LOGGED_IN_OK)
+                login(userAccount, session, ReplyCodes.USER_LOGGED_IN_OK, 'user.loggedIn')
                 return
             }
         }
         session.setAttribute(SessionKeys.USERNAME, username)
-        sendReply(session, ReplyCodes.USER_NEED_PASSWORD_OK)
+        sendReply(session, ReplyCodes.USER_NEED_PASSWORD_OK, 'user.needPassword')
     }
 
 }

@@ -20,8 +20,6 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
-
-
 /**
  * CommandHandler for the DELE command. Handler logic:
  * <ol>
@@ -46,7 +44,7 @@ class DeleCommandHandler extends AbstractFakeCommandHandler {
         verifyFileSystemCondition(fileSystem.isFile(path), path)
 
         fileSystem.delete(path)
-        sendReply(session, ReplyCodes.DELE_OK)
+        sendReply(session, ReplyCodes.DELE_OK, 'dele', [path])
     }
 
 }

@@ -39,7 +39,7 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_UserExists_PasswordCorrect() {
         serverConfiguration.userAccounts[USERNAME] = userAccount
         commandHandler.handleCommand(createCommand([PASSWORD]), session)
-        assertSessionReply(ReplyCodes.PASS_OK)
+        assertSessionReply(ReplyCodes.PASS_OK, 'pass')
         assertUserAccountInSession(true)
         assertCurrentDirectory(HOME_DIRECTORY)
     }
@@ -48,7 +48,7 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         serverConfiguration.userAccounts[USERNAME] = userAccount
         userAccount.accountRequiredForLogin = true
         commandHandler.handleCommand(createCommand([PASSWORD]), session)
-        assertSessionReply(ReplyCodes.PASS_NEED_ACCOUNT)
+        assertSessionReply(ReplyCodes.PASS_NEED_ACCOUNT, 'pass.needAccount')
         assertUserAccountInSession(true)
         assertCurrentDirectory(HOME_DIRECTORY)
     }
@@ -56,7 +56,7 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_UserExists_PasswordIncorrect() {
         serverConfiguration.userAccounts[USERNAME] = userAccount
         commandHandler.handleCommand(createCommand(["wrong"]), session)
-        assertSessionReply(ReplyCodes.PASS_LOG_IN_FAILED)
+        assertSessionReply(ReplyCodes.PASS_LOG_IN_FAILED, 'pass.loginFailed')
         assertUserAccountInSession(false)
         assertCurrentDirectory(null)
     }
@@ -65,7 +65,7 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         userAccount.passwordCheckedDuringValidation = false
         serverConfiguration.userAccounts[USERNAME] = userAccount
         commandHandler.handleCommand(createCommand(["wrong"]), session)
-        assertSessionReply(ReplyCodes.PASS_OK)
+        assertSessionReply(ReplyCodes.PASS_OK, 'pass')
         assertUserAccountInSession(true)
         assertCurrentDirectory(HOME_DIRECTORY)
     }
@@ -74,7 +74,7 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         userAccount.homeDirectory = ''
         serverConfiguration.userAccounts[USERNAME] = userAccount
         commandHandler.handleCommand(createCommand([PASSWORD]), session)
-        assertSessionReply(ReplyCodes.USER_ACCOUNT_NOT_VALID, "userAccountNotValid")
+        assertSessionReply(ReplyCodes.USER_ACCOUNT_NOT_VALID, "login.userAccountNotValid")
         assertUserAccountInSession(false)
         assertCurrentDirectory(null)
     }
@@ -83,14 +83,14 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         userAccount.homeDirectory = '/abc/def'
         serverConfiguration.userAccounts[USERNAME] = userAccount
         commandHandler.handleCommand(createCommand([PASSWORD]), session)
-        assertSessionReply(ReplyCodes.USER_ACCOUNT_NOT_VALID, "homeDirectoryNotValid")
+        assertSessionReply(ReplyCodes.USER_ACCOUNT_NOT_VALID, "login.homeDirectoryNotValid")
         assertUserAccountInSession(false)
         assertCurrentDirectory(null)
     }
 
     void testHandleCommand_UserDoesNotExist() {
         commandHandler.handleCommand(createCommand([PASSWORD]), session)
-        assertSessionReply(ReplyCodes.USER_ACCOUNT_NOT_VALID, "userAccountNotValid")
+        assertSessionReply(ReplyCodes.USER_ACCOUNT_NOT_VALID, "login.userAccountNotValid")
         assertUserAccountInSession(false)
         assertCurrentDirectory(null)
     }

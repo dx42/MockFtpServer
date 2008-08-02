@@ -22,8 +22,6 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.user.UserAccount
 
-
-
 /**
  * Tests for UserCommandHandler
  *
@@ -40,7 +38,7 @@ class UserCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_UserExists() {
         serverConfiguration.userAccounts[USERNAME] = userAccount
         commandHandler.handleCommand(createCommand([USERNAME]), session)
-        assertSessionReply(ReplyCodes.USER_NEED_PASSWORD_OK)
+        assertSessionReply(ReplyCodes.USER_NEED_PASSWORD_OK, 'user.needPassword')
         assertUsernameInSession(true)
         assertCurrentDirectory(null)
     }
@@ -48,7 +46,7 @@ class UserCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_NoSuchUser() {
         commandHandler.handleCommand(createCommand([USERNAME]), session)
         // Will return OK, even if username is not recognized
-        assertSessionReply(ReplyCodes.USER_NEED_PASSWORD_OK)
+        assertSessionReply(ReplyCodes.USER_NEED_PASSWORD_OK, 'user.needPassword')
         assertUsernameInSession(true)
         assertCurrentDirectory(null)
     }
@@ -58,7 +56,7 @@ class UserCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         serverConfiguration.userAccounts[USERNAME] = userAccount
 
         commandHandler.handleCommand(createCommand([USERNAME]), session)
-        assertSessionReply(ReplyCodes.USER_LOGGED_IN_OK)
+        assertSessionReply(ReplyCodes.USER_LOGGED_IN_OK, 'user.loggedIn')
         assert session.getAttribute(SessionKeys.USER_ACCOUNT) == userAccount
         assertUsernameInSession(false)
         assertCurrentDirectory(HOME_DIRECTORY)
@@ -68,7 +66,7 @@ class UserCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         userAccount.homeDirectory = ''
         serverConfiguration.userAccounts[USERNAME] = userAccount
         commandHandler.handleCommand(createCommand([USERNAME]), session)
-        assertSessionReply(ReplyCodes.USER_ACCOUNT_NOT_VALID, "userAccountNotValid")
+        assertSessionReply(ReplyCodes.USER_ACCOUNT_NOT_VALID, "login.userAccountNotValid")
         assertUsernameInSession(false)
         assertCurrentDirectory(null)
     }
@@ -77,7 +75,7 @@ class UserCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         userAccount.homeDirectory = '/abc/def'
         serverConfiguration.userAccounts[USERNAME] = userAccount
         commandHandler.handleCommand(createCommand([USERNAME]), session)
-        assertSessionReply(ReplyCodes.USER_ACCOUNT_NOT_VALID, "homeDirectoryNotValid")
+        assertSessionReply(ReplyCodes.USER_ACCOUNT_NOT_VALID, "login.homeDirectoryNotValid")
         assertUsernameInSession(false)
         assertCurrentDirectory(null)
     }

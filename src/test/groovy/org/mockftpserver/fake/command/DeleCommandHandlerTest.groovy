@@ -35,7 +35,7 @@ class DeleCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     void testHandleCommand() {
         assert fileSystem.createFile(FILE)
         commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.DELE_OK)
+        assertSessionReply(ReplyCodes.DELE_OK, ['dele', FILE])
         assert fileSystem.exists(FILE) == false
     }
 
@@ -43,7 +43,7 @@ class DeleCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         assert fileSystem.createFile(FILE)
         setCurrentDirectory("/")
         commandHandler.handleCommand(createCommand([FILENAME]), session)
-        assertSessionReply(ReplyCodes.DELE_OK)
+        assertSessionReply(ReplyCodes.DELE_OK, ['dele', FILENAME])
         assert fileSystem.exists(FILE) == false
     }
 

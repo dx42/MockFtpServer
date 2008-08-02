@@ -35,14 +35,14 @@ class MkdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     void testHandleCommand() {
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.MKD_OK)
+        assertSessionReply(ReplyCodes.MKD_OK, ['mkd', DIR])
         assert fileSystem.exists(DIR)
     }
 
     void testHandleCommand_PathIsRelative() {
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, '/')
         commandHandler.handleCommand(createCommand([DIRNAME]), session)
-        assertSessionReply(ReplyCodes.MKD_OK)
+        assertSessionReply(ReplyCodes.MKD_OK, ['mkd', DIRNAME])
         assert fileSystem.exists(DIR)
     }
 

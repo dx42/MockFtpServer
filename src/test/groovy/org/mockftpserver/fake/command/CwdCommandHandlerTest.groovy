@@ -35,7 +35,7 @@ class CwdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     void testHandleCommand() {
         assert fileSystem.createDirectory(DIR)
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.CWD_OK)
+        assertSessionReply(ReplyCodes.CWD_OK, ['cwd', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == DIR
     }
 
@@ -44,7 +44,7 @@ class CwdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         assert fileSystem.createDirectory(p(DIR, SUB))
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
         commandHandler.handleCommand(createCommand([SUB]), session)
-        assertSessionReply(ReplyCodes.CWD_OK)
+        assertSessionReply(ReplyCodes.CWD_OK, ['cwd', SUB])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == p(DIR, SUB)
     }
 

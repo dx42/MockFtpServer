@@ -33,7 +33,7 @@ import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 class NoopCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
-        sendReply(session, ReplyCodes.NOOP_OK)
+        sendReply(session, ReplyCodes.NOOP_OK, 'noop')
     }
 
 }
