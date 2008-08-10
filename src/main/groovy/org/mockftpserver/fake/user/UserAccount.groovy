@@ -36,12 +36,26 @@ package org.mockftpserver.fake.user
  */
 class UserAccount {
 
+    public static final DEFAULT_USER = 'system'
+    public static final DEFAULT_GROUP = 'users'
+
     String username
     String password
     String homeDirectory
+    List groups
     boolean passwordRequiredForLogin = true
     boolean passwordCheckedDuringValidation = true
     boolean accountRequiredForLogin = false
+
+    /**
+     * Return the name of the primary group to which this user belongs. If this account has no associated
+     * groups set, then this method returns the <code>DEFAULT_GROUP</code>. Otherwise, this method
+     * returns the first group name in the <code>groups</code> list.
+     * @return the name of the primary group for this user 
+     */
+    String getPrimaryGroup() {
+        groups ? groups.first() : DEFAULT_GROUP
+    }
 
     /**
      * Return true if the specified password is the correct, valid password for this user account.
