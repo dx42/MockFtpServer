@@ -32,6 +32,19 @@ class UserAccountTest extends AbstractGroovyTest {
 
     private UserAccount userAccount
 
+    void testGetPrimaryGroup() {
+        assert userAccount.primaryGroup == UserAccount.DEFAULT_GROUP
+
+        userAccount.groups = ['abc']
+        assert userAccount.primaryGroup == 'abc'
+
+        userAccount.groups.add('def')
+        assert userAccount.primaryGroup == 'abc'
+
+        userAccount.groups = []
+        assert userAccount.primaryGroup == UserAccount.DEFAULT_GROUP
+    }
+
     void testIsValidPassword() {
         userAccount.username = USERNAME
         userAccount.password = PASSWORD

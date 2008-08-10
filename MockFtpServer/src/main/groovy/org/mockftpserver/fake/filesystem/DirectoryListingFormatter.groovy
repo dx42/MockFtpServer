@@ -13,40 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.mockftpserver.fake.filesystem
 
 /**
- * The abstract superclass for concrete file system entry classes representing files and directories.
+ * Interface for an object that can format a file system directory listing.
  *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
-abstract class AbstractFileSystemEntry implements FileSystemEntry {
-
-    String path
-    Date lastModified
-    String owner
-    String group
+interface DirectoryListingFormatter {
 
     /**
-     * Construct a new instance without setting its path
+     * Format the directory listing for a single file/directory entry.
+     * @param fileInfo - the FileInfo for a single file system entry
+     * @return the formatted directory listing
      */
-    AbstractFileSystemEntry() {
-    }
-
-    /**
-     * Construct a new instance with the specified value for its path 
-     * @param path - the value for path
-     */
-    AbstractFileSystemEntry(String path) {
-        setPath(path)
-    }
-
-    /**
-     * Abstract method -- must be implemented within concrete subclasses
-     * @return true if this file system entry represents a directory
-     */
-    abstract boolean isDirectory()
+    String format(FileInfo fileInfo)
 
 }

@@ -23,7 +23,7 @@ package org.mockftpserver.fake.filesystem
  *
  * @author Chris Mair
  */
-public interface FileSystemEntry {
+interface FileSystemEntry {
 
     /**
      * Return true if this entry represents a directory, false otherwise
@@ -48,5 +48,15 @@ public interface FileSystemEntry {
      * @return the last modified timestamp Date for this file system entry
      */
     Date getLastModified()
+
+    /**
+     * @return the username of the owner of this file system entry
+     */
+    String getOwner()
+
+    /**
+     * @return the nme of the owning group for this file system entry
+     */
+    String getGroup()
 
 }
