@@ -31,6 +31,8 @@ class FileInfoTest extends AbstractGroovyTest {
     static final LAST_MODIFIED = new Date()
     static final OWNER = 'owner123'
     static final GROUP = 'group456'
+    static final PERMISSIONS_STR = 'rw-rw-rw-'
+    static final PERMISSIONS = new Permissions(PERMISSIONS_STR)
 
     private FileInfo fileInfoFile
     private FileInfo fileInfoDirectory
@@ -42,12 +44,14 @@ class FileInfoTest extends AbstractGroovyTest {
         assert fileInfoFile.lastModified == LAST_MODIFIED
         assert fileInfoFile.owner == null
         assert fileInfoFile.group == null
+        assert fileInfoFile.permissions == null
     }
 
-    void testForFile_OwnerAndGroup() {
-        def fileInfo = FileInfo.forFile(NAME, SIZE, LAST_MODIFIED, OWNER, GROUP)
+    void testForFile_OwnerGroupAndPermissions() {
+        def fileInfo = FileInfo.forFile(NAME, SIZE, LAST_MODIFIED, OWNER, GROUP, PERMISSIONS)
         assert fileInfo.owner == OWNER
         assert fileInfo.group == GROUP
+        assert fileInfo.permissions.asRwxString() == PERMISSIONS_STR
     }
 
     void testForDirectory() {
@@ -57,12 +61,14 @@ class FileInfoTest extends AbstractGroovyTest {
         assert fileInfoDirectory.lastModified == LAST_MODIFIED
         assert fileInfoDirectory.owner == null
         assert fileInfoDirectory.group == null
+        assert fileInfoDirectory.permissions == null
     }
 
-    void testForDirectory_OwnerAndGroup() {
-        def fileInfo = FileInfo.forDirectory(NAME, LAST_MODIFIED, OWNER, GROUP)
+    void testForDirectory_OwnerGroupAndPermissions() {
+        def fileInfo = FileInfo.forDirectory(NAME, LAST_MODIFIED, OWNER, GROUP, PERMISSIONS)
         assert fileInfo.owner == OWNER
         assert fileInfo.group == GROUP
+        assert fileInfo.permissions.asRwxString() == PERMISSIONS_STR
     }
 
     void testEquals() {

@@ -33,6 +33,8 @@ class UnixDirectoryListingFormatterTest extends AbstractGroovyTest {
     static final GROUP = 'group456'
     static final SIZE = 1234567L
     static final LAST_MODIFIED = new Date()
+    static final FILE_PERMISSIONS = new Permissions('rw-r--r--')
+    static final DIR_PERMISSIONS = new Permissions('rwxr-xr-x')
 
     private formatter
     private dateFormat
@@ -45,13 +47,23 @@ class UnixDirectoryListingFormatterTest extends AbstractGroovyTest {
     // "drwxr-xr-x   39 ftp      ftp          4096 Mar 19  2004 a"
 
     void testFormat_File() {
-        def fileInfo = FileInfo.forFile(FILE_NAME, SIZE, LAST_MODIFIED, OWNER, GROUP)
-        verifyFormat(fileInfo, "-rwxrwxrwx  1 owner123 group456         1234567 $lastModifiedFormatted def.txt")
+        def fileInfo = FileInfo.forFile(FILE_NAME, SIZE, LAST_MODIFIED, OWNER, GROUP, FILE_PERMISSIONS)
+        verifyFormat(fileInfo, "-rw-r--r--  1 owner123 group456         1234567 $lastModifiedFormatted def.txt")
+    }
+
+    void testFormat_File_Defaults() {
+        def fileInfo = FileInfo.forFile(FILE_NAME, SIZE, LAST_MODIFIED)
+        verifyFormat(fileInfo, "-rwxrwxrwx  1                           1234567 $lastModifiedFormatted def.txt")
     }
 
     void testFormat_Directory() {
-        def fileInfo = FileInfo.forDirectory(DIR_NAME, LAST_MODIFIED, OWNER, GROUP)
-        verifyFormat(fileInfo, "drwxrwxrwx  1 owner123 group456               0 $lastModifiedFormatted etc")
+        def fileInfo = FileInfo.forDirectory(DIR_NAME, LAST_MODIFIED, OWNER, GROUP, DIR_PERMISSIONS)
+        verifyFormat(fileInfo, "drwxr-xr-x  1 owner123 group456               0 $lastModifiedFormatted etc")
+    }
+
+    void testFormat_Directory_Defaults() {
+        def fileInfo = FileInfo.forDirectory(DIR_NAME, LAST_MODIFIED)
+        verifyFormat(fileInfo, "drwxrwxrwx  1                                 0 $lastModifiedFormatted etc")
     }
 
     void setUp() {

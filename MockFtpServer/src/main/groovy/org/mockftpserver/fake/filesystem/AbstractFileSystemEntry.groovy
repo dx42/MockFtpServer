@@ -28,6 +28,7 @@ abstract class AbstractFileSystemEntry implements FileSystemEntry {
     Date lastModified
     String owner
     String group
+    Permissions permissions
 
     /**
      * Construct a new instance without setting its path
