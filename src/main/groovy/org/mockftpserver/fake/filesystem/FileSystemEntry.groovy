@@ -55,8 +55,13 @@ interface FileSystemEntry {
     String getOwner()
 
     /**
-     * @return the nme of the owning group for this file system entry
+     * @return the name of the owning group for this file system entry
      */
     String getGroup()
+
+    /**
+     * @return the Permissions for this file system entry
+     */
+    Permissions getPermissions()
 
 }

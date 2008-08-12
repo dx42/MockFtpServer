@@ -30,17 +30,20 @@ class FileInfo {
     final Date lastModified
     final String owner
     final String group
+    final Permissions permissions
 
     /**
      * Construct and return a new instance representing a directory entry.
      * @param name - the directory name
      * @param lastModified - the lastModified Date for the directory
-     * @param owner - the username of the owner of the file; defaults to null
-     * @param group - the name of the group owning the file; defaults to null
+     * @param owner - the username of the owner of the directory; defaults to null
+     * @param group - the name of the group owning the directory; defaults to null
+     * @param permissions - the Permissions for the directory; defaults to null
      * @return a new FileInfo instance representing a directory
      */
-    static FileInfo forDirectory(String name, Date lastModified, String owner = null, String group = null) {
-        return new FileInfo(true, name, 0, lastModified, owner, group)
+    static FileInfo forDirectory(String name, Date lastModified, String owner = null, String group = null,
+                                 Permissions permissions = null) {
+        return new FileInfo(true, name, 0, lastModified, owner, group, permissions)
     }
 
     /**
@@ -50,19 +53,22 @@ class FileInfo {
      * @param lastModified - the lastModified Date for the directory
      * @param owner - the username of the owner of the file; defaults to null
      * @param group - the name of the group owning the file; defaults to null
+     * @param permissions - the Permissions for the file; defaults to null
      * @return a new FileInfo instance representing a directory
      */
-    static FileInfo forFile(String name, long size, Date lastModified, String owner = null, String group = null) {
-        return new FileInfo(false, name, size, lastModified, owner, group)
+    static FileInfo forFile(String name, long size, Date lastModified, String owner = null, String group = null,
+                            Permissions permissions = null) {
+        return new FileInfo(false, name, size, lastModified, owner, group, permissions)
     }
 
-    private FileInfo(boolean directory, String name, long size, Date lastModified, String owner, String group) {
+    private FileInfo(boolean directory, String name, long size, Date lastModified, String owner, String group, Permissions permissions) {
         this.directory = directory
         this.name = name
         this.size = size
         this.lastModified = lastModified
         this.owner = owner
         this.group = group
+        this.permissions = permissions
     }
 
     /**
@@ -90,6 +96,8 @@ class FileInfo {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        "FileInfo[isDirectory=$directory name=$name size=$size lastModified=${lastModified}]"
+        "FileInfo[isDirectory=$directory, name=$name, size=$size, lastModified=$lastModified, owner=$owner, " +
+                "group=$group, permissions=$permissions]"
     }
+
 }

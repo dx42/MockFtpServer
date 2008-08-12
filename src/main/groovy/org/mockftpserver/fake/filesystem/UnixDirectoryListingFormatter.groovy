@@ -47,14 +47,23 @@ class UnixDirectoryListingFormatter implements DirectoryListingFormatter {
         def dateFormat = new SimpleDateFormat(DATE_FORMAT)
         def dateStr = dateFormat.format(fileInfo.lastModified)
         def dirOrFile = fileInfo.isDirectory() ? 'd' : '-'
-        def permissionsStr = 'rwxrwxrwx'
+        def permissions = fileInfo.permissions ?: Permissions.DEFAULT
+        def permissionsStr = padRight(permissions.asRwxString(), 9)
         def linkCountStr = '1'
-        def ownerStr = fileInfo.owner.padRight(OWNER_WIDTH)
-        def groupStr = fileInfo.group.padRight(GROUP_WIDTH)
-        def sizeStr = fileInfo.size.toString().padLeft(SIZE_WIDTH)
+        def ownerStr = padRight(fileInfo.owner, OWNER_WIDTH)
+        def groupStr = padRight(fileInfo.group, GROUP_WIDTH)
+        def sizeStr = padLeft(fileInfo.size.toString(), SIZE_WIDTH)
         def listing = "$dirOrFile$permissionsStr  $linkCountStr $ownerStr $groupStr $sizeStr $dateStr ${fileInfo.name}"
         LOG.info("listing=[$listing]")
         return listing
+    }
+
+    private String padRight(String string, int width) {
+        (string ?: '').padRight(width)
+    }
+
+    private String padLeft(String string, int width) {
+        (string ?: '').padLeft(width)
     }
 
 }
