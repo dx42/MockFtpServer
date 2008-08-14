@@ -56,10 +56,10 @@ public final class PortParser {
     public static InetAddress parseHost(String[] parameters) throws UnknownHostException {
         verifySufficientParameters(parameters);
 
-        byte host1 = Byte.parseByte(parameters[0]);
-        byte host2 = Byte.parseByte(parameters[1]);
-        byte host3 = Byte.parseByte(parameters[2]);
-        byte host4 = Byte.parseByte(parameters[3]);
+        byte host1 = parseByte(parameters[0]);
+        byte host2 = parseByte(parameters[1]);
+        byte host3 = parseByte(parameters[2]);
+        byte host4 = parseByte(parameters[3]);
 
         byte[] address = {host1, host2, host3, host4};
         InetAddress inetAddress = InetAddress.getByAddress(address);
@@ -129,4 +129,16 @@ public final class PortParser {
         buffer.append(String.valueOf(p2));
         return buffer.toString();
     }
+
+    /**
+     * Parse the specified String as an unsigned decimal byte value (i.e., 0..255). We can't just use
+     * Byte.parseByte(string) because that parses the string as a signed byte.
+     *
+     * @param string - the String containing the decimal byte representation to be parsed
+     * @return the byte value
+     */
+    private static byte parseByte(String string) {
+        return (byte) (0xFF & Short.parseShort(string));
+    }
+
 }
