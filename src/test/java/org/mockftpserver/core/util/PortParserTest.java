@@ -31,10 +31,10 @@ import java.net.UnknownHostException;
 public final class PortParserTest extends AbstractTest {
 
     private static final Logger LOG = Logger.getLogger(PortParserTest.class);
-    private static final String[] PARAMETERS = new String[]{"11", "22", "33", "44", "1", "206"};
+    private static final String[] PARAMETERS = new String[]{"192", "22", "250", "44", "1", "206"};
     private static final String[] PARAMETERS_INSUFFICIENT = new String[]{"7", "29", "99", "11", "77"};
     private static final int PORT = (1 << 8) + 206;
-    private static final InetAddress HOST = inetAddress("11.22.33.44");
+    private static final InetAddress HOST = inetAddress("192.22.250.44");
 
     /**
      * Test the parseHost() method
