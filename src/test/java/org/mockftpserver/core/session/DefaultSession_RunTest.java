@@ -15,6 +15,16 @@
  */
 package org.mockftpserver.core.session;
 
+import org.apache.log4j.Logger;
+import org.mockftpserver.core.command.Command;
+import org.mockftpserver.core.command.CommandHandler;
+import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.InvocationRecord;
+import org.mockftpserver.core.socket.StubSocket;
+import org.mockftpserver.stub.command.AbstractStubCommandHandler;
+import org.mockftpserver.stub.command.ConnectCommandHandler;
+import org.mockftpserver.test.AbstractTest;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -24,25 +34,11 @@ import java.util.ListResourceBundle;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-
-import org.apache.log4j.Logger;
-import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.CommandHandler;
-import org.mockftpserver.core.command.CommandNames;
-import org.mockftpserver.core.command.InvocationRecord;
-import org.mockftpserver.core.session.DefaultSession;
-import org.mockftpserver.core.session.Session;
-import org.mockftpserver.core.socket.StubSocket;
-import org.mockftpserver.stub.command.AbstractStubCommandHandler;
-import org.mockftpserver.stub.command.ConnectCommandHandler;
-import org.mockftpserver.test.AbstractTest;
-
 /**
  * Tests for the DefaultSession class that require the session (thread) to be running/active.
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class DefaultSession_RunTest extends AbstractTest {
 
@@ -59,7 +55,7 @@ public final class DefaultSession_RunTest extends AbstractTest {
 
     /**
      * Perform initialization before each test
-     * 
+     *
      * @see org.mockftpserver.test.AbstractTest#setUp()
      */
     protected void setUp() throws Exception {
@@ -86,7 +82,7 @@ public final class DefaultSession_RunTest extends AbstractTest {
 
     /**
      * Test the close() method
-     * 
+     *
      * @throws IOException
      */
     public void testClose() throws Exception {
@@ -102,7 +98,7 @@ public final class DefaultSession_RunTest extends AbstractTest {
 
     /**
      * Test the getClientHost() method
-     * 
+     *
      * @throws IOException
      */
     public void testGetClientHost() throws Exception {
@@ -176,23 +172,22 @@ public final class DefaultSession_RunTest extends AbstractTest {
     // -------------------------------------------------------------------------
 
     /**
-     * Create and return a DefaultSession object that reads from an InputStream with the specified
-     * contents and writes to the predefined outputStrean ByteArrayOutputStream. Also, save the
+     * Create and return a DefaultSession and define the specified CommandHandler. Also, save the
      * StubSocket being used in the stubSocket attribute.
-     * 
-     * @param inputStreamContents - the contents of the input stream
+     *
+     * @param commandHandler - define this CommandHandler within the commandHandlerMap
      * @return the DefaultSession
      */
     private DefaultSession createDefaultSession(CommandHandler commandHandler) {
         stubSocket = createTestSocket(COMMAND.getName());
         commandHandlerMap.put(COMMAND.getName(), commandHandler);
-        
+
         ConnectCommandHandler connectCommandHandler = new ConnectCommandHandler();
-        
+
         ResourceBundle replyTextBundle = new ListResourceBundle() {
             protected Object[][] getContents() {
-                return new Object[][] { 
-                        { "220", "Reply for 220" }, 
+                return new Object[][]{
+                        {"220", "Reply for 220"},
                 };
             }
         };
@@ -205,7 +200,7 @@ public final class DefaultSession_RunTest extends AbstractTest {
     /**
      * Create and return a StubSocket that reads from an InputStream with the specified contents and
      * writes to the predefined outputStrean ByteArrayOutputStream.
-     * 
+     *
      * @param inputStreamContents - the contents of the input stream
      * @return the StubSocket
      */
@@ -217,7 +212,7 @@ public final class DefaultSession_RunTest extends AbstractTest {
     /**
      * Run the command represented by the CommandHandler and verify that the session output from the
      * control socket contains the expected output text.
-     * 
+     *
      * @param commandHandler - the CommandHandler to invoke
      * @param expectedOutput - the text expected within the session output
      * @throws InterruptedException
@@ -238,8 +233,10 @@ public final class DefaultSession_RunTest extends AbstractTest {
 
         assertEquals("commandHandled", true, commandHandled);
 
-        String output = outputStream.toString().trim();
-        LOG.info("output=[" + output + "]");
+        String output = outputStream.toString();
+        LOG.info("output=[" + output.trim() + "]");
+        assertTrue("line ends with \\r\\n",
+                output.charAt(output.length() - 2) == '\r' && output.charAt(output.length() - 1) == '\n');
         assertTrue("output: expected [" + expectedOutput + "]", output.indexOf(expectedOutput) != -1);
     }
 

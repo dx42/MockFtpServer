@@ -15,6 +15,18 @@
  */
 package org.mockftpserver.core.session;
 
+import org.apache.log4j.Logger;
+import org.mockftpserver.core.MockFtpServerException;
+import org.mockftpserver.core.command.Command;
+import org.mockftpserver.core.command.CommandHandler;
+import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.socket.DefaultServerSocketFactory;
+import org.mockftpserver.core.socket.DefaultSocketFactory;
+import org.mockftpserver.core.socket.ServerSocketFactory;
+import org.mockftpserver.core.socket.SocketFactory;
+import org.mockftpserver.core.util.Assert;
+import org.mockftpserver.core.util.AssertFailedException;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -34,33 +46,21 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
-import org.mockftpserver.core.MockFtpServerException;
-import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.CommandHandler;
-import org.mockftpserver.core.command.CommandNames;
-import org.mockftpserver.core.socket.DefaultServerSocketFactory;
-import org.mockftpserver.core.socket.DefaultSocketFactory;
-import org.mockftpserver.core.socket.ServerSocketFactory;
-import org.mockftpserver.core.socket.SocketFactory;
-import org.mockftpserver.core.util.Assert;
-import org.mockftpserver.core.util.AssertFailedException;
-
 /**
  * Default implementation of the {@link Session} interface.
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public class DefaultSession implements Session {
 
     private static final Logger LOG = Logger.getLogger(DefaultSession.class);
+    private static final String END_OF_LINE = "\r\n";
     static final int DEFAULT_CLIENT_DATA_PORT = 21;
-    
+
     SocketFactory socketFactory = new DefaultSocketFactory();
     ServerSocketFactory serverSocketFactory = new DefaultServerSocketFactory();
-    
+
     private BufferedReader controlConnectionReader;
     private Writer controlConnectionWriter;
     private Socket controlSocket;
@@ -77,10 +77,10 @@ public class DefaultSession implements Session {
 
     /**
      * Create a new initialized instance
-     * 
-     * @param controlSocket - the control connection socket
+     *
+     * @param controlSocket   - the control connection socket
      * @param commandHandlers - the Map of command name -> CommandHandler. It is assumed that the
-     *      command names are all normalized to upper case. See {@link Command#normalizeName(String)}.
+     *                        command names are all normalized to upper case. See {@link Command#normalizeName(String)}.
      */
     public DefaultSession(Socket controlSocket, Map commandHandlers) {
         Assert.notNull(controlSocket, "controlSocket");
@@ -93,9 +93,8 @@ public class DefaultSession implements Session {
 
     /**
      * Return the InetAddress representing the client host for this session
-     * 
+     *
      * @return the client host
-     * 
      * @see org.mockftpserver.core.session.Session#getClientHost()
      */
     public InetAddress getClientHost() {
@@ -104,9 +103,8 @@ public class DefaultSession implements Session {
 
     /**
      * Return the InetAddress representing the server host for this session
-     * 
+     *
      * @return the server host
-     * 
      * @see org.mockftpserver.core.session.Session#getServerHost()
      */
     public InetAddress getServerHost() {
@@ -116,7 +114,7 @@ public class DefaultSession implements Session {
     /**
      * Send the specified reply code and text across the control connection.
      * The reply text is trimmed before being sent.
-     * 
+     *
      * @param code - the reply code
      * @param text - the reply text to send; may be null
      */
@@ -124,7 +122,7 @@ public class DefaultSession implements Session {
         assertValidReplyCode(code);
 
         StringBuffer buffer = new StringBuffer(Integer.toString(code));
-        
+
         if (text != null && text.length() > 0) {
             String replyText = text.trim();
             if (replyText.indexOf("\n") != -1) {
@@ -137,8 +135,7 @@ public class DefaultSession implements Session {
                         buffer.append(Integer.toString(code) + " ");
                     }
                 }
-            }
-            else {
+            } else {
                 buffer.append(" ");
                 buffer.append(replyText);
             }
@@ -164,8 +161,7 @@ public class DefaultSession implements Session {
                 catch (SocketTimeoutException e) {
                     throw new MockFtpServerException(e);
                 }
-            }
-            else {
+            } else {
                 Assert.notNull(clientHost, "clientHost");
                 LOG.debug("Connecting to client host [" + clientHost + "] on data port [" + clientDataPort
                         + "]");
@@ -181,9 +177,8 @@ public class DefaultSession implements Session {
 
     /**
      * Switch to passive mode
-     * 
+     *
      * @return the local port to be connected to by clients for data transfers
-     * 
      * @see org.mockftpserver.core.session.Session#switchToPassiveMode()
      */
     public int switchToPassiveMode() {
@@ -214,12 +209,12 @@ public class DefaultSession implements Session {
 
     /**
      * Write a single line to the control connection, appending a newline
-     * 
+     *
      * @param line - the line to write
      */
     private void writeLineToControlConnection(String line) {
         try {
-            controlConnectionWriter.write(line + "\n");
+            controlConnectionWriter.write(line + END_OF_LINE);
             controlConnectionWriter.flush();
         }
         catch (IOException e) {
@@ -273,10 +268,10 @@ public class DefaultSession implements Session {
 
     /**
      * Wait for and read the command sent from the client on the control connection.
-     * 
+     *
      * @return the Command sent from the client; may be null if the session has been closed
-     * 
-     * Package-private to enable testing
+     *         <p/>
+     *         Package-private to enable testing
      */
     Command readCommand() {
 
@@ -309,7 +304,7 @@ public class DefaultSession implements Session {
 
     /**
      * Parse the command String into a Command object
-     * 
+     *
      * @param commandString - the command String
      * @return the Command object parsed from the command String
      */
@@ -327,8 +322,7 @@ public class DefaultSession implements Session {
             while (tokenizer.hasMoreTokens()) {
                 parameters.add(tokenizer.nextToken());
             }
-        }
-        else {
+        } else {
             name = commandString;
         }
 
@@ -373,7 +367,7 @@ public class DefaultSession implements Session {
             controlConnectionWriter = new PrintWriter(outputStream, true);
 
             LOG.debug("Starting the session...");
-            
+
             CommandHandler connectCommandHandler = (CommandHandler) commandHandlers.get(CommandNames.CONNECT);
             connectCommandHandler.handleCommand(new Command(CommandNames.CONNECT, new String[0]), this);
 
@@ -401,7 +395,7 @@ public class DefaultSession implements Session {
 
     /**
      * Read and process the next command from the control connection
-     * 
+     *
      * @throws Exception
      */
     private void readAndProcessCommand() throws Exception {
@@ -417,7 +411,7 @@ public class DefaultSession implements Session {
 
     /**
      * Assert that the specified number is a valid reply code
-     * 
+     *
      * @param replyCode - the reply code to check
      */
     private void assertValidReplyCode(int replyCode) {
@@ -427,9 +421,9 @@ public class DefaultSession implements Session {
     /**
      * Return the attribute value for the specified name. Return null if no attribute value
      * exists for that name or if the attribute value is null.
+     *
      * @param name - the attribute name; may not be null
      * @return the value of the attribute stored under name; may be null
-     * 
      * @see org.mockftpserver.core.session.Session#getAttribute(java.lang.String)
      */
     public Object getAttribute(String name) {
@@ -439,9 +433,9 @@ public class DefaultSession implements Session {
 
     /**
      * Store the value under the specified attribute name.
-     * @param name - the attribute name; may not be null
+     *
+     * @param name  - the attribute name; may not be null
      * @param value - the attribute value; may be null
-     * 
      * @see org.mockftpserver.core.session.Session#setAttribute(java.lang.String, java.lang.Object)
      */
     public void setAttribute(String name, Object value) {
@@ -452,8 +446,8 @@ public class DefaultSession implements Session {
     /**
      * Return the Set of names under which attributes have been stored on this session.
      * Returns an empty Set if no attribute values are stored.
+     *
      * @return the Set of attribute names
-     * 
      * @see org.mockftpserver.core.session.Session#getAttributeNames()
      */
     public Set getAttributeNames() {
@@ -463,9 +457,9 @@ public class DefaultSession implements Session {
     /**
      * Remove the attribute value for the specified name. Do nothing if no attribute
      * value is stored for the specified name.
+     *
      * @param name - the attribute name; may not be null
      * @throws AssertFailedException - if name is null
-     * 
      * @see org.mockftpserver.core.session.Session#removeAttribute(java.lang.String)
      */
     public void removeAttribute(String name) {
