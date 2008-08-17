@@ -15,13 +15,13 @@
  */
 package org.mockftpserver.fake.command
 
-import java.text.SimpleDateFormat
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.filesystem.DirectoryEntry
+import org.mockftpserver.fake.filesystem.DirectoryListingFormatter
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileInfo
 
@@ -34,19 +34,14 @@ import org.mockftpserver.fake.filesystem.FileInfo
  */
 class ListCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
-    private static final SIZE_WIDTH = ListCommandHandler.SIZE_WIDTH
     private static final DIR = "/usr"
     private static final NAME = "abc.txt"
     private static final LAST_MODIFIED = new Date()
-    private static final SIZE = 1000
-
-    def dateFormat
-    def lastModifiedFormatted
 
     void testHandleCommand_SingleFile() {
         fileSystem.addEntry(new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc"))
         handleCommandAndVerifySendDataReplies([DIR])
-        assertSessionData(listingForFile(LAST_MODIFIED, "abc".size(), NAME),)
+        assertSessionData(listingFor(FileInfo.forFile(NAME, 3, LAST_MODIFIED)))
     }
 
     void testHandleCommand_FilesAndDirectories() {
@@ -64,9 +59,9 @@ class ListCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         def actualLines = session.sentData[0].tokenize(endOfLine()) as Set
         LOG.info("actualLines=$actualLines")
         def EXPECTED = [
-                listingForFile(LAST_MODIFIED, DATA1.size(), NAME1),
-                listingForDirectory(LAST_MODIFIED, NAME2),
-                listingForFile(LAST_MODIFIED, DATA3.size(), NAME3)] as Set
+                listingFor(FileInfo.forFile(NAME1, DATA1.size(), LAST_MODIFIED)),
+                listingFor(FileInfo.forDirectory(NAME2, LAST_MODIFIED)),
+                listingFor(FileInfo.forFile(NAME3, DATA3.size(), LAST_MODIFIED))] as Set
         assert actualLines == EXPECTED
     }
 
@@ -74,7 +69,7 @@ class ListCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         fileSystem.addEntry(new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc"))
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
         handleCommandAndVerifySendDataReplies([])
-        assertSessionData(listingForFile(LAST_MODIFIED, "abc".size(), NAME),)
+        assertSessionData(listingFor(FileInfo.forFile(NAME, 3, LAST_MODIFIED)))
     }
 
     void testHandleCommand_EmptyDirectory() {
@@ -85,7 +80,7 @@ class ListCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     void testHandleCommand_PathSpecifiesAFile() {
         fileSystem.addEntry(new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc"))
         handleCommandAndVerifySendDataReplies([p(DIR, NAME)])
-        assertSessionData(listingForFile(LAST_MODIFIED, "abc".size(), NAME),)
+        assertSessionData(listingFor(FileInfo.forFile(NAME, 3, LAST_MODIFIED)))
     }
 
     void testHandleCommand_PathDoesNotExist() {
@@ -97,22 +92,6 @@ class ListCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         overrideMethodToThrowFileSystemException("listFiles")
         handleCommand([DIR])
         assertSessionReplies([ReplyCodes.TRANSFER_DATA_INITIAL_OK, ReplyCodes.SYSTEM_ERROR])
-    }
-
-    void testDirectoryListing_File() {
-        def fileInfo = FileInfo.forFile(NAME, SIZE, LAST_MODIFIED)
-        def sizeStr = SIZE.toString().padLeft(SIZE_WIDTH)
-        def expected = "$lastModifiedFormatted  $sizeStr  $NAME"
-        def actual = commandHandler.directoryListing(fileInfo)
-        assert actual == expected
-    }
-
-    void testDirectoryListing_Directory() {
-        def fileInfo = FileInfo.forDirectory(NAME, LAST_MODIFIED)
-        def dirStr = "<DIR>".padRight(SIZE_WIDTH)
-        def expected = "$lastModifiedFormatted  $dirStr  $NAME"
-        def actual = commandHandler.directoryListing(fileInfo)
-        assert actual == expected
     }
 
     //-------------------------------------------------------------------------
@@ -130,18 +109,11 @@ class ListCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     void setUp() {
         super.setUp()
         assert fileSystem.createDirectory("/usr")
-        dateFormat = new SimpleDateFormat(ListCommandHandler.DATE_FORMAT)
-        lastModifiedFormatted = dateFormat.format(LAST_MODIFIED)
+        fileSystem.directoryListingFormatter = [format: {fileInfo -> fileInfo.toString()}] as DirectoryListingFormatter
     }
 
-    private String listingForFile(lastModified, size, name) {
-        def lastModifiedFormatted = dateFormat.format(lastModified)
-        "$lastModifiedFormatted  ${size.toString().padLeft(SIZE_WIDTH)}  $name"
-    }
-
-    private String listingForDirectory(lastModified, name) {
-        def lastModifiedFormatted = dateFormat.format(lastModified)
-        "$lastModifiedFormatted  ${'<DIR>'.padRight(SIZE_WIDTH)}  $name"
+    private listingFor(FileInfo fileInfo) {
+        fileInfo.toString()
     }
 
 }

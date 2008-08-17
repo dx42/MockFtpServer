@@ -15,17 +15,14 @@
  */
 package org.mockftpserver.fake.filesystem
 
-import java.io.File
-import java.io.IOException
-
 /**
- * Implementation of the {@link FileSystem} interface that simulates a Unix
+ * Implementation of the  {@link FileSystem}  interface that simulates a Unix
  * file system. The rules for file and directory names include: 
  * <ul>
  *   <li>Filenames are case-sensitive</li>
  *   <li>Forward slashes (/) are the only valid path separators</li>  
  * </ul>
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -33,21 +30,28 @@ import java.io.IOException
 class FakeUnixFileSystem extends AbstractFakeFileSystem {
 
     public static final String SEPARATOR = "/"
-    
+
+    /**
+     * Construct a new instance and initialize the directoryListingFormatter to a UnixDirectoryListingFormatter.
+     */
+    FakeUnixFileSystem() {
+        this.directoryListingFormatter = new UnixDirectoryListingFormatter()
+    }
+
     //-------------------------------------------------------------------------
     // Abstract Method Implementations
     //-------------------------------------------------------------------------
-    
+
     protected String getSeparator() {
         return SEPARATOR
     }
-    
+
     protected boolean isValidName(String path) {
-        assert path != null        
+        assert path != null
         // Any character but '/'
         return path ==~ /\/|(\/[^\/]+)+/
     }
-    
+
     /**
      * Return true if the specified char is a separator character ('\' or '/')
      * @param c - the character to test
@@ -56,7 +60,7 @@ class FakeUnixFileSystem extends AbstractFakeFileSystem {
     protected boolean isSeparator(char c) {
         return c == SEPARATOR.charAt(0)
     }
-    
+
     protected String componentsToPath(List components) {
         if (components.size() == 1) {
             def first = components[0]
@@ -66,11 +70,11 @@ class FakeUnixFileSystem extends AbstractFakeFileSystem {
         }
         return components.join(this.separator)
     }
-    
+
     protected boolean isRoot(String pathComponent) {
         return pathComponent.contains(":")
     }
-    
+
     /**
      * Return the components of the specified path as a List. The components are normalized, and
      * the returned List does not include path separator characters. 
@@ -78,17 +82,17 @@ class FakeUnixFileSystem extends AbstractFakeFileSystem {
     protected List normalizedComponents(String path) {
         assert path != null
         def p = path.replace("/", this.separator)
-        
+
         // TODO better way to do this
         if (p == this.separator) {
             return [""]
         }
-        
+
         def parts = p.split("\\" + this.separator) as List
         def result = []
-        parts.each { part ->
+        parts.each {part ->
             if (part == "..") {
-                result.remove(result.size()-1)
+                result.remove(result.size() - 1)
             }
             else if (part != ".") {
                 result << part
@@ -96,18 +100,18 @@ class FakeUnixFileSystem extends AbstractFakeFileSystem {
         }
         return result
     }
-    
+
     /**
      * Return true if the specified path designates an absolute file path. For Unix
      * paths, a path is absolute if it starts with the '/' character.
-     * 
+     *
      * @param path - the path
      * @return true if path is absolute, false otherwise
-     * 
+     *
      * @throws AssertionError - if path is null
      */
     boolean isAbsolute(String path) {
-         return isValidName(path)
+        return isValidName(path)
     }
-    
+
 }

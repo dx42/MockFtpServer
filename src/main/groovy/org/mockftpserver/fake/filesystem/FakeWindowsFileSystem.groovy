@@ -15,11 +15,8 @@
  */
 package org.mockftpserver.fake.filesystem
 
-import java.io.File
-import java.io.IOException
-
 /**
- * Implementation of the {@link FileSystem} interface that simulates a Microsoft
+ * Implementation of the  {@link FileSystem}  interface that simulates a Microsoft
  * Windows file system. The rules for file and directory names include: 
  * <ul>
  *   <li>Filenames are case-insensitive (and normalized to lower-case)</li>
@@ -27,7 +24,7 @@ import java.io.IOException
  *   <li>An absolute path starts with a drive specifier (e.g. 'a:' or 'c:') followed 
  *   		by '\' or '/', or else if it starts with "\\"</li>  
  * </ul>
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -35,24 +32,31 @@ import java.io.IOException
 class FakeWindowsFileSystem extends AbstractFakeFileSystem {
 
     public static final String SEPARATOR = "\\"
-    static final VALID_PATTERN = /\p{Alpha}\:(\\|(\\[^\\\:\*\?\<\>\|\"]+)+)/ 
+    static final VALID_PATTERN = /\p{Alpha}\:(\\|(\\[^\\\:\*\?\<\>\|\"]+)+)/
     static final LAN_PREFIX = "\\\\"
-    
+
+    /**
+     * Construct a new instance and initialize the directoryListingFormatter to a WindowsDirectoryListingFormatter.
+     */
+    FakeWindowsFileSystem() {
+        this.directoryListingFormatter = new WindowsDirectoryListingFormatter()
+    }
+
     //-------------------------------------------------------------------------
     // Abstract Method Implementations
     //-------------------------------------------------------------------------
-    
+
     protected String getSeparator() {
         return SEPARATOR
     }
-    
+
     protected boolean isValidName(String path) {
         // \/:*?"<>|
-        assert path != null    
+        assert path != null
         def standardized = path.replace("/", "\\")
         return (standardized ==~ VALID_PATTERN) || standardized.startsWith(LAN_PREFIX)
     }
-    
+
     /**
      * Return true if the specified char is a separator character ('\' or '/')
      * @param c - the character to test
@@ -61,7 +65,7 @@ class FakeWindowsFileSystem extends AbstractFakeFileSystem {
     protected boolean isSeparator(char c) {
         return c == '\\' || c == '/'
     }
-    
+
     protected String componentsToPath(List components) {
         if (components.size() == 1) {
             def first = components[0]
@@ -71,11 +75,11 @@ class FakeWindowsFileSystem extends AbstractFakeFileSystem {
         }
         return components.join(this.separator)
     }
-    
+
     protected boolean isRoot(String pathComponent) {
         return pathComponent.contains(":")
     }
-    
+
     /**
      * Return the components of the specified path as a List. The components are normalized, and
      * the returned List does not include path separator characters. 
@@ -83,17 +87,17 @@ class FakeWindowsFileSystem extends AbstractFakeFileSystem {
     protected List normalizedComponents(String path) {
         assert path != null
         def p = path.replace("/", this.separator)
-        
+
         // TODO better way to do this
         if (p == this.separator) {
             return [""]
         }
-        
+
         def parts = p.split("\\" + this.separator) as List
         def result = []
-        parts.each { part ->
+        parts.each {part ->
             if (part == "..") {
-                result.remove(result.size()-1)
+                result.remove(result.size() - 1)
             }
             else if (part != ".") {
                 result << part
@@ -101,19 +105,19 @@ class FakeWindowsFileSystem extends AbstractFakeFileSystem {
         }
         return result
     }
-    
+
     /**
      * Return true if the specified path designates an absolute file path. For Windows
      * paths, a path is absolute if it starts with a drive specifier followed by 
      * '\' or '/', or if it starts with "\\". 
-     * 
+     *
      * @param path - the path
      * @return true if path is absolute, false otherwise
-     * 
+     *
      * @throws AssertionError - if path is null
      */
     boolean isAbsolute(String path) {
-        return isValidName(path) 
+        return isValidName(path)
     }
- 
- }
+
+}

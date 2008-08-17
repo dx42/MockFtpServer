@@ -15,12 +15,10 @@
  */
 package org.mockftpserver.fake.command
 
-import java.text.SimpleDateFormat
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
-import org.mockftpserver.fake.filesystem.FileInfo
 
 
 /**
@@ -44,10 +42,6 @@ import org.mockftpserver.fake.filesystem.FileInfo
  */
 class ListCommandHandler extends AbstractFakeCommandHandler {
 
-    //static final DATE_FORMAT = "MM/dd/yyyy hh:mm aa"
-    static final DATE_FORMAT = "MM-dd-yy hh:mmaa"
-    static final SIZE_WIDTH = 15
-
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
         sendReply(session, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
@@ -55,7 +49,7 @@ class ListCommandHandler extends AbstractFakeCommandHandler {
         this.replyCodeForFileSystemException = ReplyCodes.SYSTEM_ERROR
         def path = getRealPath(session, command.getParameter(0))
         def fileEntries = this.fileSystem.listFiles(path)
-        def lines = fileEntries.collect { directoryListing(it) }
+        def lines = fileEntries.collect { this.fileSystem.formatDirectoryListing(it) }
         def result = lines.join(endOfLine())
 
         session.openDataConnection();
@@ -64,18 +58,6 @@ class ListCommandHandler extends AbstractFakeCommandHandler {
         session.closeDataConnection();
 
         sendReply(session, ReplyCodes.TRANSFER_DATA_FINAL_OK)
-    }
-
-    /**
-     * Format and return a directory listing String for a single file/directory
-     * entry represented by the specified FileInfo.
-     * TODO Consider making this filesystem-dependent
-     */
-    protected String directoryListing(FileInfo fileInfo) {
-        def dateFormat = new SimpleDateFormat(DATE_FORMAT)
-        def dateStr = dateFormat.format(fileInfo.lastModified)
-        def dirOrSize = fileInfo.directory ? "<DIR>".padRight(SIZE_WIDTH) : fileInfo.size.toString().padLeft(SIZE_WIDTH)
-        return "$dateStr  $dirOrSize  ${fileInfo.name}"
     }
 
 }

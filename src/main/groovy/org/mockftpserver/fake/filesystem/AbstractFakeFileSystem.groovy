@@ -38,6 +38,12 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      */
     boolean createParentDirectoriesAutomatically = false
 
+    /**
+     * The  {@link DirectoryListingFormatter}  used by the  {@link #formatDirectoryListing(FileInfo)}  method.
+     * This must be initialized by concrete subclasses. 
+     */
+    DirectoryListingFormatter directoryListingFormatter
+
     private Map entries = new HashMap()
 
     /**
@@ -78,7 +84,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         assert path != null
         checkForInvalidFilename(path)
 
-        // TODO Consider refactoring into adEntry()
+        // TODO Consider refactoring into addEntry()
         if (!parentDirectoryExists(path)) {
             String parent = getParent(path)
             if (createParentDirectoriesAutomatically) {
@@ -259,7 +265,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
             return [buildFileInfoForPath(path)]
         }
 
-        String normalizedPath = normalize(path)
+//        String normalizedPath = normalize(path)
         List fileInfoList = []
         List children = children(path)
         if (children != null) {
@@ -280,10 +286,9 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     protected FileInfo buildFileInfoForPath(String path) {
         FileSystemEntry entry = getRequiredEntry(path)
         def name = getName(entry.getPath())
-        def lastModified = entry.lastModified
-        entry.isDirectory()      \
-                 ? FileInfo.forDirectory(name, entry.lastModified)      \
-                 : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified)
+        entry.isDirectory()       \
+                  ? FileInfo.forDirectory(name, entry.lastModified)       \
+                  : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified)
     }
 
     /**
@@ -360,6 +365,17 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      */
     public String toString() {
         return this.class.name + entries
+    }
+
+    /**
+     * Return the formatted directory listing entry for the file represented by the specified FileInfo
+     * @param fileInfo - the FileInfo representing the file or directory entry to be formatted
+     * @return the the formatted directory listing entry
+     */
+    public String formatDirectoryListing(FileInfo fileInfo) {
+        assert directoryListingFormatter
+        assert fileInfo
+        return directoryListingFormatter.format(fileInfo)
     }
 
     //-------------------------------------------------------------------------
