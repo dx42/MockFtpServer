@@ -62,7 +62,7 @@ abstract class AbstractGroovyTest extends GroovyTestCase {
      */
     protected String shouldFailWithMessageContaining(String text, Closure code) {
         def message = shouldFail(code)
-        assert message.contains(text)
+        assert message.contains(text), "message=[$message], text=[$text]"
         return message
     }
 
@@ -77,7 +77,7 @@ abstract class AbstractGroovyTest extends GroovyTestCase {
 
     /**
      * Create a new InetAddress from the specified host String, using the
-     * {@link InetAddress#getByName(String)}  method.
+     * {@link InetAddress#getByName(String)}   method.
      * @param host
      * @return an InetAddress for the specified host
      */

@@ -36,6 +36,12 @@ class DefaultFileSystem implements FileSystem {
     private String root
 
     /**
+     * The  {@link DirectoryListingFormatter}  used by the  {@link #formatDirectoryListing(FileInfo)}  method.
+     * This defaults to an instance of  {@link WindowsDirectoryListingFormatter} .
+     */
+    DirectoryListingFormatter directoryListingFormatter = new WindowsDirectoryListingFormatter()
+
+    /**
      * @see org.mockftpserver.fake.filesystem.FileSystem#exists(java.lang.String)
      */
     public boolean exists(String path) {
@@ -166,9 +172,9 @@ class DefaultFileSystem implements FileSystem {
      * @param file - the File object for the file or directory
      */
     private FileInfo buildFileInfoForFile(File file) {
-        file.isDirectory()   \
-              ? FileInfo.forDirectory(file.getName(), new Date(file.lastModified()))   \
-              : FileInfo.forFile(file.getName(), file.length(), new Date(file.lastModified()))
+        file.isDirectory()    \
+               ? FileInfo.forDirectory(file.getName(), new Date(file.lastModified()))    \
+               : FileInfo.forFile(file.getName(), file.length(), new Date(file.lastModified()))
     }
 
     /**
@@ -223,6 +229,17 @@ class DefaultFileSystem implements FileSystem {
      */
     public void setRoot(String rootPath) {
         this.root = rootPath
+    }
+
+    /**
+     * Return the formatted directory listing entry for the file represented by the specified FileInfo
+     * @param fileInfo - the FileInfo representing the file or directory entry to be formatted
+     * @return the the formatted directory listing entry
+     */
+    public String formatDirectoryListing(FileInfo fileInfo) {
+        assert directoryListingFormatter
+        assert fileInfo
+        return directoryListingFormatter.format(fileInfo)
     }
 
     //-------------------------------------------------------------------------

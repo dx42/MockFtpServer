@@ -15,7 +15,7 @@
  */
 package org.mockftpserver.fake.filesystem
 
-import org.mockftpserver.fake.filesystem.AbstractFakeFileSystemTest;
+import org.mockftpserver.fake.filesystem.AbstractFakeFileSystemTest
 
 /**
  * Tests for FakeUnixFileSystem.
@@ -130,6 +130,10 @@ class FakeUnixFileSystemTest extends AbstractFakeFileSystemTest {
         fs.addEntry(new DirectoryEntry(EXISTING_DIR))
         fs.addEntry(new FileEntry(EXISTING_FILE, EXISTING_FILE_CONTENTS))
         return fs
+    }
+
+    protected Class getExpectedDirectoryListingFormatterClass() {
+        return UnixDirectoryListingFormatter
     }
 
 }
