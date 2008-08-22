@@ -47,7 +47,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
     ServerConfiguration serverConfiguration
 
     /**
-     * Reply code sent back when a FileSystemException is caught by the           {@link #handleCommand(Command, Session)}
+     * Reply code sent back when a FileSystemException is caught by the            {@link #handleCommand(Command, Session)}
      * This defaults to ReplyCodes.EXISTING_FILE_ERROR (550). 
      */
     int replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
@@ -193,9 +193,16 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
      * @param session - the Session
      */
     protected void verifyLoggedIn(Session session) {
-        if (session.getAttribute(SessionKeys.USER_ACCOUNT) == null) {
+        if (getUserAccount(session) == null) {
             throw new NotLoggedInException("User has not logged in")
         }
+    }
+
+    /**
+     * @return the UserAccount stored in the specified session; may be null
+     */
+    protected UserAccount getUserAccount(Session session) {
+        return session.getAttribute(SessionKeys.USER_ACCOUNT)
     }
 
     /**

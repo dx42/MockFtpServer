@@ -51,6 +51,21 @@ class PermissionsTest extends AbstractGroovyTest {
         testCanReadWriteExecute('---------', false, false, false, false, false, false, false, false, false)
     }
 
+    void testHashCode() {
+        assert new Permissions('rwxrwxrwx').hashCode() == Permissions.DEFAULT.hashCode()
+        assert new Permissions('---------').hashCode() == Permissions.NONE.hashCode()
+    }
+
+    void testEquals() {
+        assert new Permissions('rwxrwxrwx').equals(Permissions.DEFAULT)
+        assert new Permissions('---------').equals(Permissions.NONE)
+        assert Permissions.NONE.equals(Permissions.NONE)
+
+        assert !(new Permissions('------rwx').equals(Permissions.NONE))
+        assert !Permissions.NONE.equals(null)
+        assert !Permissions.NONE.equals(123)
+    }
+
     //--------------------------------------------------------------------------
     // Helper Methods
     //--------------------------------------------------------------------------

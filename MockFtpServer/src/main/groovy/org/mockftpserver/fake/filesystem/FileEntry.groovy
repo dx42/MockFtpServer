@@ -15,26 +15,20 @@
  */
 package org.mockftpserver.fake.filesystem
 
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
-
 /**
  * File system entry representing a file
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
 public class FileEntry extends AbstractFileSystemEntry {
 
-    private static final EMPTY = new byte[0] 
-    
+    private static final EMPTY = new byte[0]
+
     private byte[] bytes = EMPTY
     private ByteArrayOutputStream out
-    
+
     /**
      * Construct a new instance without setting its path 
      */
@@ -66,7 +60,7 @@ public class FileEntry extends AbstractFileSystemEntry {
     boolean isDirectory() {
         return false
     }
-    
+
     /**
      * Return the size of this file
      * @return the file size in bytes
@@ -74,7 +68,7 @@ public class FileEntry extends AbstractFileSystemEntry {
     long getSize() {
         return getCurrentBytes().length
     }
-    
+
     /**
      * Set the contents of the file represented by this entry
      * @param contents - the String whose bytes are used as the contents
@@ -83,7 +77,7 @@ public class FileEntry extends AbstractFileSystemEntry {
         assert contents != null
         setContentsInternal(contents.getBytes())
     }
-    
+
     /**
      * Set the contents of the file represented by this entry
      * @param contents - the byte[] used as the contents
@@ -93,7 +87,7 @@ public class FileEntry extends AbstractFileSystemEntry {
         // Copy the bytes[] to guard against subsequent modification of the source array
         setContentsInternal(new String(contents).getBytes())
     }
-    
+
     /**
      * Create and return an InputStream for reading the contents of the file represented by this entry
      * @return an InputStream
@@ -114,7 +108,7 @@ public class FileEntry extends AbstractFileSystemEntry {
         if (append && out != null) {
             return out
         }
-        
+
         out = new ByteArrayOutputStream()
         byte[] initialContents = (append) ? bytes : EMPTY
         try {
@@ -129,30 +123,31 @@ public class FileEntry extends AbstractFileSystemEntry {
     //-------------------------------------------------------------------------
     // Internal Helper Methods
     //-------------------------------------------------------------------------
-    
+
     /**
      * @return the current contents of this file entry as a byte[]
      */
     private byte[] getCurrentBytes() {
         return (out != null) ? out.toByteArray() : bytes
     }
-    
+
     /**
      * Set the contents of the file represented by this entry
      * @param contents - the byte[] used as the contents
      */
     private void setContentsInternal(byte[] contents) {
         this.bytes = contents
-        
+
         // Get rid of any OutputStream
         this.out = null
     }
-    
+
     /**
      * @see java.lang.Object#toString()
      */
     String toString() {
-        "File['${getPath()}' size=${getSize()} lastModified=$lastModified]"
+        "File['${getPath()}' size=${getSize()} lastModified=$lastModified owner=$owner " +
+                "group=$group permissions=$permissions]"
     }
-    
+
 }
