@@ -146,6 +146,14 @@ class DefaultFileSystemTest extends AbstractFileSystemTest {
         assert fileSystem.directoryListingFormatter.class == WindowsDirectoryListingFormatter
     }
 
+    void testGetFileInfo() {
+        assert fileSystem.getFileInfo(NO_SUCH_DIR) == null
+        assert fileSystem.getFileInfo(NO_SUCH_FILE) == null
+
+        assert fileSystem.getFileInfo(EXISTING_FILE).name == fileSystem.getName(EXISTING_FILE)
+        assert fileSystem.getFileInfo(EXISTING_DIR).name == fileSystem.getName(EXISTING_DIR)
+    }
+
     //-------------------------------------------------------------------------
     // Tests for path-related methods
     //-------------------------------------------------------------------------

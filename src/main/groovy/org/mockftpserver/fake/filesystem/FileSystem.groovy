@@ -177,6 +177,14 @@ public interface FileSystem {
     public String path(String path1, String path2)
 
     /**
+     * Returns the FileInfo object representing the file system entry at the specified path, or null
+     * if the path does not specify an existing file or directory within this file system.
+     * @param path - the path of the file or directory within this file system
+     * @return the FileInfo containing the information for the file or directory, or else null
+     */
+    public FileInfo getFileInfo(String path)
+
+    /**
      * Returns the name of the file or directory denoted by this abstract
      * pathname.  This is just the last name in the pathname's name
      * sequence.  If the pathname's name sequence is empty, then the empty

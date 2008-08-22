@@ -39,7 +39,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     boolean createParentDirectoriesAutomatically = false
 
     /**
-     * The  {@link DirectoryListingFormatter}  used by the  {@link #formatDirectoryListing(FileInfo)}  method.
+     * The   {@link DirectoryListingFormatter}   used by the   {@link #formatDirectoryListing(FileInfo)}   method.
      * This must be initialized by concrete subclasses. 
      */
     DirectoryListingFormatter directoryListingFormatter
@@ -250,6 +250,18 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     }
 
     /**
+     * Returns the FileInfo object representing the file system entry at the specified path, or null
+     * if the path does not specify an existing file or directory within this file system.
+     * @param path - the path of the file or directory within this file system
+     * @return the FileInfo containing the information for the file or directory, or else null
+     *
+     * @see FileSystem#getFileInfo(String)
+     */
+    public FileInfo getFileInfo(String path) {
+        return exists(path) ? buildFileInfoForPath(path) : null
+    }
+
+    /**
      * Return the List of FileInfo objects for the files in the specified directory or group of
      * files. If the path specifies a single file, then return a list with a single FileInfo
      * object representing that file. If the path does not refer to an existing directory or
@@ -286,9 +298,9 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     protected FileInfo buildFileInfoForPath(String path) {
         FileSystemEntry entry = getRequiredEntry(path)
         def name = getName(entry.getPath())
-        entry.isDirectory()       \
-                  ? FileInfo.forDirectory(name, entry.lastModified)       \
-                  : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified)
+        entry.isDirectory()        \
+                   ? FileInfo.forDirectory(name, entry.lastModified, entry.owner, entry.group, entry.permissions)        \
+                   : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified, entry.owner, entry.group, entry.permissions)
     }
 
     /**
@@ -471,6 +483,16 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         return (separatorIndex == -1) ? normalized : normalized.substring(separatorIndex + 1)
     }
 
+    /**
+     * Return the FileSystemEntry for the specified path, or else null
+     *
+     * @param path - the path
+     * @return the FileSystemEntry or null if no entry exists for that path
+     */
+    FileSystemEntry getEntry(String path) {
+        return (FileSystemEntry) entries.get(normalize(path))
+    }
+
     //-------------------------------------------------------------------------
     // Internal Helper Methods
     //-------------------------------------------------------------------------
@@ -496,16 +518,6 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         entries.remove(normalizedFrom)
         entry.setPath(normalizedTo)
         addEntry(entry)
-    }
-
-    /**
-     * Return the FileSystemEntry for the specified path, or else null
-     *
-     * @param path - the path
-     * @return the FileSystemEntry or null if no entry exists for that path
-     */
-    private FileSystemEntry getEntry(String path) {
-        return (FileSystemEntry) entries.get(normalize(path))
     }
 
     /**

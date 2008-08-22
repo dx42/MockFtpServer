@@ -17,7 +17,7 @@ package org.mockftpserver.fake.filesystem
 
 /**
  * File system entry representing a directory
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -45,12 +45,13 @@ class DirectoryEntry extends AbstractFileSystemEntry {
     boolean isDirectory() {
         return true
     }
-    
+
     /**
      * @see java.lang.Object#toString()
      */
     String toString() {
-        "Directory['${getPath()}' lastModified=$lastModified]"
+        "Directory['${getPath()}' lastModified=$lastModified  owner=$owner " +
+                "group=$group permissions=$permissions]"
     }
-    
+
 }

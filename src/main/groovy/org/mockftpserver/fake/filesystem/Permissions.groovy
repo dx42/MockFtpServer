@@ -24,7 +24,9 @@ package org.mockftpserver.fake.filesystem
  * @author Chris Mair
  */
 class Permissions {
-    public static final DEFAULT = new Permissions('rwxrwxrwx')
+    public static final ALL = new Permissions('rwxrwxrwx')
+    public static final NONE = new Permissions('---------')
+    public static final DEFAULT = ALL
 
     static final READ_CHAR = 'r'
     static final WRITE_CHAR = 'w'
@@ -50,6 +52,23 @@ class Permissions {
      */
     String asRwxString() {
         rwxString
+    }
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    boolean equals(Object object) {
+        (object
+                && object.class == this.class
+                && object.hashCode() == hashCode())
+    }
+
+    /**
+     * Return the hash code for this object.
+     * @see java.lang.Object#hashCode()
+     */
+    int hashCode() {
+        return rwxString.hashCode()
     }
 
     /**

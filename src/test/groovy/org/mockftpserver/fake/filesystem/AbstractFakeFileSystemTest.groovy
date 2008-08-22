@@ -100,6 +100,27 @@ abstract class AbstractFakeFileSystemTest extends AbstractFileSystemTest {
         shouldFailWithMessageContaining('fileInfo') { assert fileSystem.formatDirectoryListing(null) }
     }
 
+    void testGetFileInfo() {
+        assert fileSystem.getFileInfo(NO_SUCH_DIR) == null
+        assert fileSystem.getFileInfo(NO_SUCH_FILE) == null
+
+        assert fileSystem.getFileInfo(EXISTING_FILE).name == fileSystem.getName(EXISTING_FILE)
+        assert fileSystem.getFileInfo(EXISTING_DIR).name == fileSystem.getName(EXISTING_DIR)
+
+        def permissions = new Permissions('-wxrwx---')
+        def fileEntry = new FileEntry(path: NEW_FILE, lastModified: DATE, contents: 'abc', owner: 'owner',
+                group: 'group', permissions: permissions)
+        fileSystem.addEntry(fileEntry)
+        def fileInfo = fileSystem.getFileInfo(NEW_FILE)
+        LOG.info(fileInfo)
+        assert fileInfo.name == fileSystem.getName(NEW_FILE)
+        assert !fileInfo.directory
+        assert fileInfo.size == 3
+        assert fileInfo.owner == 'owner'
+        assert fileInfo.group == 'group'
+        assert fileInfo.permissions == permissions
+    }
+
     //--------------------------------------------------------------------------
     // Abstract Methods
     //--------------------------------------------------------------------------

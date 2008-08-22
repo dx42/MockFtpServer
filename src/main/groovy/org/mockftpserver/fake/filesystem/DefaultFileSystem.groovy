@@ -36,8 +36,8 @@ class DefaultFileSystem implements FileSystem {
     private String root
 
     /**
-     * The  {@link DirectoryListingFormatter}  used by the  {@link #formatDirectoryListing(FileInfo)}  method.
-     * This defaults to an instance of  {@link WindowsDirectoryListingFormatter} .
+     * The   {@link DirectoryListingFormatter}   used by the   {@link #formatDirectoryListing(FileInfo)}   method.
+     * This defaults to an instance of   {@link WindowsDirectoryListingFormatter}  .
      */
     DirectoryListingFormatter directoryListingFormatter = new WindowsDirectoryListingFormatter()
 
@@ -63,6 +63,18 @@ class DefaultFileSystem implements FileSystem {
     public boolean isFile(String path) {
         assert path != null
         return fileForPath(path).isFile()
+    }
+
+    /**
+     * Returns the FileInfo object representing the file system entry at the specified path, or null
+     * if the path does not specify an existing file or directory within this file system.
+     * @param path - the path of the file or directory within this file system
+     * @return the FileInfo containing the information for the file or directory, or else null
+     *
+     * @see FileSystem#getFileInfo(String)
+     */
+    public FileInfo getFileInfo(String path) {
+        return exists(path) ? buildFileInfoForFile(fileForPath(path)) : null
     }
 
     /**
@@ -172,9 +184,9 @@ class DefaultFileSystem implements FileSystem {
      * @param file - the File object for the file or directory
      */
     private FileInfo buildFileInfoForFile(File file) {
-        file.isDirectory()    \
-               ? FileInfo.forDirectory(file.getName(), new Date(file.lastModified()))    \
-               : FileInfo.forFile(file.getName(), file.length(), new Date(file.lastModified()))
+        file.isDirectory()     \
+                ? FileInfo.forDirectory(file.getName(), new Date(file.lastModified()))     \
+                : FileInfo.forFile(file.getName(), file.length(), new Date(file.lastModified()))
     }
 
     /**

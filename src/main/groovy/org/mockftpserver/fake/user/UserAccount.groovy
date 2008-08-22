@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.user
 
+import org.mockftpserver.fake.filesystem.FileInfo
+
 /**
  * Represents a single user account on the server, including the username, password and home
  * directory. It also includes several configuration flags, described below.
@@ -89,6 +91,54 @@ class UserAccount {
     }
 
     /**
+     * Return true if this user has read access to the file/directory represented by the specified FileInfo object.
+     * @param fileInfo - the FileInfo representing the file or directory
+     * @return true if this use has read access
+     */
+    boolean canRead(FileInfo fileInfo) {
+        def permissions = fileInfo.permissions
+        if (username == fileInfo.owner) {
+            return permissions.canUserRead()
+        }
+        if (groups.contains(fileInfo.group)) {
+            return permissions.canGroupRead()
+        }
+        return permissions.canWorldRead()
+    }
+
+    /**
+     * Return true if this user has write access to the file/directory represented by the specified FileInfo object.
+     * @param fileInfo - the FileInfo representing the file or directory
+     * @return true if this use has write access
+     */
+    boolean canWrite(FileInfo fileInfo) {
+        def permissions = fileInfo.permissions
+        if (username == fileInfo.owner) {
+            return permissions.canUserWrite()
+        }
+        if (groups.contains(fileInfo.group)) {
+            return permissions.canGroupWrite()
+        }
+        return permissions.canWorldWrite()
+    }
+
+    /**
+     * Return true if this user has execute access to the file/directory represented by the specified FileInfo object.
+     * @param fileInfo - the FileInfo representing the file or directory
+     * @return true if this use has execute access
+     */
+    boolean canExecute(FileInfo fileInfo) {
+        def permissions = fileInfo.permissions
+        if (username == fileInfo.owner) {
+            return permissions.canUserExecute()
+        }
+        if (groups.contains(fileInfo.group)) {
+            return permissions.canGroupExecute()
+        }
+        return permissions.canWorldExecute()
+    }
+
+    /**
      * Return true if the specified password matches the password configured for this user account.
      * This implementation uses standard (case-sensitive) String comparison. Subclasses can provide
      * custom comparison behavior, for instance using encrypted password values, by overriding this
@@ -100,4 +150,5 @@ class UserAccount {
     protected boolean comparePassword(String password) {
         return password == this.password
     }
+
 }

@@ -29,9 +29,8 @@ import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.InvalidFilenameException
 import org.mockftpserver.fake.filesystem.NewFileOperationException
 import org.mockftpserver.fake.server.StubServerConfiguration
+import org.mockftpserver.fake.user.UserAccount
 import org.mockftpserver.test.AbstractGroovyTest
-
-
 
 /**
  * Tests for AbstractFakeCommandHandler
@@ -53,6 +52,7 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
     private session
     private serverConfiguration
     private fileSystem
+    private userAccount
 
     //-------------------------------------------------------------------------
     // Tests
@@ -116,8 +116,14 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
 
     void testVerifyLoggedIn() {
         shouldFail(NotLoggedInException) { commandHandler.verifyLoggedIn(session) }
-        session.setAttribute(SessionKeys.USER_ACCOUNT, "OK")
+        session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
         commandHandler.verifyLoggedIn(session)        // no exception expected
+    }
+
+    void testGetUserAccount() {
+        assert commandHandler.getUserAccount(session) == null
+        session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
+        assert commandHandler.getUserAccount(session)
     }
 
     void testVerifyFileSystemCondition() {
@@ -144,6 +150,7 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
         commandHandler = new TestFakeCommandHandler()
         session = new StubSession()
         serverConfiguration = new StubServerConfiguration()
+        userAccount = new UserAccount()
         fileSystem = new FakeUnixFileSystem()
         serverConfiguration.setFileSystem(fileSystem)
 
