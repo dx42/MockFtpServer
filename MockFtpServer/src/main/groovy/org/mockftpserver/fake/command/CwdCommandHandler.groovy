@@ -45,6 +45,10 @@ class CwdCommandHandler extends AbstractFakeCommandHandler {
         verifyFileSystemCondition(fileSystem.exists(path), path)
         verifyFileSystemCondition(fileSystem.isDirectory(path), path)
 
+        def userAccount = getUserAccount(session)
+        def fileInfo = fileSystem.getFileInfo(path)
+        verifyFileSystemCondition(userAccount.canRead(fileInfo), path)
+
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, path)
         sendReply(session, ReplyCodes.CWD_OK, 'cwd', [path])
     }

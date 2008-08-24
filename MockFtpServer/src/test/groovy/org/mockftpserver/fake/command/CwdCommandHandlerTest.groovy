@@ -20,6 +20,7 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.fake.filesystem.Permissions
 
 /**
  * Tests for CwdCommandHandler
@@ -61,6 +62,15 @@ class CwdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
 
+    void testHandleCommand_DirectoryNotAccessible() {
+        assert fileSystem.createDirectory(DIR)
+        def dir = fileSystem.getEntry(DIR)
+        dir.permissions = Permissions.NONE
+        commandHandler.handleCommand(createCommand([DIR]), session)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
+        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
+    }
+
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])
     }
@@ -79,6 +89,7 @@ class CwdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     void setUp() {
         super.setUp()
+        userAccount.username = 'user'
     }
 
 }
