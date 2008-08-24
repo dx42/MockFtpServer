@@ -92,6 +92,13 @@ class UserAccountTest extends AbstractGroovyTest {
     }
 
     void testCanRead() {
+        // No file permissions - readable by all
+        testCanRead(USERNAME, GROUP, null, true)
+
+        // UserAccount has no username or group; use World permissions
+        testCanRead(USERNAME, GROUP, '------r--', true)
+        testCanRead(USERNAME, GROUP, 'rwxrwx-wx', false)
+
         userAccount.username = USERNAME
         userAccount.groups = [GROUP]
 
@@ -109,6 +116,13 @@ class UserAccountTest extends AbstractGroovyTest {
     }
 
     void testCanWrite() {
+        // No file permissions - writable by all
+        testCanWrite(USERNAME, GROUP, null, true)
+
+        // UserAccount has no username or group; use World permissions
+        testCanWrite(USERNAME, GROUP, '-------w-', true)
+        testCanWrite(USERNAME, GROUP, 'rwxrwxr-x', false)
+
         userAccount.username = USERNAME
         userAccount.groups = [GROUP]
 
@@ -126,6 +140,13 @@ class UserAccountTest extends AbstractGroovyTest {
     }
 
     void testCanExecute() {
+        // No file permissions - executable by all
+        testCanExecute(USERNAME, GROUP, null, true)
+
+        // UserAccount has no username or group; use World permissions
+        testCanExecute(USERNAME, GROUP, '--------x', true)
+        testCanExecute(USERNAME, GROUP, 'rwxrwxrw-', false)
+
         userAccount.username = USERNAME
         userAccount.groups = [GROUP]
 
@@ -162,7 +183,8 @@ class UserAccountTest extends AbstractGroovyTest {
     }
 
     private FileInfo createFileInfo(owner, permissionsString, group) {
-        return FileInfo.forFile('', 0, null, owner, group, new Permissions(permissionsString))
+        def permissions = permissionsString ? new Permissions(permissionsString) : null
+        return FileInfo.forFile('', 0, null, owner, group, permissions)
     }
 
     void setUp() {

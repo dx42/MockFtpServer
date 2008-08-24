@@ -97,10 +97,14 @@ class UserAccount {
      */
     boolean canRead(FileInfo fileInfo) {
         def permissions = fileInfo.permissions
+        if (!permissions) {
+            return true
+        }
+
         if (username == fileInfo.owner) {
             return permissions.canUserRead()
         }
-        if (groups.contains(fileInfo.group)) {
+        if (groups?.contains(fileInfo.group)) {
             return permissions.canGroupRead()
         }
         return permissions.canWorldRead()
@@ -113,10 +117,14 @@ class UserAccount {
      */
     boolean canWrite(FileInfo fileInfo) {
         def permissions = fileInfo.permissions
+        if (!permissions) {
+            return true
+        }
+
         if (username == fileInfo.owner) {
             return permissions.canUserWrite()
         }
-        if (groups.contains(fileInfo.group)) {
+        if (groups?.contains(fileInfo.group)) {
             return permissions.canGroupWrite()
         }
         return permissions.canWorldWrite()
@@ -129,10 +137,14 @@ class UserAccount {
      */
     boolean canExecute(FileInfo fileInfo) {
         def permissions = fileInfo.permissions
+        if (!permissions) {
+            return true
+        }
+
         if (username == fileInfo.owner) {
             return permissions.canUserExecute()
         }
-        if (groups.contains(fileInfo.group)) {
+        if (groups?.contains(fileInfo.group)) {
             return permissions.canGroupExecute()
         }
         return permissions.canWorldExecute()
