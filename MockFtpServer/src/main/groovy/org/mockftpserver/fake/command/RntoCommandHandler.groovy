@@ -46,10 +46,9 @@ class RntoCommandHandler extends AbstractFakeCommandHandler {
         def fromPath = getRequiredSessionAttribute(session, SessionKeys.RENAME_FROM)
 
         this.replyCodeForFileSystemException = ReplyCodes.NEW_FILE_ERROR
-        verifyFileSystemCondition(!fileSystem.isDirectory(toPath), toPath)
-        verifyFileSystemCondition(fileSystem.rename(fromPath, toPath), toPath)
+        verifyFileSystemCondition(!fileSystem.isDirectory(toPath), toPath, 'filesystem.isDirectory')
+        verifyFileSystemCondition(fileSystem.rename(fromPath, toPath), toPath, 'filesystem.renameFailed')
 
-        // TODO use custom message, including FROM and TO path?
         session.removeAttribute(SessionKeys.RENAME_FROM)
         sendReply(session, ReplyCodes.RNTO_OK, 'rnto', [fromPath, toPath])
     }

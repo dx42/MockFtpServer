@@ -49,13 +49,13 @@ class DeleCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     void testHandleCommand_PathDoesNotExistInFileSystem() {
         commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, FILE)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.isNotAFile', FILE])
     }
 
     void testHandleCommand_PathSpecifiesADirectory() {
         assert fileSystem.createDirectory(FILE)
         commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, FILE)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.isNotAFile', FILE])
         assert fileSystem.exists(FILE)
     }
 
@@ -64,9 +64,10 @@ class DeleCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     }
 
     void testHandleCommand_DeleteThrowsException() {
+        assert fileSystem.createFile(FILE)
         overrideMethodToThrowFileSystemException("delete")
         handleCommand([FILE])
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
     //-------------------------------------------------------------------------

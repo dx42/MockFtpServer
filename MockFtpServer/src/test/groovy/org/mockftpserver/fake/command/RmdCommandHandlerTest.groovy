@@ -50,13 +50,13 @@ class RmdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     void testHandleCommand_PathDoesNotExistInFileSystem() {
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.doesNotExist', DIR])
     }
 
     void testHandleCommand_PathSpecifiesAFile() {
         assert fileSystem.createFile(DIR)
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.isNotADirectory', DIR])
         assert fileSystem.exists(DIR)
     }
 
@@ -64,7 +64,7 @@ class RmdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         final FILE = DIR + "/file.txt"
         assert fileSystem.createFile(FILE)
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.directoryIsNotEmpty', DIR])
         assert fileSystem.exists(DIR)
         assert fileSystem.exists(FILE)
     }
@@ -74,15 +74,17 @@ class RmdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     }
 
     void testHandleCommand_ListNamesThrowsException() {
+        assert fileSystem.createDirectory(DIR)
         overrideMethodToThrowFileSystemException("listNames")
         handleCommand([DIR])
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
     void testHandleCommand_DeleteThrowsException() {
+        assert fileSystem.createDirectory(DIR)
         overrideMethodToThrowFileSystemException("delete")
         handleCommand([DIR])
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
     //-------------------------------------------------------------------------

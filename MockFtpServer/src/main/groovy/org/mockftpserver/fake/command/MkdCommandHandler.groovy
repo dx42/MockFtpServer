@@ -43,8 +43,8 @@ class MkdCommandHandler extends AbstractFakeCommandHandler {
         def parent = fileSystem.getParent(path)
 
         this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
-        verifyFileSystemCondition(fileSystem.exists(parent), parent)
-        verifyFileSystemCondition(!fileSystem.exists(path), path)
+        verifyFileSystemCondition(fileSystem.exists(parent), parent, 'filesystem.doesNotExist')
+        verifyFileSystemCondition(!fileSystem.exists(path), path, 'filesystem.alreadyExists')
 
         fileSystem.createDirectory(path)
         sendReply(session, ReplyCodes.MKD_OK, 'mkd', [path])

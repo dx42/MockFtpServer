@@ -21,7 +21,6 @@ import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.fake.filesystem.FileEntry
 
-
 /**
  * Tests for RetrCommandHandler
  *
@@ -53,13 +52,14 @@ class RetrCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     void testHandleCommand_PathSpecifiesAnExistingDirectory() {
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.isNotAFile', DIR])
     }
 
     void testHandleCommand_CreateInputStreamThrowsException() {
         overrideMethodToThrowFileSystemException("createInputStream")
         handleCommand([FILE])
-        assertSessionReplies([ReplyCodes.TRANSFER_DATA_INITIAL_OK, ReplyCodes.EXISTING_FILE_ERROR])
+        assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
+        assertSessionReply(1, ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
     //-------------------------------------------------------------------------

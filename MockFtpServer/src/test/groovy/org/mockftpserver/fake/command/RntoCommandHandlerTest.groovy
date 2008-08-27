@@ -68,22 +68,22 @@ class RntoCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     void testHandleCommand_ToFilenameSpecifiesADirectory() {
         assert fileSystem.createDirectory(TO_FILE)
         commandHandler.handleCommand(createCommand([TO_FILE]), session)
-        assertSessionReply(ReplyCodes.NEW_FILE_ERROR, TO_FILE)
+        assertSessionReply(ReplyCodes.NEW_FILE_ERROR, ['filesystem.isDirectory', TO_FILE])
         assert session.getAttribute(SessionKeys.RENAME_FROM) == FROM_FILE
     }
 
     void testHandleCommand_RenameFails() {
         commandHandler.handleCommand(createCommand([TO_FILE]), session)
-        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, TO_FILE)
+        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, ['filesystem.renameFailed', TO_FILE])
         assert session.getAttribute(SessionKeys.RENAME_FROM) == FROM_FILE
     }
 
     void testHandleCommand_RenameThrowsException() {
-        def newMethod = {String from, String to -> throw new FileSystemException("bad") }
+        def newMethod = {String from, String to -> throw new FileSystemException("bad", 'msgkey') }
         overrideMethod(fileSystem, "rename", newMethod)
 
         commandHandler.handleCommand(createCommand([TO_FILE]), session)
-        assertSessionReply(ReplyCodes.NEW_FILE_ERROR)
+        assertSessionReply(ReplyCodes.NEW_FILE_ERROR, ERROR_MESSAGE_KEY)
         assert session.getAttribute(SessionKeys.RENAME_FROM) == FROM_FILE
     }
 

@@ -40,7 +40,7 @@ class PwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_CurrentDirectoryNotSet() {
         commandHandler.handleCommand(createValidCommand(), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, 'filesystem.currentDirectoryNotSet')
     }
 
     //-------------------------------------------------------------------------

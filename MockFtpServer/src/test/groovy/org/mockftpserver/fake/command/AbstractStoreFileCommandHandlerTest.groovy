@@ -38,12 +38,13 @@ abstract class AbstractStoreFileCommandHandlerTest extends AbstractLoginRequired
     void testHandleCommand_CreateOutputStreamThrowsException() {
         def newMethod = {String path, boolean append ->
             println "Calling createOutputStream() - throwing exception"
-            throw new FileSystemException("bad")
+            throw new FileSystemException("bad", ERROR_MESSAGE_KEY)
         }
         overrideMethod(fileSystem, "createOutputStream", newMethod)
 
         handleCommand([FILE])
-        assertSessionReplies([ReplyCodes.TRANSFER_DATA_INITIAL_OK, ReplyCodes.NEW_FILE_ERROR])
+        assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
+        assertSessionReply(1, ReplyCodes.NEW_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
     //-------------------------------------------------------------------------

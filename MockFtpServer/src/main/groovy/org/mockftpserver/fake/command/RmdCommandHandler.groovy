@@ -41,9 +41,9 @@ class RmdCommandHandler extends AbstractFakeCommandHandler {
         def path = getRealPath(session, command.getRequiredParameter(0))
 
         this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
-        verifyFileSystemCondition(fileSystem.exists(path), path)
-        verifyFileSystemCondition(fileSystem.isDirectory(path), path)
-        verifyFileSystemCondition(fileSystem.listNames(path) == [], path)
+        verifyFileSystemCondition(fileSystem.exists(path), path, 'filesystem.doesNotExist')
+        verifyFileSystemCondition(fileSystem.isDirectory(path), path, 'filesystem.isNotADirectory')
+        verifyFileSystemCondition(fileSystem.listNames(path) == [], path, 'filesystem.directoryIsNotEmpty')
 
         fileSystem.delete(path)
         sendReply(session, ReplyCodes.RMD_OK, 'rmd', [path])

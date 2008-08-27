@@ -41,8 +41,8 @@ class CdupCommandHandler extends AbstractFakeCommandHandler {
         def path = getFileSystem().getParent(currentDirectory)
 
         this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
-        verifyFileSystemCondition(path, currentDirectory)
-        verifyFileSystemCondition(fileSystem.isDirectory(path), path)
+        verifyFileSystemCondition(path, currentDirectory, 'filesystem.parentDirectoryDoesNotExist')
+        verifyFileSystemCondition(fileSystem.isDirectory(path), path, 'filesystem.isNotADirectory')
 
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, path)
         sendReply(session, ReplyCodes.CDUP_OK, 'cdup', [path])

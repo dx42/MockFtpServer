@@ -41,7 +41,7 @@ class DeleCommandHandler extends AbstractFakeCommandHandler {
         def path = getRealPath(session, command.getRequiredParameter(0))
 
         this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
-        verifyFileSystemCondition(fileSystem.isFile(path), path)
+        verifyFileSystemCondition(fileSystem.isFile(path), path, 'filesystem.isNotAFile')
 
         fileSystem.delete(path)
         sendReply(session, ReplyCodes.DELE_OK, 'dele', [path])

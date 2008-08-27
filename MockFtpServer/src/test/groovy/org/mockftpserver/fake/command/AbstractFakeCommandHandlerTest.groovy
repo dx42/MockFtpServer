@@ -34,6 +34,8 @@ import org.mockftpserver.test.AbstractGroovyTest
  */
 abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
 
+    protected static final ERROR_MESSAGE_KEY = 'msgkey'
+
     protected session
     protected serverConfiguration
     protected commandHandler
@@ -220,7 +222,7 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
      * @param methodName - the name of the fileSystem method to override
      */
     protected void overrideMethodToThrowFileSystemException(String methodName) {
-        def newMethod = {String path -> throw new FileSystemException("Error thrown by method [$methodName]") }
+        def newMethod = {String path -> throw new FileSystemException("Error thrown by method [$methodName]", ERROR_MESSAGE_KEY) }
         overrideMethod(fileSystem, methodName, newMethod)
     }
 

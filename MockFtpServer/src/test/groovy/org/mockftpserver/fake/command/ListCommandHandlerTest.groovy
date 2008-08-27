@@ -91,7 +91,9 @@ class ListCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     void testHandleCommand_ListFilesThrowsException() {
         overrideMethodToThrowFileSystemException("listFiles")
         handleCommand([DIR])
-        assertSessionReplies([ReplyCodes.TRANSFER_DATA_INITIAL_OK, ReplyCodes.SYSTEM_ERROR])
+        //assertSessionReplies([ReplyCodes.TRANSFER_DATA_INITIAL_OK, ReplyCodes.SYSTEM_ERROR])
+        assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
+        assertSessionReply(1, ReplyCodes.SYSTEM_ERROR, ERROR_MESSAGE_KEY)
     }
 
     //-------------------------------------------------------------------------

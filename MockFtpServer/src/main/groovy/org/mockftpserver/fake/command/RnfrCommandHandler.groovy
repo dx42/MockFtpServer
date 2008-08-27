@@ -42,8 +42,8 @@ class RnfrCommandHandler extends AbstractFakeCommandHandler {
         def fromPath = getRealPath(session, command.getRequiredParameter(0))
 
         this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
-        verifyFileSystemCondition(fileSystem.exists(fromPath), fromPath)
-        verifyFileSystemCondition(fileSystem.isFile(fromPath), fromPath)
+        verifyFileSystemCondition(fileSystem.exists(fromPath), fromPath, 'filesystem.doesNotExist')
+        verifyFileSystemCondition(fileSystem.isFile(fromPath), fromPath, 'filesystem.isNotAFile')
 
         session.setAttribute(SessionKeys.RENAME_FROM, fromPath)
         sendReply(session, ReplyCodes.RNFR_OK, 'rnfr')
