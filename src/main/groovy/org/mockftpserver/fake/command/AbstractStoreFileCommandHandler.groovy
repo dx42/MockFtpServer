@@ -45,9 +45,9 @@ abstract class AbstractStoreFileCommandHandler extends AbstractFakeCommandHandle
 //        def filename = command.getRequiredParameter(0)
         def filename = getOutputFile(command)
         def path = getRealPath(session, filename)
-        verifyFileSystemCondition(!fileSystem.isDirectory(path), path)
+        verifyFileSystemCondition(!fileSystem.isDirectory(path), path, 'filesystem.isFile')
         def parent = fileSystem.getParent(path)
-        verifyFileSystemCondition(fileSystem.isDirectory(parent), parent)
+        verifyFileSystemCondition(fileSystem.isDirectory(parent), parent, 'filesystem.isDirectory')
 
         sendReply(session, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
 

@@ -51,14 +51,14 @@ class CwdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     void testHandleCommand_PathDoesNotExistInFileSystem() {
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.doesNotExist', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
 
     void testHandleCommand_PathSpecifiesAFile() {
         assert fileSystem.createFile(DIR)
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.isNotADirectory', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
 
@@ -67,7 +67,7 @@ class CwdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         def dir = fileSystem.getEntry(DIR)
         dir.permissions = Permissions.NONE
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotRead', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
 

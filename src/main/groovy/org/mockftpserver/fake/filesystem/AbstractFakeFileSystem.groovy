@@ -39,7 +39,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     boolean createParentDirectoriesAutomatically = false
 
     /**
-     * The   {@link DirectoryListingFormatter}   used by the   {@link #formatDirectoryListing(FileInfo)}   method.
+     * The    {@link DirectoryListingFormatter}    used by the    {@link #formatDirectoryListing(FileInfo)}    method.
      * This must be initialized by concrete subclasses. 
      */
     DirectoryListingFormatter directoryListingFormatter
@@ -54,7 +54,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     public void addEntry(FileSystemEntry entry) {
         def normalized = normalize(entry.path)
         if (entries.get(normalized) != null) {
-            throw new FileSystemException(normalized, "The path [" + normalized + "] already exists")
+            throw new FileSystemException(normalized, 'filesystem.pathAlreadyExists')
         }
 
         // Make sure parent directory exists, if there is a parent
@@ -93,7 +93,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
                 }
             }
             else {
-                throw new FileSystemException(parent, "Parent directory does not exist: " + parent)
+                throw new FileSystemException(parent, 'filesystem.parentDirectoryDoesNotExist')
             }
         }
 
@@ -150,7 +150,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      */
     public InputStream createInputStream(String path) {
         verifyPathExists(path)
-        verifyIsDirectory(path, false)
+        verifyIsFile(path)
         FileEntry fileEntry = (FileEntry) getEntry(path)
         return fileEntry.createInputStream()
     }
@@ -169,7 +169,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         checkForInvalidFilename(path)
         verifyParentDirectoryExists(path)
         if (exists(path)) {
-            verifyIsDirectory(path, false)
+            verifyIsFile(path)
         }
         else {
             addEntry(new FileEntry(path))
@@ -298,9 +298,9 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     protected FileInfo buildFileInfoForPath(String path) {
         FileSystemEntry entry = getRequiredEntry(path)
         def name = getName(entry.getPath())
-        entry.isDirectory()        \
-                   ? FileInfo.forDirectory(name, entry.lastModified, entry.owner, entry.group, entry.permissions)        \
-                   : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified, entry.owner, entry.group, entry.permissions)
+        entry.isDirectory()         \
+                    ? FileInfo.forDirectory(name, entry.lastModified, entry.owner, entry.group, entry.permissions)         \
+                    : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified, entry.owner, entry.group, entry.permissions)
     }
 
     /**
@@ -532,7 +532,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     protected FileSystemEntry getRequiredEntry(String path) {
         FileSystemEntry entry = getEntry(path)
         if (entry == null) {
-            throw new FileSystemException(path, "The path [" + normalize(path) + "] does not exist")
+            throw new FileSystemException(normalize(path), 'filesystem.pathDoesNotExist')
         }
         return entry
     }
@@ -561,23 +561,36 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     }
 
     /**
-     * Verify that the path refers to an existing directory (if isDirectory==true) or an existing
-     * file (if isDirectory==false). Throw AssertionError if the path is null. Throw
-     * FileSystemException if the specified path does not exist or is not a directory/file as
-     * specified by isDirectory.
+     * Verify that the path refers to an existing directory. Throw AssertionError if the path is null. Throw
+     * FileSystemException if the specified path does not exist or is not a directory.
      *
      * @param path - the path
-     * @param isDirectory - true if the path should reference a directory false if it should be a file
      *
      * @throws AssertionError - if the specified path is null
-     * @throws FileSystemException - if the specified path does not exist or is not a directory/file
-     *         as expected
+     * @throws FileSystemException - if the specified path does not exist or is not a directory
      */
-    private void verifyIsDirectory(String path, boolean isDirectory) {
+    private void verifyIsDirectory(String path) {
         assert path != null
         FileSystemEntry entry = getRequiredEntry(path)
-        if (entry.isDirectory() != isDirectory) {
-            throw new FileSystemException(path, "Path [" + path + "] is directory is " + entry.isDirectory())
+        if (!entry.isDirectory()) {
+            throw new FileSystemException(path, 'filesystem.isDirectory')
+        }
+    }
+
+    /**
+     * Verify that the path refers to an existing file. Throw AssertionError if the path is null. Throw
+     * FileSystemException if the specified path does not exist or is not a file.
+     *
+     * @param path - the path
+     *
+     * @throws AssertionError - if the specified path is null
+     * @throws FileSystemException - if the specified path does not exist or is not a file
+     */
+    private void verifyIsFile(String path) {
+        assert path != null
+        FileSystemEntry entry = getRequiredEntry(path)
+        if (entry.isDirectory()) {
+            throw new FileSystemException(path, 'filesystem.isFile')
         }
     }
 
@@ -588,7 +601,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      */
     private void verifyParentDirectoryExists(String path) throws FileSystemException {
         if (!parentDirectoryExists(path)) {
-            throw new FileSystemException(path, "Parent directory does not exist: " + getParent(path))
+            throw new FileSystemException(getParent(path), 'filesystem.parentDirectoryDoesNotExist')
         }
     }
 

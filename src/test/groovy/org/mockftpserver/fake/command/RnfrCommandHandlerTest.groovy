@@ -49,14 +49,14 @@ class RnfrCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     void testHandleCommand_PathDoesNotExistInFileSystem() {
         commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, FILE)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.doesNotExist', FILE])
         assert session.getAttribute(SessionKeys.RENAME_FROM) == null
     }
 
     void testHandleCommand_PathSpecifiesADirectory() {
         assert fileSystem.createDirectory(FILE)
         commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, FILE)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.isNotAFile', FILE])
         assert session.getAttribute(SessionKeys.RENAME_FROM) == null
     }
 

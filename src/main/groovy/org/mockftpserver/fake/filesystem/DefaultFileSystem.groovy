@@ -36,8 +36,8 @@ class DefaultFileSystem implements FileSystem {
     private String root
 
     /**
-     * The   {@link DirectoryListingFormatter}   used by the   {@link #formatDirectoryListing(FileInfo)}   method.
-     * This defaults to an instance of   {@link WindowsDirectoryListingFormatter}  .
+     * The    {@link DirectoryListingFormatter}    used by the    {@link #formatDirectoryListing(FileInfo)}    method.
+     * This defaults to an instance of    {@link WindowsDirectoryListingFormatter}   .
      */
     DirectoryListingFormatter directoryListingFormatter = new WindowsDirectoryListingFormatter()
 
@@ -139,7 +139,7 @@ class DefaultFileSystem implements FileSystem {
             return new FileInputStream(fileForPath(path))
         }
         catch (FileNotFoundException e) {
-            throw new FileSystemException(path, e)
+            throw new FileSystemException(path, 'filesystem.doesNotExist', e)
         }
     }
 
@@ -184,9 +184,9 @@ class DefaultFileSystem implements FileSystem {
      * @param file - the File object for the file or directory
      */
     private FileInfo buildFileInfoForFile(File file) {
-        file.isDirectory()     \
-                ? FileInfo.forDirectory(file.getName(), new Date(file.lastModified()))     \
-                : FileInfo.forFile(file.getName(), file.length(), new Date(file.lastModified()))
+        file.isDirectory()      \
+                 ? FileInfo.forDirectory(file.getName(), new Date(file.lastModified()))      \
+                 : FileInfo.forFile(file.getName(), file.length(), new Date(file.lastModified()))
     }
 
     /**

@@ -25,11 +25,9 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.fake.filesystem.ExistingFileOperationException
 import org.mockftpserver.fake.filesystem.FileSystem
 import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.InvalidFilenameException
-import org.mockftpserver.fake.filesystem.NewFileOperationException
 import org.mockftpserver.fake.server.ServerConfiguration
 import org.mockftpserver.fake.server.ServerConfigurationAware
 import org.mockftpserver.fake.user.UserAccount
@@ -47,7 +45,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
     ServerConfiguration serverConfiguration
 
     /**
-     * Reply code sent back when a FileSystemException is caught by the            {@link #handleCommand(Command, Session)}
+     * Reply code sent back when a FileSystemException is caught by the             {@link #handleCommand(Command, Session)}
      * This defaults to ReplyCodes.EXISTING_FILE_ERROR (550). 
      */
     int replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
@@ -72,17 +70,11 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
         catch (NotLoggedInException e) {
             handleException(command, session, e, ReplyCodes.NOT_LOGGED_IN)
         }
-        catch (ExistingFileOperationException e) {
-            handleException(command, session, e, ReplyCodes.EXISTING_FILE_ERROR, [e.path])
-        }
-        catch (NewFileOperationException e) {
-            handleException(command, session, e, ReplyCodes.NEW_FILE_ERROR, [e.path])
-        }
         catch (InvalidFilenameException e) {
-            handleException(command, session, e, ReplyCodes.FILENAME_NOT_VALID, [e.path])
+            handleFileSystemException(command, session, e, ReplyCodes.FILENAME_NOT_VALID, [e.path])
         }
         catch (FileSystemException e) {
-            handleException(command, session, e, replyCodeForFileSystemException, [e.path])
+            handleFileSystemException(command, session, e, replyCodeForFileSystemException, [e.path])
         }
     }
 
@@ -164,6 +156,20 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
     }
 
     /**
+     * Handle the exception caught during handleCommand()
+     * @param command - the Command
+     * @param session - the Session
+     * @param exception - the caught exception
+     * @param replyCode - the reply code that should be sent back
+     * @param args - the optional args for the reply (message)
+     *
+     */
+    private handleFileSystemException(Command command, Session session, FileSystemException exception, int replyCode, args = []) {
+        LOG.warn("Error handling command: $command; ${exception}", exception)
+        sendReply(session, replyCode, exception.messageKey, args)
+    }
+
+    /**
      * Assert that the specified number is a valid reply code
      * @param replyCode - the reply code to check
      *
@@ -212,11 +218,12 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
      * @param condition - the condition that must be true
      * @param path - the path involved in the operation; this will be included in the
      * 		error message if the condition is not true.
+     * @param messageKey - the message key for the exception message
      * @throws FileSystemException - if the condition is not true
      */
-    protected void verifyFileSystemCondition(condition, path) {
+    protected void verifyFileSystemCondition(condition, String path, String messageKey) {
         if (!condition) {
-            throw new FileSystemException((String) path, "path [$path]")
+            throw new FileSystemException((String) path, messageKey)
         }
     }
 

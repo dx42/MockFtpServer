@@ -48,13 +48,13 @@ class MkdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     void testHandleCommand_ParentDirectoryDoesNotExist() {
         commandHandler.handleCommand(createCommand(['/abc/def']), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, '/abc')
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.doesNotExist', '/abc'])
     }
 
     void testHandleCommand_PathSpecifiesAFile() {
         assert fileSystem.createFile(DIR)
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, DIR)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.alreadyExists', DIR])
         assert fileSystem.exists(DIR)
     }
 
@@ -65,7 +65,7 @@ class MkdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     void testHandleCommand_CreateDirectoryThrowsException() {
         overrideMethodToThrowFileSystemException("createDirectory")
         handleCommand([DIR])
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
     void setUp() {

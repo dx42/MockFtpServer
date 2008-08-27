@@ -43,7 +43,7 @@ class CdupCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     void testHandleCommand_NoParentDirectory() {
         setCurrentDirectory('/')
         commandHandler.handleCommand(createCommand([]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, '/')
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.parentDirectoryDoesNotExist', '/'])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == '/'
     }
 
