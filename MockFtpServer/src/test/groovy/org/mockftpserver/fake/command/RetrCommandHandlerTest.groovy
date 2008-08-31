@@ -19,6 +19,7 @@ import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
+import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.filesystem.FileEntry
 
 /**
@@ -33,7 +34,8 @@ class RetrCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     def DIR = "/"
     def FILENAME = "file.txt"
     def FILE = p(DIR, FILENAME)
-    def CONTENTS = "abc"
+    def CONTENTS = "abc\ndef\nghi"
+    def CONTENTS_ASCII = "abc\r\ndef\r\nghi"
 
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])
@@ -41,13 +43,19 @@ class RetrCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
     void testHandleCommand_AbsolutePath() {
         handleCommandAndVerifySendDataReplies([FILE])
+        assertSessionData(CONTENTS_ASCII)
+    }
+
+    void testHandleCommand_AbsolutePath_NonAsciiMode() {
+        session.setAttribute(SessionKeys.ASCII_TYPE, false)
+        handleCommandAndVerifySendDataReplies([FILE])
         assertSessionData(CONTENTS)
     }
 
     void testHandleCommand_RelativePath() {
         setCurrentDirectory(DIR)
         handleCommandAndVerifySendDataReplies([FILENAME])
-        assertSessionData(CONTENTS)
+        assertSessionData(CONTENTS_ASCII)
     }
 
     void testHandleCommand_PathSpecifiesAnExistingDirectory() {
@@ -60,6 +68,16 @@ class RetrCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
         handleCommand([FILE])
         assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
         assertSessionReply(1, ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)
+    }
+
+    void testConvertLfToCrLf() {
+        // LF='\n' and CRLF='\r\n'
+        assert commandHandler.convertLfToCrLf('abc'.bytes) == 'abc'.bytes
+        assert commandHandler.convertLfToCrLf('abc\r\ndef'.bytes) == 'abc\r\ndef'.bytes
+        assert commandHandler.convertLfToCrLf('abc\ndef'.bytes) == 'abc\r\ndef'.bytes
+        assert commandHandler.convertLfToCrLf('abc\ndef\nghi'.bytes) == 'abc\r\ndef\r\nghi'.bytes
+        assert commandHandler.convertLfToCrLf('\n'.bytes) == '\r\n'.bytes
+        assert commandHandler.convertLfToCrLf('\r\nabc\n'.bytes) == '\r\nabc\r\n'.bytes
     }
 
     //-------------------------------------------------------------------------
