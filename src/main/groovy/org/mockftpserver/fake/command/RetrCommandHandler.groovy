@@ -18,6 +18,7 @@ package org.mockftpserver.fake.command
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
+import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.core.util.IoUtil
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
@@ -51,10 +52,29 @@ class RetrCommandHandler extends AbstractFakeCommandHandler {
         session.openDataConnection();
         input.withStream {
             def bytes = IoUtil.readBytes(it)
+            if (isAsciiMode(session)) {
+                bytes = convertLfToCrLf(bytes)
+            }
             session.sendData(bytes, bytes.length)
         }
         session.closeDataConnection();
         sendReply(session, ReplyCodes.TRANSFER_DATA_FINAL_OK)
+    }
+
+    /**
+     * Within the specified byte array, replace all LF (\n) that are NOT preceded by a CR (\r) into CRLF (\r\n).
+     * @param text - the text to be converted
+     * @return the result of converting LF to CRLF
+     */
+    protected byte[] convertLfToCrLf(byte[] bytes) {
+        def text = new String(bytes)
+        def converted = text.replaceAll(/([^\r]|\A)(\n)/) {global, g1, g2 -> g1 + '\r\n' }
+        return converted.bytes
+    }
+
+    private boolean isAsciiMode(Session session) {
+        // Defaults to true
+        return session.getAttribute(SessionKeys.ASCII_TYPE) != false
     }
 
 }

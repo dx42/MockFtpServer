@@ -18,6 +18,7 @@ package org.mockftpserver.fake.command
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
+import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
 /**
@@ -35,6 +36,9 @@ class TypeCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
+        def type = command.getRequiredParameter(0)
+        def asciiType = type == 'A'
+        session.setAttribute(SessionKeys.ASCII_TYPE, asciiType)
         sendReply(session, ReplyCodes.TYPE_OK, 'type')
     }
 

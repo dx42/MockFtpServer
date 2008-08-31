@@ -19,6 +19,7 @@ import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
+import org.mockftpserver.core.session.SessionKeys
 
 /**
  * Tests for TestCommandHandler
@@ -29,9 +30,21 @@ import org.mockftpserver.core.command.ReplyCodes
  */
 class TypeCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
 
-    void testHandleCommand() {
-        handleCommand([])
+    void testHandleCommand_Ascii() {
+        handleCommand(['A'])
         assertSessionReply(ReplyCodes.TYPE_OK, 'type')
+        assert session.getAttribute(SessionKeys.ASCII_TYPE) == true
+    }
+
+    void testHandleCommand_NonAscii() {
+        handleCommand(['I'])
+        assertSessionReply(ReplyCodes.TYPE_OK, 'type')
+        assert session.getAttribute(SessionKeys.ASCII_TYPE) == false
+    }
+
+    void testHandleCommand_MissingRequiredParameter() {
+        testHandleCommand_MissingRequiredParameter([])
+        assert session.getAttribute(SessionKeys.ASCII_TYPE) == null
     }
 
     //-------------------------------------------------------------------------
@@ -43,7 +56,7 @@ class TypeCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
     }
 
     Command createValidCommand() {
-        return new Command(CommandNames.TYPE, [])
+        return new Command(CommandNames.TYPE, ['A'])
     }
 
     void setUp() {

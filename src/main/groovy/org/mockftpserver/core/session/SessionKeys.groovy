@@ -25,5 +25,6 @@ class SessionKeys {
     static final CURRENT_DIRECTORY = "currentDirectory"
     static final RENAME_FROM = "renameFrom"
     static final ACCOUNT_NAME = "accountName"
+    static final ASCII_TYPE = "asciiType"
 
 }
