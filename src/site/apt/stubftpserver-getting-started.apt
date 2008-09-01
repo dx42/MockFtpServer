@@ -20,7 +20,12 @@ StubFtpServer - Getting Started
 StubFtpServer stubFtpServer = new StubFtpServer();
 stubFtpServer.start();
 +------------------------------------------------------------------------------  
-  
+
+  If you are running on a Unix system, you probably need to use a different server control port, since
+  the default port (21) is likely already in use or cannot be bound from a user process. Use the
+  <<<StubFtpServer.setServerControlPort(int serverControlPort)>>> method to set a different port
+  number, such as 9187.
+
 * CommandHandlers
 
   <CommandHandler>s are the heart of the <<StubFtpServer>>.
@@ -261,7 +266,7 @@ public class RemoteFileTest extends AbstractTest {
 
         // Replace the default RETR CommandHandler; return failure reply code
         RetrCommandHandler retrCommandHandler = new RetrCommandHandler();
-        retrCommandHandler.setOverrideFinalReplyCode(550);
+        retrCommandHandler.setFinalReplyCode(550);
         stubFtpServer.setCommandHandler("RETR", retrCommandHandler);
         
         stubFtpServer.start();

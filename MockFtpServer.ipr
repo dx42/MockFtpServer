@@ -251,6 +251,11 @@
         <entry key="$PROJECT_DIR$">
           <value>
             <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://mockftpserver.svn.sourceforge.net/svnroot/mockftpserver/branches/1.x_Branch" />
+                </list>
+              </option>
               <option name="trunkUrl" value="https://mockftpserver.svn.sourceforge.net/svnroot/mockftpserver/MockFtpServer" />
             </SvnBranchConfiguration>
           </value>
