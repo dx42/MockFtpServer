@@ -45,7 +45,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
     ServerConfiguration serverConfiguration
 
     /**
-     * Reply code sent back when a FileSystemException is caught by the             {@link #handleCommand(Command, Session)}
+     * Reply code sent back when a FileSystemException is caught by the              {@link #handleCommand(Command, Session)}
      * This defaults to ReplyCodes.EXISTING_FILE_ERROR (550). 
      */
     int replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
@@ -252,7 +252,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
      * Return the end-of-line character(s) used when building multi-line responses
      */
     protected String endOfLine() {
-        "\n"
+        "\r\n"
     }
 
     private String getTextForKey(key) {
