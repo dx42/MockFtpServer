@@ -116,7 +116,7 @@ public class FileEntry extends AbstractFileSystemEntry {
             out.write(initialContents)
         }
         catch (IOException e) {
-            throw new FileSystemException(e)
+            throw new FileSystemException(path, e)
         }
         return out
     }
