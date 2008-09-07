@@ -30,6 +30,7 @@ import org.mockftpserver.fake.server.StubServerConfiguration
 import org.mockftpserver.fake.user.UserAccount
 import org.mockftpserver.test.AbstractGroovyTest
 
+
 /**
  * Tests for AbstractFakeCommandHandler
  *
@@ -182,7 +183,7 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
 /**
  * Concrete subclass of AbstractFakeCommandHandler for testing
  */
-private class TestFakeCommandHandler extends AbstractFakeCommandHandler {
+class TestFakeCommandHandler extends AbstractFakeCommandHandler {
     boolean handled = false
     def exception
 

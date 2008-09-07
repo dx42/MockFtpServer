@@ -15,13 +15,11 @@
  */
 package org.mockftpserver.fake.server
 
-import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.server.AbstractFtpServer
 import org.mockftpserver.core.server.AbstractFtpServerTest
-import org.mockftpserver.core.session.Session
-import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 import org.mockftpserver.fake.user.UserAccount
+
 
 /**
  * Tests for FakeFtpServer.
@@ -109,20 +107,6 @@ class FakeFtpServerTest extends AbstractFtpServerTest {
 
     protected void verifyCommandHandlerInitialized(CommandHandler commandHandler) {
         //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-}
-
-class TestCommandHandler extends AbstractFakeCommandHandler {
-
-    protected void handle(Command command, Session session) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-}
-
-class TestCommandHandlerNotServerConfigurationAware implements CommandHandler {
-
-    public void handleCommand(Command command, Session session) {
     }
 
 }

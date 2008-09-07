@@ -16,7 +16,7 @@
 package org.mockftpserver.core.session
 
 /**
- * Stub implementation of the       {@link Session}       interface for testing
+ * Stub implementation of the         {@link Session}         interface for testing
  *
  * @version $Revision$ - $Date$
  *
@@ -27,7 +27,8 @@ class StubSession implements Session {
     Map attributes = [:]
     private List sentReplies = []
     List sentData = []
-    byte[] dataToRead
+    //byte[] dataToRead
+    Object dataToRead
     boolean closed
     InetAddress clientDataHost
     int clientDataPort
