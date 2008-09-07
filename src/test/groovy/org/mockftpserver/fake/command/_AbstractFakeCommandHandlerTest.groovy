@@ -30,7 +30,6 @@ import org.mockftpserver.fake.server.StubServerConfiguration
 import org.mockftpserver.fake.user.UserAccount
 import org.mockftpserver.test.AbstractGroovyTest
 
-
 /**
  * Tests for AbstractFakeCommandHandler
  *
@@ -47,6 +46,8 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
     static MSG = "text {0}"
     static MSG_WITH_ARG = "text ABC"
     static MSG_FOR_KEY = "some other message"
+    static INTERNAL_ERROR = AbstractFakeCommandHandler.INTERNAL_ERROR_KEY
+    static MSG_INTERNAL_ERROR = "internal error message {0}"
     private AbstractFakeCommandHandler commandHandler
     private session
     private serverConfiguration
@@ -84,16 +85,21 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
         commandHandler.sendReply(session, REPLY_CODE, [ARG])
         assert session.sentReplies[1] == [REPLY_CODE, MSG_WITH_ARG], session.sentReplies[0]
 
-        shouldFail { commandHandler.sendReply(null, REPLY_CODE) }
-        shouldFail { commandHandler.sendReply(session, 0) }
+        shouldFailWithMessageContaining('session') { commandHandler.sendReply(null, REPLY_CODE) }
+        shouldFailWithMessageContaining('replyCode') { commandHandler.sendReply(session, 0) }
     }
 
     void testSendReply_MessageKey() {
         commandHandler.sendReply(session, REPLY_CODE, MESSAGE_KEY)
         assert session.sentReplies[0] == [REPLY_CODE, MSG_FOR_KEY], session.sentReplies[0]
 
-        shouldFail { commandHandler.sendReply(null, REPLY_CODE, MESSAGE_KEY) }
-        shouldFail { commandHandler.sendReply(session, 0, MESSAGE_KEY) }
+        shouldFailWithMessageContaining('session') { commandHandler.sendReply(null, REPLY_CODE, MESSAGE_KEY) }
+        shouldFailWithMessageContaining('replyCode') { commandHandler.sendReply(session, 0, MESSAGE_KEY) }
+    }
+
+    void testSendReply_NullMessageKey() {
+        commandHandler.sendReply(session, REPLY_CODE, null, null)
+        assert session.sentReplies[0] == [REPLY_CODE, MSG_INTERNAL_ERROR], session.sentReplies[0]
     }
 
     void testAssertValidReplyCode() {
@@ -153,6 +159,7 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
 
         serverConfiguration.setTextForKey(REPLY_CODE, MSG)
         serverConfiguration.setTextForKey(MESSAGE_KEY, MSG_FOR_KEY)
+        serverConfiguration.setTextForKey(INTERNAL_ERROR, MSG_INTERNAL_ERROR)
 
         commandHandler.serverConfiguration = serverConfiguration
     }

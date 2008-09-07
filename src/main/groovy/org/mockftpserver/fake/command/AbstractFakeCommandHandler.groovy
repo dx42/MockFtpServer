@@ -41,11 +41,12 @@ import org.mockftpserver.fake.user.UserAccount
  */
 abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfigurationAware {
 
+    protected static final INTERNAL_ERROR_KEY = 'internalError'
     final Logger LOG = Logger.getLogger(this.class)
     ServerConfiguration serverConfiguration
 
     /**
-     * Reply code sent back when a FileSystemException is caught by the              {@link #handleCommand(Command, Session)}
+     * Reply code sent back when a FileSystemException is caught by the               {@link #handleCommand(Command, Session)}
      * This defaults to ReplyCodes.EXISTING_FILE_ERROR (550). 
      */
     int replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
@@ -256,12 +257,13 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
     }
 
     private String getTextForKey(key) {
+        def msgKey = key?.toString() ?: INTERNAL_ERROR_KEY
         try {
-            return serverConfiguration.replyTextBundle.getString(key.toString())
+            return serverConfiguration.replyTextBundle.getString(msgKey)
         }
         catch (MissingResourceException e) {
             // No reply text is mapped for the specified key
-            LOG.warn("No reply text defined for key [${key.toString()}]");
+            LOG.warn("No reply text defined for key [${msgKey}]");
             return null;
         }
     }

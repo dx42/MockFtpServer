@@ -48,12 +48,12 @@ public class FileSystemException extends MockFtpServerException {
     }
 
     /**
-     * @param path    - the path involved in the file system operation that caused the exception
-     * @param message - the exception message
-     * @param cause   - the exception cause, wrapped by this exception
+     * @param path       - the path involved in the file system operation that caused the exception
+     * @param messageKey - the exception message key
+     * @param cause      - the exception cause, wrapped by this exception
      */
     public FileSystemException(String path, String messageKey, Throwable cause) {
-        super(path);
+        super(path, cause);
         this.path = path;
         this.messageKey = messageKey;
     }
