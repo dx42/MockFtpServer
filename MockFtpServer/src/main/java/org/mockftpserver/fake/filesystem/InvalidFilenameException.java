@@ -13,33 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.fake.filesystem
+package org.mockftpserver.fake.filesystem;
 
 /**
  * Exception thrown when a path/filename is not valid. Causes include:
  * <ul>
- *   <li>The filename contains invalid characters</li>
- *   <li>The path specifies a new filename, but its parent directory does not exist</li>
- *   <li>The path is expected to be a file, but actually specifies an existing directory</li>
+ * <li>The filename contains invalid characters</li>
+ * <li>The path specifies a new filename, but its parent directory does not exist</li>
+ * <li>The path is expected to be a file, but actually specifies an existing directory</li>
  * </ul>
  */
-class InvalidFilenameException extends FileSystemException {
+public class InvalidFilenameException extends FileSystemException {
 
-    static final MESSAGE_KEY = 'filesystem.pathIsNotValid'
+    private static final String MESSAGE_KEY = "filesystem.pathIsNotValid";
 
     /**
      * @param path - the path involved in the file system operation that caused the exception
      */
-    InvalidFilenameException(String path) {
-        super(path, MESSAGE_KEY)
+    public InvalidFilenameException(String path) {
+        super(path, MESSAGE_KEY);
     }
 
     /**
-     * @param path - the path involved in the file system operation that caused the exception
+     * @param path  - the path involved in the file system operation that caused the exception
      * @param cause - the exception cause, wrapped by this exception
      */
-    InvalidFilenameException(String path, Throwable cause) {
-        super(path, MESSAGE_KEY, cause)
+    public InvalidFilenameException(String path, Throwable cause) {
+        super(path, MESSAGE_KEY, cause);
     }
 
 }

@@ -26,7 +26,8 @@ public class FileEntry extends AbstractFileSystemEntry {
 
     private static final EMPTY = new byte[0]
 
-    private byte[] bytes = EMPTY
+    //private byte[] bytes = EMPTY
+    private Object bytes = EMPTY
     private ByteArrayOutputStream out
 
     /**

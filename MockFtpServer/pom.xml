@@ -9,8 +9,8 @@
         It can be configured to return custom data or reply codes, to simulate either success
         or failure scenarios. You can also verify expected command invocations.
     </description>
-    <packaging>groovy-jar</packaging>
-    <version>1.2.1</version>
+    <packaging>jar</packaging>
+    <version>2.0.0</version>
     <url>http://mockftpserver.sourceforge.net/</url>
 
     <scm>
@@ -20,32 +20,12 @@
         <url>https://mockftpserver.svn.sourceforge.net/svnroot/mockftpserver</url>
     </scm>
 
-    <!--
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-
-                <groupId>org.codehaus.groovy.maven</groupId>
-                <artifactId>gmaven-mojo</artifactId>
-                <version>1.0-rc-3</version>
-            </dependency>
-            <dependency>
-
-                <groupId>org.codehaus.groovy.maven.runtime</groupId>
-
-                <artifactId>gmaven-runtime-default</artifactId>
-                <version>1.0-rc-3</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-    -->
-
     <dependencies>
 
         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>1.5.4</version>
+            <groupId>org.codehaus.groovy.maven.runtime</groupId>
+            <artifactId>gmaven-runtime-default</artifactId>
+            <version>1.0-rc-3</version>
         </dependency>
 
         <dependency>
@@ -111,29 +91,23 @@
             </extension>
         </extensions>
 
-        <!--
-        <pluginManagement>
-            <plugins>
-                <plugin>
-
-                    <groupId>org.codehaus.groovy.maven</groupId>
-
-                    <artifactId>gmaven-plugin</artifactId>
-                    <version>1.0-rc-3</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        -->
-
         <plugins>
 
-
             <plugin>
-                <groupId>org.codehaus.mojo.groovy</groupId>
-                <artifactId>groovy-maven-plugin</artifactId>
-                <extensions>true</extensions>
+                <groupId>org.codehaus.groovy.maven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <version>1.0-rc-3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generateStubs</goal>
+                            <goal>compile</goal>
+                            <goal>generateTestStubs</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
-
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
