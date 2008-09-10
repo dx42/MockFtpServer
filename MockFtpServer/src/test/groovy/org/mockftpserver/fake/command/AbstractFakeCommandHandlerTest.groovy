@@ -20,10 +20,11 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.core.session.StubSession
-import org.mockftpserver.fake.filesystem.FakeUnixFileSystem
 import org.mockftpserver.fake.filesystem.FileSystemException
+import org.mockftpserver.fake.filesystem.UnixFakeFileSystem
 import org.mockftpserver.fake.server.StubServerConfiguration
 import org.mockftpserver.test.AbstractGroovyTest
+
 
 /**
  * Abstract superclass for CommandHandler tests
@@ -83,7 +84,7 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
         super.setUp()
         session = new StubSession()
         serverConfiguration = new StubServerConfiguration()
-        fileSystem = new FakeUnixFileSystem()
+        fileSystem = new UnixFakeFileSystem()
         fileSystem.createParentDirectoriesAutomatically = true
         serverConfiguration.setFileSystem(fileSystem)
 

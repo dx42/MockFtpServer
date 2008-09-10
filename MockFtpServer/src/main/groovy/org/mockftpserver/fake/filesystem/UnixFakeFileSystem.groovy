@@ -16,30 +16,26 @@
 package org.mockftpserver.fake.filesystem
 
 /**
- * Implementation of the  {@link FileSystem}  interface that simulates a Microsoft
- * Windows file system. The rules for file and directory names include: 
+ * Implementation of the    {@link FileSystem}    interface that simulates a Unix
+ * file system. The rules for file and directory names include: 
  * <ul>
- *   <li>Filenames are case-insensitive (and normalized to lower-case)</li>
- *   <li>Either forward slashes (/) or backward slashes (\) are valid path separators (but are normalized to '\')</li>  
- *   <li>An absolute path starts with a drive specifier (e.g. 'a:' or 'c:') followed 
- *   		by '\' or '/', or else if it starts with "\\"</li>  
+ *   <li>Filenames are case-sensitive</li>
+ *   <li>Forward slashes (/) are the only valid path separators</li>  
  * </ul>
  *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
-class FakeWindowsFileSystem extends AbstractFakeFileSystem {
+class UnixFakeFileSystem extends AbstractFakeFileSystem {
 
-    public static final String SEPARATOR = "\\"
-    static final VALID_PATTERN = /\p{Alpha}\:(\\|(\\[^\\\:\*\?\<\>\|\"]+)+)/
-    static final LAN_PREFIX = "\\\\"
+    public static final String SEPARATOR = "/"
 
     /**
-     * Construct a new instance and initialize the directoryListingFormatter to a WindowsDirectoryListingFormatter.
+     * Construct a new instance and initialize the directoryListingFormatter to a UnixDirectoryListingFormatter.
      */
-    FakeWindowsFileSystem() {
-        this.directoryListingFormatter = new WindowsDirectoryListingFormatter()
+    UnixFakeFileSystem() {
+        this.directoryListingFormatter = new UnixDirectoryListingFormatter()
     }
 
     //-------------------------------------------------------------------------
@@ -51,10 +47,9 @@ class FakeWindowsFileSystem extends AbstractFakeFileSystem {
     }
 
     protected boolean isValidName(String path) {
-        // \/:*?"<>|
         assert path != null
-        def standardized = path.replace("/", "\\")
-        return (standardized ==~ VALID_PATTERN) || standardized.startsWith(LAN_PREFIX)
+        // Any character but '/'
+        return path ==~ /\/|(\/[^\/]+)+/
     }
 
     /**
@@ -63,7 +58,7 @@ class FakeWindowsFileSystem extends AbstractFakeFileSystem {
      * @return true if the specified char is a separator character ('\' or '/')
      */
     protected boolean isSeparator(char c) {
-        return c == '\\' || c == '/'
+        return c == SEPARATOR.charAt(0)
     }
 
     protected String componentsToPath(List components) {
@@ -107,9 +102,8 @@ class FakeWindowsFileSystem extends AbstractFakeFileSystem {
     }
 
     /**
-     * Return true if the specified path designates an absolute file path. For Windows
-     * paths, a path is absolute if it starts with a drive specifier followed by 
-     * '\' or '/', or if it starts with "\\". 
+     * Return true if the specified path designates an absolute file path. For Unix
+     * paths, a path is absolute if it starts with the '/' character.
      *
      * @param path - the path
      * @return true if path is absolute, false otherwise

@@ -19,12 +19,13 @@ import org.apache.commons.net.ftp.FTP
 import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.net.ftp.FTPFile
 import org.mockftpserver.fake.filesystem.DirectoryEntry
-import org.mockftpserver.fake.filesystem.FakeWindowsFileSystem
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystem
+import org.mockftpserver.fake.filesystem.WindowsFakeFileSystem
 import org.mockftpserver.fake.user.UserAccount
 import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.test.PortTestUtil
+
 
 /**
  * Integration tests for FakeFtpServer.
@@ -327,7 +328,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         ftpServer.serverControlPort = PortTestUtil.getFtpServerControlPort()
         ftpServer.systemName = SYSTEM_NAME
 
-        fileSystem = new FakeWindowsFileSystem()
+        fileSystem = new WindowsFakeFileSystem()
         fileSystem.createParentDirectoriesAutomatically = true
         fileSystem.createDirectory(SUBDIR)
         ftpServer.fileSystem = fileSystem
