@@ -18,17 +18,17 @@ package org.mockftpserver.fake.filesystem
 import org.mockftpserver.fake.filesystem.AbstractFakeFileSystemTest
 
 /**
- * Tests for FakeUnixFileSystem.
+ * Tests for UnixFakeFileSystem.
  *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
-class FakeUnixFileSystemTest extends AbstractFakeFileSystemTest {
+class UnixFakeFileSystemTest extends AbstractFakeFileSystemTest {
 
     private static final String SEP = "/"
 
-    FakeUnixFileSystemTest() {
+    UnixFakeFileSystemTest() {
         // These need to be set in the constructor because these values are used in setUp()
         NEW_DIR = SEP + NEW_DIRNAME
         NEW_FILE = "/NewFile.txt"
@@ -126,7 +126,7 @@ class FakeUnixFileSystemTest extends AbstractFakeFileSystemTest {
      * @return a new FileSystem instance
      */
     protected FileSystem createFileSystem() {
-        FakeUnixFileSystem fs = new FakeUnixFileSystem()
+        UnixFakeFileSystem fs = new UnixFakeFileSystem()
         fs.addEntry(new DirectoryEntry(EXISTING_DIR))
         fs.addEntry(new FileEntry(EXISTING_FILE, EXISTING_FILE_CONTENTS))
         return fs

@@ -15,20 +15,20 @@
  */
 package org.mockftpserver.fake.filesystem
 
-import org.mockftpserver.fake.filesystem.AbstractFakeFileSystemTest;
+import org.mockftpserver.fake.filesystem.AbstractFakeFileSystemTest
 
 /**
- * Tests for FakeWindowsFileSystem.
+ * Tests for WindowsFakeFileSystem.
  *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
-class FakeWindowsFileSystemTest extends AbstractFakeFileSystemTest {
+class WindowsFakeFileSystemTest extends AbstractFakeFileSystemTest {
 
     private static final String SEP = "\\"
 
-    FakeWindowsFileSystemTest() {
+    WindowsFakeFileSystemTest() {
         // These need to be set in the constructor because these values are used in setUp()
         NEW_DIR = "d:/" + NEW_DIRNAME
         NEW_FILE = "d:/NewFile.txt"
@@ -164,7 +164,7 @@ class FakeWindowsFileSystemTest extends AbstractFakeFileSystemTest {
      * @return a new FileSystem instance
      */
     protected FileSystem createFileSystem() {
-        FakeWindowsFileSystem fs = new FakeWindowsFileSystem()
+        WindowsFakeFileSystem fs = new WindowsFakeFileSystem()
         fs.addEntry(new DirectoryEntry(EXISTING_DIR))
         fs.addEntry(new FileEntry(EXISTING_FILE, EXISTING_FILE_CONTENTS))
         return fs

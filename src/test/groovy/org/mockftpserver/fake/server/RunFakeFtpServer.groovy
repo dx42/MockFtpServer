@@ -15,9 +15,10 @@
  */
 package org.mockftpserver.fake.server
 
-import org.mockftpserver.fake.filesystem.FakeUnixFileSystem
 import org.mockftpserver.fake.filesystem.FileEntry
+import org.mockftpserver.fake.filesystem.UnixFakeFileSystem
 import org.mockftpserver.fake.user.UserAccount
+
 
 /**
  * Run the FakeFtpServer with a minimal configuration for interactive testing and exploration.
@@ -32,7 +33,7 @@ class RunFakeFtpServer {
     static final HOME_DIR = '/home'
 
     static main(args) {
-        def fileSystem = new FakeUnixFileSystem()
+        def fileSystem = new UnixFakeFileSystem()
         fileSystem.createParentDirectoriesAutomatically = true
         fileSystem.createDirectory(HOME_DIR)
         fileSystem.createDirectory("$HOME_DIR/subdir")
