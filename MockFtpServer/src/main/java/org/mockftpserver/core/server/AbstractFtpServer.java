@@ -50,7 +50,7 @@ import java.util.ResourceBundle;
  * invocation data such as command parameters and timestamps.
  * <p/>
  * <b>StubFtpServer</b> can be fully configured programmatically or within a Spring Framework
- * ({@link http://www.springframework.org/}) or similar container.
+ * (http://www.springframework.org/) or similar container.
  * <p/>
  * <h4>Starting the StubFtpServer</h4>
  * Here is how to start the <b>StubFtpServer</b> with the default configuration.
@@ -208,12 +208,10 @@ public abstract class AbstractFtpServer implements Runnable {
                 }
             }
             catch (IOException e) {
-                e.printStackTrace();
-                throw new MockFtpServerException(e);
+                LOG.error("Error cleaning up server", e);
             }
             catch (InterruptedException e) {
-                e.printStackTrace();
-                throw new MockFtpServerException(e);
+                LOG.error("Error cleaning up server", e);
             }
             LOG.info("Server stopped.");
         }
