@@ -16,7 +16,7 @@
 package org.mockftpserver.fake.filesystem
 
 /**
- * Implementation of the    {@link FileSystem}    interface that simulates a Microsoft
+ * Implementation of the       {@link FileSystem}       interface that simulates a Microsoft
  * Windows file system. The rules for file and directory names include: 
  * <ul>
  *   <li>Filenames are case-insensitive (and normalized to lower-case)</li>
@@ -24,6 +24,9 @@ package org.mockftpserver.fake.filesystem
  *   <li>An absolute path starts with a drive specifier (e.g. 'a:' or 'c:') followed 
  *   		by '\' or '/', or else if it starts with "\\"</li>  
  * </ul>
+ *
+ * The <code>directoryListingFormatter</code> property is automatically initialized to an instance
+ * of    {@link WindowsDirectoryListingFormatter}   .
  *
  * @version $Revision$ - $Date$
  *
@@ -50,6 +53,16 @@ class WindowsFakeFileSystem extends AbstractFakeFileSystem {
         return SEPARATOR
     }
 
+    /**
+     * Return true if the specified path designates a valid (absolute) file path. For Windows
+     * paths, a path is valid if it starts with a drive specifier followed by
+     * '\' or '/', or if it starts with "\\".
+     *
+     * @param path - the path
+     * @return true if path is valid, false otherwise
+     *
+     * @throws AssertionError - if path is null
+     */
     protected boolean isValidName(String path) {
         // \/:*?"<>|
         assert path != null
@@ -66,58 +79,11 @@ class WindowsFakeFileSystem extends AbstractFakeFileSystem {
         return c == '\\' || c == '/'
     }
 
-    protected String componentsToPath(List components) {
-        if (components.size() == 1) {
-            def first = components[0]
-            if (first == "" || isRoot(first)) {
-                return first + this.separator
-            }
-        }
-        return components.join(this.separator)
-    }
-
+    /**
+     * @return true if the specified path component is a root for this filesystem
+     */
     protected boolean isRoot(String pathComponent) {
         return pathComponent.contains(":")
-    }
-
-    /**
-     * Return the components of the specified path as a List. The components are normalized, and
-     * the returned List does not include path separator characters. 
-     */
-    protected List normalizedComponents(String path) {
-        assert path != null
-        def p = path.replace("/", this.separator)
-
-        // TODO better way to do this
-        if (p == this.separator) {
-            return [""]
-        }
-
-        def parts = p.split("\\" + this.separator) as List
-        def result = []
-        parts.each {part ->
-            if (part == "..") {
-                result.remove(result.size() - 1)
-            }
-            else if (part != ".") {
-                result << part
-            }
-        }
-        return result
-    }
-
-    /**
-     * Return true if the specified path designates an absolute file path. For Windows
-     * paths, a path is absolute if it starts with a drive specifier followed by 
-     * '\' or '/', or if it starts with "\\". 
-     *
-     * @param path - the path
-     * @return true if path is absolute, false otherwise
-     *
-     * @throws AssertionError - if path is null
-     */
-    boolean isAbsolute(String path) {
-        return isValidName(path)
     }
 
 }

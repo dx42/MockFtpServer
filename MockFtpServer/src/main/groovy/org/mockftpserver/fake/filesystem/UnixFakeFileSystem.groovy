@@ -16,12 +16,15 @@
 package org.mockftpserver.fake.filesystem
 
 /**
- * Implementation of the    {@link FileSystem}    interface that simulates a Unix
+ * Implementation of the       {@link FileSystem}       interface that simulates a Unix
  * file system. The rules for file and directory names include: 
  * <ul>
  *   <li>Filenames are case-sensitive</li>
  *   <li>Forward slashes (/) are the only valid path separators</li>  
  * </ul>
+ *
+ * The <code>directoryListingFormatter</code> property is automatically initialized to an instance
+ * of    {@link UnixDirectoryListingFormatter}   .
  *
  * @version $Revision$ - $Date$
  *
@@ -46,6 +49,16 @@ class UnixFakeFileSystem extends AbstractFakeFileSystem {
         return SEPARATOR
     }
 
+    /**
+     * Return true if the specified path designates a valid (absolute) file path. For Unix,
+     * a path is valid if it starts with the '/' character, followed by an optional sequence of
+     * any characters except '/'.
+     *
+     * @param path - the path
+     * @return true if path is valid, false otherwise
+     *
+     * @throws AssertionError - if path is null
+     */
     protected boolean isValidName(String path) {
         assert path != null
         // Any character but '/'
@@ -61,57 +74,11 @@ class UnixFakeFileSystem extends AbstractFakeFileSystem {
         return c == SEPARATOR.charAt(0)
     }
 
-    protected String componentsToPath(List components) {
-        if (components.size() == 1) {
-            def first = components[0]
-            if (first == "" || isRoot(first)) {
-                return first + this.separator
-            }
-        }
-        return components.join(this.separator)
-    }
-
+    /**
+     * @return true if the specified path component is a root for this filesystem
+     */
     protected boolean isRoot(String pathComponent) {
         return pathComponent.contains(":")
-    }
-
-    /**
-     * Return the components of the specified path as a List. The components are normalized, and
-     * the returned List does not include path separator characters. 
-     */
-    protected List normalizedComponents(String path) {
-        assert path != null
-        def p = path.replace("/", this.separator)
-
-        // TODO better way to do this
-        if (p == this.separator) {
-            return [""]
-        }
-
-        def parts = p.split("\\" + this.separator) as List
-        def result = []
-        parts.each {part ->
-            if (part == "..") {
-                result.remove(result.size() - 1)
-            }
-            else if (part != ".") {
-                result << part
-            }
-        }
-        return result
-    }
-
-    /**
-     * Return true if the specified path designates an absolute file path. For Unix
-     * paths, a path is absolute if it starts with the '/' character.
-     *
-     * @param path - the path
-     * @return true if path is absolute, false otherwise
-     *
-     * @throws AssertionError - if path is null
-     */
-    boolean isAbsolute(String path) {
-        return isValidName(path)
     }
 
 }
