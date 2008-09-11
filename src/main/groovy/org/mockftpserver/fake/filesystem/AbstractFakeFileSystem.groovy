@@ -21,6 +21,15 @@ import org.mockftpserver.core.util.PatternUtil
 /**
  * Abstract superclass for implementation of the FileSystem interface that manage the files 
  * and directories in memory, simulating a real file system.
+ * <p>
+ * If the <code>createParentDirectoriesAutomatically</code> property is set to <code>true</code>,
+ * then creating a directory or file will automatically create any parent directories (recursively)
+ * that do not already exist. If <code>false</code>, then creating a directory or file throws an
+ * exception if its parent directory does not exist. This value defaults to <code>false</code>.
+ * <p>
+ * The <code>directoryListingFormatter</code> property holds an instance of    {@link DirectoryListingFormatter}   ,
+ * used by the    {@link #formatDirectoryListing(FileInfo)}  method to format directory listings in a
+ * filesystem-specific manner. This property must be initialized by concrete subclasses.
  *
  * @version $Revision$ - $Date$
  *
@@ -39,12 +48,16 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     boolean createParentDirectoriesAutomatically = false
 
     /**
-     * The    {@link DirectoryListingFormatter}    used by the    {@link #formatDirectoryListing(FileInfo)}    method.
+     * The       {@link DirectoryListingFormatter}       used by the       {@link #formatDirectoryListing(FileInfo)}       method.
      * This must be initialized by concrete subclasses. 
      */
     DirectoryListingFormatter directoryListingFormatter
 
     private Map entries = new HashMap()
+
+    //-------------------------------------------------------------------------
+    // Public API
+    //-------------------------------------------------------------------------
 
     /**
      * Add the specified file system entry (file or directory) to this file system
@@ -292,18 +305,6 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     }
 
     /**
-     * Build a FileInfo based on the file or directory specified by the path
-     * @param path - the path for the file or directory
-     */
-    protected FileInfo buildFileInfoForPath(String path) {
-        FileSystemEntry entry = getRequiredEntry(path)
-        def name = getName(entry.getPath())
-        entry.isDirectory()         \
-                    ? FileInfo.forDirectory(name, entry.lastModified, entry.owner, entry.group, entry.permissions)         \
-                    : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified, entry.owner, entry.group, entry.permissions)
-    }
-
-    /**
      * Return the List of filenames in the specified directory path or file path. If the path specifies
      * a single file, then return that single filename. The returned filenames do not
      * include a path. If the path does not refer to a valid directory or file path, then an empty List
@@ -390,25 +391,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         return directoryListingFormatter.format(fileInfo)
     }
 
-    //-------------------------------------------------------------------------
-    // Abstract Methods
-    //-------------------------------------------------------------------------
-
     /**
-     * @return true if the specified dir/file path name is valid according to the current filesystem.
-     */
-    protected abstract boolean isValidName(String path)
-
-    /**
-     * @return the file system-specific file separator
-     */
-    protected abstract String getSeparator()
-
-    //-------------------------------------------------------------------------
-
-    /**
-     * TODO Refactor with common code from DefaultFileSystem 
-     *
      * Build a path from the two path components. Concatenate path1 and path2. Insert the path
      * separator character in between if necessary (i.e., if both are non-empty and path1 does not already
      * end with a separator character AND path2 does not begin with one).
@@ -494,8 +477,48 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     }
 
     //-------------------------------------------------------------------------
+    // Abstract Methods
+    //-------------------------------------------------------------------------
+
+    /**
+     * @return true if the specified dir/file path name is valid according to the current filesystem.
+     */
+    protected abstract boolean isValidName(String path)
+
+    /**
+     * @return the file system-specific file separator
+     */
+    protected abstract String getSeparator()
+
+    /**
+     * @return true if the specified path component is a root for this filesystem
+     */
+    protected abstract boolean isRoot(String pathComponent)
+
+    /**
+     * Return true if the specified char is a separator character for this filesystem
+     * @param c - the character to test
+     * @return true if the specified char is a separator character
+     */
+    protected abstract boolean isSeparator(char c)
+
+    ;
+
+    //-------------------------------------------------------------------------
     // Internal Helper Methods
     //-------------------------------------------------------------------------
+
+    /**
+     * Build a FileInfo based on the file or directory specified by the path
+     * @param path - the path for the file or directory
+     */
+    protected FileInfo buildFileInfoForPath(String path) {
+        FileSystemEntry entry = getRequiredEntry(path)
+        def name = getName(entry.getPath())
+        entry.isDirectory()            \
+                       ? FileInfo.forDirectory(name, entry.lastModified, entry.owner, entry.group, entry.permissions)            \
+                       : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified, entry.owner, entry.group, entry.permissions)
+    }
 
     /**
      * Throw an InvalidFilenameException if the specified path is not valid.
@@ -535,6 +558,59 @@ abstract class AbstractFakeFileSystem implements FileSystem {
             throw new FileSystemException(normalize(path), 'filesystem.pathDoesNotExist')
         }
         return entry
+    }
+
+    /**
+     * Return the components of the specified path as a List. The components are normalized, and
+     * the returned List does not include path separator characters.
+     */
+    protected List normalizedComponents(String path) {
+        assert path != null
+        def p = path.replace("/", this.separator)
+
+        // TODO better way to do this
+        if (p == this.separator) {
+            return [""]
+        }
+
+        def parts = p.split("\\" + this.separator) as List
+        def result = []
+        parts.each {part ->
+            if (part == "..") {
+                result.remove(result.size() - 1)
+            }
+            else if (part != ".") {
+                result << part
+            }
+        }
+        return result
+    }
+
+    /**
+     * Build a path from the specified list of path components
+     * @param components - the list of path components
+     * @return the resulting path
+     */
+    protected String componentsToPath(List components) {
+        if (components.size() == 1) {
+            def first = components[0]
+            if (first == "" || isRoot(first)) {
+                return first + this.separator
+            }
+        }
+        return components.join(this.separator)
+    }
+
+    /**
+     * Return true if the specified path designates an absolute file path.
+     *
+     * @param path - the path
+     * @return true if path is absolute, false otherwise
+     *
+     * @throws AssertionError - if path is null
+     */
+    boolean isAbsolute(String path) {
+        return isValidName(path)
     }
 
     /**
