@@ -36,6 +36,8 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     def HOME_DIRECTORY = "/"
     UserAccount userAccount
 
+    boolean testNotLoggedIn = false
+
     void testHandleCommand_UserExists_PasswordCorrect() {
         serverConfiguration.userAccounts[USERNAME] = userAccount
         commandHandler.handleCommand(createCommand([PASSWORD]), session)
@@ -123,6 +125,7 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         userAccount.homeDirectory = HOME_DIRECTORY
 
         session.setAttribute(SessionKeys.USERNAME, USERNAME)
+        session.removeAttribute(SessionKeys.USER_ACCOUNT)
     }
 
     CommandHandler createCommandHandler() {

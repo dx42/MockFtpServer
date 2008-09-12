@@ -33,6 +33,8 @@ class AcctCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     def USERNAME = "user123"
     def ACCOUNT_NAME = "account123"
 
+    boolean testNotLoggedIn = false
+
     void testHandleCommand() {
         handleCommand([ACCOUNT_NAME])
         assertSessionReply(ReplyCodes.ACCT_OK, ['acct', USERNAME])

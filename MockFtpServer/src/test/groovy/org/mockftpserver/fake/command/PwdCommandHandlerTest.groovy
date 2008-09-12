@@ -30,7 +30,9 @@ import org.mockftpserver.core.session.SessionKeys
  */
 class PwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
-    def DIR = "/usr/abc"
+    static final DIR = "/usr/abc"
+
+    boolean testNotLoggedIn = false
 
     void testHandleCommand() {
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)

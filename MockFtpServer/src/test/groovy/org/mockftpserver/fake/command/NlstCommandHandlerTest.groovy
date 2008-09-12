@@ -28,7 +28,7 @@ import org.mockftpserver.core.session.SessionKeys
  *
  * @author Chris Mair
  */
-class NlstCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
+class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     def DIR = "/usr"
 

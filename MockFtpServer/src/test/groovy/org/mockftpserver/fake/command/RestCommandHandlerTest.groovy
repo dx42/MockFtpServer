@@ -20,7 +20,6 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 
-
 /**
  * Tests for RestCommandHandler
  *
@@ -28,7 +27,7 @@ import org.mockftpserver.core.command.ReplyCodes
  *
  * @author Chris Mair
  */
-class RestCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
+class RestCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand() {
         handleCommand([])

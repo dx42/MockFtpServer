@@ -29,6 +29,8 @@ import org.mockftpserver.core.command.ReplyCodes
  */
 class ConnectCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
+    boolean testNotLoggedIn = false
+
     void testHandleCommand() {
         commandHandler.handleCommand(createCommand([]), session)
         assertSessionReply(ReplyCodes.CONNECT_OK)

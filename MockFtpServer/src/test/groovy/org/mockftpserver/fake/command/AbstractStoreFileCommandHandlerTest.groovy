@@ -28,7 +28,7 @@ import org.mockftpserver.fake.filesystem.FileSystemException
  *
  * @author Chris Mair
  */
-abstract class AbstractStoreFileCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
+abstract class AbstractStoreFileCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     def DIR = "/"
     def FILENAME = "file.txt"

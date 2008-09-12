@@ -29,7 +29,7 @@ import org.mockftpserver.fake.filesystem.FileEntry
  *
  * @author Chris Mair
  */
-class RetrCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
+class RetrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     def DIR = "/"
     def FILENAME = "file.txt"

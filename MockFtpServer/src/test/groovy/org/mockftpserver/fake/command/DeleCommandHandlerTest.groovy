@@ -27,7 +27,7 @@ import org.mockftpserver.core.command.ReplyCodes
  *
  * @author Chris Mair
  */
-class DeleCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
+class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     def FILENAME = "f.txt"
     def FILE = "/" + FILENAME

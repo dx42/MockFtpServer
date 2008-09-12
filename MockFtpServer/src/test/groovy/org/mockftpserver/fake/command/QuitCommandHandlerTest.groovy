@@ -29,6 +29,8 @@ import org.mockftpserver.core.command.ReplyCodes
  */
 class QuitCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
+    boolean testNotLoggedIn = false
+
     void testHandleCommand() {
         assert !session.closed
         commandHandler.handleCommand(createCommand([]), session)

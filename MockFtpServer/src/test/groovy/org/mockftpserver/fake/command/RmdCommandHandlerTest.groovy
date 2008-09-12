@@ -28,9 +28,9 @@ import org.mockftpserver.core.session.SessionKeys
  *
  * @author Chris Mair
  */
-class RmdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
+class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
-    def DIR = "/usr"
+    static final DIR = "/usr"
 
     void testHandleCommand() {
         assert fileSystem.createDirectory(DIR)

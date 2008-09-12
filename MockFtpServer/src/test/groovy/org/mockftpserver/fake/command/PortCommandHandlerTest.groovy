@@ -34,6 +34,8 @@ class PortCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     static final PORT = (1 << 8) + 206
     static final HOST = InetAddress.getByName("11.22.33.44")
 
+    boolean testNotLoggedIn = false
+
     void testHandleCommand() {
         commandHandler.handleCommand(createCommand(PARAMETERS), session)
         assertSessionReply(ReplyCodes.PORT_OK, 'port')

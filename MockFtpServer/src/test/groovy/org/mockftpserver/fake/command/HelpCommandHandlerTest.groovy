@@ -29,6 +29,8 @@ import org.mockftpserver.core.command.ReplyCodes
  */
 class HelpCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
+    boolean testNotLoggedIn = false
+
     void testHandleCommand_Arg() {
         serverConfiguration.helpText = [abc: '_abc']
         commandHandler.handleCommand(createCommand(['abc']), session)

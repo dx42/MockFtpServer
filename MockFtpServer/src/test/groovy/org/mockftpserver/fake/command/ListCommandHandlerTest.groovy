@@ -32,7 +32,7 @@ import org.mockftpserver.fake.filesystem.FileInfo
  *
  * @author Chris Mair
  */
-class ListCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
+class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     private static final DIR = "/usr"
     private static final NAME = "abc.txt"

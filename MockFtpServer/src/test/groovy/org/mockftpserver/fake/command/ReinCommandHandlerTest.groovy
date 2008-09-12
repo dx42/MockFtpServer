@@ -31,6 +31,8 @@ import org.mockftpserver.fake.user.UserAccount
  */
 class ReinCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
+    boolean testNotLoggedIn = false
+
     UserAccount userAccount
 
     void testHandleCommand_AlreadyLoggedIn() {
