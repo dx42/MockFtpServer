@@ -29,7 +29,7 @@ import org.mockftpserver.fake.filesystem.FileSystemException
  *
  * @author Chris Mair
  */
-class RntoCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
+class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     def FROM_FILE = "/from.txt"
     def TO_FILE = "/file.txt"

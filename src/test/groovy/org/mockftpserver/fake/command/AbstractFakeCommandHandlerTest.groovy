@@ -23,8 +23,8 @@ import org.mockftpserver.core.session.StubSession
 import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem
 import org.mockftpserver.fake.server.StubServerConfiguration
+import org.mockftpserver.fake.user.UserAccount
 import org.mockftpserver.test.AbstractGroovyTest
-
 
 /**
  * Abstract superclass for CommandHandler tests
@@ -41,6 +41,10 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     protected serverConfiguration
     protected commandHandler
     protected fileSystem
+    protected userAccount
+
+    /** Set this to false to skip the test that verifies that the CommandHandler requires a logged in user   */
+    boolean testNotLoggedIn = true
 
     //-------------------------------------------------------------------------
     // Tests (common to all subclasses)
@@ -59,6 +63,15 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     void testHandleCommand_SessionIsNull() {
         def command = createValidCommand()
         shouldFailWithMessageContaining("session") { commandHandler.handleCommand(command, null) }
+    }
+
+    void testHandleCommand_NotLoggedIn() {
+        if (getProperty('testNotLoggedIn')) {
+            def command = createValidCommand()
+            session.removeAttribute(SessionKeys.USER_ACCOUNT)
+            commandHandler.handleCommand(command, session)
+            assertSessionReply(ReplyCodes.NOT_LOGGED_IN)
+        }
     }
 
     //-------------------------------------------------------------------------
@@ -87,6 +100,9 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
         fileSystem = new UnixFakeFileSystem()
         fileSystem.createParentDirectoriesAutomatically = true
         serverConfiguration.setFileSystem(fileSystem)
+
+        userAccount = new UserAccount()
+        session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
 
         commandHandler = createCommandHandler()
         commandHandler.serverConfiguration = serverConfiguration

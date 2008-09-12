@@ -28,7 +28,7 @@ import org.mockftpserver.core.session.SessionKeys
  *
  * @author Chris Mair
  */
-class MkdCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
+class MkdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     def DIRNAME = "usr"
     def DIR = p('/', DIRNAME)

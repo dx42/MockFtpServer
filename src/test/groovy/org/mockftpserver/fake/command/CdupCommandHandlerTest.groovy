@@ -28,7 +28,7 @@ import org.mockftpserver.core.session.SessionKeys
  *
  * @author Chris Mair
  */
-class CdupCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
+class CdupCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     def DIR = "/usr"
     def SUBDIR = "${DIR}/sub"

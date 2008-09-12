@@ -28,7 +28,7 @@ import org.mockftpserver.core.session.SessionKeys
  *
  * @author Chris Mair
  */
-class RnfrCommandHandlerTest extends AbstractLoginRequiredCommandHandlerTest {
+class RnfrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     def FILE = "/file.txt"
 
