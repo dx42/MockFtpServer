@@ -132,7 +132,8 @@ public class DefaultSession implements Session {
                     char c = replyText.charAt(i);
                     buffer.append(c);
                     if (i == lastIndex) {
-                        buffer.append(Integer.toString(code) + " ");
+                        buffer.append(Integer.toString(code));
+                        buffer.append(" ");
                     }
                 }
             } else {
@@ -387,7 +388,6 @@ public class DefaultSession implements Session {
             }
             catch (IOException e) {
                 LOG.error(e);
-                throw new MockFtpServerException(e);
             }
             LOG.debug("Session stopped.");
         }
@@ -396,7 +396,7 @@ public class DefaultSession implements Session {
     /**
      * Read and process the next command from the control connection
      *
-     * @throws Exception
+     * @throws Exception - if any error occurs
      */
     private void readAndProcessCommand() throws Exception {
 
