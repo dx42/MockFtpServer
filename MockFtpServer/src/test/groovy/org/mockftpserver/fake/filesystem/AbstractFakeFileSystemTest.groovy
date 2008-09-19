@@ -51,21 +51,30 @@ abstract class AbstractFakeFileSystemTest extends AbstractFileSystemTest {
 
     void testCreateDirectory_CreateParentDirectoriesAutomatically() {
         final NEW_SUBDIR = fileSystem.path(NEW_DIR, "sub")
-        fileSystem.createParentDirectoriesAutomatically = true
         assert !fileSystem.exists(NEW_DIR), "Before createDirectory"
         assert !fileSystem.exists(NEW_SUBDIR), "Before createDirectory"
 
+        fileSystem.createParentDirectoriesAutomatically = true
         assert fileSystem.createDirectory(NEW_SUBDIR)
         assert fileSystem.exists(NEW_DIR), "After createDirectory"
         assert fileSystem.exists(NEW_SUBDIR), "$NEW_SUBDIR: After createDirectory"
     }
 
+    void testCreateFile_CreateParentDirectoriesAutomatically_False() {
+        fileSystem.createParentDirectoriesAutomatically = false
+        final NEW_FILE_IN_SUBDIR = fileSystem.path(NEW_DIR, "abc.txt")
+        assert !fileSystem.exists(NEW_DIR), "Before createDirectory"
+
+        shouldFail(FileSystemException) { fileSystem.createFile(NEW_FILE_IN_SUBDIR) }
+        assert !fileSystem.exists(NEW_DIR), "After createDirectory"
+    }
+
     void testCreateFile_CreateParentDirectoriesAutomatically() {
         final NEW_FILE_IN_SUBDIR = fileSystem.path(NEW_DIR, "abc.txt")
-        fileSystem.createParentDirectoriesAutomatically = true
         assert !fileSystem.exists(NEW_DIR), "Before createDirectory"
         assert !fileSystem.exists(NEW_FILE_IN_SUBDIR), "Before createDirectory"
 
+        fileSystem.createParentDirectoriesAutomatically = true
         assert fileSystem.createFile(NEW_FILE_IN_SUBDIR)
         assert fileSystem.exists(NEW_DIR), "After createDirectory"
         assert fileSystem.exists(NEW_FILE_IN_SUBDIR), "$NEW_FILE_IN_SUBDIR: After createDirectory"

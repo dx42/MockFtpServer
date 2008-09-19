@@ -60,8 +60,8 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_ToFilenameNotValid() {
         assert fileSystem.createFile(FROM_FILE)
-        commandHandler.handleCommand(createCommand(["///"]), session)
-        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, "///")
+        commandHandler.handleCommand(createCommand([""]), session)
+        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, "")
         assert session.getAttribute(SessionKeys.RENAME_FROM) == FROM_FILE
     }
 
@@ -74,7 +74,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_RenameFails() {
         commandHandler.handleCommand(createCommand([TO_FILE]), session)
-        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, ['filesystem.renameFailed', TO_FILE])
+        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, ['filesystem.pathDoesNotExist', FROM_FILE])
         assert session.getAttribute(SessionKeys.RENAME_FROM) == FROM_FILE
     }
 

@@ -32,7 +32,8 @@ public interface FileSystem {
      * @return true if and only if the file was created false otherwise
      *
      * @throws AssertionError - if path is null
-     * @throws FileSystemException - if an I/O error occurs
+     * @throws FileSystemException - if the parent directory of the path does not exist or if an I/O error occurs
+     * @throws InvalidFilenameException - if path specifies an invalid (illegal) filename
      */
     public boolean createFile(String path)
 
@@ -43,6 +44,7 @@ public interface FileSystem {
      * @return true if and only if the directory was created false otherwise
      *
      * @throws AssertionError - if path is null
+     * @throws FileSystemException - if the parent directory of the path does not exist or if an I/O error occurs
      */
     public boolean createDirectory(String path)
 
@@ -110,6 +112,7 @@ public interface FileSystem {
      * @return true if the file or directory is successfully renamed
      *
      * @throws AssertionError - if fromPath or toPath is null
+     * @throws FileSystemException - if either the FROM path or the parent directory of the TO path do not exist
      */
     public boolean rename(String fromPath, String toPath)
 
