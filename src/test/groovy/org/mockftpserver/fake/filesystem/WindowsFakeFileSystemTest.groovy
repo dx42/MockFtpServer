@@ -167,6 +167,7 @@ class WindowsFakeFileSystemTest extends AbstractFakeFileSystemTest {
         WindowsFakeFileSystem fs = new WindowsFakeFileSystem()
         fs.addEntry(new DirectoryEntry(EXISTING_DIR))
         fs.addEntry(new FileEntry(EXISTING_FILE, EXISTING_FILE_CONTENTS))
+        fs.createParentDirectoriesAutomatically = false
         return fs
     }
 

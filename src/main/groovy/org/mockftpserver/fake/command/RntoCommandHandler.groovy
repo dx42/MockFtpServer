@@ -47,7 +47,7 @@ class RntoCommandHandler extends AbstractFakeCommandHandler {
 
         this.replyCodeForFileSystemException = ReplyCodes.NEW_FILE_ERROR
         verifyFileSystemCondition(!fileSystem.isDirectory(toPath), toPath, 'filesystem.isDirectory')
-        verifyFileSystemCondition(fileSystem.rename(fromPath, toPath), toPath, 'filesystem.renameFailed')
+        fileSystem.rename(fromPath, toPath)
 
         session.removeAttribute(SessionKeys.RENAME_FROM)
         sendReply(session, ReplyCodes.RNTO_OK, 'rnto', [fromPath, toPath])

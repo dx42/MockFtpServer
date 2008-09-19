@@ -25,10 +25,10 @@ import org.mockftpserver.core.util.PatternUtil
  * If the <code>createParentDirectoriesAutomatically</code> property is set to <code>true</code>,
  * then creating a directory or file will automatically create any parent directories (recursively)
  * that do not already exist. If <code>false</code>, then creating a directory or file throws an
- * exception if its parent directory does not exist. This value defaults to <code>false</code>.
+ * exception if its parent directory does not exist. This value defaults to <code>true</code>.
  * <p>
- * The <code>directoryListingFormatter</code> property holds an instance of    {@link DirectoryListingFormatter}   ,
- * used by the    {@link #formatDirectoryListing(FileInfo)}  method to format directory listings in a
+ * The <code>directoryListingFormatter</code> property holds an instance of     {@link DirectoryListingFormatter}    ,
+ * used by the     {@link #formatDirectoryListing(FileInfo)}   method to format directory listings in a
  * filesystem-specific manner. This property must be initialized by concrete subclasses.
  *
  * @version $Revision$ - $Date$
@@ -43,12 +43,12 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      * If <code>true</code>, creating a directory or file will automatically create
      * any parent directories (recursively) that do not already exist. If <code>false</code>,
      * then creating a directory or file throws an exception if its parent directory
-     * does not exist. This value defaults to <code>false</code>.
+     * does not exist. This value defaults to <code>true</code>.
      */
-    boolean createParentDirectoriesAutomatically = false
+    boolean createParentDirectoriesAutomatically = true
 
     /**
-     * The       {@link DirectoryListingFormatter}       used by the       {@link #formatDirectoryListing(FileInfo)}       method.
+     * The        {@link DirectoryListingFormatter}        used by the        {@link #formatDirectoryListing(FileInfo)}        method.
      * This must be initialized by concrete subclasses. 
      */
     DirectoryListingFormatter directoryListingFormatter
@@ -91,7 +91,10 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      * @return true if and only if the file was created false otherwise
      *
      * @throws AssertionError - if path is null
-     * @throws FileSystemException - if an I/O error occurs
+     * @throws FileSystemException - if the parent directory of the path does not exist or if an I/O error occurs
+     * @throws InvalidFilenameException - if path specifies an invalid (illegal) filename
+     *
+     * @see FileSystem#createFile(String)
      */
     public boolean createFile(String path) {
         assert path != null
@@ -125,6 +128,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      * @return true if and only if the directory was created false otherwise
      *
      * @throws AssertionError - if path is null
+     * @throws FileSystemException - if the parent directory of the path does not exist or if an I/O error occurs
      *
      * @see org.mockftpserver.fake.filesystem.FileSystem#createDirectory(java.lang.String)
      */
@@ -140,7 +144,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
                 }
             }
             else {
-                return false
+                throw new FileSystemException(parent, 'filesystem.parentDirectoryDoesNotExist')
             }
         }
         try {
@@ -342,21 +346,29 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      * @return true if the file or directory is successfully renamed
      *
      * @throws AssertionError - if fromPath or toPath is null
+     * @throws FileSystemException - if either the FROM path or the parent directory of the TO path do not exist
      */
     public boolean rename(String fromPath, String toPath) {
         assert toPath != null
         assert fromPath != null
 
-        FileSystemEntry entry = getEntry(fromPath)
+        FileSystemEntry entry = getRequiredEntry(fromPath)
 
         if (entry != null) {
             String normalizedFromPath = normalize(fromPath)
             String normalizedToPath = normalize(toPath)
 
+            if (!entry.isDirectory()) {
+                renamePath(entry, normalizedToPath)
+                return true
+            }
+
+            // TODO Gotta be a BUG!!! What if we are renaming a file?
             // Create the TO directory entry first so that the destination path exists when you
             // move the children. Remove the FROM path after all children have been moved
             if (!createDirectory(normalizedToPath)) {
-                return false
+                //return false
+                throw new FileSystemException(normalizedToPath, 'filesystem.parentDirectoryDoesNotExist')
             }
 
             List children = descendents(fromPath)
@@ -515,9 +527,9 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     protected FileInfo buildFileInfoForPath(String path) {
         FileSystemEntry entry = getRequiredEntry(path)
         def name = getName(entry.getPath())
-        entry.isDirectory()            \
-                       ? FileInfo.forDirectory(name, entry.lastModified, entry.owner, entry.group, entry.permissions)            \
-                       : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified, entry.owner, entry.group, entry.permissions)
+        entry.isDirectory()             \
+                        ? FileInfo.forDirectory(name, entry.lastModified, entry.owner, entry.group, entry.permissions)             \
+                        : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified, entry.owner, entry.group, entry.permissions)
     }
 
     /**
@@ -538,9 +550,10 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         def normalizedFrom = normalize(entry.path)
         def normalizedTo = normalize(toPath)
         LOG.info("renaming from [" + normalizedFrom + "] to [" + normalizedTo + "]")
-        entries.remove(normalizedFrom)
         entry.setPath(normalizedTo)
         addEntry(entry)
+        // TODO Moved this to the end, in case the addEntry() failed
+        entries.remove(normalizedFrom)
     }
 
     /**
@@ -555,6 +568,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     protected FileSystemEntry getRequiredEntry(String path) {
         FileSystemEntry entry = getEntry(path)
         if (entry == null) {
+            LOG.error("Path does not exist: $path")
             throw new FileSystemException(normalize(path), 'filesystem.pathDoesNotExist')
         }
         return entry
@@ -566,7 +580,8 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      */
     protected List normalizedComponents(String path) {
         assert path != null
-        def p = path.replace("/", this.separator)
+        def otherSeparator = this.separator == '/' ? '\\' : '/'
+        def p = path.replace(otherSeparator, this.separator)
 
         // TODO better way to do this
         if (p == this.separator) {

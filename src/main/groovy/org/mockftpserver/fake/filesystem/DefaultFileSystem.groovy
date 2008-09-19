@@ -36,8 +36,8 @@ class DefaultFileSystem implements FileSystem {
     private String root
 
     /**
-     * The    {@link DirectoryListingFormatter}    used by the    {@link #formatDirectoryListing(FileInfo)}    method.
-     * This defaults to an instance of    {@link WindowsDirectoryListingFormatter}   .
+     * The     {@link DirectoryListingFormatter}     used by the     {@link #formatDirectoryListing(FileInfo)}     method.
+     * This defaults to an instance of     {@link WindowsDirectoryListingFormatter}    .
      */
     DirectoryListingFormatter directoryListingFormatter = new WindowsDirectoryListingFormatter()
 
@@ -78,10 +78,19 @@ class DefaultFileSystem implements FileSystem {
     }
 
     /**
+     * Creates the directory named by the specified pathname.
+     *
+     * @param path - the path of the directory to create
+     * @return true if and only if the directory was created false otherwise
+     *
+     * @throws AssertionError - if path is null
+     * @throws FileSystemException - if the parent directory of the path does not exist or if an I/O error occurs
+     *
      * @see org.mockftpserver.fake.filesystem.FileSystem#createDirectory(java.lang.String)
      */
     public boolean createDirectory(String path) {
         assert path != null
+        verifyParentExists(path)
         return fileForPath(path).mkdir()
     }
 
@@ -92,6 +101,7 @@ class DefaultFileSystem implements FileSystem {
      * @return true if and only if the file was created false otherwise
      *
      * @throws AssertionError - if path is null
+     * @throws FileSystemException - if the parent directory of the path does not exist or if an I/O error occurs
      * @throws InvalidFilenameException - if an I/O error occurs indicating that the file path is not valid
      */
     public boolean createFile(String path) {
@@ -184,9 +194,9 @@ class DefaultFileSystem implements FileSystem {
      * @param file - the File object for the file or directory
      */
     private FileInfo buildFileInfoForFile(File file) {
-        file.isDirectory()      \
-                 ? FileInfo.forDirectory(file.getName(), new Date(file.lastModified()))      \
-                 : FileInfo.forFile(file.getName(), file.length(), new Date(file.lastModified()))
+        file.isDirectory()       \
+                  ? FileInfo.forDirectory(file.getName(), new Date(file.lastModified()))       \
+                  : FileInfo.forFile(file.getName(), file.length(), new Date(file.lastModified()))
     }
 
     /**
@@ -224,12 +234,29 @@ class DefaultFileSystem implements FileSystem {
     }
 
     /**
+     * Rename the file or directory. Specify the FROM path and the TO path. Return true if the file
+     * is successfully renamed, false otherwise. Return false if the path does not refer to a valid
+     * file or directory.
+     *
+     * @param path - the path of the file or directory to delete
+     * @param fromPath - the source (old) path + filename
+     * @param toPath - the target (new) path + filename
+     * @return true if the file or directory is successfully renamed
+     *
+     * @throws AssertionError - if fromPath or toPath is null
+     * @throws FileSystemException - if either the FROM path or the parent directory of the TO path do not exist
+     *
      * @see org.mockftpserver.fake.filesystem.FileSystem#rename(java.lang.String, java.lang.String)
      */
     public boolean rename(String fromPath, String toPath) {
         assert fromPath != null
         assert toPath != null
         File toFile = fileForPath(toPath)
+        File fromFile = fileForPath(fromPath)
+        if (!fromFile.exists()) {
+            throw new FileSystemException(fromPath, 'filesystem.pathDoesNotExist')
+        }
+        verifyParentExists(toPath)
         return fileForPath(fromPath).renameTo(toFile)
     }
 
@@ -369,6 +396,14 @@ class DefaultFileSystem implements FileSystem {
      */
     private File fileForPath(String path) {
         return (root == null) ? new File(path) : new File(root, path)
+    }
+
+    private def verifyParentExists(String path) {
+        def parentPath = getParent(path)
+        def parent = parentPath ? new File(parentPath) : null
+        if (parent && !parent.exists()) {
+            throw new FileSystemException(parentPath, 'filesystem.parentDirectoryDoesNotExist')
+        }
     }
 
     /**
