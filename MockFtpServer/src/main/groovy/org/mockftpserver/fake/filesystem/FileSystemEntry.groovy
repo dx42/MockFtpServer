@@ -38,12 +38,6 @@ interface FileSystemEntry {
     String getPath()
 
     /**
-     * Set the path for this file system entry
-     * @param path - the new path value for this file system entry
-     */
-    void setPath(String path)
-
-    /**
      * Return the timestamp Date for the last modification of this file system entry
      * @return the last modified timestamp Date for this file system entry
      */
@@ -63,5 +57,12 @@ interface FileSystemEntry {
      * @return the Permissions for this file system entry
      */
     Permissions getPermissions()
+
+    /**
+     * Return a new FileSystemEntry that is a clone of this object, except having the specified path
+     * @param path - the new path value for the cloned file system entry
+     * @return a new FileSystemEntry that has all the same values as this object except for its path  
+     */
+    FileSystemEntry cloneWithNewPath(String path)
 
 }

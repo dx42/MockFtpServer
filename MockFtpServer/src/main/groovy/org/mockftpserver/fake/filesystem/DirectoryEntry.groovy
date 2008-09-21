@@ -54,4 +54,18 @@ class DirectoryEntry extends AbstractFileSystemEntry {
                 "group=$group permissions=$permissions]"
     }
 
+    /**
+     * Return a new FileSystemEntry that is a clone of this object, except having the specified path
+     * @param path - the new path value for the cloned file system entry
+     * @return a new FileSystemEntry that has all the same values as this object except for its path
+     */
+    FileSystemEntry cloneWithNewPath(String path) {
+        def clone = new DirectoryEntry(path)
+        clone.lastModified = lastModified
+        clone.owner = owner
+        clone.group = group
+        clone.permissions = permissions
+        return clone
+    }
+
 }

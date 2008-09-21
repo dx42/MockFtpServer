@@ -16,12 +16,11 @@
 package org.mockftpserver.fake.filesystem
 
 import java.lang.reflect.Constructor
-
 import org.mockftpserver.test.AbstractGroovyTest
 
 /**
  * Abstract test superclass for subclasses of AbstractFileSystemEntry
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
@@ -29,7 +28,12 @@ import org.mockftpserver.test.AbstractGroovyTest
 public abstract class AbstractFileSystemEntryTest extends AbstractGroovyTest {
 
     protected static final PATH = "c:/test/dir"
-    
+    protected static final NEW_PATH = "d:/other/dir"
+    protected static final USER = 'user77'
+    protected static final GROUP = 'group88'
+    protected static final PERMISSIONS = new Permissions('rwxrwx---')
+    protected static final LAST_MODIFIED = new Date()
+
     /**
      * Test the no-argument constructor 
      */
@@ -58,10 +62,10 @@ public abstract class AbstractFileSystemEntryTest extends AbstractGroovyTest {
      * @return the subclass of AbstractFileSystemEntry to be tested
      */
     protected abstract Class getImplementationClass()
-    
+
     /**
      * @return true if the class being tested represents a directory entry 
      */
     protected abstract boolean isDirectory()
-    
+
 }
