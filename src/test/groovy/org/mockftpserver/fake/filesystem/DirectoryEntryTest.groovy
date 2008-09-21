@@ -17,12 +17,30 @@ package org.mockftpserver.fake.filesystem
 
 /**
  * Tests for DirectoryEntry
- * 
+ *
  * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */
 public class DirectoryEntryTest extends AbstractFileSystemEntryTest {
+
+    private DirectoryEntry entry
+
+    void testCloneWithNewPath() {
+        entry.lastModified = LAST_MODIFIED
+        entry.owner = USER
+        entry.group = GROUP
+        entry.permissions = PERMISSIONS
+        def clone = entry.cloneWithNewPath(NEW_PATH)
+
+        assert !clone.is(entry)
+        assert clone.path == NEW_PATH
+        assert clone.lastModified == LAST_MODIFIED
+        assert clone.owner == USER
+        assert clone.group == GROUP
+        assert clone.permissions == PERMISSIONS
+        assert clone.directory
+    }
 
     /**
      * @see org.mockftpserver.fake.filesystem.AbstractFileSystemEntryTest#getImplementationClass()
@@ -36,6 +54,11 @@ public class DirectoryEntryTest extends AbstractFileSystemEntryTest {
      */
     protected boolean isDirectory() {
         return true
+    }
+
+    void setUp() {
+        super.setUp()
+        entry = new DirectoryEntry(PATH)
     }
 
 }

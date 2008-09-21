@@ -121,6 +121,21 @@ public class FileEntry extends AbstractFileSystemEntry {
         return out
     }
 
+    /**
+     * Return a new FileSystemEntry that is a clone of this object, except having the specified path
+     * @param path - the new path value for the cloned file system entry
+     * @return a new FileSystemEntry that has all the same values as this object except for its path
+     */
+    FileSystemEntry cloneWithNewPath(String path) {
+        def clone = new FileEntry(path)
+        clone.lastModified = lastModified
+        clone.owner = owner
+        clone.group = group
+        clone.permissions = permissions
+        clone.setContents(bytes)
+        return clone
+    }
+
     //-------------------------------------------------------------------------
     // Internal Helper Methods
     //-------------------------------------------------------------------------
