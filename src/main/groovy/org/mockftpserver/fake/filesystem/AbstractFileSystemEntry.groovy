@@ -24,7 +24,8 @@ package org.mockftpserver.fake.filesystem
  */
 abstract class AbstractFileSystemEntry implements FileSystemEntry {
 
-    String path
+    private String path
+    private boolean pathLocked = false
     Date lastModified
     String owner
     String group
@@ -41,7 +42,27 @@ abstract class AbstractFileSystemEntry implements FileSystemEntry {
      * @param path - the value for path
      */
     AbstractFileSystemEntry(String path) {
-        setPath(path)
+        this.path = path
+    }
+
+    /**
+     * @return the path for this entry
+     */
+    public String getPath() {
+        return path
+    }
+
+    /**
+     * Set the path for this entry. Throw an exception if pathLocked is true.
+     * @param path - the new path value
+     */
+    public void setPath(String path) {
+        assert !pathLocked
+        this.path = path
+    }
+
+    void lockPath() {
+        this.pathLocked = true
     }
 
     /**

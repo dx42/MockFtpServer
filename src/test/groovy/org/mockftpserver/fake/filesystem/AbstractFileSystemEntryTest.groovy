@@ -34,9 +34,6 @@ public abstract class AbstractFileSystemEntryTest extends AbstractGroovyTest {
     protected static final PERMISSIONS = new Permissions('rwxrwx---')
     protected static final LAST_MODIFIED = new Date()
 
-    /**
-     * Test the no-argument constructor 
-     */
     void testConstructor_NoArgs() {
         AbstractFileSystemEntry entry = (AbstractFileSystemEntry) getImplementationClass().newInstance()
         assertNull("path", entry.getPath())
@@ -45,9 +42,6 @@ public abstract class AbstractFileSystemEntryTest extends AbstractGroovyTest {
         assert isDirectory() == entry.isDirectory()
     }
 
-    /**
-     * Test the constructor that takes a single String parameter
-     */
     void testConstructor_Path() {
         Constructor constructor = getImplementationClass().getConstructor([String.class] as Class[])
         AbstractFileSystemEntry entry = (AbstractFileSystemEntry) constructor.newInstance([PATH] as Object[])
@@ -56,6 +50,14 @@ public abstract class AbstractFileSystemEntryTest extends AbstractGroovyTest {
         entry.setPath("")
         assert entry.getPath() == ""
         assert isDirectory() == entry.isDirectory()
+    }
+
+    void testLockPath() {
+        AbstractFileSystemEntry entry = (AbstractFileSystemEntry) getImplementationClass().newInstance()
+        entry.setPath(PATH)
+        entry.lockPath()
+        shouldFail { entry.path = 'abc' }
+        assert entry.path == PATH
     }
 
     /**
