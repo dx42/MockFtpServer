@@ -65,4 +65,9 @@ interface FileSystemEntry {
      */
     FileSystemEntry cloneWithNewPath(String path)
 
+    /**
+     * Lock down the path so it cannot be changed
+     */
+    void lockPath()
+
 }

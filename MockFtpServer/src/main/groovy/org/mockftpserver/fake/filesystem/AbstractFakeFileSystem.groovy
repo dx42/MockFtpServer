@@ -27,8 +27,8 @@ import org.mockftpserver.core.util.PatternUtil
  * that do not already exist. If <code>false</code>, then creating a directory or file throws an
  * exception if its parent directory does not exist. This value defaults to <code>true</code>.
  * <p>
- * The <code>directoryListingFormatter</code> property holds an instance of         {@link DirectoryListingFormatter}        ,
- * used by the         {@link #formatDirectoryListing(FileInfo)}       method to format directory listings in a
+ * The <code>directoryListingFormatter</code> property holds an instance of                {@link DirectoryListingFormatter}               ,
+ * used by the                {@link #formatDirectoryListing(FileInfo)}              method to format directory listings in a
  * filesystem-specific manner. This property must be initialized by concrete subclasses.
  *
  * @version $Revision$ - $Date$
@@ -48,7 +48,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     boolean createParentDirectoriesAutomatically = true
 
     /**
-     * The            {@link DirectoryListingFormatter}            used by the            {@link #formatDirectoryListing(FileInfo)}            method.
+     * The                   {@link DirectoryListingFormatter}                   used by the                   {@link #formatDirectoryListing(FileInfo)}                   method.
      * This must be initialized by concrete subclasses. 
      */
     DirectoryListingFormatter directoryListingFormatter
@@ -82,6 +82,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         }
 
         entries.put(normalized, entry)
+        entry.lockPath()
     }
 
     /**
@@ -523,9 +524,9 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     protected FileInfo buildFileInfoForPath(String path) {
         FileSystemEntry entry = getRequiredEntry(path)
         def name = getName(entry.getPath())
-        entry.isDirectory()                 \
-                            ? FileInfo.forDirectory(name, entry.lastModified, entry.owner, entry.group, entry.permissions)                 \
-                            : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified, entry.owner, entry.group, entry.permissions)
+        entry.isDirectory()                        \
+                                   ? FileInfo.forDirectory(name, entry.lastModified, entry.owner, entry.group, entry.permissions)                        \
+                                   : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified, entry.owner, entry.group, entry.permissions)
     }
 
     /**

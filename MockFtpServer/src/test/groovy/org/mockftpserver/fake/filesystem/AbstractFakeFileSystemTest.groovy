@@ -37,10 +37,16 @@ abstract class AbstractFakeFileSystemTest extends AbstractFileSystemTest {
     void testAddEntry() {
         AbstractFakeFileSystem fakeFileSystem = (AbstractFakeFileSystem) fileSystem
         assertFalse("exists before", fileSystem.exists(NEW_FILE))
-        fakeFileSystem.addEntry(new DirectoryEntry(NEW_DIR))
+        def dirEntry = new DirectoryEntry(NEW_DIR)
+        fakeFileSystem.addEntry(dirEntry)
         assertTrue("/ exists after", fileSystem.exists(NEW_DIR))
-        fakeFileSystem.addEntry(new FileEntry(NEW_FILE))
+        def fileEntry = new FileEntry(NEW_FILE)
+        fakeFileSystem.addEntry(fileEntry)
         assertTrue("exists after", fileSystem.exists(NEW_FILE))
+
+        // The path should be locked for both entries
+        shouldFail { dirEntry.setPath('abc') }
+        shouldFail { fileEntry.setPath('abc') }
 
         // Try adding entry that already exists
         shouldFail(FileSystemException) { fakeFileSystem.addEntry(new FileEntry(NEW_FILE)) }
