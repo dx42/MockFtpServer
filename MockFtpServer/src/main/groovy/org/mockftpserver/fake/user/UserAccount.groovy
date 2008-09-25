@@ -15,7 +15,7 @@
  */
 package org.mockftpserver.fake.user
 
-import org.mockftpserver.fake.filesystem.FileInfo
+import org.mockftpserver.fake.filesystem.FileSystemEntry
 
 /**
  * Represents a single user account on the server, including the username, password and home
@@ -91,60 +91,60 @@ class UserAccount {
     }
 
     /**
-     * Return true if this user has read access to the file/directory represented by the specified FileInfo object.
-     * @param fileInfo - the FileInfo representing the file or directory
+     * Return true if this user has read access to the file/directory represented by the specified FileSystemEntry object.
+     * @param entry - the FileSystemEntry representing the file or directory
      * @return true if this use has read access
      */
-    boolean canRead(FileInfo fileInfo) {
-        def permissions = fileInfo.permissions
+    boolean canRead(FileSystemEntry entry) {
+        def permissions = entry.permissions
         if (!permissions) {
             return true
         }
 
-        if (username == fileInfo.owner) {
+        if (username == entry.owner) {
             return permissions.canUserRead()
         }
-        if (groups?.contains(fileInfo.group)) {
+        if (groups?.contains(entry.group)) {
             return permissions.canGroupRead()
         }
         return permissions.canWorldRead()
     }
 
     /**
-     * Return true if this user has write access to the file/directory represented by the specified FileInfo object.
-     * @param fileInfo - the FileInfo representing the file or directory
+     * Return true if this user has write access to the file/directory represented by the specified FileSystemEntry object.
+     * @param entry - the FileSystemEntry representing the file or directory
      * @return true if this use has write access
      */
-    boolean canWrite(FileInfo fileInfo) {
-        def permissions = fileInfo.permissions
+    boolean canWrite(FileSystemEntry entry) {
+        def permissions = entry.permissions
         if (!permissions) {
             return true
         }
 
-        if (username == fileInfo.owner) {
+        if (username == entry.owner) {
             return permissions.canUserWrite()
         }
-        if (groups?.contains(fileInfo.group)) {
+        if (groups?.contains(entry.group)) {
             return permissions.canGroupWrite()
         }
         return permissions.canWorldWrite()
     }
 
     /**
-     * Return true if this user has execute access to the file/directory represented by the specified FileInfo object.
-     * @param fileInfo - the FileInfo representing the file or directory
+     * Return true if this user has execute access to the file/directory represented by the specified FileSystemEntry object.
+     * @param entry - the FileSystemEntry representing the file or directory
      * @return true if this use has execute access
      */
-    boolean canExecute(FileInfo fileInfo) {
-        def permissions = fileInfo.permissions
+    boolean canExecute(FileSystemEntry entry) {
+        def permissions = entry.permissions
         if (!permissions) {
             return true
         }
 
-        if (username == fileInfo.owner) {
+        if (username == entry.owner) {
             return permissions.canUserExecute()
         }
-        if (groups?.contains(fileInfo.group)) {
+        if (groups?.contains(entry.group)) {
             return permissions.canGroupExecute()
         }
         return permissions.canWorldExecute()

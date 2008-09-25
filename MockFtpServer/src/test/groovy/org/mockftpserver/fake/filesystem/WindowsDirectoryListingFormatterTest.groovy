@@ -28,7 +28,7 @@ import org.mockftpserver.test.AbstractGroovyTest
 class WindowsDirectoryListingFormatterTest extends AbstractGroovyTest {
 
     static final NAME = "def.txt"
-    static final SIZE = 1234567L
+    static final PATH = "/dir/$NAME"
     static final LAST_MODIFIED = new Date()
     static final SIZE_WIDTH = WindowsDirectoryListingFormatter.SIZE_WIDTH
 
@@ -37,19 +37,19 @@ class WindowsDirectoryListingFormatterTest extends AbstractGroovyTest {
     private lastModifiedFormatted
 
     void testFormat_File() {
-        def fileInfo = FileInfo.forFile(NAME, SIZE, LAST_MODIFIED)
-        def sizeStr = SIZE.toString().padLeft(SIZE_WIDTH)
+        def fileEntry = new FileEntry(path: PATH, contents: 'abcd', lastModified: LAST_MODIFIED)
+        def sizeStr = 4.toString().padLeft(SIZE_WIDTH)
         def expected = "$lastModifiedFormatted  $sizeStr  $NAME"
-        def result = formatter.format(fileInfo)
+        def result = formatter.format(fileEntry)
         LOG.info("result=$result")
         assert result == expected
     }
 
     void testFormat_Directory() {
-        def fileInfo = FileInfo.forDirectory(NAME, LAST_MODIFIED)
+        def fileEntry = new DirectoryEntry(path: PATH, lastModified: LAST_MODIFIED)
         def dirStr = "<DIR>".padRight(SIZE_WIDTH)
         def expected = "$lastModifiedFormatted  $dirStr  $NAME"
-        def result = formatter.format(fileInfo)
+        def result = formatter.format(fileEntry)
         LOG.info("result=$result")
         assert result == expected
     }

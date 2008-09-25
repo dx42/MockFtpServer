@@ -31,14 +31,14 @@ class WindowsDirectoryListingFormatter implements DirectoryListingFormatter {
 
     /**
      * Format the directory listing for a single file/directory entry.
-     * @param fileInfo - the FileInfo for a single file system entry
+     * @param fileSystemEntry - the FileSystemEntry for a single file system entry
      * @return the formatted directory listing
      */
-    String format(FileInfo fileInfo) {
+    String format(FileSystemEntry fileSystemEntry) {
         def dateFormat = new SimpleDateFormat(DATE_FORMAT)
-        def dateStr = dateFormat.format(fileInfo.lastModified)
-        def dirOrSize = fileInfo.directory ? "<DIR>".padRight(SIZE_WIDTH) : fileInfo.size.toString().padLeft(SIZE_WIDTH)
-        return "$dateStr  $dirOrSize  ${fileInfo.name}"
+        def dateStr = dateFormat.format(fileSystemEntry.lastModified)
+        def dirOrSize = fileSystemEntry.directory ? "<DIR>".padRight(SIZE_WIDTH) : fileSystemEntry.size.toString().padLeft(SIZE_WIDTH)
+        return "$dateStr  $dirOrSize  ${fileSystemEntry.name}"
     }
 
 }

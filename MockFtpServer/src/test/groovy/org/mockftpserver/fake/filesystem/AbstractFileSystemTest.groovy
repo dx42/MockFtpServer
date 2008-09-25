@@ -214,27 +214,27 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
         assert [] == fileSystem.listFiles(NEW_DIR)
 
         assert fileSystem.createFile(p(NEW_DIR, FILENAME1))
-        FileInfo fileInfo1 = FileInfo.forFile(FILENAME1, 0, DATE)
-        assert [fileInfo1] == fileSystem.listFiles(NEW_DIR)
+        def fileEntry1 = new FileEntry(path: FILENAME1, lastModified: DATE)
+        verifyEntries([fileEntry1], fileSystem.listFiles(NEW_DIR))
 
         // Specify a filename instead of a directory name
-        assert [fileInfo1] == fileSystem.listFiles(p(NEW_DIR, FILENAME1))
+        verifyEntries([fileEntry1], fileSystem.listFiles(p(NEW_DIR, FILENAME1)))
 
         assert fileSystem.createFile(p(NEW_DIR, FILENAME2))
-        FileInfo fileInfo2 = FileInfo.forFile(FILENAME2, 0, DATE)
-        assertSameIgnoringOrder(fileSystem.listFiles(NEW_DIR), [fileInfo1, fileInfo2])
+        def fileEntry2 = new FileEntry(path: FILENAME2, lastModified: DATE)
+        verifyEntries(fileSystem.listFiles(NEW_DIR), [fileEntry1, fileEntry2])
 
         // Write to the file to get a non-zero length
         final byte[] CONTENTS = "1234567890".getBytes()
         OutputStream out = fileSystem.createOutputStream(NEW_DIR + "/" + FILENAME1, false)
         out.write(CONTENTS)
         out.close()
-        fileInfo1 = FileInfo.forFile(FILENAME1, CONTENTS.length, DATE)
-        assertSameIgnoringOrder(fileSystem.listFiles(NEW_DIR), [fileInfo1, fileInfo2])
+        fileEntry1 = new FileEntry(path: FILENAME1, contents: CONTENTS, lastModified: DATE)
+        verifyEntries(fileSystem.listFiles(NEW_DIR), [fileEntry1, fileEntry2])
 
         assert fileSystem.createDirectory(p(NEW_DIR, DIR1))
-        FileInfo fileInfo3 = FileInfo.forDirectory(DIR1, DATE)
-        assertSameIgnoringOrder(fileSystem.listFiles(NEW_DIR), [fileInfo1, fileInfo2, fileInfo3])
+        def dirEntry3 = new DirectoryEntry(path: DIR1, lastModified: DATE)
+        verifyEntries(fileSystem.listFiles(NEW_DIR), [fileEntry1, fileEntry2, dirEntry3])
 
         assert fileSystem.listFiles(NO_SUCH_DIR) == []
 
@@ -246,16 +246,16 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
         assert fileSystem.createFile(p(NEW_DIR, 'abc.txt'))
         assert fileSystem.createFile(p(NEW_DIR, 'def.txt'))
 
-        FileInfo fileInfo1 = FileInfo.forFile('abc.txt', 0, DATE)
-        FileInfo fileInfo2 = FileInfo.forFile('def.txt', 0, DATE)
+        def fileEntry1 = new FileEntry(path: 'abc.txt', lastModified: DATE)
+        def fileEntry2 = new FileEntry(path: 'def.txt', lastModified: DATE)
 
-        assertSameIgnoringOrder(fileSystem.listFiles(p(NEW_DIR, '*.txt')), [fileInfo1, fileInfo2])
-        assertSameIgnoringOrder(fileSystem.listFiles(p(NEW_DIR, '*')), [fileInfo1, fileInfo2])
-        assertSameIgnoringOrder(fileSystem.listFiles(p(NEW_DIR, '???.???')), [fileInfo1, fileInfo2])
-        assertSameIgnoringOrder(fileSystem.listFiles(p(NEW_DIR, '*.exe')), [])
-        assertSameIgnoringOrder(fileSystem.listFiles(p(NEW_DIR, 'abc.???')), [fileInfo1])
-        assertSameIgnoringOrder(fileSystem.listFiles(p(NEW_DIR, 'a?c.?xt')), [fileInfo1])
-        assertSameIgnoringOrder(fileSystem.listFiles(p(NEW_DIR, 'd?f.*')), [fileInfo2])
+        verifyEntries(fileSystem.listFiles(p(NEW_DIR, '*.txt')), [fileEntry1, fileEntry2])
+        verifyEntries(fileSystem.listFiles(p(NEW_DIR, '*')), [fileEntry1, fileEntry2])
+        verifyEntries(fileSystem.listFiles(p(NEW_DIR, '???.???')), [fileEntry1, fileEntry2])
+        verifyEntries(fileSystem.listFiles(p(NEW_DIR, '*.exe')), [])
+        verifyEntries(fileSystem.listFiles(p(NEW_DIR, 'abc.???')), [fileEntry1])
+        verifyEntries(fileSystem.listFiles(p(NEW_DIR, 'a?c.?xt')), [fileEntry1])
+        verifyEntries(fileSystem.listFiles(p(NEW_DIR, 'd?f.*')), [fileEntry2])
     }
 
     void testDelete() {
@@ -301,7 +301,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
         assert !fileSystem.exists(TO_FILE2), "After failed rename"
     }
 
-    public void testRename_DirectoryContainsFiles() {
+    void testRename_DirectoryContainsFiles() {
         fileSystem.createDirectory(NEW_DIR)
         fileSystem.createFile(NEW_DIR + "/a.txt")
         fileSystem.createFile(NEW_DIR + "/b.txt")
@@ -320,7 +320,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
         assert fileSystem.exists(TO_DIR + "/subdir")
     }
 
-    public void testRename_ParentOfToPathDoesNotExist() throws Exception {
+    void testRename_ParentOfToPathDoesNotExist() throws Exception {
         final String FROM_FILE = NEW_FILE
         final String TO_FILE = fileSystem.path(NO_SUCH_DIR, "abc")
         assert fileSystem.createFile(FROM_FILE)
@@ -359,6 +359,14 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
+
+    private verifyEntries(List expected, List actual) {
+        expected.eachWithIndex {entry, index ->
+            def entryStr = entry.toString()
+            LOG.info("expected=$entryStr")
+            actual.find {actualEntry -> actualEntry.toString() == entryStr }
+        }
+    }
 
     protected void assertSameIgnoringOrder(list1, list2) {
         LOG.info("Comparing $list1 to $list2")

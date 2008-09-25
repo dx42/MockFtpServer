@@ -28,10 +28,12 @@ import org.mockftpserver.test.AbstractGroovyTest
 class UnixDirectoryListingFormatterTest extends AbstractGroovyTest {
 
     static final FILE_NAME = "def.txt"
+    static final FILE_PATH = "/dir/$FILE_NAME"
     static final DIR_NAME = "etc"
+    static final DIR_PATH = "/dir/$DIR_NAME"
     static final OWNER = 'owner123'
     static final GROUP = 'group456'
-    static final SIZE = 1234567L
+    static final SIZE = 11L
     static final LAST_MODIFIED = new Date()
     static final FILE_PERMISSIONS = new Permissions('rw-r--r--')
     static final DIR_PERMISSIONS = new Permissions('rwxr-xr-x')
@@ -47,23 +49,29 @@ class UnixDirectoryListingFormatterTest extends AbstractGroovyTest {
     // "drwxr-xr-x   39 ftp      ftp          4096 Mar 19  2004 a"
 
     void testFormat_File() {
-        def fileInfo = FileInfo.forFile(FILE_NAME, SIZE, LAST_MODIFIED, OWNER, GROUP, FILE_PERMISSIONS)
-        verifyFormat(fileInfo, "-rw-r--r--  1 owner123 group456         1234567 $lastModifiedFormatted def.txt")
+        def fileSystemEntry = new FileEntry(path: FILE_PATH, contents: '12345678901', lastModified: LAST_MODIFIED,
+                owner: OWNER, group: GROUP, permissions: FILE_PERMISSIONS)
+        LOG.info(fileSystemEntry)
+        verifyFormat(fileSystemEntry, "-rw-r--r--  1 owner123 group456              11 $lastModifiedFormatted def.txt")
     }
 
     void testFormat_File_Defaults() {
-        def fileInfo = FileInfo.forFile(FILE_NAME, SIZE, LAST_MODIFIED)
-        verifyFormat(fileInfo, "-rwxrwxrwx  1                           1234567 $lastModifiedFormatted def.txt")
+        def fileSystemEntry = new FileEntry(path: FILE_PATH, contents: '12345678901', lastModified: LAST_MODIFIED)
+        LOG.info(fileSystemEntry)
+        verifyFormat(fileSystemEntry, "-rwxrwxrwx  1                                11 $lastModifiedFormatted def.txt")
     }
 
     void testFormat_Directory() {
-        def fileInfo = FileInfo.forDirectory(DIR_NAME, LAST_MODIFIED, OWNER, GROUP, DIR_PERMISSIONS)
-        verifyFormat(fileInfo, "drwxr-xr-x  1 owner123 group456               0 $lastModifiedFormatted etc")
+        def fileSystemEntry = new DirectoryEntry(path: DIR_PATH, lastModified: LAST_MODIFIED,
+                owner: OWNER, group: GROUP, permissions: DIR_PERMISSIONS)
+        LOG.info(fileSystemEntry)
+        verifyFormat(fileSystemEntry, "drwxr-xr-x  1 owner123 group456               0 $lastModifiedFormatted etc")
     }
 
     void testFormat_Directory_Defaults() {
-        def fileInfo = FileInfo.forDirectory(DIR_NAME, LAST_MODIFIED)
-        verifyFormat(fileInfo, "drwxrwxrwx  1                                 0 $lastModifiedFormatted etc")
+        def fileSystemEntry = new DirectoryEntry(path: DIR_PATH, lastModified: LAST_MODIFIED)
+        LOG.info(fileSystemEntry)
+        verifyFormat(fileSystemEntry, "drwxrwxrwx  1                                 0 $lastModifiedFormatted etc")
     }
 
     void setUp() {
@@ -73,8 +81,8 @@ class UnixDirectoryListingFormatterTest extends AbstractGroovyTest {
         lastModifiedFormatted = dateFormat.format(LAST_MODIFIED)
     }
 
-    private void verifyFormat(FileInfo fileInfo, String expectedResult) {
-        def result = formatter.format(fileInfo)
+    private void verifyFormat(FileSystemEntry fileSystemEntry, String expectedResult) {
+        def result = formatter.format(fileSystemEntry)
         LOG.info("result=  [$result]")
         LOG.info("expected=[$expectedResult]")
         assert result == expectedResult

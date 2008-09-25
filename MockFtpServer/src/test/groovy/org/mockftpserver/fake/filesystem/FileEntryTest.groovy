@@ -18,6 +18,7 @@ package org.mockftpserver.fake.filesystem
 import org.apache.log4j.Logger
 import org.mockftpserver.core.util.IoUtil
 
+
 /**
  * Tests for FileEntry
  *
@@ -116,6 +117,28 @@ public class FileEntryTest extends AbstractFileSystemEntryTest {
         assert Arrays.equals(clone.bytes, entry.bytes)
         assert !clone.directory
     }
+
+//    void testEquals() {
+//        assert entry.equals(entry)
+//        assert entry.equals(new FileEntry(path:PATH, lastModified:LAST_MODIFIED))
+//        assert entry.equals(new FileEntry(path:PATH, lastModified:new Date())) // lastModified ignored
+//
+//        assert !entry.equals(new FileEntry("xyz", lastModified:LAST_MODIFIED))
+//        assert !entry.equals(new FileEntry(path:PATH, contents:'abc', lastModified:LAST_MODIFIED))
+//        assert !entry.equals("ABC")
+//        assert !entry.equals(null)
+//    }
+//
+//    void testHashCode() {
+//        assert entry.hashCode() == entry.hashCode()
+//        assert entry.hashCode() == new FileEntry(path:PATH, contents:'abc', lastModified:LAST_MODIFIED).hashCode()
+//        assert entry.hashCode() == new FileEntry(path:PATH, contents:'abc', new Date()).hashCode()  // lastModified ignored
+//
+//        assert entry.hashCode() != new FileEntry(path:PATH, contents:'abc', lastModified:LAST_MODIFIED).hashCode()
+//        assert entry.hashCode() != new FileEntry(path:PATH, contents:'abcdef', lastModified:LAST_MODIFIED).hashCode()
+//
+//        assert entry.hashCode() == new DirectoryEntry(path:PATH, lastModified:LAST_MODIFIED).hashCode()
+//    }
 
     //-------------------------------------------------------------------------
     // Implementation of Required Abstract Methods

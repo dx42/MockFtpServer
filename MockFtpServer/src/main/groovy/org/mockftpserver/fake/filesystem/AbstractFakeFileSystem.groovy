@@ -27,8 +27,8 @@ import org.mockftpserver.core.util.PatternUtil
  * that do not already exist. If <code>false</code>, then creating a directory or file throws an
  * exception if its parent directory does not exist. This value defaults to <code>true</code>.
  * <p>
- * The <code>directoryListingFormatter</code> property holds an instance of                {@link DirectoryListingFormatter}               ,
- * used by the                {@link #formatDirectoryListing(FileInfo)}              method to format directory listings in a
+ * The <code>directoryListingFormatter</code> property holds an instance of   {@link DirectoryListingFormatter}                 ,
+ * used by the   {@link #formatDirectoryListing}   method to format directory listings in a
  * filesystem-specific manner. This property must be initialized by concrete subclasses.
  *
  * @version $Revision$ - $Date$
@@ -48,8 +48,8 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     boolean createParentDirectoriesAutomatically = true
 
     /**
-     * The                   {@link DirectoryListingFormatter}                   used by the                   {@link #formatDirectoryListing(FileInfo)}                   method.
-     * This must be initialized by concrete subclasses. 
+     * The   {@link DirectoryListingFormatter}   used by the   {@link #formatDirectoryListing(FileSystemEntry)}
+     * method. This must be initialized by concrete subclasses. 
      */
     DirectoryListingFormatter directoryListingFormatter
 
@@ -268,45 +268,28 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     }
 
     /**
-     * Returns the FileInfo object representing the file system entry at the specified path, or null
-     * if the path does not specify an existing file or directory within this file system.
-     * @param path - the path of the file or directory within this file system
-     * @return the FileInfo containing the information for the file or directory, or else null
-     *
-     * @see FileSystem#getFileInfo(String)
-     */
-    public FileInfo getFileInfo(String path) {
-        return exists(path) ? buildFileInfoForPath(path) : null
-    }
-
-    /**
-     * Return the List of FileInfo objects for the files in the specified directory or group of
-     * files. If the path specifies a single file, then return a list with a single FileInfo
+     * Return the List of FileSystemEntry objects for the files in the specified directory or group of
+     * files. If the path specifies a single file, then return a list with a single FileSystemEntry
      * object representing that file. If the path does not refer to an existing directory or
      * group of files, then an empty List is returned.
      *
      * @param path - the path specifying a directory or group of files; may contain wildcards (? or *)
-     * @return the List of FileInfo objects for the specified directory or file; may be empty
+     * @return the List of FileSystemEntry objects for the specified directory or file; may be empty
      *
      * @see org.mockftpserver.fake.filesystem.FileSystem#listFiles(java.lang.String)
      */
     public List listFiles(String path) {
         if (isFile(path)) {
-            return [buildFileInfoForPath(path)]
+            return [getEntry(path)]
         }
 
-//        String normalizedPath = normalize(path)
-        List fileInfoList = []
+        List entryList = []
         List children = children(path)
-        if (children != null) {
-            children.each {childPath ->
-//                if (normalizedPath.equals(getParent(childPath))) {
-                def fileInfo = buildFileInfoForPath(childPath)
-                fileInfoList.add(fileInfo)
-//                }
-            }
+        children?.each {childPath ->
+            def fileSystemEntry = getEntry(childPath)
+            entryList.add(fileSystemEntry)
         }
-        return fileInfoList
+        return entryList
     }
 
     /**
@@ -390,14 +373,14 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     }
 
     /**
-     * Return the formatted directory listing entry for the file represented by the specified FileInfo
-     * @param fileInfo - the FileInfo representing the file or directory entry to be formatted
+     * Return the formatted directory listing entry for the file represented by the specified FileSystemEntry
+     * @param fileSystemEntry - the FileSystemEntry representing the file or directory entry to be formatted
      * @return the the formatted directory listing entry
      */
-    public String formatDirectoryListing(FileInfo fileInfo) {
+    public String formatDirectoryListing(FileSystemEntry fileSystemEntry) {
         assert directoryListingFormatter
-        assert fileInfo
-        return directoryListingFormatter.format(fileInfo)
+        assert fileSystemEntry
+        return directoryListingFormatter.format(fileSystemEntry)
     }
 
     /**
@@ -476,10 +459,12 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     }
 
     /**
-     * Return the FileSystemEntry for the specified path, or else null
+     * Returns the FileSystemEntry object representing the file system entry at the specified path, or null
+     * if the path does not specify an existing file or directory within this file system.
+     * @param path - the path of the file or directory within this file system
+     * @return the FileSystemEntry containing the information for the file or directory, or else null
      *
-     * @param path - the path
-     * @return the FileSystemEntry or null if no entry exists for that path
+     * @see FileSystem#getEntry(String)
      */
     FileSystemEntry getEntry(String path) {
         return (FileSystemEntry) entries.get(normalize(path))
@@ -516,18 +501,6 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     //-------------------------------------------------------------------------
     // Internal Helper Methods
     //-------------------------------------------------------------------------
-
-    /**
-     * Build a FileInfo based on the file or directory specified by the path
-     * @param path - the path for the file or directory
-     */
-    protected FileInfo buildFileInfoForPath(String path) {
-        FileSystemEntry entry = getRequiredEntry(path)
-        def name = getName(entry.getPath())
-        entry.isDirectory()                        \
-                                   ? FileInfo.forDirectory(name, entry.lastModified, entry.owner, entry.group, entry.permissions)                        \
-                                   : FileInfo.forFile(name, ((FileEntry) entry).getSize(), entry.lastModified, entry.owner, entry.group, entry.permissions)
-    }
 
     /**
      * Throw an InvalidFilenameException if the specified path is not valid.

@@ -47,6 +47,14 @@ class DirectoryEntry extends AbstractFileSystemEntry {
     }
 
     /**
+     * Return the size of this directory. This method returns zero.
+     * @return the file size in bytes
+     */
+    long getSize() {
+        return 0
+    }
+
+    /**
      * @see java.lang.Object#toString()
      */
     String toString() {

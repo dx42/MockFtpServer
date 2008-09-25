@@ -23,7 +23,8 @@ import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.filesystem.DirectoryEntry
 import org.mockftpserver.fake.filesystem.DirectoryListingFormatter
 import org.mockftpserver.fake.filesystem.FileEntry
-import org.mockftpserver.fake.filesystem.FileInfo
+import org.mockftpserver.fake.filesystem.FileSystemEntry
+
 
 /**
  * Tests for ListCommandHandler
@@ -39,37 +40,38 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     private static final LAST_MODIFIED = new Date()
 
     void testHandleCommand_SingleFile() {
-        fileSystem.addEntry(new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc"))
+        final entry = new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc")
+        fileSystem.addEntry(entry)
         handleCommandAndVerifySendDataReplies([DIR])
-        assertSessionData(listingFor(FileInfo.forFile(NAME, 3, LAST_MODIFIED)))
+        assertSessionData(listingFor(entry))
     }
 
     void testHandleCommand_FilesAndDirectories() {
-        def NAME1 = "abc.txt"
-        def NAME2 = "OtherFiles"
-        def NAME3 = "another_file.doc"
-        def DATA1 = "abc"
         def DATA3 = "".padRight(1000, 'x')
-        fileSystem.addEntry(new FileEntry(path: p(DIR, NAME1), lastModified: LAST_MODIFIED, contents: DATA1))
-        fileSystem.addEntry(new DirectoryEntry(path: p(DIR, NAME2), lastModified: LAST_MODIFIED))
-        fileSystem.addEntry(new FileEntry(path: p(DIR, NAME3), lastModified: LAST_MODIFIED, contents: DATA3))
+        final entry1 = new FileEntry(path: p(DIR, "abc.txt"), lastModified: LAST_MODIFIED, contents: "abc")
+        final entry2 = new DirectoryEntry(path: p(DIR, "OtherFiles"), lastModified: LAST_MODIFIED)
+        final entry3 = new FileEntry(path: p(DIR, "another_file.doc"), lastModified: LAST_MODIFIED, contents: DATA3)
+        fileSystem.addEntry(entry1)
+        fileSystem.addEntry(entry2)
+        fileSystem.addEntry(entry3)
 
         handleCommandAndVerifySendDataReplies([DIR])
 
         def actualLines = session.sentData[0].tokenize(endOfLine()) as Set
         LOG.info("actualLines=$actualLines")
         def EXPECTED = [
-                listingFor(FileInfo.forFile(NAME1, DATA1.size(), LAST_MODIFIED)),
-                listingFor(FileInfo.forDirectory(NAME2, LAST_MODIFIED)),
-                listingFor(FileInfo.forFile(NAME3, DATA3.size(), LAST_MODIFIED))] as Set
+                listingFor(entry1),
+                listingFor(entry2),
+                listingFor(entry3)] as Set
         assert actualLines == EXPECTED
     }
 
     void testHandleCommand_NoPath_UseCurrentDirectory() {
-        fileSystem.addEntry(new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc"))
+        final entry = new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc")
+        fileSystem.addEntry(entry)
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
         handleCommandAndVerifySendDataReplies([])
-        assertSessionData(listingFor(FileInfo.forFile(NAME, 3, LAST_MODIFIED)))
+        assertSessionData(listingFor(entry))
     }
 
     void testHandleCommand_EmptyDirectory() {
@@ -78,9 +80,10 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_PathSpecifiesAFile() {
-        fileSystem.addEntry(new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc"))
+        final entry = new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc")
+        fileSystem.addEntry(entry)
         handleCommandAndVerifySendDataReplies([p(DIR, NAME)])
-        assertSessionData(listingFor(FileInfo.forFile(NAME, 3, LAST_MODIFIED)))
+        assertSessionData(listingFor(entry))
     }
 
     void testHandleCommand_PathDoesNotExist() {
@@ -111,11 +114,11 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void setUp() {
         super.setUp()
         assert fileSystem.createDirectory("/usr")
-        fileSystem.directoryListingFormatter = [format: {fileInfo -> fileInfo.toString()}] as DirectoryListingFormatter
+        fileSystem.directoryListingFormatter = [format: {entry -> entry.toString()}] as DirectoryListingFormatter
     }
 
-    private listingFor(FileInfo fileInfo) {
-        fileInfo.toString()
+    private listingFor(FileSystemEntry fileSystemEntry) {
+        fileSystemEntry.toString()
     }
 
 }
