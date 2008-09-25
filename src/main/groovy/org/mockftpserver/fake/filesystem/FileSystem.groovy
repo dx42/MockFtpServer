@@ -68,11 +68,11 @@ public interface FileSystem {
     public InputStream createInputStream(String path)
 
     /**
-     * Return the List of FileInfo objects for the files in the specified directory path. If the
+     * Return the List of FileSystemEntry objects for the files in the specified directory path. If the
      * path does not refer to a valid directory, then an empty List is returned.
      *
      * @param path - the path of the directory whose contents should be returned
-     * @return the List of FileInfo objects for all files in the specified directory may be empty
+     * @return the List of FileSystemEntry objects for all files in the specified directory may be empty
      */
     public List listFiles(String path)
 
@@ -117,11 +117,11 @@ public interface FileSystem {
     public boolean rename(String fromPath, String toPath)
 
     /**
-     * Return the formatted directory listing entry for the file represented by the specified FileInfo
-     * @param fileInfo - the FileInfo representing the file or directory entry to be formatted
+     * Return the formatted directory listing entry for the file represented by the specified FileSystemEntry
+     * @param fileSystemEntry - the FileSystemEntry representing the file or directory entry to be formatted
      * @return the the formatted directory listing entry
      */
-    public String formatDirectoryListing(FileInfo fileInfo)
+    public String formatDirectoryListing(FileSystemEntry fileSystemEntry)
 
     //-------------------------------------------------------------------------
     // Path-related Methods
@@ -180,12 +180,12 @@ public interface FileSystem {
     public String path(String path1, String path2)
 
     /**
-     * Returns the FileInfo object representing the file system entry at the specified path, or null
+     * Returns the FileSystemEntry object representing the file system entry at the specified path, or null
      * if the path does not specify an existing file or directory within this file system.
      * @param path - the path of the file or directory within this file system
-     * @return the FileInfo containing the information for the file or directory, or else null
+     * @return the FileSystemEntry containing the information for the file or directory, or else null
      */
-    public FileInfo getFileInfo(String path)
+    public FileSystemEntry getEntry(String path)
 
     /**
      * Returns the name of the file or directory denoted by this abstract

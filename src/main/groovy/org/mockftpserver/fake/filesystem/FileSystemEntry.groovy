@@ -38,6 +38,18 @@ interface FileSystemEntry {
     String getPath()
 
     /**
+     * Return the file name or directory name (no path) for this entry
+     * @return the file name or directory name (no path) for this entry
+     */
+    public String getName()
+
+    /**
+     * Return the size of this file system entry
+     * @return the file size in bytes
+     */
+    long getSize()
+
+    /**
      * Return the timestamp Date for the last modification of this file system entry
      * @return the last modified timestamp Date for this file system entry
      */

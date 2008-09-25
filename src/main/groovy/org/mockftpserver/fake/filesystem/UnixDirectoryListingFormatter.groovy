@@ -18,6 +18,7 @@ package org.mockftpserver.fake.filesystem
 import java.text.SimpleDateFormat
 import org.apache.log4j.Logger
 
+
 /**
  * Unix-specific implementation of the DirectoryListingFormatter interface.
  *
@@ -40,20 +41,20 @@ class UnixDirectoryListingFormatter implements DirectoryListingFormatter {
 
     /**
      * Format the directory listing for a single file/directory entry.
-     * @param fileInfo - the FileInfo for a single file system entry
+     * @param fileSystemEntry - the FileSystemEntry for a single file system entry
      * @return the formatted directory listing
      */
-    String format(FileInfo fileInfo) {
+    String format(FileSystemEntry fileSystemEntry) {
         def dateFormat = new SimpleDateFormat(DATE_FORMAT)
-        def dateStr = dateFormat.format(fileInfo.lastModified)
-        def dirOrFile = fileInfo.isDirectory() ? 'd' : '-'
-        def permissions = fileInfo.permissions ?: Permissions.DEFAULT
+        def dateStr = dateFormat.format(fileSystemEntry.lastModified)
+        def dirOrFile = fileSystemEntry.isDirectory() ? 'd' : '-'
+        def permissions = fileSystemEntry.permissions ?: Permissions.DEFAULT
         def permissionsStr = padRight(permissions.asRwxString(), 9)
         def linkCountStr = '1'
-        def ownerStr = padRight(fileInfo.owner, OWNER_WIDTH)
-        def groupStr = padRight(fileInfo.group, GROUP_WIDTH)
-        def sizeStr = padLeft(fileInfo.size.toString(), SIZE_WIDTH)
-        def listing = "$dirOrFile$permissionsStr  $linkCountStr $ownerStr $groupStr $sizeStr $dateStr ${fileInfo.name}"
+        def ownerStr = padRight(fileSystemEntry.owner, OWNER_WIDTH)
+        def groupStr = padRight(fileSystemEntry.group, GROUP_WIDTH)
+        def sizeStr = padLeft(fileSystemEntry.size.toString(), SIZE_WIDTH)
+        def listing = "$dirOrFile$permissionsStr  $linkCountStr $ownerStr $groupStr $sizeStr $dateStr ${fileSystemEntry.name}"
         LOG.info("listing=[$listing]")
         return listing
     }

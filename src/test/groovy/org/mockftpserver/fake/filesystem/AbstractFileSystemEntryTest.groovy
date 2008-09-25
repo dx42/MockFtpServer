@@ -18,6 +18,7 @@ package org.mockftpserver.fake.filesystem
 import java.lang.reflect.Constructor
 import org.mockftpserver.test.AbstractGroovyTest
 
+
 /**
  * Abstract test superclass for subclasses of AbstractFileSystemEntry
  *
@@ -53,11 +54,23 @@ public abstract class AbstractFileSystemEntryTest extends AbstractGroovyTest {
     }
 
     void testLockPath() {
-        AbstractFileSystemEntry entry = (AbstractFileSystemEntry) getImplementationClass().newInstance()
-        entry.setPath(PATH)
+        def entry = createFileSystemEntry(PATH)
         entry.lockPath()
         shouldFail { entry.path = 'abc' }
         assert entry.path == PATH
+    }
+
+    void testGetName() {
+        assert createFileSystemEntry('abc').name == 'abc'
+        assert createFileSystemEntry('/abc').name == 'abc'
+        assert createFileSystemEntry('/dir/abc').name == 'abc'
+        assert createFileSystemEntry('\\abc').name == 'abc'
+    }
+
+    protected AbstractFileSystemEntry createFileSystemEntry(String path) {
+        def entry = (AbstractFileSystemEntry) getImplementationClass().newInstance()
+        entry.setPath(path)
+        return entry
     }
 
     /**

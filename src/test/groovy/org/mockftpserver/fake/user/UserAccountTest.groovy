@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.fake.user
 
-import org.mockftpserver.fake.filesystem.FileInfo
+import org.mockftpserver.fake.filesystem.FileEntry
+import org.mockftpserver.fake.filesystem.FileSystemEntry
 import org.mockftpserver.fake.filesystem.Permissions
 import org.mockftpserver.test.AbstractGroovyTest
 
@@ -54,9 +55,9 @@ class UserAccountTest extends AbstractGroovyTest {
         userAccount.password = PASSWORD
         assert userAccount.isValidPassword(PASSWORD)
 
-        assert userAccount.isValidPassword("") == false
-        assert userAccount.isValidPassword("wrong") == false
-        assert userAccount.isValidPassword(null) == false
+        assert !userAccount.isValidPassword("")
+        assert !userAccount.isValidPassword("wrong")
+        assert !userAccount.isValidPassword(null)
     }
 
     void testIsValidPassword_UsernameNullOrEmpty() {
@@ -168,23 +169,23 @@ class UserAccountTest extends AbstractGroovyTest {
     //--------------------------------------------------------------------------
 
     private void testCanRead(owner, group, permissionsString, expectedResult) {
-        def file = createFileInfo(owner, permissionsString, group)
+        def file = createFileEntry(owner, permissionsString, group)
         assert userAccount.canRead(file) == expectedResult, file
     }
 
     private void testCanWrite(owner, group, permissionsString, expectedResult) {
-        def file = createFileInfo(owner, permissionsString, group)
+        def file = createFileEntry(owner, permissionsString, group)
         assert userAccount.canWrite(file) == expectedResult, file
     }
 
     private void testCanExecute(owner, group, permissionsString, expectedResult) {
-        def file = createFileInfo(owner, permissionsString, group)
+        def file = createFileEntry(owner, permissionsString, group)
         assert userAccount.canExecute(file) == expectedResult, file
     }
 
-    private FileInfo createFileInfo(owner, permissionsString, group) {
+    private FileSystemEntry createFileEntry(owner, permissionsString, group) {
         def permissions = permissionsString ? new Permissions(permissionsString) : null
-        return FileInfo.forFile('', 0, null, owner, group, permissions)
+        return new FileEntry(path: '', owner: owner, group: group, permissions: permissions)
     }
 
     void setUp() {

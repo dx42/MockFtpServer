@@ -21,6 +21,7 @@ import org.mockftpserver.core.session.Session
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
+
 /**
  * CommandHandler for the CWD command. Handler logic:
  * <ol>
@@ -46,8 +47,8 @@ class CwdCommandHandler extends AbstractFakeCommandHandler {
         verifyFileSystemCondition(fileSystem.isDirectory(path), path, 'filesystem.isNotADirectory')
 
         def userAccount = getUserAccount(session)
-        def fileInfo = fileSystem.getFileInfo(path)
-        verifyFileSystemCondition(userAccount.canRead(fileInfo), path, 'filesystem.cannotRead')
+        def entry = fileSystem.getEntry(path)
+        verifyFileSystemCondition(userAccount.canRead(entry), path, 'filesystem.cannotRead')
 
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, path)
         sendReply(session, ReplyCodes.CWD_OK, 'cwd', [path])

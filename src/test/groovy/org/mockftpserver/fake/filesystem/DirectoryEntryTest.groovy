@@ -39,6 +39,7 @@ public class DirectoryEntryTest extends AbstractFileSystemEntryTest {
         assert clone.owner == USER
         assert clone.group == GROUP
         assert clone.permissions == PERMISSIONS
+        assert clone.size == 0
         assert clone.directory
     }
 

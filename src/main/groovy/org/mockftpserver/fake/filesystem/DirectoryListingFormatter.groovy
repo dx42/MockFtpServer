@@ -27,9 +27,9 @@ interface DirectoryListingFormatter {
 
     /**
      * Format the directory listing for a single file/directory entry.
-     * @param fileInfo - the FileInfo for a single file system entry
+     * @param fileSystemEntry - the FileSystemEntry for a single file system entry
      * @return the formatted directory listing
      */
-    String format(FileInfo fileInfo)
+    String format(FileSystemEntry fileSystemEntry)
 
 }

@@ -53,6 +53,16 @@ abstract class AbstractFileSystemEntry implements FileSystemEntry {
     }
 
     /**
+     * @return the file name or directory name (no path) for this entry
+     */
+    public String getName() {
+        int separatorIndex1 = path.lastIndexOf('/')
+        int separatorIndex2 = path.lastIndexOf('\\')
+        int separatorIndex = [separatorIndex1, separatorIndex2].max()
+        return (separatorIndex == -1) ? path : path.substring(separatorIndex + 1)
+    }
+
+    /**
      * Set the path for this entry. Throw an exception if pathLocked is true.
      * @param path - the new path value
      */
@@ -64,6 +74,27 @@ abstract class AbstractFileSystemEntry implements FileSystemEntry {
     void lockPath() {
         this.pathLocked = true
     }
+
+//    /**
+//     * @see java.lang.Object#equals(java.lang.Object)
+//     */
+//    boolean equals(Object obj) {
+//        (obj
+//                && obj.class == this.class
+//                && obj.hashCode() == hashCode())
+//    }
+//
+//    /**
+//     * Return the hash code for this object. Note that only the directory (boolean),
+//     * path and length properties affect the hash code value. The lastModified
+//     * property is ignored.
+//     *
+//     * @see java.lang.Object#hashCode()
+//     */
+//    int hashCode() {
+//        String str = [directory, path, size].join(":")
+//        return str.hashCode()
+//    }
 
     /**
      * Abstract method -- must be implemented within concrete subclasses

@@ -94,46 +94,46 @@ abstract class AbstractFakeFileSystemTest extends AbstractFileSystemTest {
     }
 
     void testFormatDirectoryListing() {
-        def fileInfo = FileInfo.forDirectory('abc', null)
+        def fileEntry = new FileEntry(path: 'abc')
         def formatter = [format: {f ->
-            assert f == fileInfo
+            assert f == fileEntry
             return 'abc'
         }] as DirectoryListingFormatter
         fileSystem.directoryListingFormatter = formatter
-        assert fileSystem.formatDirectoryListing(fileInfo) == 'abc'
+        assert fileSystem.formatDirectoryListing(fileEntry) == 'abc'
     }
 
     void testFormatDirectoryListing_NullDirectoryListingFormatter() {
         fileSystem.directoryListingFormatter = null
-        def fileInfo = FileInfo.forDirectory('abc', null)
-        shouldFailWithMessageContaining('directoryListingFormatter') { assert fileSystem.formatDirectoryListing(fileInfo) }
+        def fileEntry = new FileEntry('abc')
+        shouldFailWithMessageContaining('directoryListingFormatter') { assert fileSystem.formatDirectoryListing(fileEntry) }
     }
 
-    void testFormatDirectoryListing_NullFileInfo() {
+    void testFormatDirectoryListing_NullFileSystemEntry() {
         def formatter = [format: {f -> }] as DirectoryListingFormatter
         fileSystem.directoryListingFormatter = formatter
-        shouldFailWithMessageContaining('fileInfo') { assert fileSystem.formatDirectoryListing(null) }
+        shouldFailWithMessageContaining('fileSystemEntry') { assert fileSystem.formatDirectoryListing(null) }
     }
 
-    void testGetFileInfo() {
-        assert fileSystem.getFileInfo(NO_SUCH_DIR) == null
-        assert fileSystem.getFileInfo(NO_SUCH_FILE) == null
+    void testGetEntry() {
+        assert fileSystem.getEntry(NO_SUCH_DIR) == null
+        assert fileSystem.getEntry(NO_SUCH_FILE) == null
 
-        assert fileSystem.getFileInfo(EXISTING_FILE).name == fileSystem.getName(EXISTING_FILE)
-        assert fileSystem.getFileInfo(EXISTING_DIR).name == fileSystem.getName(EXISTING_DIR)
+        assert fileSystem.getEntry(EXISTING_FILE).path == EXISTING_FILE
+        assert fileSystem.getEntry(EXISTING_DIR).path == EXISTING_DIR
 
         def permissions = new Permissions('-wxrwx---')
         def fileEntry = new FileEntry(path: NEW_FILE, lastModified: DATE, contents: 'abc', owner: 'owner',
                 group: 'group', permissions: permissions)
         fileSystem.addEntry(fileEntry)
-        def fileInfo = fileSystem.getFileInfo(NEW_FILE)
-        LOG.info(fileInfo)
-        assert fileInfo.name == fileSystem.getName(NEW_FILE)
-        assert !fileInfo.directory
-        assert fileInfo.size == 3
-        assert fileInfo.owner == 'owner'
-        assert fileInfo.group == 'group'
-        assert fileInfo.permissions == permissions
+        def entry = fileSystem.getEntry(NEW_FILE)
+        LOG.info(entry)
+        assert entry.path == NEW_FILE
+        assert !entry.directory
+        assert entry.size == 3
+        assert entry.owner == 'owner'
+        assert entry.group == 'group'
+        assert entry.permissions == permissions
     }
 
     //--------------------------------------------------------------------------
