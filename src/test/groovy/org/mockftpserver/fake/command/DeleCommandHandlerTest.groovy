@@ -20,6 +20,7 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 
+
 /**
  * Tests for DeleCommandHandler
  *
@@ -33,14 +34,14 @@ class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     def FILE = "/" + FILENAME
 
     void testHandleCommand() {
-        assert fileSystem.createFile(FILE)
+        createFile(FILE)
         commandHandler.handleCommand(createCommand([FILE]), session)
         assertSessionReply(ReplyCodes.DELE_OK, ['dele', FILE])
         assert fileSystem.exists(FILE) == false
     }
 
     void testHandleCommand_PathIsRelative() {
-        assert fileSystem.createFile(FILE)
+        createFile(FILE)
         setCurrentDirectory("/")
         commandHandler.handleCommand(createCommand([FILENAME]), session)
         assertSessionReply(ReplyCodes.DELE_OK, ['dele', FILENAME])
@@ -53,7 +54,7 @@ class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_PathSpecifiesADirectory() {
-        assert fileSystem.createDirectory(FILE)
+        createDirectory(FILE)
         commandHandler.handleCommand(createCommand([FILE]), session)
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.isNotAFile', FILE])
         assert fileSystem.exists(FILE)
@@ -64,7 +65,7 @@ class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_DeleteThrowsException() {
-        assert fileSystem.createFile(FILE)
+        createFile(FILE)
         overrideMethodToThrowFileSystemException("delete")
         handleCommand([FILE])
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)

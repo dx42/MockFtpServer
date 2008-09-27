@@ -21,6 +21,7 @@ import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 
+
 /**
  * Tests for NlstCommandHandler
  *
@@ -33,16 +34,16 @@ class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     def DIR = "/usr"
 
     void testHandleCommand_SingleFile() {
-        assert fileSystem.createFile("/usr/f1.txt")
+        createFile("/usr/f1.txt")
         handleCommandAndVerifySendDataReplies([DIR])
         assertSessionData("f1.txt")
     }
 
     void testHandleCommand_FilesAndDirectories() {
-        assert fileSystem.createFile("/usr/f1.txt")
-        assert fileSystem.createDirectory("/usr/OtherFiles")
-        assert fileSystem.createFile("/usr/f2.txt")
-        assert fileSystem.createDirectory("/usr/Archive")
+        createFile("/usr/f1.txt")
+        createDirectory("/usr/OtherFiles")
+        createFile("/usr/f2.txt")
+        createDirectory("/usr/Archive")
         handleCommandAndVerifySendDataReplies([DIR])
 
         def EXPECTED = ["f1.txt", "OtherFiles", "f2.txt", "Archive"] as Set
@@ -52,7 +53,7 @@ class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_NoPath_UseCurrentDirectory() {
-        assert fileSystem.createFile("/usr/f1.txt")
+        createFile("/usr/f1.txt")
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
         handleCommandAndVerifySendDataReplies([])
         assertSessionData("f1.txt")
@@ -64,7 +65,7 @@ class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_PathSpecifiesAFile() {
-        assert fileSystem.createFile("/usr/f1.txt")
+        createFile("/usr/f1.txt")
         handleCommandAndVerifySendDataReplies(["/usr/f1.txt"])
         assertSessionData("f1.txt")
     }
@@ -95,7 +96,7 @@ class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void setUp() {
         super.setUp()
-        assert fileSystem.createDirectory("/usr")
+        createDirectory("/usr")
     }
 
 }

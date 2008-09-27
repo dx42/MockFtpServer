@@ -19,6 +19,8 @@ import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
+import org.mockftpserver.fake.filesystem.DirectoryEntry
+
 
 /**
  * CommandHandler for the MKD command. Handler logic:
@@ -46,7 +48,7 @@ class MkdCommandHandler extends AbstractFakeCommandHandler {
         verifyFileSystemCondition(fileSystem.exists(parent), parent, 'filesystem.doesNotExist')
         verifyFileSystemCondition(!fileSystem.exists(path), path, 'filesystem.alreadyExists')
 
-        fileSystem.createDirectory(path)
+        fileSystem.add(new DirectoryEntry(path))
         sendReply(session, ReplyCodes.MKD_OK, 'mkd', [path])
     }
 

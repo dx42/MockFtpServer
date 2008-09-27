@@ -18,6 +18,7 @@ package org.mockftpserver.fake.filesystem
 import org.mockftpserver.core.util.IoUtil
 import org.mockftpserver.test.AbstractGroovyTest
 
+
 /**
  * Abstract superclass for tests of FileSystem implementation classes. Contains common
  * tests and test infrastructure. 
@@ -80,34 +81,36 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
         shouldFailWithMessageContaining("path") { fileSystem.isFile(null) }
     }
 
-    void testCreateDirectory() {
+    void testAdd_Directory() {
         assert !fileSystem.exists(NEW_DIR), "Before createDirectory"
-        assert fileSystem.createDirectory(NEW_DIR)
+        fileSystem.add(new DirectoryEntry(NEW_DIR))
         assert fileSystem.exists(NEW_DIR), "After createDirectory"
 
         // Duplicate directory
-        assert !fileSystem.createDirectory(NEW_DIR), "Duplicate directory"
+        shouldFail(FileSystemException) { fileSystem.add(new DirectoryEntry(NEW_DIR)) }
 
         // The parent of the path does not exist
-        shouldFail(FileSystemException) { fileSystem.createDirectory(NEW_DIR + "/abc/def") }
+        shouldFail(FileSystemException) { fileSystem.add(new DirectoryEntry(NEW_DIR + "/abc/def")) }
 
-        shouldFailWithMessageContaining("path") { fileSystem.createDirectory(null) }
+        shouldFail(InvalidFilenameException) { fileSystem.add(new DirectoryEntry(ILLEGAL_FILE)) }
+        shouldFailWithMessageContaining("path") { fileSystem.add(new DirectoryEntry(null)) }
     }
 
-    void testCreateFile() {
+    void testAdd_File() {
         assert !fileSystem.exists(NEW_FILE), "Before createFile"
-        assert fileSystem.createFile(NEW_FILE)
+        fileSystem.add(new FileEntry(NEW_FILE))
         assert fileSystem.exists(NEW_FILE), "After createFile"
 
-        assert !fileSystem.createFile(NEW_FILE), "Duplicate"
+        // File already exists
+        shouldFail(FileSystemException) { fileSystem.add(new FileEntry(NEW_FILE)) }
 
         // The parent of the path does not exist
-        shouldFail(FileSystemException) { fileSystem.createFile(NEW_DIR + "/abc/def") }
+        shouldFail(FileSystemException) { fileSystem.add(new FileEntry(NEW_DIR + "/abc/def")) }
 
-        shouldFail(FileSystemException) { fileSystem.createFile(NO_SUCH_DIR) }
-        shouldFail(InvalidFilenameException) { fileSystem.createFile(ILLEGAL_FILE) }
+        shouldFail(FileSystemException) { fileSystem.add(new FileEntry(NO_SUCH_DIR)) }
+        shouldFail(InvalidFilenameException) { fileSystem.add(new FileEntry(ILLEGAL_FILE)) }
 
-        shouldFailWithMessageContaining("path") { fileSystem.createFile(null) }
+        shouldFailWithMessageContaining("path") { fileSystem.add(new FileEntry(null)) }
     }
 
     void testCreateInputStream() {
@@ -175,13 +178,13 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
     }
 
     void testListNames() {
-        assert fileSystem.createDirectory(NEW_DIR)
+        fileSystem.add(new DirectoryEntry(NEW_DIR))
         assert fileSystem.listNames(NEW_DIR) == []
 
-        assert fileSystem.createFile(p(NEW_DIR, FILENAME1))
-        assert fileSystem.createFile(p(NEW_DIR, FILENAME2))
-        assert fileSystem.createDirectory(p(NEW_DIR, DIR1))
-        assert fileSystem.createFile(p(NEW_DIR, DIR1, "/abc.def"))
+        fileSystem.add(new FileEntry(p(NEW_DIR, FILENAME1)))
+        fileSystem.add(new FileEntry(p(NEW_DIR, FILENAME2)))
+        fileSystem.add(new DirectoryEntry(p(NEW_DIR, DIR1)))
+        fileSystem.add(new FileEntry(p(NEW_DIR, DIR1, "/abc.def")))
 
         List filenames = fileSystem.listNames(NEW_DIR)
         LOG.info("filenames=" + filenames)
@@ -196,9 +199,9 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
     }
 
     void testListNames_Wildcards() {
-        assert fileSystem.createDirectory(NEW_DIR)
-        assert fileSystem.createFile(p(NEW_DIR, 'abc.txt'))
-        assert fileSystem.createFile(p(NEW_DIR, 'def.txt'))
+        fileSystem.add(new DirectoryEntry(NEW_DIR))
+        fileSystem.add(new FileEntry(p(NEW_DIR, 'abc.txt')))
+        fileSystem.add(new FileEntry(p(NEW_DIR, 'def.txt')))
 
         assertSameIgnoringOrder(fileSystem.listNames(p(NEW_DIR, '*.txt')), ['abc.txt', 'def.txt'])
         assertSameIgnoringOrder(fileSystem.listNames(p(NEW_DIR, '*')), ['abc.txt', 'def.txt'])
@@ -210,17 +213,17 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
     }
 
     void testListFiles() {
-        assert fileSystem.createDirectory(NEW_DIR)
+        fileSystem.add(new DirectoryEntry(NEW_DIR))
         assert [] == fileSystem.listFiles(NEW_DIR)
 
-        assert fileSystem.createFile(p(NEW_DIR, FILENAME1))
+        fileSystem.add(new FileEntry(p(NEW_DIR, FILENAME1)))
         def fileEntry1 = new FileEntry(path: FILENAME1, lastModified: DATE)
         verifyEntries([fileEntry1], fileSystem.listFiles(NEW_DIR))
 
         // Specify a filename instead of a directory name
         verifyEntries([fileEntry1], fileSystem.listFiles(p(NEW_DIR, FILENAME1)))
 
-        assert fileSystem.createFile(p(NEW_DIR, FILENAME2))
+        fileSystem.add(new FileEntry(p(NEW_DIR, FILENAME2)))
         def fileEntry2 = new FileEntry(path: FILENAME2, lastModified: DATE)
         verifyEntries(fileSystem.listFiles(NEW_DIR), [fileEntry1, fileEntry2])
 
@@ -232,7 +235,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
         fileEntry1 = new FileEntry(path: FILENAME1, contents: CONTENTS, lastModified: DATE)
         verifyEntries(fileSystem.listFiles(NEW_DIR), [fileEntry1, fileEntry2])
 
-        assert fileSystem.createDirectory(p(NEW_DIR, DIR1))
+        fileSystem.add(new DirectoryEntry(p(NEW_DIR, DIR1)))
         def dirEntry3 = new DirectoryEntry(path: DIR1, lastModified: DATE)
         verifyEntries(fileSystem.listFiles(NEW_DIR), [fileEntry1, fileEntry2, dirEntry3])
 
@@ -242,9 +245,9 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
     }
 
     void testListFiles_Wildcards() {
-        assert fileSystem.createDirectory(NEW_DIR)
-        assert fileSystem.createFile(p(NEW_DIR, 'abc.txt'))
-        assert fileSystem.createFile(p(NEW_DIR, 'def.txt'))
+        fileSystem.add(new DirectoryEntry(NEW_DIR))
+        fileSystem.add(new FileEntry(p(NEW_DIR, 'abc.txt')))
+        fileSystem.add(new FileEntry(p(NEW_DIR, 'def.txt')))
 
         def fileEntry1 = new FileEntry(path: 'abc.txt', lastModified: DATE)
         def fileEntry2 = new FileEntry(path: 'def.txt', lastModified: DATE)
@@ -259,18 +262,18 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
     }
 
     void testDelete() {
-        assert fileSystem.createFile(NEW_FILE)
+        fileSystem.add(new FileEntry(NEW_FILE))
         assert fileSystem.delete(NEW_FILE)
         assert !fileSystem.exists(NEW_FILE)
 
         assert !fileSystem.delete(NO_SUCH_FILE)
 
-        assert fileSystem.createDirectory(NEW_DIR)
+        fileSystem.add(new DirectoryEntry(NEW_DIR))
         assert fileSystem.delete(NEW_DIR)
         assert !fileSystem.exists(NEW_DIR)
 
-        assert fileSystem.createDirectory(NEW_DIR)
-        assert fileSystem.createFile(NEW_DIR + "/abc.txt")
+        fileSystem.add(new DirectoryEntry(NEW_DIR))
+        fileSystem.add(new FileEntry(NEW_DIR + "/abc.txt"))
 
         assert !fileSystem.delete(NEW_DIR), "Directory containing files"
         assert fileSystem.exists(NEW_DIR)
@@ -280,13 +283,12 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
 
     void testRename() {
         final String FROM_FILE = NEW_FILE + "2"
-        assert fileSystem.createFile(FROM_FILE)
+        fileSystem.add(new FileEntry(FROM_FILE))
 
         assert fileSystem.rename(FROM_FILE, NEW_FILE)
         assert fileSystem.exists(NEW_FILE)
 
-        fileSystem.createFile(NEW_FILE)
-        fileSystem.createDirectory(NEW_DIR)
+        fileSystem.add(new DirectoryEntry(NEW_DIR))
 
         // Rename existing directory
         final String TO_DIR = NEW_DIR + "2"
@@ -302,10 +304,10 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
     }
 
     void testRename_DirectoryContainsFiles() {
-        fileSystem.createDirectory(NEW_DIR)
-        fileSystem.createFile(NEW_DIR + "/a.txt")
-        fileSystem.createFile(NEW_DIR + "/b.txt")
-        fileSystem.createDirectory(NEW_DIR + "/subdir")
+        fileSystem.add(new DirectoryEntry(NEW_DIR))
+        fileSystem.add(new FileEntry(NEW_DIR + "/a.txt"))
+        fileSystem.add(new FileEntry(NEW_DIR + "/b.txt"))
+        fileSystem.add(new DirectoryEntry(NEW_DIR + "/subdir"))
 
         final String TO_DIR = NEW_DIR + "2"
         assert fileSystem.rename(NEW_DIR, TO_DIR)
@@ -323,7 +325,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
     void testRename_ParentOfToPathDoesNotExist() throws Exception {
         final String FROM_FILE = NEW_FILE
         final String TO_FILE = fileSystem.path(NO_SUCH_DIR, "abc")
-        assert fileSystem.createFile(FROM_FILE)
+        fileSystem.add(new FileEntry(FROM_FILE))
 
         shouldFail(FileSystemException) { fileSystem.rename(FROM_FILE, TO_FILE) }
         assert fileSystem.exists(FROM_FILE)

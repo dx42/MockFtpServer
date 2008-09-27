@@ -20,6 +20,9 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.fake.filesystem.FileSystemEntry
+import org.mockftpserver.fake.filesystem.FileSystemException
+
 
 /**
  * Tests for MkdCommandHandler
@@ -52,7 +55,7 @@ class MkdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_PathSpecifiesAFile() {
-        assert fileSystem.createFile(DIR)
+        createFile(DIR)
         commandHandler.handleCommand(createCommand([DIR]), session)
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.alreadyExists', DIR])
         assert fileSystem.exists(DIR)
@@ -63,14 +66,16 @@ class MkdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_CreateDirectoryThrowsException() {
-        overrideMethodToThrowFileSystemException("createDirectory")
+        def newMethod = {FileSystemEntry entry -> throw new FileSystemException("Error thrown by method [$methodName]", ERROR_MESSAGE_KEY) }
+        overrideMethod(fileSystem, "add", newMethod)
+
         handleCommand([DIR])
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
     void setUp() {
         super.setUp()
-        fileSystem.createDirectory('/')
+        createDirectory('/')
     }
 
     //-------------------------------------------------------------------------

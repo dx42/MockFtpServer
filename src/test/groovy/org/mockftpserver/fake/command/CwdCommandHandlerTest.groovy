@@ -22,6 +22,7 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.filesystem.Permissions
 
+
 /**
  * Tests for CwdCommandHandler
  *
@@ -34,7 +35,7 @@ class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     def DIR = "/usr"
 
     void testHandleCommand() {
-        assert fileSystem.createDirectory(DIR)
+        createDirectory(DIR)
         commandHandler.handleCommand(createCommand([DIR]), session)
         assertSessionReply(ReplyCodes.CWD_OK, ['cwd', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == DIR
@@ -42,7 +43,7 @@ class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_PathIsRelative() {
         def SUB = "sub"
-        assert fileSystem.createDirectory(p(DIR, SUB))
+        createDirectory(p(DIR, SUB))
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
         commandHandler.handleCommand(createCommand([SUB]), session)
         assertSessionReply(ReplyCodes.CWD_OK, ['cwd', SUB])
@@ -56,14 +57,14 @@ class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_PathSpecifiesAFile() {
-        assert fileSystem.createFile(DIR)
+        createFile(DIR)
         commandHandler.handleCommand(createCommand([DIR]), session)
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.isNotADirectory', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
 
     void testHandleCommand_DirectoryNotAccessible() {
-        assert fileSystem.createDirectory(DIR)
+        createDirectory(DIR)
         def dir = fileSystem.getEntry(DIR)
         dir.permissions = Permissions.NONE
         commandHandler.handleCommand(createCommand([DIR]), session)

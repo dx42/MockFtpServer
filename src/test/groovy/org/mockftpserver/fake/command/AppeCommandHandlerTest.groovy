@@ -21,6 +21,7 @@ import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.fake.filesystem.FileEntry
 
+
 /**
  * Tests for AppeCommandHandler
  *
@@ -50,7 +51,7 @@ class AppeCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
     }
 
     void testHandleCommand_PathSpecifiesAnExistingDirectory() {
-        assert fileSystem.createDirectory(FILE)
+        createDirectory(FILE)
         commandHandler.handleCommand(createCommand([FILE]), session)
         assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, FILE)
     }

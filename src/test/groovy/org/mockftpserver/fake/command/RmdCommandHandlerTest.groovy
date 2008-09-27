@@ -21,6 +21,7 @@ import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 
+
 /**
  * Tests for RmdCommandHandler
  *
@@ -33,7 +34,7 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     static final DIR = "/usr"
 
     void testHandleCommand() {
-        assert fileSystem.createDirectory(DIR)
+        createDirectory(DIR)
         commandHandler.handleCommand(createCommand([DIR]), session)
         assertSessionReply(ReplyCodes.RMD_OK, ['rmd', DIR])
         assert fileSystem.exists(DIR) == false
@@ -41,7 +42,7 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_PathIsRelative() {
         def SUB = "sub"
-        assert fileSystem.createDirectory(p(DIR, SUB))
+        createDirectory(p(DIR, SUB))
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
         commandHandler.handleCommand(createCommand([SUB]), session)
         assertSessionReply(ReplyCodes.RMD_OK, ['rmd', SUB])
@@ -54,7 +55,7 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_PathSpecifiesAFile() {
-        assert fileSystem.createFile(DIR)
+        createFile(DIR)
         commandHandler.handleCommand(createCommand([DIR]), session)
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.isNotADirectory', DIR])
         assert fileSystem.exists(DIR)
@@ -62,7 +63,7 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_DirectoryIsNotEmpty() {
         final FILE = DIR + "/file.txt"
-        assert fileSystem.createFile(FILE)
+        createFile(FILE)
         commandHandler.handleCommand(createCommand([DIR]), session)
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.directoryIsNotEmpty', DIR])
         assert fileSystem.exists(DIR)
@@ -74,14 +75,14 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_ListNamesThrowsException() {
-        assert fileSystem.createDirectory(DIR)
+        createDirectory(DIR)
         overrideMethodToThrowFileSystemException("listNames")
         handleCommand([DIR])
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
     void testHandleCommand_DeleteThrowsException() {
-        assert fileSystem.createDirectory(DIR)
+        createDirectory(DIR)
         overrideMethodToThrowFileSystemException("delete")
         handleCommand([DIR])
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)

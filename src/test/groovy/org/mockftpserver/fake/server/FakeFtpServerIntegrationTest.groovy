@@ -105,7 +105,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
     }
 
     void testDele() {
-        fileSystem.createFile(FILE1)
+        fileSystem.add(new FileEntry(FILE1))
 
         ftpClientConnectAndLogin()
         assert ftpClient.deleteFile(FILENAME1)
@@ -247,7 +247,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
     }
 
     void testRename() {                 // RNFR and RNTO
-        fileSystem.createFile(FILE1)
+        fileSystem.add(new FileEntry(FILE1))
 
         ftpClientConnectAndLogin()
 
@@ -330,7 +330,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
 
         fileSystem = new WindowsFakeFileSystem()
         fileSystem.createParentDirectoriesAutomatically = true
-        fileSystem.createDirectory(SUBDIR)
+        fileSystem.add(new DirectoryEntry(SUBDIR))
         ftpServer.fileSystem = fileSystem
 
         userAccount = new UserAccount(username: USERNAME, password: PASSWORD,

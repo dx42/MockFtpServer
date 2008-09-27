@@ -45,7 +45,7 @@ class UnixFakeFileSystemTest extends AbstractFakeFileSystemTest {
         final FILE = p(DIR, FILENAME)
 
         assert !fileSystem.exists(FILE)
-        fileSystem.createFile(FILE)
+        fileSystem.add(new FileEntry(FILE))
         def names = fileSystem.listNames(DIR)
         assert names.find { it == FILENAME }
     }

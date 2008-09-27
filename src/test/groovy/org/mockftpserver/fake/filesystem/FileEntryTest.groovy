@@ -52,11 +52,13 @@ public class FileEntryTest extends AbstractFileSystemEntryTest {
     }
 
     void testSetContents_NullString() {
-        shouldFailWithMessageContaining("contents") { entry.setContents((String) null) }
+        entry.setContents((String) null)
+        assert entry.size == 0
     }
 
     void testSetContents_NullBytes() {
-        shouldFailWithMessageContaining("contents") { entry.setContents((byte[]) null) }
+        entry.setContents((byte[]) null)
+        assert entry.size == 0
     }
 
     void testCreateOutputStream() {

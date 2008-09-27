@@ -27,8 +27,8 @@ import org.mockftpserver.core.util.PatternUtil
  * that do not already exist. If <code>false</code>, then creating a directory or file throws an
  * exception if its parent directory does not exist. This value defaults to <code>true</code>.
  * <p>
- * The <code>directoryListingFormatter</code> property holds an instance of   {@link DirectoryListingFormatter}                 ,
- * used by the   {@link #formatDirectoryListing}   method to format directory listings in a
+ * The <code>directoryListingFormatter</code> property holds an instance of     {@link DirectoryListingFormatter}                   ,
+ * used by the <code>formatDirectoryListing</code> method to format directory listings in a
  * filesystem-specific manner. This property must be initialized by concrete subclasses.
  *
  * @version $Revision$ - $Date$
@@ -48,7 +48,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     boolean createParentDirectoriesAutomatically = true
 
     /**
-     * The   {@link DirectoryListingFormatter}   used by the   {@link #formatDirectoryListing(FileSystemEntry)}
+     * The     {@link DirectoryListingFormatter}     used by the     {@link #formatDirectoryListing(FileSystemEntry)}
      * method. This must be initialized by concrete subclasses. 
      */
     DirectoryListingFormatter directoryListingFormatter
@@ -65,15 +65,29 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      * @param entry - the FileSystemEntry to add
      */
     public void addEntry(FileSystemEntry entry) {
+        add(entry);
+    }
+
+    /**
+     * Add the specified file system entry (file or directory) to this file system
+     *
+     * @param entry - the FileSystemEntry to add
+     */
+    public void add(FileSystemEntry entry) {
+        checkForInvalidFilename(entry.path)
         def normalized = normalize(entry.path)
         if (entries.get(normalized) != null) {
             throw new FileSystemException(normalized, 'filesystem.pathAlreadyExists')
         }
 
-        // Make sure parent directory exists, if there is a parent
-        String parent = getParent(normalized)
-        if (parent != null) {
-            verifyPathExists(parent)
+        if (!parentDirectoryExists(normalized)) {
+            String parent = getParent(normalized)
+            if (createParentDirectoriesAutomatically) {
+                addEntry(new DirectoryEntry(parent))
+            }
+            else {
+                throw new FileSystemException(parent, 'filesystem.parentDirectoryDoesNotExist')
+            }
         }
 
         // Set lastModified, if not already set
@@ -83,78 +97,6 @@ abstract class AbstractFakeFileSystem implements FileSystem {
 
         entries.put(normalized, entry)
         entry.lockPath()
-    }
-
-    /**
-     * Creates an empty file with the specified pathname.
-     *
-     * @param path - the path of the filename to create
-     * @return true if and only if the file was created false otherwise
-     *
-     * @throws AssertionError - if path is null
-     * @throws FileSystemException - if the parent directory of the path does not exist or if an I/O error occurs
-     * @throws InvalidFilenameException - if path specifies an invalid (illegal) filename
-     *
-     * @see FileSystem#createFile(String)
-     */
-    public boolean createFile(String path) {
-        assert path != null
-        checkForInvalidFilename(path)
-
-        // TODO Consider refactoring into addEntry()
-        if (!parentDirectoryExists(path)) {
-            String parent = getParent(path)
-            if (createParentDirectoriesAutomatically) {
-                if (!createDirectory(parent)) {
-                    return false
-                }
-            }
-            else {
-                throw new FileSystemException(parent, 'filesystem.parentDirectoryDoesNotExist')
-            }
-        }
-
-        if (exists(path)) {
-            return false
-        }
-        String normalizedPath = normalize(path)
-        addEntry(new FileEntry(normalizedPath))
-        return true
-    }
-
-    /**
-     * Creates the directory named by the specified pathname.
-     *
-     * @param path - the path of the directory to create
-     * @return true if and only if the directory was created false otherwise
-     *
-     * @throws AssertionError - if path is null
-     * @throws FileSystemException - if the parent directory of the path does not exist or if an I/O error occurs
-     *
-     * @see org.mockftpserver.fake.filesystem.FileSystem#createDirectory(java.lang.String)
-     */
-    public boolean createDirectory(String path) {
-        assert path != null
-        String normalizedPath = normalize(path)
-
-        if (!parentDirectoryExists(path)) {
-            String parent = getParent(path)
-            if (createParentDirectoriesAutomatically) {
-                if (!createDirectory(parent)) {
-                    return false
-                }
-            }
-            else {
-                throw new FileSystemException(parent, 'filesystem.parentDirectoryDoesNotExist')
-            }
-        }
-        try {
-            addEntry(new DirectoryEntry(normalizedPath))
-            return true
-        }
-        catch (FileSystemException e) {
-            return false
-        }
     }
 
     /**
@@ -348,9 +290,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
 
         // Create the TO directory entry first so that the destination path exists when you
         // move the children. Remove the FROM path after all children have been moved
-        if (!createDirectory(normalizedToPath)) {
-            throw new FileSystemException(normalizedToPath, 'filesystem.parentDirectoryDoesNotExist')
-        }
+        add(new DirectoryEntry(normalizedToPath))
 
         List children = descendents(fromPath)
         children.each {childPath ->

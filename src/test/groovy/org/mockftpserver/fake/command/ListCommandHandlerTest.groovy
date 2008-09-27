@@ -113,7 +113,7 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void setUp() {
         super.setUp()
-        assert fileSystem.createDirectory("/usr")
+        createDirectory("/usr")
         fileSystem.directoryListingFormatter = [format: {entry -> entry.toString()}] as DirectoryListingFormatter
     }
 

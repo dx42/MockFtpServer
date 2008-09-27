@@ -22,6 +22,7 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.user.UserAccount
 
+
 /**
  * Tests for UserCommandHandler
  *
@@ -95,7 +96,7 @@ class UserCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void setUp() {
         super.setUp()
 
-        fileSystem.createDirectory(HOME_DIRECTORY)
+        createDirectory(HOME_DIRECTORY)
         userAccount = new UserAccount(username: USERNAME, homeDirectory: HOME_DIRECTORY)
     }
 

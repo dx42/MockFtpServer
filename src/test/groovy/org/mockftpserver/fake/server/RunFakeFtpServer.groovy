@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.server
 
+import org.mockftpserver.fake.filesystem.DirectoryEntry
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem
 import org.mockftpserver.fake.user.UserAccount
@@ -35,8 +36,8 @@ class RunFakeFtpServer {
     static main(args) {
         def fileSystem = new UnixFakeFileSystem()
         fileSystem.createParentDirectoriesAutomatically = true
-        fileSystem.createDirectory(HOME_DIR)
-        fileSystem.createDirectory("$HOME_DIR/subdir")
+        fileSystem.add(new DirectoryEntry(HOME_DIR))
+        fileSystem.add(new DirectoryEntry("$HOME_DIR/subdir"))
         fileSystem.addEntry(new FileEntry(path: "$HOME_DIR/abc.txt", contents: '1234567890'))
         fileSystem.addEntry(new FileEntry(path: "$HOME_DIR/def.txt", contents: '1234567890'))
 

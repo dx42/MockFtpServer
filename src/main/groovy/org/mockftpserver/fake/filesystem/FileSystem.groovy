@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.mockftpserver.fake.filesystem
 
 /**
@@ -26,27 +25,10 @@ package org.mockftpserver.fake.filesystem
 public interface FileSystem {
 
     /**
-     * Creates an empty file with the specified pathname.
-     *
-     * @param path - the path of the filename to create
-     * @return true if and only if the file was created false otherwise
-     *
-     * @throws AssertionError - if path is null
-     * @throws FileSystemException - if the parent directory of the path does not exist or if an I/O error occurs
-     * @throws InvalidFilenameException - if path specifies an invalid (illegal) filename
+     * Add the specified file system entry (file or directory) to this file system
+     * @param entry - the FileSystemEntry to add
      */
-    public boolean createFile(String path)
-
-    /**
-     * Creates the directory named by the specified pathname.
-     *
-     * @param path - the path of the directory to create
-     * @return true if and only if the directory was created false otherwise
-     *
-     * @throws AssertionError - if path is null
-     * @throws FileSystemException - if the parent directory of the path does not exist or if an I/O error occurs
-     */
-    public boolean createDirectory(String path)
+    public void add(FileSystemEntry entry)
 
     /**
      * Create and return a new OutputStream for writing to the file at the specified path

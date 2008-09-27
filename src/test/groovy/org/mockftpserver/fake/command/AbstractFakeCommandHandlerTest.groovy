@@ -20,6 +20,8 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.core.session.StubSession
+import org.mockftpserver.fake.filesystem.DirectoryEntry
+import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem
 import org.mockftpserver.fake.server.StubServerConfiguration
@@ -43,7 +45,7 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     protected fileSystem
     protected userAccount
 
-    /** Set this to false to skip the test that verifies that the CommandHandler requires a logged in user   */
+    /** Set this to false to skip the test that verifies that the CommandHandler requires a logged in user     */
     boolean testNotLoggedIn = true
 
     //-------------------------------------------------------------------------
@@ -256,6 +258,23 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
      */
     protected endOfLine() {
         commandHandler.endOfLine()
+    }
+
+    /**
+     * Create a new directory entry with the specified path in the file system
+     * @param path - the path of the new directory entry
+     */
+    protected void createDirectory(String path) {
+        fileSystem.add(new DirectoryEntry(path))
+    }
+
+    /**
+     * Create a new file entry with the specified path in the file system
+     * @param path - the path of the new file entry
+     * @param contents - the contents for the file; defaults to null
+     */
+    protected void createFile(String path, contents = null) {
+        fileSystem.add(new FileEntry(path: path, contents: contents))
     }
 
 }
