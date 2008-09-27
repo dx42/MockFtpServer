@@ -21,6 +21,7 @@ import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.fake.filesystem.FileSystemException
 
+
 /**
  * Abstract superclass for tests of Fake CommandHandlers that store a file (STOR, STOU, APPE)
  *
@@ -73,7 +74,7 @@ abstract class AbstractStoreFileCommandHandlerTest extends AbstractFakeCommandHa
 
     void setUp() {
         super.setUp()
-        assert fileSystem.createDirectory(DIR)
+        createDirectory(DIR)
     }
 
     protected void testHandleCommand(List parameters, String messageKey, String contents) {

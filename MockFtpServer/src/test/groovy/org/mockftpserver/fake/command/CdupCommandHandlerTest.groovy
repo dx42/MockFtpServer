@@ -21,6 +21,7 @@ import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 
+
 /**
  * Tests for CdupCommandHandler
  *
@@ -61,7 +62,7 @@ class CdupCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void setUp() {
         super.setUp()
-        assert fileSystem.createDirectory(SUBDIR)
+        createDirectory(SUBDIR)
     }
 
 }

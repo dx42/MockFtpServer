@@ -44,7 +44,7 @@ class StorCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
     }
 
     void testHandleCommand_PathSpecifiesAnExistingDirectory() {
-        assert fileSystem.createDirectory(FILE)
+        createDirectory(FILE)
         commandHandler.handleCommand(createCommand([FILE]), session)
         assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, FILE)
     }

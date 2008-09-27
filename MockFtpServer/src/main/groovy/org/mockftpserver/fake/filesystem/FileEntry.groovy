@@ -75,8 +75,8 @@ public class FileEntry extends AbstractFileSystemEntry {
      * @param contents - the String whose bytes are used as the contents
      */
     void setContents(String contents) {
-        assert contents != null
-        setContentsInternal(contents.getBytes())
+        def newBytes = contents ? contents.getBytes() : EMPTY
+        setContentsInternal(newBytes)
     }
 
     /**
@@ -84,9 +84,9 @@ public class FileEntry extends AbstractFileSystemEntry {
      * @param contents - the byte[] used as the contents
      */
     void setContents(byte[] contents) {
-        assert contents != null
         // Copy the bytes[] to guard against subsequent modification of the source array
-        setContentsInternal(new String(contents).getBytes())
+        def newBytes = contents ? new String(contents).getBytes() : EMPTY
+        setContentsInternal(newBytes)
     }
 
     /**

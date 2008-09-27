@@ -20,7 +20,7 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.fake.filesystem.FileEntry
+
 
 /**
  * Tests for RetrCommandHandler
@@ -94,8 +94,8 @@ class RetrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void setUp() {
         super.setUp()
-        assert fileSystem.createDirectory(DIR)
-        fileSystem.addEntry(new FileEntry(path: FILE, contents: CONTENTS))
+        createDirectory(DIR)
+        createFile(FILE, CONTENTS)
     }
 
 }

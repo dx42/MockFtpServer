@@ -55,35 +55,35 @@ abstract class AbstractFakeFileSystemTest extends AbstractFileSystemTest {
         shouldFail(FileSystemException) { fakeFileSystem.addEntry(new FileEntry("/abc/def/ghi")) }
     }
 
-    void testCreateDirectory_CreateParentDirectoriesAutomatically() {
+    void testAdd_Directory_CreateParentDirectoriesAutomatically() {
         final NEW_SUBDIR = fileSystem.path(NEW_DIR, "sub")
         assert !fileSystem.exists(NEW_DIR), "Before createDirectory"
         assert !fileSystem.exists(NEW_SUBDIR), "Before createDirectory"
 
         fileSystem.createParentDirectoriesAutomatically = true
-        assert fileSystem.createDirectory(NEW_SUBDIR)
+        fileSystem.add(new DirectoryEntry(NEW_SUBDIR))
         assert fileSystem.exists(NEW_DIR), "After createDirectory"
         assert fileSystem.exists(NEW_SUBDIR), "$NEW_SUBDIR: After createDirectory"
     }
 
-    void testCreateFile_CreateParentDirectoriesAutomatically_False() {
-        fileSystem.createParentDirectoriesAutomatically = false
-        final NEW_FILE_IN_SUBDIR = fileSystem.path(NEW_DIR, "abc.txt")
-        assert !fileSystem.exists(NEW_DIR), "Before createDirectory"
-
-        shouldFail(FileSystemException) { fileSystem.createFile(NEW_FILE_IN_SUBDIR) }
-        assert !fileSystem.exists(NEW_DIR), "After createDirectory"
-    }
-
-    void testCreateFile_CreateParentDirectoriesAutomatically() {
+    void testAdd_File_CreateParentDirectoriesAutomatically() {
         final NEW_FILE_IN_SUBDIR = fileSystem.path(NEW_DIR, "abc.txt")
         assert !fileSystem.exists(NEW_DIR), "Before createDirectory"
         assert !fileSystem.exists(NEW_FILE_IN_SUBDIR), "Before createDirectory"
 
         fileSystem.createParentDirectoriesAutomatically = true
-        assert fileSystem.createFile(NEW_FILE_IN_SUBDIR)
+        fileSystem.add(new FileEntry(NEW_FILE_IN_SUBDIR))
         assert fileSystem.exists(NEW_DIR), "After createDirectory"
         assert fileSystem.exists(NEW_FILE_IN_SUBDIR), "$NEW_FILE_IN_SUBDIR: After createDirectory"
+    }
+
+    void testAdd_File_CreateParentDirectoriesAutomatically_False() {
+        fileSystem.createParentDirectoriesAutomatically = false
+        final NEW_FILE_IN_SUBDIR = fileSystem.path(NEW_DIR, "abc.txt")
+        assert !fileSystem.exists(NEW_DIR), "Before createDirectory"
+
+        shouldFail(FileSystemException) { fileSystem.add(new FileEntry(NEW_FILE_IN_SUBDIR)) }
+        assert !fileSystem.exists(NEW_DIR), "After createDirectory"
     }
 
     void testToString() {

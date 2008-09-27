@@ -22,6 +22,7 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.filesystem.FileSystemException
 
+
 /**
  * Tests for RntoCommandHandler
  *
@@ -35,7 +36,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     def TO_FILE = "/file.txt"
 
     void testHandleCommand() {
-        assert fileSystem.createFile(FROM_FILE)
+        createFile(FROM_FILE)
         commandHandler.handleCommand(createCommand([TO_FILE]), session)
         assertSessionReply(ReplyCodes.RNTO_OK, ['rnto', FROM_FILE, TO_FILE])
         assert !fileSystem.exists(FROM_FILE), FROM_FILE
@@ -44,7 +45,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_PathIsRelative() {
-        assert fileSystem.createFile(FROM_FILE)
+        createFile(FROM_FILE)
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, "/")
         commandHandler.handleCommand(createCommand(["file.txt"]), session)
         assertSessionReply(ReplyCodes.RNTO_OK, ['rnto', FROM_FILE, 'file.txt'])
@@ -59,14 +60,14 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_ToFilenameNotValid() {
-        assert fileSystem.createFile(FROM_FILE)
+        createFile(FROM_FILE)
         commandHandler.handleCommand(createCommand([""]), session)
         assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, "")
         assert session.getAttribute(SessionKeys.RENAME_FROM) == FROM_FILE
     }
 
     void testHandleCommand_ToFilenameSpecifiesADirectory() {
-        assert fileSystem.createDirectory(TO_FILE)
+        createDirectory(TO_FILE)
         commandHandler.handleCommand(createCommand([TO_FILE]), session)
         assertSessionReply(ReplyCodes.NEW_FILE_ERROR, ['filesystem.isDirectory', TO_FILE])
         assert session.getAttribute(SessionKeys.RENAME_FROM) == FROM_FILE

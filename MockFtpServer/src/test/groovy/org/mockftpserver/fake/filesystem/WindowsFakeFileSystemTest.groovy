@@ -48,8 +48,8 @@ class WindowsFakeFileSystemTest extends AbstractFakeFileSystemTest {
         assertFalse(X, fileSystem.exists(X))
         assertFalse(Y, fileSystem.exists(Y))
 
-        fileSystem.createDirectory(X)
-        fileSystem.createDirectory(Y)
+        fileSystem.add(new DirectoryEntry(X))
+        fileSystem.add(new DirectoryEntry(Y))
 
         assertTrue(X, fileSystem.exists(X))
         assertTrue(Y, fileSystem.exists(Y))

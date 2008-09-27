@@ -21,6 +21,7 @@ import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 
+
 /**
  * Tests for RnfrCommandHandler
  *
@@ -33,14 +34,14 @@ class RnfrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     def FILE = "/file.txt"
 
     void testHandleCommand() {
-        assert fileSystem.createFile(FILE)
+        createFile(FILE)
         commandHandler.handleCommand(createCommand([FILE]), session)
         assertSessionReply(ReplyCodes.RNFR_OK, 'rnfr')
         assert session.getAttribute(SessionKeys.RENAME_FROM) == FILE
     }
 
     void testHandleCommand_PathIsRelative() {
-        assert fileSystem.createFile(FILE)
+        createFile(FILE)
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, "/")
         commandHandler.handleCommand(createCommand(["file.txt"]), session)
         assertSessionReply(ReplyCodes.RNFR_OK, 'rnfr')
@@ -54,7 +55,7 @@ class RnfrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_PathSpecifiesADirectory() {
-        assert fileSystem.createDirectory(FILE)
+        createDirectory(FILE)
         commandHandler.handleCommand(createCommand([FILE]), session)
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.isNotAFile', FILE])
         assert session.getAttribute(SessionKeys.RENAME_FROM) == null
