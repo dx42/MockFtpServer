@@ -84,19 +84,17 @@ public interface FileSystem {
     public boolean delete(String path)
 
     /**
-     * Rename the file or directory. Specify the FROM path and the TO path. Return true if the file
-     * is successfully renamed, false otherwise. Return false if the path does not refer to a valid
-     * file or directory.
+     * Rename the file or directory. Specify the FROM path and the TO path. Throw an exception if the FROM path or
+     * the parent directory of the TO path do not exist; or if the rename fails for another reason.
      *
      * @param path - the path of the file or directory to delete
      * @param fromPath - the source (old) path + filename
      * @param toPath - the target (new) path + filename
-     * @return true if the file or directory is successfully renamed
      *
      * @throws AssertionError - if fromPath or toPath is null
-     * @throws FileSystemException - if either the FROM path or the parent directory of the TO path do not exist
+     * @throws FileSystemException - if the rename fails.
      */
-    public boolean rename(String fromPath, String toPath)
+    public void rename(String fromPath, String toPath)
 
     /**
      * Return the formatted directory listing entry for the file represented by the specified FileSystemEntry
