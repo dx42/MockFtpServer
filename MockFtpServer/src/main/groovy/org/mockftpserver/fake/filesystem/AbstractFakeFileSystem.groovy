@@ -27,7 +27,7 @@ import org.mockftpserver.core.util.PatternUtil
  * that do not already exist. If <code>false</code>, then creating a directory or file throws an
  * exception if its parent directory does not exist. This value defaults to <code>true</code>.
  * <p>
- * The <code>directoryListingFormatter</code> property holds an instance of       {@link DirectoryListingFormatter}                     ,
+ * The <code>directoryListingFormatter</code> property holds an instance of        {@link DirectoryListingFormatter}                      ,
  * used by the <code>formatDirectoryListing</code> method to format directory listings in a
  * filesystem-specific manner. This property must be initialized by concrete subclasses.
  *
@@ -48,7 +48,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     boolean createParentDirectoriesAutomatically = true
 
     /**
-     * The       {@link DirectoryListingFormatter}       used by the       {@link #formatDirectoryListing(FileSystemEntry)}
+     * The        {@link DirectoryListingFormatter}        used by the        {@link #formatDirectoryListing(FileSystemEntry)}
      * method. This must be initialized by concrete subclasses. 
      */
     DirectoryListingFormatter directoryListingFormatter
@@ -253,19 +253,17 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     }
 
     /**
-     * Rename the file or directory. Specify the FROM path and the TO path. Return true if the file
-     * is successfully renamed, false otherwise. Return false if the path does not refer to a valid
-     * file or directory.
+     * Rename the file or directory. Specify the FROM path and the TO path. Throw an exception if the FROM path or
+     * the parent directory of the TO path do not exist; or if the rename fails for another reason.
      *
      * @param path - the path of the file or directory to delete
      * @param fromPath - the source (old) path + filename
      * @param toPath - the target (new) path + filename
-     * @return true if the file or directory is successfully renamed
      *
      * @throws AssertionError - if fromPath or toPath is null
-     * @throws FileSystemException - if either the FROM path or the parent directory of the TO path do not exist
+     * @throws FileSystemException - if the rename fails.
      */
-    public boolean rename(String fromPath, String toPath) {
+    public void rename(String fromPath, String toPath) {
         assert toPath != null
         assert fromPath != null
 
@@ -276,7 +274,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
 
         if (!entry.isDirectory()) {
             renamePath(entry, normalizedToPath)
-            return true
+            return
         }
 
         // Create the TO directory entry first so that the destination path exists when you
@@ -293,7 +291,6 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         }
         assert children(normalizedFromPath) == []
         entries.remove(normalizedFromPath)
-        return true
     }
 
     /**

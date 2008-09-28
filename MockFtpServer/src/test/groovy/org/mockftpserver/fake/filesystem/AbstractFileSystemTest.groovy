@@ -284,14 +284,14 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
         final String FROM_FILE = NEW_FILE + "2"
         fileSystem.add(new FileEntry(FROM_FILE))
 
-        assert fileSystem.rename(FROM_FILE, NEW_FILE)
+        fileSystem.rename(FROM_FILE, NEW_FILE)
         assert fileSystem.exists(NEW_FILE)
 
         fileSystem.add(new DirectoryEntry(NEW_DIR))
 
         // Rename existing directory
         final String TO_DIR = NEW_DIR + "2"
-        assert fileSystem.rename(NEW_DIR, TO_DIR)
+        fileSystem.rename(NEW_DIR, TO_DIR)
         assert !fileSystem.exists(NEW_DIR)
         assert fileSystem.exists(TO_DIR)
     }
@@ -309,7 +309,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
         fileSystem.add(new DirectoryEntry(NEW_DIR + "/subdir"))
 
         final String TO_DIR = NEW_DIR + "2"
-        assert fileSystem.rename(NEW_DIR, TO_DIR)
+        fileSystem.rename(NEW_DIR, TO_DIR)
         assert !fileSystem.exists(NEW_DIR)
         assert !fileSystem.exists(NEW_DIR + "/a.txt")
         assert !fileSystem.exists(NEW_DIR + "/b.txt")
