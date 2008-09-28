@@ -18,7 +18,6 @@ package org.mockftpserver.fake.filesystem
 import org.mockftpserver.core.util.IoUtil
 import org.mockftpserver.test.AbstractGroovyTest
 
-
 /**
  * Abstract superclass for tests of FileSystem implementation classes. Contains common
  * tests and test infrastructure. 
@@ -338,15 +337,6 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
 
     void testGetParent_Null() {
         shouldFailWithMessageContaining("path") { fileSystem.getParent(null) }
-    }
-
-//     void testNormalize_InvalidPaths() {
-//        shouldFail(InvalidFilenameException) { fileSystem.normalize(ILLEGAL_FILE) }
-//        LOG.info(fileSystem.normalize(ILLEGAL_FILE))
-//     }
-
-    void testNormalize_Null() {
-        shouldFailWithMessageContaining("path") { fileSystem.normalize(null) }
     }
 
     //-------------------------------------------------------------------------

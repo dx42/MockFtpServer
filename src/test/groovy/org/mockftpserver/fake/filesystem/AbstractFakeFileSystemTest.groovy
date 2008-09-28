@@ -126,6 +126,10 @@ abstract class AbstractFakeFileSystemTest extends AbstractFileSystemTest {
         assert entry.permissions == permissions
     }
 
+    void testNormalize_Null() {
+        shouldFailWithMessageContaining("path") { fileSystem.normalize(null) }
+    }
+
     //--------------------------------------------------------------------------
     // Abstract Methods
     //--------------------------------------------------------------------------

@@ -196,14 +196,4 @@ public interface FileSystem {
      */
     public String getParent(String path)
 
-    /**
-     * Return the standard, normalized form of the path. 
-     * @param path
-     * @return
-     *
-     * @throws AssertionError - if path is null
-     * @throws FileSystemException - if an IOException occurs while determining the canonical path from the real" file system.
-     */
-    public String normalize(String path)
-
 }
