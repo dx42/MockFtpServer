@@ -27,7 +27,7 @@ import org.mockftpserver.core.util.PatternUtil
  * that do not already exist. If <code>false</code>, then creating a directory or file throws an
  * exception if its parent directory does not exist. This value defaults to <code>true</code>.
  * <p>
- * The <code>directoryListingFormatter</code> property holds an instance of      {@link DirectoryListingFormatter}                    ,
+ * The <code>directoryListingFormatter</code> property holds an instance of       {@link DirectoryListingFormatter}                     ,
  * used by the <code>formatDirectoryListing</code> method to format directory listings in a
  * filesystem-specific manner. This property must be initialized by concrete subclasses.
  *
@@ -48,7 +48,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     boolean createParentDirectoriesAutomatically = true
 
     /**
-     * The      {@link DirectoryListingFormatter}      used by the      {@link #formatDirectoryListing(FileSystemEntry)}
+     * The       {@link DirectoryListingFormatter}       used by the       {@link #formatDirectoryListing(FileSystemEntry)}
      * method. This must be initialized by concrete subclasses. 
      */
     DirectoryListingFormatter directoryListingFormatter
@@ -323,7 +323,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      * @param path2 - the second path component may be null or empty
      * @return the path resulting from concatenating path1 to path2
      */
-    String path(String path1, String path2) {
+    public String path(String path1, String path2) {
         StringBuffer buf = new StringBuffer()
         if (path1 != null && path1.length() > 0) {
             buf.append(path1)
@@ -340,17 +340,6 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     }
 
     /**
-     * Return the standard, normalized form of the path. 
-     * @param path - the path
-     * @return the path in a standard, unique, canonical form
-     *
-     * @throws AssertionError - if path is null
-     */
-    String normalize(String path) {
-        return componentsToPath(normalizedComponents(path))
-    }
-
-    /**
      * Return the parent path of the specified path. If <code>path</code> specifies a filename,
      * then this method returns the path of the directory containing that file. If <code>path</code>
      * specifies a directory, the this method returns its parent directory. If <code>path</code> is
@@ -362,7 +351,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      *
      * @throws AssertionError - if path is null
      */
-    String getParent(String path) {
+    public String getParent(String path) {
         def parts = normalizedComponents(path)
         if (parts.size() < 2) {
             return null
@@ -382,7 +371,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      *
      * @see File#getName()
      */
-    String getName(String path) {
+    public String getName(String path) {
         assert path != null
         def normalized = normalize(path)
         int separatorIndex = normalized.lastIndexOf(this.separator)
@@ -397,7 +386,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      *
      * @see FileSystem#getEntry(String)
      */
-    FileSystemEntry getEntry(String path) {
+    public FileSystemEntry getEntry(String path) {
         return (FileSystemEntry) entries.get(normalize(path))
     }
 
@@ -427,11 +416,20 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      */
     protected abstract boolean isSeparator(char c)
 
-    ;
-
     //-------------------------------------------------------------------------
     // Internal Helper Methods
     //-------------------------------------------------------------------------
+
+    /**
+     * Return the standard, normalized form of the path.
+     * @param path - the path
+     * @return the path in a standard, unique, canonical form
+     *
+     * @throws AssertionError - if path is null
+     */
+    protected String normalize(String path) {
+        return componentsToPath(normalizedComponents(path))
+    }
 
     /**
      * Throw an InvalidFilenameException if the specified path is not valid.
