@@ -27,7 +27,7 @@ import org.mockftpserver.core.util.PatternUtil
  * that do not already exist. If <code>false</code>, then creating a directory or file throws an
  * exception if its parent directory does not exist. This value defaults to <code>true</code>.
  * <p>
- * The <code>directoryListingFormatter</code> property holds an instance of     {@link DirectoryListingFormatter}                   ,
+ * The <code>directoryListingFormatter</code> property holds an instance of      {@link DirectoryListingFormatter}                    ,
  * used by the <code>formatDirectoryListing</code> method to format directory listings in a
  * filesystem-specific manner. This property must be initialized by concrete subclasses.
  *
@@ -48,7 +48,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     boolean createParentDirectoriesAutomatically = true
 
     /**
-     * The     {@link DirectoryListingFormatter}     used by the     {@link #formatDirectoryListing(FileSystemEntry)}
+     * The      {@link DirectoryListingFormatter}      used by the      {@link #formatDirectoryListing(FileSystemEntry)}
      * method. This must be initialized by concrete subclasses. 
      */
     DirectoryListingFormatter directoryListingFormatter
@@ -58,15 +58,6 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     //-------------------------------------------------------------------------
     // Public API
     //-------------------------------------------------------------------------
-
-    /**
-     * Add the specified file system entry (file or directory) to this file system
-     *
-     * @param entry - the FileSystemEntry to add
-     */
-    public void addEntry(FileSystemEntry entry) {
-        add(entry);
-    }
 
     /**
      * Add the specified file system entry (file or directory) to this file system
@@ -83,7 +74,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         if (!parentDirectoryExists(normalized)) {
             String parent = getParent(normalized)
             if (createParentDirectoriesAutomatically) {
-                addEntry(new DirectoryEntry(parent))
+                add(new DirectoryEntry(parent))
             }
             else {
                 throw new FileSystemException(parent, 'filesystem.parentDirectoryDoesNotExist')
@@ -132,7 +123,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
             verifyIsFile(path)
         }
         else {
-            addEntry(new FileEntry(path))
+            add(new FileEntry(path))
         }
         FileEntry fileEntry = (FileEntry) getEntry(path)
         return fileEntry.createOutputStream(append)
@@ -461,7 +452,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         def normalizedTo = normalize(toPath)
         LOG.info("renaming from [" + normalizedFrom + "] to [" + normalizedTo + "]")
         def newEntry = entry.cloneWithNewPath(normalizedTo)
-        addEntry(newEntry)
+        add(newEntry)
         // Do this at the end, in case the addEntry() failed
         entries.remove(normalizedFrom)
     }

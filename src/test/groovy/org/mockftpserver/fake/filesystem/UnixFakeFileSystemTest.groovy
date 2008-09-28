@@ -127,8 +127,8 @@ class UnixFakeFileSystemTest extends AbstractFakeFileSystemTest {
      */
     protected FileSystem createFileSystem() {
         UnixFakeFileSystem fs = new UnixFakeFileSystem()
-        fs.addEntry(new DirectoryEntry(EXISTING_DIR))
-        fs.addEntry(new FileEntry(EXISTING_FILE, EXISTING_FILE_CONTENTS))
+        fs.add(new DirectoryEntry(EXISTING_DIR))
+        fs.add(new FileEntry(EXISTING_FILE, EXISTING_FILE_CONTENTS))
         assert fs.createParentDirectoriesAutomatically
         fs.createParentDirectoriesAutomatically = false
         return fs

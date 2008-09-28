@@ -26,7 +26,6 @@ import org.mockftpserver.fake.user.UserAccount
 import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.test.PortTestUtil
 
-
 /**
  * Integration tests for FakeFtpServer.
  *
@@ -80,7 +79,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
 
     void testAppe() {
         def ORIGINAL_CONTENTS = '123 456 789'
-        fileSystem.addEntry(new FileEntry(path: FILE1, contents: ORIGINAL_CONTENTS))
+        fileSystem.add(new FileEntry(path: FILE1, contents: ORIGINAL_CONTENTS))
 
         ftpClientConnectAndLogin()
 
@@ -132,8 +131,8 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
 
     void testList() {
         def LAST_MODIFIED = new Date()
-        fileSystem.addEntry(new FileEntry(path: p(SUBDIR, FILENAME1), lastModified: LAST_MODIFIED, contents: ASCII_DATA))
-        fileSystem.addEntry(new DirectoryEntry(path: p(SUBDIR, SUBDIR_NAME2), lastModified: LAST_MODIFIED))
+        fileSystem.add(new FileEntry(path: p(SUBDIR, FILENAME1), lastModified: LAST_MODIFIED, contents: ASCII_DATA))
+        fileSystem.add(new DirectoryEntry(path: p(SUBDIR, SUBDIR_NAME2), lastModified: LAST_MODIFIED))
 
         ftpClientConnectAndLogin()
 
@@ -175,8 +174,8 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
     }
 
     void testNlst() {
-        fileSystem.addEntry(new FileEntry(path: p(SUBDIR, FILENAME1)))
-        fileSystem.addEntry(new DirectoryEntry(path: p(SUBDIR, SUBDIR_NAME2)))
+        fileSystem.add(new FileEntry(path: p(SUBDIR, FILENAME1)))
+        fileSystem.add(new DirectoryEntry(path: p(SUBDIR, SUBDIR_NAME2)))
 
         ftpClientConnectAndLogin()
 
@@ -192,8 +191,8 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
     }
 
     void testPasv_Nlst() {
-        fileSystem.addEntry(new FileEntry(path: p(SUBDIR, FILENAME1)))
-        fileSystem.addEntry(new FileEntry(path: p(SUBDIR, FILENAME2)))
+        fileSystem.add(new FileEntry(path: p(SUBDIR, FILENAME1)))
+        fileSystem.add(new FileEntry(path: p(SUBDIR, FILENAME2)))
 
         ftpClientConnectAndLogin()
         ftpClient.enterLocalPassiveMode();
@@ -227,7 +226,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
     }
 
     void testRetr() {
-        fileSystem.addEntry(new FileEntry(path: FILE1, contents: ASCII_DATA))
+        fileSystem.add(new FileEntry(path: FILE1, contents: ASCII_DATA))
 
         ftpClientConnectAndLogin()
 

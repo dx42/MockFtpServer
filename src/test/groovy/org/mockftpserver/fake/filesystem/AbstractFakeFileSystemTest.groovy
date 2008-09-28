@@ -34,25 +34,15 @@ abstract class AbstractFakeFileSystemTest extends AbstractFileSystemTest {
         assert fileSystem.directoryListingFormatter.class == expectedDirectoryListingFormatterClass
     }
 
-    void testAddEntry() {
-        AbstractFakeFileSystem fakeFileSystem = (AbstractFakeFileSystem) fileSystem
-        assertFalse("exists before", fileSystem.exists(NEW_FILE))
+    void testAdd_PathLocked() {
         def dirEntry = new DirectoryEntry(NEW_DIR)
-        fakeFileSystem.addEntry(dirEntry)
-        assertTrue("/ exists after", fileSystem.exists(NEW_DIR))
+        fileSystem.add(dirEntry)
         def fileEntry = new FileEntry(NEW_FILE)
-        fakeFileSystem.addEntry(fileEntry)
-        assertTrue("exists after", fileSystem.exists(NEW_FILE))
+        fileSystem.add(fileEntry)
 
         // The path should be locked for both entries
         shouldFail { dirEntry.setPath('abc') }
         shouldFail { fileEntry.setPath('abc') }
-
-        // Try adding entry that already exists
-        shouldFail(FileSystemException) { fakeFileSystem.addEntry(new FileEntry(NEW_FILE)) }
-
-        // Try adding entry for path whose parent does not already exist
-        shouldFail(FileSystemException) { fakeFileSystem.addEntry(new FileEntry("/abc/def/ghi")) }
     }
 
     void testAdd_Directory_CreateParentDirectoriesAutomatically() {
@@ -125,7 +115,7 @@ abstract class AbstractFakeFileSystemTest extends AbstractFileSystemTest {
         def permissions = new Permissions('-wxrwx---')
         def fileEntry = new FileEntry(path: NEW_FILE, lastModified: DATE, contents: 'abc', owner: 'owner',
                 group: 'group', permissions: permissions)
-        fileSystem.addEntry(fileEntry)
+        fileSystem.add(fileEntry)
         def entry = fileSystem.getEntry(NEW_FILE)
         LOG.info(entry)
         assert entry.path == NEW_FILE
