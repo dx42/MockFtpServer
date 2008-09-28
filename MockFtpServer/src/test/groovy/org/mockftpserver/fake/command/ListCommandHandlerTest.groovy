@@ -25,7 +25,6 @@ import org.mockftpserver.fake.filesystem.DirectoryListingFormatter
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystemEntry
 
-
 /**
  * Tests for ListCommandHandler
  *
@@ -41,7 +40,7 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_SingleFile() {
         final entry = new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc")
-        fileSystem.addEntry(entry)
+        fileSystem.add(entry)
         handleCommandAndVerifySendDataReplies([DIR])
         assertSessionData(listingFor(entry))
     }
@@ -51,9 +50,9 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         final entry1 = new FileEntry(path: p(DIR, "abc.txt"), lastModified: LAST_MODIFIED, contents: "abc")
         final entry2 = new DirectoryEntry(path: p(DIR, "OtherFiles"), lastModified: LAST_MODIFIED)
         final entry3 = new FileEntry(path: p(DIR, "another_file.doc"), lastModified: LAST_MODIFIED, contents: DATA3)
-        fileSystem.addEntry(entry1)
-        fileSystem.addEntry(entry2)
-        fileSystem.addEntry(entry3)
+        fileSystem.add(entry1)
+        fileSystem.add(entry2)
+        fileSystem.add(entry3)
 
         handleCommandAndVerifySendDataReplies([DIR])
 
@@ -68,7 +67,7 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_NoPath_UseCurrentDirectory() {
         final entry = new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc")
-        fileSystem.addEntry(entry)
+        fileSystem.add(entry)
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
         handleCommandAndVerifySendDataReplies([])
         assertSessionData(listingFor(entry))
@@ -81,7 +80,7 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_PathSpecifiesAFile() {
         final entry = new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc")
-        fileSystem.addEntry(entry)
+        fileSystem.add(entry)
         handleCommandAndVerifySendDataReplies([p(DIR, NAME)])
         assertSessionData(listingFor(entry))
     }

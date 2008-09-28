@@ -21,7 +21,6 @@ import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.fake.filesystem.FileEntry
 
-
 /**
  * Tests for AppeCommandHandler
  *
@@ -41,7 +40,7 @@ class AppeCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
 
     void testHandleCommand_AbsolutePath_FileAlreadyExists() {
         def ORIGINAL_CONTENTS = '123 456 789'
-        fileSystem.addEntry(new FileEntry(path: FILE, contents: ORIGINAL_CONTENTS))
+        fileSystem.add(new FileEntry(path: FILE, contents: ORIGINAL_CONTENTS))
         testHandleCommand([FILE], 'appe', ORIGINAL_CONTENTS + CONTENTS)
     }
 
