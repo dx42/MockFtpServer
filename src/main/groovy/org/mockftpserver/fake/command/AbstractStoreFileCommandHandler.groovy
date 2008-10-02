@@ -19,6 +19,8 @@ import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
+import org.mockftpserver.fake.filesystem.FileEntry
+
 
 /**
  * Abstract superclass for CommandHandlers that that store a file (STOR, STOU, APPE). Handler logic:
@@ -42,7 +44,6 @@ abstract class AbstractStoreFileCommandHandler extends AbstractFakeCommandHandle
         verifyLoggedIn(session)
         this.replyCodeForFileSystemException = ReplyCodes.NEW_FILE_ERROR
 
-//        def filename = command.getRequiredParameter(0)
         def filename = getOutputFile(command)
         def path = getRealPath(session, filename)
         verifyFileSystemCondition(!fileSystem.isDirectory(path), path, 'filesystem.isFile')
@@ -55,7 +56,14 @@ abstract class AbstractStoreFileCommandHandler extends AbstractFakeCommandHandle
         def contents = session.readData()
         session.closeDataConnection();
 
-        def out = fileSystem.createOutputStream(path, appendToOutputFile())
+        def file = fileSystem.getEntry(path)
+        if (file == null) {
+            file = new FileEntry(path)
+            fileSystem.add(file)
+        }
+
+        def out = file.createOutputStream(appendToOutputFile())
+
         out.withStream { it.write(contents) }
         sendReply(session, ReplyCodes.TRANSFER_DATA_FINAL_OK, getMessageKey(), [filename])
     }

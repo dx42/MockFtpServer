@@ -20,6 +20,8 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.fake.filesystem.FileEntry
+import org.mockftpserver.fake.filesystem.FileSystemException
 
 
 /**
@@ -63,8 +65,17 @@ class RetrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.isNotAFile', DIR])
     }
 
-    void testHandleCommand_CreateInputStreamThrowsException() {
-        overrideMethodToThrowFileSystemException("createInputStream")
+    void testHandleCommand_PathDoesNotExist() {
+        def path = FILE + "XXX"
+        commandHandler.handleCommand(createCommand([path]), session)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.pathDoesNotExist', path])
+    }
+
+    void testHandleCommand_ThrowsFileSystemException() {
+        fileSystem.delete(FILE)
+        def fileEntry = new BadFileEntry(FILE)
+        fileSystem.add(fileEntry)
+
         handleCommand([FILE])
         assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
         assertSessionReply(1, ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)
@@ -98,4 +109,15 @@ class RetrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         createFile(FILE, CONTENTS)
     }
 
+}
+
+class BadFileEntry extends FileEntry {
+
+    BadFileEntry(String path) {
+        super(path)
+    }
+
+    InputStream createInputStream() {
+        throw new FileSystemException("BAD", AbstractFakeCommandHandlerTest.ERROR_MESSAGE_KEY)
+    }
 }

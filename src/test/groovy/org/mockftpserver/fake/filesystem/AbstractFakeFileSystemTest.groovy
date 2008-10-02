@@ -150,7 +150,8 @@ abstract class AbstractFakeFileSystemTest extends AbstractFileSystemTest {
      * String , String )
      */
     protected void verifyFileContents(FileSystem fileSystem, String path, String expectedContents) throws IOException {
-        InputStream input = fileSystem.createInputStream(path)
+        def fileEntry = fileSystem.getEntry(path)
+        InputStream input = fileEntry.createInputStream()
         byte[] bytes = IoUtil.readBytes(input)
         LOG.info("bytes=[" + new String(bytes) + "]")
         assertEquals("contents: actual=[" + new String(bytes) + "]", expectedContents.getBytes(), bytes)

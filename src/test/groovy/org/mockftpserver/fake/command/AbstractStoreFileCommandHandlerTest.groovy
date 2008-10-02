@@ -19,6 +19,7 @@ import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
+import org.mockftpserver.fake.filesystem.FileSystemEntry
 import org.mockftpserver.fake.filesystem.FileSystemException
 
 
@@ -36,12 +37,24 @@ abstract class AbstractStoreFileCommandHandlerTest extends AbstractFakeCommandHa
     def FILE = p(DIR, FILENAME)
     def CONTENTS = "abc"
 
-    void testHandleCommand_CreateOutputStreamThrowsException() {
-        def newMethod = {String path, boolean append ->
-            println "Calling createOutputStream() - throwing exception"
+    protected void testHandleCommand(List parameters, String messageKey, String contents) {
+        session.dataToRead = CONTENTS.bytes
+        handleCommand(parameters)
+        assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
+        assertSessionReply(1, ReplyCodes.TRANSFER_DATA_FINAL_OK, messageKey)
+
+        def outputFile = verifyOutputFile()
+
+        def actualContents = fileSystem.getEntry(outputFile).createInputStream().text
+        assert actualContents == contents
+    }
+
+    void testHandleCommand_ThrowsFileSystemException() {
+        def newMethod = {FileSystemEntry entry ->
+            println "Calling add() - throwing exception"
             throw new FileSystemException("bad", ERROR_MESSAGE_KEY)
         }
-        overrideMethod(fileSystem, "createOutputStream", newMethod)
+        overrideMethod(fileSystem, "add", newMethod)
 
         handleCommand([FILE])
         assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
@@ -58,8 +71,6 @@ abstract class AbstractStoreFileCommandHandlerTest extends AbstractFakeCommandHa
      */
     protected abstract String verifyOutputFile()
 
-    ;
-
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
@@ -75,18 +86,6 @@ abstract class AbstractStoreFileCommandHandlerTest extends AbstractFakeCommandHa
     void setUp() {
         super.setUp()
         createDirectory(DIR)
-    }
-
-    protected void testHandleCommand(List parameters, String messageKey, String contents) {
-        session.dataToRead = CONTENTS.bytes
-        handleCommand(parameters)
-        assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
-        assertSessionReply(1, ReplyCodes.TRANSFER_DATA_FINAL_OK, messageKey)
-
-        def outputFile = verifyOutputFile()
-
-        def actualContents = fileSystem.createInputStream(outputFile).text
-        assert actualContents == contents
     }
 
 }

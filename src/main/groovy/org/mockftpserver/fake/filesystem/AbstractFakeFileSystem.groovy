@@ -27,7 +27,7 @@ import org.mockftpserver.core.util.PatternUtil
  * that do not already exist. If <code>false</code>, then creating a directory or file throws an
  * exception if its parent directory does not exist. This value defaults to <code>true</code>.
  * <p>
- * The <code>directoryListingFormatter</code> property holds an instance of        {@link DirectoryListingFormatter}                      ,
+ * The <code>directoryListingFormatter</code> property holds an instance of          {@link DirectoryListingFormatter}                        ,
  * used by the <code>formatDirectoryListing</code> method to format directory listings in a
  * filesystem-specific manner. This property must be initialized by concrete subclasses.
  *
@@ -48,7 +48,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     boolean createParentDirectoriesAutomatically = true
 
     /**
-     * The        {@link DirectoryListingFormatter}        used by the        {@link #formatDirectoryListing(FileSystemEntry)}
+     * The          {@link DirectoryListingFormatter}          used by the          {@link #formatDirectoryListing(FileSystemEntry)}
      * method. This must be initialized by concrete subclasses. 
      */
     DirectoryListingFormatter directoryListingFormatter
@@ -83,50 +83,11 @@ abstract class AbstractFakeFileSystem implements FileSystem {
 
         // Set lastModified, if not already set
         if (!entry.lastModified) {
-            entry.lastModified = new Date()
+            entry.setLastModified(new Date())
         }
 
         entries.put(normalized, entry)
         entry.lockPath()
-    }
-
-    /**
-     * Create and return a new InputStream for reading from the file at the specified path
-     * @param path - the path of the file
-     *
-     * @throws AssertionError - if path is null
-     * @throws FileSystemException - wraps a FileNotFoundException if thrown
-     *
-     * @see org.mockftpserver.fake.filesystem.FileSystem#createInputStream(java.lang.String)
-     */
-    public InputStream createInputStream(String path) {
-        verifyPathExists(path)
-        verifyIsFile(path)
-        FileEntry fileEntry = (FileEntry) getEntry(path)
-        return fileEntry.createInputStream()
-    }
-
-    /**
-     * Create and return a new OutputStream for writing to the file at the specified path
-     * @param path - the path of the file
-     * @param append - true if the OutputStream should append to the end of the file if the file already exists
-     *
-     * @throws AssertionError - if path is null
-     * @throws FileSystemException - wraps a FileNotFoundException if thrown
-     *
-     * @see org.mockftpserver.fake.filesystem.FileSystem#createOutputStream(java.lang.String, boolean)
-     */
-    public OutputStream createOutputStream(String path, boolean append) {
-        checkForInvalidFilename(path)
-        verifyParentDirectoryExists(path)
-        if (exists(path)) {
-            verifyIsFile(path)
-        }
-        else {
-            add(new FileEntry(path))
-        }
-        FileEntry fileEntry = (FileEntry) getEntry(path)
-        return fileEntry.createOutputStream(append)
     }
 
     /**

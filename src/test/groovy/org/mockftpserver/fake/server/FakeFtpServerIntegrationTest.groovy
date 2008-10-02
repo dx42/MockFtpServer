@@ -26,6 +26,7 @@ import org.mockftpserver.fake.user.UserAccount
 import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.test.PortTestUtil
 
+
 /**
  * Integration tests for FakeFtpServer.
  *
@@ -86,7 +87,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         LOG.info("Put File for local path [$FILE1]")
         def inputStream = new ByteArrayInputStream(ASCII_DATA.getBytes())
         assert ftpClient.appendFile(FILE1, inputStream)
-        def contents = fileSystem.createInputStream(FILE1).text
+        def contents = fileSystem.getEntry(FILE1).createInputStream().text
         LOG.info("File contents=[" + contents + "]")
         assert contents == ORIGINAL_CONTENTS + ASCII_DATA
     }
@@ -267,7 +268,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         LOG.info("Put File for local path [$FILE1]")
         def inputStream = new ByteArrayInputStream(ASCII_DATA.getBytes())
         assert ftpClient.storeFile(FILE1, inputStream)
-        def contents = fileSystem.createInputStream(FILE1).text
+        def contents = fileSystem.getEntry(FILE1).createInputStream().text
         LOG.info("File contents=[" + contents + "]")
         assert contents == ASCII_DATA
     }
@@ -282,7 +283,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         def filename = names.find {name -> name.startsWith(FILENAME1) }
         assert filename
 
-        def contents = fileSystem.createInputStream(p(HOME_DIR, filename)).text
+        def contents = fileSystem.getEntry(p(HOME_DIR, filename)).createInputStream().text
         LOG.info("File contents=[" + contents + "]")
         assert contents == ASCII_DATA
     }
