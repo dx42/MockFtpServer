@@ -21,6 +21,8 @@ import org.mockftpserver.core.session.Session
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.core.util.IoUtil
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
+import org.mockftpserver.fake.filesystem.FileSystemEntry
+
 
 /**
  * CommandHandler for the RETR command. Handler logic:
@@ -45,10 +47,12 @@ class RetrCommandHandler extends AbstractFakeCommandHandler {
         this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
 
         def path = getRealPath(session, command.getRequiredParameter(0))
-        verifyFileSystemCondition(fileSystem.isFile(path), path, 'filesystem.isNotAFile')
+        FileSystemEntry fileEntry = fileSystem.getEntry(path)
+        verifyFileSystemCondition(fileEntry, path, 'filesystem.pathDoesNotExist')
+        verifyFileSystemCondition(!fileEntry.directory, path, 'filesystem.isNotAFile')
 
         sendReply(session, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
-        def input = fileSystem.createInputStream(path)
+        def input = fileEntry.createInputStream()
         session.openDataConnection();
         input.withStream {
             def bytes = IoUtil.readBytes(it)

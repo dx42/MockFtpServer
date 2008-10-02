@@ -15,7 +15,6 @@
  */
 package org.mockftpserver.fake.filesystem
 
-import org.mockftpserver.core.util.IoUtil
 import org.mockftpserver.test.AbstractGroovyTest
 
 /**
@@ -112,62 +111,6 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
         shouldFailWithMessageContaining("path") { fileSystem.add(new FileEntry(null)) }
     }
 
-    void testCreateInputStream() {
-        InputStream input = fileSystem.createInputStream(EXISTING_FILE)
-        assert EXISTING_FILE_CONTENTS.getBytes() == IoUtil.readBytes(input)
-
-        shouldFail(FileSystemException) { fileSystem.createInputStream(NO_SUCH_FILE) }
-        shouldFail(FileSystemException) { fileSystem.createInputStream(EXISTING_DIR) }
-        shouldFail(FileSystemException) { fileSystem.createInputStream("") }
-
-        shouldFailWithMessageContaining("path") { fileSystem.createInputStream(null) }
-    }
-
-    void testCreateOutputStream() {
-        // New, empty file
-        OutputStream out = fileSystem.createOutputStream(NEW_FILE, false)
-        out.close()
-        verifyFileContents(fileSystem, NEW_FILE, "")
-
-        // Append = false
-        out = fileSystem.createOutputStream(NEW_FILE, false)
-        out.write(EXISTING_FILE_CONTENTS.getBytes())
-        out.close()
-        verifyFileContents(fileSystem, NEW_FILE, EXISTING_FILE_CONTENTS)
-
-        // Append = true
-        out = fileSystem.createOutputStream(NEW_FILE, true)
-        out.write(EXISTING_FILE_CONTENTS.getBytes())
-        String expectedContents = EXISTING_FILE_CONTENTS.concat(EXISTING_FILE_CONTENTS)
-        verifyFileContents(fileSystem, NEW_FILE, expectedContents)
-
-        // Yet another OutputStream, append=true (so should append to accumulated contents)
-        OutputStream out2 = fileSystem.createOutputStream(NEW_FILE, true)
-        out2.write("abc".getBytes())
-        out2.close()
-        expectedContents = expectedContents + "abc"
-        verifyFileContents(fileSystem, NEW_FILE, expectedContents)
-
-        // Write with the previous OutputStream (simulate 2 OututStreams writing "concurrently")
-        out.write("def".getBytes())
-        out.close()
-        expectedContents = expectedContents + "def"
-        verifyFileContents(fileSystem, NEW_FILE, expectedContents)
-    }
-
-    void testCreateOutputStream_FileSystemException() {
-        // Parent directory does not exist
-        shouldFail(FileSystemException) { fileSystem.createOutputStream(NEW_DIR + "/abc.txt", true) }
-
-        shouldFail(FileSystemException) { fileSystem.createOutputStream(EXISTING_DIR, true) }
-        shouldFail(InvalidFilenameException) { fileSystem.createOutputStream(ILLEGAL_FILE, true) }
-        shouldFail(FileSystemException) { fileSystem.createOutputStream("", true) }
-    }
-
-    void testCreateOutputStream_NullPath() {
-        shouldFailWithMessageContaining("path") { fileSystem.createOutputStream(null, true) }
-    }
-
     void testRename_NullFromPath() {
         shouldFailWithMessageContaining("fromPath") { fileSystem.rename(null, FILENAME1) }
     }
@@ -215,28 +158,28 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
         fileSystem.add(new DirectoryEntry(NEW_DIR))
         assert [] == fileSystem.listFiles(NEW_DIR)
 
-        fileSystem.add(new FileEntry(p(NEW_DIR, FILENAME1)))
-        def fileEntry1 = new FileEntry(path: FILENAME1, lastModified: DATE)
-        verifyEntries([fileEntry1], fileSystem.listFiles(NEW_DIR))
+        def path1 = p(NEW_DIR, FILENAME1)
+        def fileEntry1 = new FileEntry(path1)
+        fileSystem.add(fileEntry1)
+        assert fileSystem.listFiles(NEW_DIR) == [fileEntry1]
 
         // Specify a filename instead of a directory name
-        verifyEntries([fileEntry1], fileSystem.listFiles(p(NEW_DIR, FILENAME1)))
+        assert fileSystem.listFiles(p(NEW_DIR, FILENAME1)) == [fileEntry1]
 
-        fileSystem.add(new FileEntry(p(NEW_DIR, FILENAME2)))
-        def fileEntry2 = new FileEntry(path: FILENAME2, lastModified: DATE)
-        verifyEntries(fileSystem.listFiles(NEW_DIR), [fileEntry1, fileEntry2])
+        def fileEntry2 = new FileEntry(p(NEW_DIR, FILENAME2))
+        fileSystem.add(fileEntry2)
+        assert fileSystem.listFiles(NEW_DIR) as Set == [fileEntry1, fileEntry2] as Set
 
         // Write to the file to get a non-zero length
         final byte[] CONTENTS = "1234567890".getBytes()
-        OutputStream out = fileSystem.createOutputStream(NEW_DIR + "/" + FILENAME1, false)
+        OutputStream out = fileEntry1.createOutputStream(false)
         out.write(CONTENTS)
         out.close()
-        fileEntry1 = new FileEntry(path: FILENAME1, contents: CONTENTS, lastModified: DATE)
-        verifyEntries(fileSystem.listFiles(NEW_DIR), [fileEntry1, fileEntry2])
+        assert fileSystem.listFiles(NEW_DIR) as Set == [fileEntry1, fileEntry2] as Set
 
-        fileSystem.add(new DirectoryEntry(p(NEW_DIR, DIR1)))
-        def dirEntry3 = new DirectoryEntry(path: DIR1, lastModified: DATE)
-        verifyEntries(fileSystem.listFiles(NEW_DIR), [fileEntry1, fileEntry2, dirEntry3])
+        def dirEntry3 = new DirectoryEntry(p(NEW_DIR, DIR1))
+        fileSystem.add(dirEntry3)
+        assert fileSystem.listFiles(NEW_DIR) as Set == [fileEntry1, fileEntry2, dirEntry3] as Set
 
         assert fileSystem.listFiles(NO_SUCH_DIR) == []
 
@@ -244,20 +187,21 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
     }
 
     void testListFiles_Wildcards() {
-        fileSystem.add(new DirectoryEntry(NEW_DIR))
-        fileSystem.add(new FileEntry(p(NEW_DIR, 'abc.txt')))
-        fileSystem.add(new FileEntry(p(NEW_DIR, 'def.txt')))
+        def dirEntry = new DirectoryEntry(NEW_DIR)
+        def fileEntry1 = new FileEntry(p(NEW_DIR, 'abc.txt'))
+        def fileEntry2 = new FileEntry(p(NEW_DIR, 'def.txt'))
 
-        def fileEntry1 = new FileEntry(path: 'abc.txt', lastModified: DATE)
-        def fileEntry2 = new FileEntry(path: 'def.txt', lastModified: DATE)
+        fileSystem.add(dirEntry)
+        fileSystem.add(fileEntry1)
+        fileSystem.add(fileEntry2)
 
-        verifyEntries(fileSystem.listFiles(p(NEW_DIR, '*.txt')), [fileEntry1, fileEntry2])
-        verifyEntries(fileSystem.listFiles(p(NEW_DIR, '*')), [fileEntry1, fileEntry2])
-        verifyEntries(fileSystem.listFiles(p(NEW_DIR, '???.???')), [fileEntry1, fileEntry2])
-        verifyEntries(fileSystem.listFiles(p(NEW_DIR, '*.exe')), [])
-        verifyEntries(fileSystem.listFiles(p(NEW_DIR, 'abc.???')), [fileEntry1])
-        verifyEntries(fileSystem.listFiles(p(NEW_DIR, 'a?c.?xt')), [fileEntry1])
-        verifyEntries(fileSystem.listFiles(p(NEW_DIR, 'd?f.*')), [fileEntry2])
+        assert fileSystem.listFiles(p(NEW_DIR, '*.txt')) as Set == [fileEntry1, fileEntry2] as Set
+        assert fileSystem.listFiles(p(NEW_DIR, '*')) as Set == [fileEntry1, fileEntry2] as Set
+        assert fileSystem.listFiles(p(NEW_DIR, '???.???')) as Set == [fileEntry1, fileEntry2] as Set
+        assert fileSystem.listFiles(p(NEW_DIR, '*.exe')) as Set == [] as Set
+        assert fileSystem.listFiles(p(NEW_DIR, 'abc.???')) as Set == [fileEntry1] as Set
+        assert fileSystem.listFiles(p(NEW_DIR, 'a?c.?xt')) as Set == [fileEntry1] as Set
+        assert fileSystem.listFiles(p(NEW_DIR, 'd?f.*')) as Set == [fileEntry2] as Set
     }
 
     void testDelete() {
@@ -356,7 +300,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
         expected.eachWithIndex {entry, index ->
             def entryStr = entry.toString()
             LOG.info("expected=$entryStr")
-            actual.find {actualEntry -> actualEntry.toString() == entryStr }
+            assert actual.find {actualEntry -> actualEntry.toString() == entryStr }
         }
     }
 

@@ -31,25 +31,6 @@ public interface FileSystem {
     public void add(FileSystemEntry entry)
 
     /**
-     * Create and return a new OutputStream for writing to the file at the specified path
-     * @param path - the path of the file
-     * @param append - true if the OutputStream should append to the end of the file if the file already exists
-     *
-     * @throws AssertionError - if path is null
-     * @throws FileSystemException - wraps a FileNotFoundException if thrown
-     */
-    public OutputStream createOutputStream(String path, boolean append)
-
-    /**
-     * Create and return a new InputStream for reading from the file at the specified path
-     * @param path - the path of the file
-     *
-     * @throws AssertionError - if path is null
-     * @throws FileSystemException - wraps a FileNotFoundException if thrown
-     */
-    public InputStream createInputStream(String path)
-
-    /**
      * Return the List of FileSystemEntry objects for the files in the specified directory path. If the
      * path does not refer to a valid directory, then an empty List is returned.
      *
