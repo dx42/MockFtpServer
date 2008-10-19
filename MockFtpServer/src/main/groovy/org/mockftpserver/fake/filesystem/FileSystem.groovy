@@ -149,19 +149,6 @@ public interface FileSystem {
     public FileSystemEntry getEntry(String path)
 
     /**
-     * Returns the name of the file or directory denoted by this abstract
-     * pathname.  This is just the last name in the pathname's name
-     * sequence.  If the pathname's name sequence is empty, then the empty
-     * string is returned.
-     *
-     * @return The name of the file or directory denoted by this abstract pathname, or the
-     *          empty string if this pathname's name sequence is empty
-     *
-     * @see File#getName()
-     */
-    public String getName(String path)
-
-    /**
      * Return the parent path of the specified path. If <code>path</code> specifies a filename,
      * then this method returns the path of the directory containing that file. If <code>path</code>
      * specifies a directory, the this method returns its parent directory. If <code>path</code> is

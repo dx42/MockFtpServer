@@ -130,6 +130,10 @@ abstract class AbstractFakeFileSystemTest extends AbstractFileSystemTest {
         shouldFailWithMessageContaining("path") { fileSystem.normalize(null) }
     }
 
+    void testGetName_Null() {
+        shouldFailWithMessageContaining("path") { fileSystem.getName(null) }
+    }
+
     //--------------------------------------------------------------------------
     // Abstract Methods
     //--------------------------------------------------------------------------
