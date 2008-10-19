@@ -275,10 +275,6 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
         assert !fileSystem.exists(TO_FILE)
     }
 
-    void testGetName_Null() {
-        shouldFailWithMessageContaining("path") { fileSystem.getName(null) }
-    }
-
     void testGetParent_Null() {
         shouldFailWithMessageContaining("path") { fileSystem.getParent(null) }
     }
