@@ -22,7 +22,7 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystemException
-
+import org.mockftpserver.fake.filesystem.Permissions
 
 /**
  * Tests for RetrCommandHandler
@@ -69,6 +69,18 @@ class RetrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         def path = FILE + "XXX"
         commandHandler.handleCommand(createCommand([path]), session)
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.pathDoesNotExist', path])
+    }
+
+    void testHandleCommand_NoReadAccessToFile() {
+        fileSystem.getEntry(FILE).permissions = Permissions.NONE
+        commandHandler.handleCommand(createCommand([FILE]), session)
+        assertSessionReply(ReplyCodes.READ_ACCESS_ERROR, ['filesystem.cannotRead', FILE])
+    }
+
+    void testHandleCommand_NoExecuteAccessToDirectory() {
+        fileSystem.getEntry(DIR).permissions = Permissions.NONE
+        commandHandler.handleCommand(createCommand([FILE]), session)
+        assertSessionReply(ReplyCodes.READ_ACCESS_ERROR, ['filesystem.cannotExecute', DIR])
     }
 
     void testHandleCommand_ThrowsFileSystemException() {

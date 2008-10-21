@@ -23,14 +23,14 @@ import org.mockftpserver.core.util.IoUtil
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 import org.mockftpserver.fake.filesystem.FileSystemEntry
 
-
 /**
  * CommandHandler for the RETR command. Handler logic:
  * <ol>
  *  <li>If the user has not logged in, then reply with 530 and terminate</li>
  *  <li>If the required pathname parameter is missing, then reply with 501 and terminate</li>
- *  <li>Send an initial reply of 150</li>
  *  <li>If the pathname parameter does not specify a valid, existing filename, then reply with 550 and terminate</li>
+ *  <li>If the current user does not have read access to the file at the specified path or execute permission to its directory, then reply with 550 and terminate</li>
+ *  <li>Send an initial reply of 150</li>
  *  <li>Send the contents of the named file across the data connection</li>
  *  <li>If there is an error reading the file, then reply with 550 and terminate</li>
  *  <li>Send a final reply with 226</li>
@@ -50,6 +50,12 @@ class RetrCommandHandler extends AbstractFakeCommandHandler {
         FileSystemEntry fileEntry = fileSystem.getEntry(path)
         verifyFileSystemCondition(fileEntry, path, 'filesystem.pathDoesNotExist')
         verifyFileSystemCondition(!fileEntry.directory, path, 'filesystem.isNotAFile')
+
+        def userAccount = getUserAccount(session)
+        verifyFileSystemCondition(userAccount.canRead(fileEntry), path, 'filesystem.cannotRead')
+        def parentPath = fileSystem.getParent(path)
+        FileSystemEntry parentEntry = fileSystem.getEntry(parentPath)
+        verifyFileSystemCondition(userAccount.canExecute(parentEntry), parentPath, 'filesystem.cannotExecute')
 
         sendReply(session, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
         def input = fileEntry.createInputStream()

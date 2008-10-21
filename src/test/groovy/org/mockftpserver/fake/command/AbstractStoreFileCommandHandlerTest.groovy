@@ -19,9 +19,10 @@ import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
+import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystemEntry
 import org.mockftpserver.fake.filesystem.FileSystemException
-
+import org.mockftpserver.fake.filesystem.Permissions
 
 /**
  * Abstract superclass for tests of Fake CommandHandlers that store a file (STOR, STOU, APPE)
@@ -32,21 +33,33 @@ import org.mockftpserver.fake.filesystem.FileSystemException
  */
 abstract class AbstractStoreFileCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
-    def DIR = "/"
-    def FILENAME = "file.txt"
-    def FILE = p(DIR, FILENAME)
-    def CONTENTS = "abc"
+    protected final static DIR = "/"
+    protected final static FILENAME = "file.txt"
+    protected final static FILE = p(DIR, FILENAME)
+    protected final static CONTENTS = "abc"
 
-    protected void testHandleCommand(List parameters, String messageKey, String contents) {
-        session.dataToRead = CONTENTS.bytes
-        handleCommand(parameters)
-        assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
-        assertSessionReply(1, ReplyCodes.TRANSFER_DATA_FINAL_OK, messageKey)
+    //-------------------------------------------------------------------------
+    // Tests Common to All Subclasses
+    //-------------------------------------------------------------------------
 
-        def outputFile = verifyOutputFile()
+    void testHandleCommand_NoWriteAccessToExistingFile() {
+        fileSystem.add(new FileEntry(path: FILE))
+        fileSystem.getEntry(FILE).permissions = Permissions.NONE
+        commandHandler.handleCommand(createCommand([FILE]), session)
+        assertSessionReply(ReplyCodes.NEW_FILE_ERROR, ['filesystem.cannotWrite', FILE])
+    }
 
-        def actualContents = fileSystem.getEntry(outputFile).createInputStream().text
-        assert actualContents == contents
+    void testHandleCommand_NoWriteAccessToDirectoryForNewFile() {
+        fileSystem.getEntry(DIR).permissions = new Permissions('r-xr-xr-x')
+        commandHandler.handleCommand(createCommand([FILE]), session)
+        assertSessionReply(ReplyCodes.WRITE_ACCESS_ERROR, ['filesystem.cannotWrite', DIR])
+    }
+
+    void testHandleCommand_NoExecuteAccessToDirectory() {
+        fileSystem.add(new FileEntry(path: FILE))
+        fileSystem.getEntry(DIR).permissions = new Permissions('rw-rw-rw-')
+        commandHandler.handleCommand(createCommand([FILE]), session)
+        assertSessionReply(ReplyCodes.WRITE_ACCESS_ERROR, ['filesystem.cannotExecute', DIR])
     }
 
     void testHandleCommand_ThrowsFileSystemException() {
@@ -74,6 +87,18 @@ abstract class AbstractStoreFileCommandHandlerTest extends AbstractFakeCommandHa
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
+
+    protected void testHandleCommand(List parameters, String messageKey, String contents) {
+        session.dataToRead = CONTENTS.bytes
+        handleCommand(parameters)
+        assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
+        assertSessionReply(1, ReplyCodes.TRANSFER_DATA_FINAL_OK, messageKey)
+
+        def outputFile = verifyOutputFile()
+
+        def actualContents = fileSystem.getEntry(outputFile).createInputStream().text
+        assert actualContents == contents
+    }
 
     CommandHandler createCommandHandler() {
         new AppeCommandHandler()

@@ -47,6 +47,9 @@ class StouCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
         testHandleCommand([FILE], 'stou', CONTENTS)
     }
 
+    void testHandleCommand_NoWriteAccessToExistingFile() {
+        // This command always stores a new (unique) file, so this test does not apply
+    }
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
