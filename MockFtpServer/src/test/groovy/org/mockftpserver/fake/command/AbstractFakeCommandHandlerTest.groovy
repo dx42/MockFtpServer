@@ -45,7 +45,7 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     protected fileSystem
     protected userAccount
 
-    /** Set this to false to skip the test that verifies that the CommandHandler requires a logged in user     */
+    /** Set this to false to skip the test that verifies that the CommandHandler requires a logged in user      */
     boolean testNotLoggedIn = true
 
     //-------------------------------------------------------------------------
@@ -168,7 +168,8 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     protected assertSessionReply(int replyIndex, int expectedReplyCode, text = expectedReplyCode as String) {
         LOG.info(session)
         String actualMessage = session.getReplyMessage(replyIndex)
-        assert session.getReplyCode(replyIndex) == expectedReplyCode
+        def actualReplyCode = session.getReplyCode(replyIndex)
+        assert actualReplyCode == expectedReplyCode
         if (text instanceof List) {
             text.each { assert actualMessage.contains(it), "[$actualMessage] does not contain [$it]" }
         }

@@ -20,7 +20,7 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 import org.mockftpserver.fake.filesystem.FileEntry
-
+import org.mockftpserver.fake.filesystem.FileSystemEntry
 
 /**
  * Abstract superclass for CommandHandlers that that store a file (STOR, STOU, APPE). Handler logic:
@@ -46,9 +46,16 @@ abstract class AbstractStoreFileCommandHandler extends AbstractFakeCommandHandle
 
         def filename = getOutputFile(command)
         def path = getRealPath(session, filename)
-        verifyFileSystemCondition(!fileSystem.isDirectory(path), path, 'filesystem.isFile')
-        def parent = fileSystem.getParent(path)
-        verifyFileSystemCondition(fileSystem.isDirectory(parent), parent, 'filesystem.isDirectory')
+        verifyFileSystemCondition(!fileSystem.isDirectory(path), path, 'filesystem.isDirectory')
+        def parentPath = fileSystem.getParent(path)
+        verifyFileSystemCondition(fileSystem.isDirectory(parentPath), parentPath, 'filesystem.isNotADirectory')
+
+        def userAccount = getUserAccount(session)
+        FileSystemEntry fileEntry = fileSystem.getEntry(path)
+        FileSystemEntry parentEntry = fileSystem.getEntry(parentPath)
+        FileSystemEntry entryMustBeWritable = fileEntry ?: parentEntry
+        verifyFileSystemCondition(userAccount.canWrite(entryMustBeWritable), path, 'filesystem.cannotWrite')
+        verifyFileSystemCondition(userAccount.canExecute(parentEntry), parentPath, 'filesystem.cannotExecute')
 
         sendReply(session, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
 
@@ -62,9 +69,10 @@ abstract class AbstractStoreFileCommandHandler extends AbstractFakeCommandHandle
             fileSystem.add(file)
         }
 
-        def out = file.createOutputStream(appendToOutputFile())
-
-        out.withStream { it.write(contents) }
+        if (contents) {
+            def out = file.createOutputStream(appendToOutputFile())
+            out.withStream { it.write(contents) }
+        }
         sendReply(session, ReplyCodes.TRANSFER_DATA_FINAL_OK, getMessageKey(), [filename])
     }
 
