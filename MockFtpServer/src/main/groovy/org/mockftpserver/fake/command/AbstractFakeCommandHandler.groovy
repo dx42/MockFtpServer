@@ -46,7 +46,7 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
     ServerConfiguration serverConfiguration
 
     /**
-     * Reply code sent back when a FileSystemException is caught by the               {@link #handleCommand(Command, Session)}
+     * Reply code sent back when a FileSystemException is caught by the                {@link #handleCommand(Command, Session)}
      * This defaults to ReplyCodes.EXISTING_FILE_ERROR (550). 
      */
     int replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
@@ -226,6 +226,42 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
         if (!condition) {
             throw new FileSystemException((String) path, messageKey)
         }
+    }
+
+    /**
+     * Verify that the current user has execute permission to the specified path
+     * @param session - the Session
+     * @param path - the file system path
+     * @throws FileSystemException - if the condition is not true
+     */
+    protected void verifyExecutePermission(Session session, String path) {
+        def userAccount = getUserAccount(session)
+        def entry = fileSystem.getEntry(path)
+        verifyFileSystemCondition(userAccount.canExecute(entry), path, 'filesystem.cannotExecute')
+    }
+
+    /**
+     * Verify that the current user has write permission to the specified path
+     * @param session - the Session
+     * @param path - the file system path
+     * @throws FileSystemException - if the condition is not true
+     */
+    protected void verifyWritePermission(Session session, String path) {
+        def userAccount = getUserAccount(session)
+        def entry = fileSystem.getEntry(path)
+        verifyFileSystemCondition(userAccount.canWrite(entry), path, 'filesystem.cannotWrite')
+    }
+
+    /**
+     * Verify that the current user has read permission to the specified path
+     * @param session - the Session
+     * @param path - the file system path
+     * @throws FileSystemException - if the condition is not true
+     */
+    protected void verifyReadPermission(Session session, String path) {
+        def userAccount = getUserAccount(session)
+        def entry = fileSystem.getEntry(path)
+        verifyFileSystemCondition(userAccount.canRead(entry), path, 'filesystem.cannotRead')
     }
 
     /**

@@ -20,7 +20,6 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 import org.mockftpserver.fake.filesystem.FileEntry
-import org.mockftpserver.fake.filesystem.FileSystemEntry
 
 /**
  * Abstract superclass for CommandHandlers that that store a file (STOR, STOU, APPE). Handler logic:
@@ -50,12 +49,12 @@ abstract class AbstractStoreFileCommandHandler extends AbstractFakeCommandHandle
         def parentPath = fileSystem.getParent(path)
         verifyFileSystemCondition(fileSystem.isDirectory(parentPath), parentPath, 'filesystem.isNotADirectory')
 
-        def userAccount = getUserAccount(session)
-        FileSystemEntry fileEntry = fileSystem.getEntry(path)
-        FileSystemEntry parentEntry = fileSystem.getEntry(parentPath)
-        FileSystemEntry entryMustBeWritable = fileEntry ?: parentEntry
-        verifyFileSystemCondition(userAccount.canWrite(entryMustBeWritable), path, 'filesystem.cannotWrite')
-        verifyFileSystemCondition(userAccount.canExecute(parentEntry), parentPath, 'filesystem.cannotExecute')
+        // User must have write permission to the file, if an existing file, or else to the directory if a new file
+        String pathMustBeWritable = fileSystem.exists(path) ? path : parentPath
+        verifyWritePermission(session, pathMustBeWritable)
+
+        // User must have execute permission to the parent directory
+        verifyExecutePermission(session, parentPath)
 
         sendReply(session, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
 

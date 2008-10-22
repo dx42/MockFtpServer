@@ -46,9 +46,7 @@ class CdupCommandHandler extends AbstractFakeCommandHandler {
         verifyFileSystemCondition(fileSystem.isDirectory(path), path, 'filesystem.isNotADirectory')
 
         // User must have execute permission to the parent directory
-        def userAccount = getUserAccount(session)
-        def parentEntry = fileSystem.getEntry(path)
-        verifyFileSystemCondition(userAccount.canExecute(parentEntry), path, 'filesystem.cannotExecute')
+        verifyExecutePermission(session, path)
 
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, path)
         sendReply(session, ReplyCodes.CDUP_OK, 'cdup', [path])

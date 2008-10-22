@@ -51,11 +51,11 @@ class RetrCommandHandler extends AbstractFakeCommandHandler {
         verifyFileSystemCondition(fileEntry, path, 'filesystem.pathDoesNotExist')
         verifyFileSystemCondition(!fileEntry.directory, path, 'filesystem.isNotAFile')
 
-        def userAccount = getUserAccount(session)
-        verifyFileSystemCondition(userAccount.canRead(fileEntry), path, 'filesystem.cannotRead')
-        def parentPath = fileSystem.getParent(path)
-        FileSystemEntry parentEntry = fileSystem.getEntry(parentPath)
-        verifyFileSystemCondition(userAccount.canExecute(parentEntry), parentPath, 'filesystem.cannotExecute')
+        // User must have read permission to the file
+        verifyReadPermission(session, path)
+
+        // User must have execute permission to the parent directory
+        verifyExecutePermission(session, fileSystem.getParent(path))
 
         sendReply(session, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
         def input = fileEntry.createInputStream()

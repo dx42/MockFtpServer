@@ -47,9 +47,7 @@ class CwdCommandHandler extends AbstractFakeCommandHandler {
         verifyFileSystemCondition(fileSystem.isDirectory(path), path, 'filesystem.isNotADirectory')
 
         // User must have execute permission to the directory
-        def userAccount = getUserAccount(session)
-        def entry = fileSystem.getEntry(path)
-        verifyFileSystemCondition(userAccount.canExecute(entry), path, 'filesystem.cannotExecute')
+        verifyExecutePermission(session, path)
 
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, path)
         sendReply(session, ReplyCodes.CWD_OK, 'cwd', [path])
