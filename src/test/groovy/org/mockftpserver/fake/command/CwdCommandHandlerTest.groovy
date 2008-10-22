@@ -22,7 +22,6 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.filesystem.Permissions
 
-
 /**
  * Tests for CwdCommandHandler
  *
@@ -63,12 +62,11 @@ class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
 
-    void testHandleCommand_DirectoryNotAccessible() {
-        createDirectory(DIR)
-        def dir = fileSystem.getEntry(DIR)
-        dir.permissions = Permissions.NONE
+    void testHandleCommand_NoExecuteAccessToDirectory() {
+        def dir = createDirectory(DIR)
+        dir.permissions = new Permissions('rw-rw-rw-')
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotRead', DIR])
+        assertSessionReply(ReplyCodes.CD_ACCESS_ERROR, ['filesystem.cannotExecute', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
 

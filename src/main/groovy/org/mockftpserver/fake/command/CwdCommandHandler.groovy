@@ -21,13 +21,13 @@ import org.mockftpserver.core.session.Session
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
-
 /**
  * CommandHandler for the CWD command. Handler logic:
  * <ol>
  *  <li>If the user has not logged in, then reply with 530</li>
- *  <li>If the required pathname parameter is missing, then reply with 501</li>
- *  <li>If the pathname parameter does not specify an existing directory, then reply with 550</li>
+ *  <li>If the required pathname parameter is missing, then reply with 501 and terminate</li>
+ *  <li>If the pathname parameter does not specify an existing directory, then reply with 550 and terminate</li>
+ *  <li>If the current user does not have execute access to the directory, then reply with 550 and terminate</li>
  *  <li>Otherwise, reply with 250 and change the current directory stored in the session</li>
  * </ol>
  * The supplied pathname may be absolute or relative to the current directory.
@@ -46,9 +46,10 @@ class CwdCommandHandler extends AbstractFakeCommandHandler {
         verifyFileSystemCondition(fileSystem.exists(path), path, 'filesystem.doesNotExist')
         verifyFileSystemCondition(fileSystem.isDirectory(path), path, 'filesystem.isNotADirectory')
 
+        // User must have execute permission to the directory
         def userAccount = getUserAccount(session)
         def entry = fileSystem.getEntry(path)
-        verifyFileSystemCondition(userAccount.canRead(entry), path, 'filesystem.cannotRead')
+        verifyFileSystemCondition(userAccount.canExecute(entry), path, 'filesystem.cannotExecute')
 
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, path)
         sendReply(session, ReplyCodes.CWD_OK, 'cwd', [path])

@@ -45,7 +45,7 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     protected fileSystem
     protected userAccount
 
-    /** Set this to false to skip the test that verifies that the CommandHandler requires a logged in user      */
+    /** Set this to false to skip the test that verifies that the CommandHandler requires a logged in user       */
     boolean testNotLoggedIn = true
 
     //-------------------------------------------------------------------------
@@ -264,18 +264,24 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     /**
      * Create a new directory entry with the specified path in the file system
      * @param path - the path of the new directory entry
+     * @return the newly created DirectoryEntry
      */
-    protected void createDirectory(String path) {
-        fileSystem.add(new DirectoryEntry(path))
+    protected DirectoryEntry createDirectory(String path) {
+        DirectoryEntry entry = new DirectoryEntry(path)
+        fileSystem.add(entry)
+        return entry
     }
 
     /**
      * Create a new file entry with the specified path in the file system
      * @param path - the path of the new file entry
      * @param contents - the contents for the file; defaults to null
+     * @return the newly created FileEntry
      */
-    protected void createFile(String path, contents = null) {
-        fileSystem.add(new FileEntry(path: path, contents: contents))
+    protected FileEntry createFile(String path, contents = null) {
+        FileEntry entry = new FileEntry(path: path, contents: contents)
+        fileSystem.add(entry)
+        return entry
     }
 
 }

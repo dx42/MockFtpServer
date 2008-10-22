@@ -25,7 +25,8 @@ import org.mockftpserver.fake.command.AbstractFakeCommandHandler
  * CommandHandler for the CDUP command. Handler logic:
  * <ol>
  *  <li>If the user has not logged in, then reply with 530</li>
- *  <li>If the current directory has no parent or if the current directory cannot be changed, then reply with 550</li>
+ *  <li>If the current directory has no parent or if the current directory cannot be changed, then reply with 550 and terminate</li>
+ *  <li>If the current user does not have execute access to the parent directory, then reply with 550 and terminate</li>
  *  <li>Otherwise, reply with 200 and change the current directory stored in the session to the parent directory</li>
  * </ol>
  *
@@ -43,6 +44,11 @@ class CdupCommandHandler extends AbstractFakeCommandHandler {
         this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
         verifyFileSystemCondition(path, currentDirectory, 'filesystem.parentDirectoryDoesNotExist')
         verifyFileSystemCondition(fileSystem.isDirectory(path), path, 'filesystem.isNotADirectory')
+
+        // User must have execute permission to the parent directory
+        def userAccount = getUserAccount(session)
+        def parentEntry = fileSystem.getEntry(path)
+        verifyFileSystemCondition(userAccount.canExecute(parentEntry), path, 'filesystem.cannotExecute')
 
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, path)
         sendReply(session, ReplyCodes.CDUP_OK, 'cdup', [path])
