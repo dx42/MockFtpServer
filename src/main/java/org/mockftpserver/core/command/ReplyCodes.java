@@ -70,9 +70,6 @@ public final class ReplyCodes {
     public static final int EXISTING_FILE_ERROR = 550;
     public static final int NEW_FILE_ERROR = 553;
     public static final int FILENAME_NOT_VALID = 553;
-    public static final int READ_ACCESS_ERROR = 550;
-    public static final int WRITE_ACCESS_ERROR = 553;
-    public static final int CD_ACCESS_ERROR = 550;
 
     /**
      * Private constructor. This class should not be instantiated.

@@ -19,7 +19,7 @@ import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
-
+import org.mockftpserver.fake.filesystem.Permissions
 
 /**
  * Tests for DeleCommandHandler
@@ -30,8 +30,9 @@ import org.mockftpserver.core.command.ReplyCodes
  */
 class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
-    def FILENAME = "f.txt"
-    def FILE = "/" + FILENAME
+    static final DIR = '/'
+    static final FILENAME = "f.txt"
+    static final FILE = p(DIR, FILENAME)
 
     void testHandleCommand() {
         createFile(FILE)
@@ -69,6 +70,14 @@ class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         overrideMethodToThrowFileSystemException("delete")
         handleCommand([FILE])
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)
+    }
+
+    void testHandleCommand_NoWriteAccessToParentDirectory() {
+        createFile(FILE)
+        fileSystem.getEntry(DIR).permissions = new Permissions('r-xr-xr-x')
+        commandHandler.handleCommand(createCommand([FILE]), session)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotWrite', DIR])
+        assert fileSystem.exists(FILE)
     }
 
     //-------------------------------------------------------------------------

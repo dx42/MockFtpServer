@@ -62,11 +62,11 @@ class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
 
-    void testHandleCommand_NoExecuteAccessToDirectory() {
+    void testHandleCommand_NoExecuteAccessToParentDirectory() {
         def dir = createDirectory(DIR)
         dir.permissions = new Permissions('rw-rw-rw-')
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.CD_ACCESS_ERROR, ['filesystem.cannotExecute', DIR])
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotExecute', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
 
