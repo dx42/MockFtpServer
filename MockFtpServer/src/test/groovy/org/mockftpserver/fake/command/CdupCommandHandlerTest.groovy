@@ -20,7 +20,7 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
-
+import org.mockftpserver.fake.filesystem.Permissions
 
 /**
  * Tests for CdupCommandHandler
@@ -46,6 +46,15 @@ class CdupCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         commandHandler.handleCommand(createCommand([]), session)
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.parentDirectoryDoesNotExist', '/'])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == '/'
+    }
+
+    void testHandleCommand_NoExecuteAccessToDirectory() {
+        setCurrentDirectory(SUBDIR)
+        def dir = fileSystem.getEntry(DIR)
+        dir.permissions = new Permissions('rw-rw-rw-')
+        commandHandler.handleCommand(createCommand([]), session)
+        assertSessionReply(ReplyCodes.CD_ACCESS_ERROR, ['filesystem.cannotExecute', DIR])
+        assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == SUBDIR
     }
 
     //-------------------------------------------------------------------------
