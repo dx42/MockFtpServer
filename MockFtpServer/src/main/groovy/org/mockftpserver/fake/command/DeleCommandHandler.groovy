@@ -43,6 +43,12 @@ class DeleCommandHandler extends AbstractFakeCommandHandler {
         this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
         verifyFileSystemCondition(fileSystem.isFile(path), path, 'filesystem.isNotAFile')
 
+        // User must have write permission to the parent directory
+        def userAccount = getUserAccount(session)
+        def parent = fileSystem.getParent(path)
+        def entry = fileSystem.getEntry(parent)
+        verifyFileSystemCondition(userAccount.canWrite(entry), parent, 'filesystem.cannotWrite')
+
         fileSystem.delete(path)
         sendReply(session, ReplyCodes.DELE_OK, 'dele', [path])
     }

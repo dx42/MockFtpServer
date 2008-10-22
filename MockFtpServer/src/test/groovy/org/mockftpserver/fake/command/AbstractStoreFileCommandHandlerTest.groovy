@@ -52,14 +52,14 @@ abstract class AbstractStoreFileCommandHandlerTest extends AbstractFakeCommandHa
     void testHandleCommand_NoWriteAccessToDirectoryForNewFile() {
         fileSystem.getEntry(DIR).permissions = new Permissions('r-xr-xr-x')
         commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.WRITE_ACCESS_ERROR, ['filesystem.cannotWrite', DIR])
+        assertSessionReply(ReplyCodes.NEW_FILE_ERROR, ['filesystem.cannotWrite', DIR])
     }
 
     void testHandleCommand_NoExecuteAccessToDirectory() {
         fileSystem.add(new FileEntry(path: FILE))
         fileSystem.getEntry(DIR).permissions = new Permissions('rw-rw-rw-')
         commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.WRITE_ACCESS_ERROR, ['filesystem.cannotExecute', DIR])
+        assertSessionReply(ReplyCodes.NEW_FILE_ERROR, ['filesystem.cannotExecute', DIR])
     }
 
     void testHandleCommand_ThrowsFileSystemException() {

@@ -74,13 +74,13 @@ class RetrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_NoReadAccessToFile() {
         fileSystem.getEntry(FILE).permissions = Permissions.NONE
         commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.READ_ACCESS_ERROR, ['filesystem.cannotRead', FILE])
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotRead', FILE])
     }
 
     void testHandleCommand_NoExecuteAccessToDirectory() {
         fileSystem.getEntry(DIR).permissions = Permissions.NONE
         commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.READ_ACCESS_ERROR, ['filesystem.cannotExecute', DIR])
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotExecute', DIR])
     }
 
     void testHandleCommand_ThrowsFileSystemException() {

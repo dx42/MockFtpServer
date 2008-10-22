@@ -53,7 +53,7 @@ class CdupCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         def dir = fileSystem.getEntry(DIR)
         dir.permissions = new Permissions('rw-rw-rw-')
         commandHandler.handleCommand(createCommand([]), session)
-        assertSessionReply(ReplyCodes.CD_ACCESS_ERROR, ['filesystem.cannotExecute', DIR])
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotExecute', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == SUBDIR
     }
 

@@ -20,7 +20,7 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
-
+import org.mockftpserver.fake.filesystem.Permissions
 
 /**
  * Tests for RmdCommandHandler
@@ -31,7 +31,8 @@ import org.mockftpserver.core.session.SessionKeys
  */
 class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
-    static final DIR = "/usr"
+    static final PARENT = '/'
+    static final DIR = p(PARENT, "usr")
 
     void testHandleCommand() {
         createDirectory(DIR)
@@ -86,6 +87,14 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         overrideMethodToThrowFileSystemException("delete")
         handleCommand([DIR])
         assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)
+    }
+
+    void testHandleCommand_NoWriteAccessToParentDirectory() {
+        createDirectory(DIR)
+        fileSystem.getEntry(PARENT).permissions = new Permissions('r-xr-xr-x')
+        commandHandler.handleCommand(createCommand([DIR]), session)
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotWrite', PARENT])
+        assert fileSystem.exists(DIR)
     }
 
     //-------------------------------------------------------------------------
