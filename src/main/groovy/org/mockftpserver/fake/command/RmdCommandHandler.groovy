@@ -46,10 +46,7 @@ class RmdCommandHandler extends AbstractFakeCommandHandler {
         verifyFileSystemCondition(fileSystem.listNames(path) == [], path, 'filesystem.directoryIsNotEmpty')
 
         // User must have write permission to the parent directory
-        def userAccount = getUserAccount(session)
-        def parent = fileSystem.getParent(path)
-        def entry = fileSystem.getEntry(parent)
-        verifyFileSystemCondition(userAccount.canWrite(entry), parent, 'filesystem.cannotWrite')
+        verifyWritePermission(session, fileSystem.getParent(path))
 
         fileSystem.delete(path)
         sendReply(session, ReplyCodes.RMD_OK, 'rmd', [path])
