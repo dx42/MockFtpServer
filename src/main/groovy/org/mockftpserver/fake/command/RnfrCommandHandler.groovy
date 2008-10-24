@@ -41,7 +41,7 @@ class RnfrCommandHandler extends AbstractFakeCommandHandler {
         verifyLoggedIn(session)
         def fromPath = getRealPath(session, command.getRequiredParameter(0))
 
-        this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
+        this.replyCodeForFileSystemException = ReplyCodes.READ_FILE_ERROR
         verifyFileSystemCondition(fileSystem.exists(fromPath), fromPath, 'filesystem.doesNotExist')
         verifyFileSystemCondition(fileSystem.isFile(fromPath), fromPath, 'filesystem.isNotAFile')
 

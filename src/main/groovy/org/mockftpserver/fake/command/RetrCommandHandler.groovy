@@ -44,7 +44,7 @@ class RetrCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
-        this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
+        this.replyCodeForFileSystemException = ReplyCodes.READ_FILE_ERROR
 
         def path = getRealPath(session, command.getRequiredParameter(0))
         FileSystemEntry fileEntry = fileSystem.getEntry(path)

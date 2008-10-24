@@ -22,7 +22,6 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.filesystem.Permissions
 
-
 /**
  * Tests for NlstCommandHandler
  *
@@ -80,7 +79,7 @@ class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         fileSystem.getEntry(DIR).permissions = new Permissions('-wx-wx-wx')
         handleCommand([DIR])
         assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
-        assertSessionReply(1, ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotRead', DIR])
+        assertSessionReply(1, ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotRead', DIR])
     }
 
     void testHandleCommand_ListNamesThrowsException() {

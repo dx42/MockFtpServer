@@ -40,7 +40,7 @@ class DeleCommandHandler extends AbstractFakeCommandHandler {
         verifyLoggedIn(session)
         def path = getRealPath(session, command.getRequiredParameter(0))
 
-        this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
+        this.replyCodeForFileSystemException = ReplyCodes.READ_FILE_ERROR
         verifyFileSystemCondition(fileSystem.isFile(path), path, 'filesystem.isNotAFile')
 
         // User must have write permission to the parent directory

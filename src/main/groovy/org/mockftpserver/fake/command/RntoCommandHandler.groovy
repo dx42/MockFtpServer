@@ -45,7 +45,7 @@ class RntoCommandHandler extends AbstractFakeCommandHandler {
         def toPath = getRealPath(session, command.getRequiredParameter(0))
         def fromPath = getRequiredSessionAttribute(session, SessionKeys.RENAME_FROM)
 
-        this.replyCodeForFileSystemException = ReplyCodes.NEW_FILE_ERROR
+        this.replyCodeForFileSystemException = ReplyCodes.WRITE_FILE_ERROR
         verifyFileSystemCondition(!fileSystem.isDirectory(toPath), toPath, 'filesystem.isDirectory')
         fileSystem.rename(fromPath, toPath)
 

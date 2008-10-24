@@ -52,13 +52,13 @@ class MkdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_ParentDirectoryDoesNotExist() {
         commandHandler.handleCommand(createCommand(['/abc/def']), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.doesNotExist', '/abc'])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.doesNotExist', '/abc'])
     }
 
     void testHandleCommand_PathSpecifiesAFile() {
         createFile(DIR)
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.alreadyExists', DIR])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.alreadyExists', DIR])
         assert fileSystem.exists(DIR)
     }
 
@@ -69,13 +69,13 @@ class MkdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_NoWriteAccessToParentDirectory() {
         fileSystem.getEntry(PARENT).permissions = new Permissions('r-xr-xr-x')
         handleCommand([DIR])
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotWrite', PARENT])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotWrite', PARENT])
     }
 
     void testHandleCommand_NoExecuteAccessToParentDirectory() {
         fileSystem.getEntry(PARENT).permissions = new Permissions('rw-rw-rw-')
         handleCommand([DIR])
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotExecute', PARENT])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotExecute', PARENT])
     }
 
     void testHandleCommand_CreateDirectoryThrowsException() {
@@ -83,7 +83,7 @@ class MkdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         overrideMethod(fileSystem, "add", newMethod)
 
         handleCommand([DIR])
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
     void setUp() {

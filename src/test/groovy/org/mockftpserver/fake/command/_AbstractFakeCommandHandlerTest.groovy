@@ -30,7 +30,6 @@ import org.mockftpserver.fake.server.StubServerConfiguration
 import org.mockftpserver.fake.user.UserAccount
 import org.mockftpserver.test.AbstractGroovyTest
 
-
 /**
  * Tests for AbstractFakeCommandHandler
  *
@@ -74,9 +73,9 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
     }
 
     void testHandleCommand_FileSystemException() {
-        assertHandleCommandReplyCode(new FileSystemException(PATH, ''), ReplyCodes.EXISTING_FILE_ERROR, PATH)
-        commandHandler.replyCodeForFileSystemException = ReplyCodes.NEW_FILE_ERROR
-        assertHandleCommandReplyCode(new FileSystemException(PATH, ''), ReplyCodes.NEW_FILE_ERROR, PATH)
+        assertHandleCommandReplyCode(new FileSystemException(PATH, ''), ReplyCodes.READ_FILE_ERROR, PATH)
+        commandHandler.replyCodeForFileSystemException = ReplyCodes.WRITE_FILE_ERROR
+        assertHandleCommandReplyCode(new FileSystemException(PATH, ''), ReplyCodes.WRITE_FILE_ERROR, PATH)
     }
 
     void testSendReply() {

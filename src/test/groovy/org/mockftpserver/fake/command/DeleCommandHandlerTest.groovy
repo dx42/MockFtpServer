@@ -51,13 +51,13 @@ class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_PathDoesNotExistInFileSystem() {
         commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.isNotAFile', FILE])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.isNotAFile', FILE])
     }
 
     void testHandleCommand_PathSpecifiesADirectory() {
         createDirectory(FILE)
         commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.isNotAFile', FILE])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.isNotAFile', FILE])
         assert fileSystem.exists(FILE)
     }
 
@@ -69,14 +69,14 @@ class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         createFile(FILE)
         overrideMethodToThrowFileSystemException("delete")
         handleCommand([FILE])
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
     void testHandleCommand_NoWriteAccessToParentDirectory() {
         createFile(FILE)
         fileSystem.getEntry(DIR).permissions = new Permissions('r-xr-xr-x')
         commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotWrite', DIR])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotWrite', DIR])
         assert fileSystem.exists(FILE)
     }
 

@@ -22,7 +22,6 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.filesystem.FileSystemException
 
-
 /**
  * Tests for RntoCommandHandler
  *
@@ -69,7 +68,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_ToFilenameSpecifiesADirectory() {
         createDirectory(TO_FILE)
         commandHandler.handleCommand(createCommand([TO_FILE]), session)
-        assertSessionReply(ReplyCodes.NEW_FILE_ERROR, ['filesystem.isDirectory', TO_FILE])
+        assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ['filesystem.isDirectory', TO_FILE])
         assert session.getAttribute(SessionKeys.RENAME_FROM) == FROM_FILE
     }
 
@@ -84,7 +83,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         overrideMethod(fileSystem, "rename", newMethod)
 
         commandHandler.handleCommand(createCommand([TO_FILE]), session)
-        assertSessionReply(ReplyCodes.NEW_FILE_ERROR, ERROR_MESSAGE_KEY)
+        assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ERROR_MESSAGE_KEY)
         assert session.getAttribute(SessionKeys.RENAME_FROM) == FROM_FILE
     }
 

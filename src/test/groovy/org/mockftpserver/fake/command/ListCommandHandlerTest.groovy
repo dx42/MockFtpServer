@@ -95,7 +95,7 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         fileSystem.getEntry(DIR).permissions = new Permissions('-wx-wx-wx')
         handleCommand([DIR])
         assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
-        assertSessionReply(1, ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotRead', DIR])
+        assertSessionReply(1, ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotRead', DIR])
     }
 
     void testHandleCommand_ListFilesThrowsException() {

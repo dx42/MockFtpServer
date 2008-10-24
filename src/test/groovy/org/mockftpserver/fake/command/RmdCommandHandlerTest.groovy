@@ -52,13 +52,13 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_PathDoesNotExistInFileSystem() {
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.doesNotExist', DIR])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.doesNotExist', DIR])
     }
 
     void testHandleCommand_PathSpecifiesAFile() {
         createFile(DIR)
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.isNotADirectory', DIR])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.isNotADirectory', DIR])
         assert fileSystem.exists(DIR)
     }
 
@@ -66,7 +66,7 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         final FILE = DIR + "/file.txt"
         createFile(FILE)
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.directoryIsNotEmpty', DIR])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.directoryIsNotEmpty', DIR])
         assert fileSystem.exists(DIR)
         assert fileSystem.exists(FILE)
     }
@@ -79,21 +79,21 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         createDirectory(DIR)
         overrideMethodToThrowFileSystemException("listNames")
         handleCommand([DIR])
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
     void testHandleCommand_DeleteThrowsException() {
         createDirectory(DIR)
         overrideMethodToThrowFileSystemException("delete")
         handleCommand([DIR])
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
     void testHandleCommand_NoWriteAccessToParentDirectory() {
         createDirectory(DIR)
         fileSystem.getEntry(PARENT).permissions = new Permissions('r-xr-xr-x')
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotWrite', PARENT])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotWrite', PARENT])
         assert fileSystem.exists(DIR)
     }
 
