@@ -24,6 +24,7 @@ import org.mockftpserver.fake.filesystem.DirectoryEntry
 import org.mockftpserver.fake.filesystem.DirectoryListingFormatter
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystemEntry
+import org.mockftpserver.fake.filesystem.Permissions
 
 /**
  * Tests for ListCommandHandler
@@ -90,10 +91,16 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         assertSessionData("")
     }
 
+    void testHandleCommand_NoReadAccessToDirectory() {
+        fileSystem.getEntry(DIR).permissions = new Permissions('-wx-wx-wx')
+        handleCommand([DIR])
+        assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
+        assertSessionReply(1, ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotRead', DIR])
+    }
+
     void testHandleCommand_ListFilesThrowsException() {
         overrideMethodToThrowFileSystemException("listFiles")
         handleCommand([DIR])
-        //assertSessionReplies([ReplyCodes.TRANSFER_DATA_INITIAL_OK, ReplyCodes.SYSTEM_ERROR])
         assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
         assertSessionReply(1, ReplyCodes.SYSTEM_ERROR, ERROR_MESSAGE_KEY)
     }
@@ -112,7 +119,7 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void setUp() {
         super.setUp()
-        createDirectory("/usr")
+        createDirectory(DIR)
         fileSystem.directoryListingFormatter = [format: {entry -> entry.toString()}] as DirectoryListingFormatter
     }
 
