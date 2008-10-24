@@ -46,10 +46,10 @@ abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfi
     ServerConfiguration serverConfiguration
 
     /**
-     * Reply code sent back when a FileSystemException is caught by the                {@link #handleCommand(Command, Session)}
+     * Reply code sent back when a FileSystemException is caught by the                 {@link #handleCommand(Command, Session)}
      * This defaults to ReplyCodes.EXISTING_FILE_ERROR (550). 
      */
-    int replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
+    int replyCodeForFileSystemException = ReplyCodes.READ_FILE_ERROR
 
     /**
      * Use template method to centralize and ensure common validation

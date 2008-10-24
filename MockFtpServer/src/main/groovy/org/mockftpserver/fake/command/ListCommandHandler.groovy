@@ -49,7 +49,7 @@ class ListCommandHandler extends AbstractFakeCommandHandler {
 
         // User must have read permission to the path
         if (fileSystem.exists(path)) {
-            this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
+            this.replyCodeForFileSystemException = ReplyCodes.READ_FILE_ERROR
             verifyReadPermission(session, path)
         }
 

@@ -62,25 +62,25 @@ class RetrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_PathSpecifiesAnExistingDirectory() {
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.isNotAFile', DIR])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.isNotAFile', DIR])
     }
 
     void testHandleCommand_PathDoesNotExist() {
         def path = FILE + "XXX"
         commandHandler.handleCommand(createCommand([path]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.pathDoesNotExist', path])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.pathDoesNotExist', path])
     }
 
     void testHandleCommand_NoReadAccessToFile() {
         fileSystem.getEntry(FILE).permissions = Permissions.NONE
         commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotRead', FILE])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotRead', FILE])
     }
 
     void testHandleCommand_NoExecuteAccessToDirectory() {
         fileSystem.getEntry(DIR).permissions = Permissions.NONE
         commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotExecute', DIR])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotExecute', DIR])
     }
 
     void testHandleCommand_ThrowsFileSystemException() {
@@ -90,7 +90,7 @@ class RetrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
         handleCommand([FILE])
         assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
-        assertSessionReply(1, ReplyCodes.EXISTING_FILE_ERROR, ERROR_MESSAGE_KEY)
+        assertSessionReply(1, ReplyCodes.READ_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
     void testConvertLfToCrLf() {

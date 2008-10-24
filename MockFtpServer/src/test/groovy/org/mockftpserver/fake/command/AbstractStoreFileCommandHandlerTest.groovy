@@ -46,20 +46,20 @@ abstract class AbstractStoreFileCommandHandlerTest extends AbstractFakeCommandHa
         fileSystem.add(new FileEntry(path: FILE))
         fileSystem.getEntry(FILE).permissions = Permissions.NONE
         commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.NEW_FILE_ERROR, ['filesystem.cannotWrite', FILE])
+        assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ['filesystem.cannotWrite', FILE])
     }
 
     void testHandleCommand_NoWriteAccessToDirectoryForNewFile() {
         fileSystem.getEntry(DIR).permissions = new Permissions('r-xr-xr-x')
         commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.NEW_FILE_ERROR, ['filesystem.cannotWrite', DIR])
+        assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ['filesystem.cannotWrite', DIR])
     }
 
     void testHandleCommand_NoExecuteAccessToDirectory() {
         fileSystem.add(new FileEntry(path: FILE))
         fileSystem.getEntry(DIR).permissions = new Permissions('rw-rw-rw-')
         commandHandler.handleCommand(createCommand([FILE]), session)
-        assertSessionReply(ReplyCodes.NEW_FILE_ERROR, ['filesystem.cannotExecute', DIR])
+        assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ['filesystem.cannotExecute', DIR])
     }
 
     void testHandleCommand_ThrowsFileSystemException() {
@@ -71,7 +71,7 @@ abstract class AbstractStoreFileCommandHandlerTest extends AbstractFakeCommandHa
 
         handleCommand([FILE])
         assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
-        assertSessionReply(1, ReplyCodes.NEW_FILE_ERROR, ERROR_MESSAGE_KEY)
+        assertSessionReply(1, ReplyCodes.WRITE_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
     //-------------------------------------------------------------------------

@@ -41,7 +41,7 @@ abstract class AbstractStoreFileCommandHandler extends AbstractFakeCommandHandle
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session)
-        this.replyCodeForFileSystemException = ReplyCodes.NEW_FILE_ERROR
+        this.replyCodeForFileSystemException = ReplyCodes.WRITE_FILE_ERROR
 
         def filename = getOutputFile(command)
         def path = getRealPath(session, filename)

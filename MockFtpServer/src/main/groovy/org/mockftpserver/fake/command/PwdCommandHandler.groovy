@@ -36,7 +36,7 @@ class PwdCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         def currentDirectory = session.getAttribute(SessionKeys.CURRENT_DIRECTORY)
-        this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
+        this.replyCodeForFileSystemException = ReplyCodes.READ_FILE_ERROR
         verifyFileSystemCondition(currentDirectory, currentDirectory, 'filesystem.currentDirectoryNotSet')
         sendReply(session, ReplyCodes.PWD_OK, "pwd", [currentDirectory])
     }

@@ -41,7 +41,7 @@ class CdupCommandHandler extends AbstractFakeCommandHandler {
         def currentDirectory = getRequiredSessionAttribute(session, SessionKeys.CURRENT_DIRECTORY)
         def path = getFileSystem().getParent(currentDirectory)
 
-        this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
+        this.replyCodeForFileSystemException = ReplyCodes.READ_FILE_ERROR
         verifyFileSystemCondition(path, currentDirectory, 'filesystem.parentDirectoryDoesNotExist')
         verifyFileSystemCondition(fileSystem.isDirectory(path), path, 'filesystem.isNotADirectory')
 

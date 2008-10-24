@@ -40,7 +40,7 @@ class RmdCommandHandler extends AbstractFakeCommandHandler {
         verifyLoggedIn(session)
         def path = getRealPath(session, command.getRequiredParameter(0))
 
-        this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
+        this.replyCodeForFileSystemException = ReplyCodes.READ_FILE_ERROR
         verifyFileSystemCondition(fileSystem.exists(path), path, 'filesystem.doesNotExist')
         verifyFileSystemCondition(fileSystem.isDirectory(path), path, 'filesystem.isNotADirectory')
         verifyFileSystemCondition(fileSystem.listNames(path) == [], path, 'filesystem.directoryIsNotEmpty')

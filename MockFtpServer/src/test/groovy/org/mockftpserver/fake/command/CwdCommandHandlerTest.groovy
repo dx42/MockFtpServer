@@ -51,14 +51,14 @@ class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_PathDoesNotExistInFileSystem() {
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.doesNotExist', DIR])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.doesNotExist', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
 
     void testHandleCommand_PathSpecifiesAFile() {
         createFile(DIR)
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.isNotADirectory', DIR])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.isNotADirectory', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
 
@@ -66,7 +66,7 @@ class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         def dir = createDirectory(DIR)
         dir.permissions = new Permissions('rw-rw-rw-')
         commandHandler.handleCommand(createCommand([DIR]), session)
-        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotExecute', DIR])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotExecute', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
 
