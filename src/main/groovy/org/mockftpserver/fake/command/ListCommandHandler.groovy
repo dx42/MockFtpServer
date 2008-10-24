@@ -20,7 +20,6 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
-
 /**
  * CommandHandler for the LIST command. Handler logic:
  * <ol>
@@ -46,8 +45,15 @@ class ListCommandHandler extends AbstractFakeCommandHandler {
         verifyLoggedIn(session)
         sendReply(session, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
 
-        this.replyCodeForFileSystemException = ReplyCodes.SYSTEM_ERROR
         def path = getRealPath(session, command.getParameter(0))
+
+        // User must have read permission to the path
+        if (fileSystem.exists(path)) {
+            this.replyCodeForFileSystemException = ReplyCodes.EXISTING_FILE_ERROR
+            verifyReadPermission(session, path)
+        }
+
+        this.replyCodeForFileSystemException = ReplyCodes.SYSTEM_ERROR
         def fileEntries = this.fileSystem.listFiles(path)
         def lines = fileEntries.collect { this.fileSystem.formatDirectoryListing(it) }
         def result = lines.join(endOfLine())
