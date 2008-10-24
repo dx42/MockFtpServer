@@ -22,7 +22,7 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.filesystem.FileSystemEntry
 import org.mockftpserver.fake.filesystem.FileSystemException
-
+import org.mockftpserver.fake.filesystem.Permissions
 
 /**
  * Tests for MkdCommandHandler
@@ -33,8 +33,9 @@ import org.mockftpserver.fake.filesystem.FileSystemException
  */
 class MkdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
-    def DIRNAME = "usr"
-    def DIR = p('/', DIRNAME)
+    static final PARENT = '/'
+    static final DIRNAME = "usr"
+    static final DIR = p(PARENT, DIRNAME)
 
     void testHandleCommand() {
         commandHandler.handleCommand(createCommand([DIR]), session)
@@ -65,6 +66,18 @@ class MkdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         testHandleCommand_MissingRequiredParameter([])
     }
 
+    void testHandleCommand_NoWriteAccessToParentDirectory() {
+        fileSystem.getEntry(PARENT).permissions = new Permissions('r-xr-xr-x')
+        handleCommand([DIR])
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotWrite', PARENT])
+    }
+
+    void testHandleCommand_NoExecuteAccessToParentDirectory() {
+        fileSystem.getEntry(PARENT).permissions = new Permissions('rw-rw-rw-')
+        handleCommand([DIR])
+        assertSessionReply(ReplyCodes.EXISTING_FILE_ERROR, ['filesystem.cannotExecute', PARENT])
+    }
+
     void testHandleCommand_CreateDirectoryThrowsException() {
         def newMethod = {FileSystemEntry entry -> throw new FileSystemException("Error thrown by method [$methodName]", ERROR_MESSAGE_KEY) }
         overrideMethod(fileSystem, "add", newMethod)
@@ -75,7 +88,7 @@ class MkdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void setUp() {
         super.setUp()
-        createDirectory('/')
+        createDirectory(PARENT)
     }
 
     //-------------------------------------------------------------------------
