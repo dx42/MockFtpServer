@@ -36,12 +36,12 @@ class PwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand() {
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
-        commandHandler.handleCommand(createCommand([]), session)
+        handleCommand([])
         assertSessionReply(ReplyCodes.PWD_OK, ["pwd", DIR])
     }
 
     void testHandleCommand_CurrentDirectoryNotSet() {
-        commandHandler.handleCommand(createValidCommand(), session)
+        handleCommand([])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, 'filesystem.currentDirectoryNotSet')
     }
 

@@ -33,10 +33,10 @@ import org.mockftpserver.fake.filesystem.Permissions
  */
 abstract class AbstractStoreFileCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
-    protected final static DIR = "/"
-    protected final static FILENAME = "file.txt"
-    protected final static FILE = p(DIR, FILENAME)
-    protected final static CONTENTS = "abc"
+    protected static final DIR = "/"
+    protected static final FILENAME = "file.txt"
+    protected static final FILE = p(DIR, FILENAME)
+    protected static final CONTENTS = "abc"
 
     //-------------------------------------------------------------------------
     // Tests Common to All Subclasses
@@ -45,20 +45,20 @@ abstract class AbstractStoreFileCommandHandlerTest extends AbstractFakeCommandHa
     void testHandleCommand_NoWriteAccessToExistingFile() {
         fileSystem.add(new FileEntry(path: FILE))
         fileSystem.getEntry(FILE).permissions = Permissions.NONE
-        commandHandler.handleCommand(createCommand([FILE]), session)
+        handleCommand([FILE])
         assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ['filesystem.cannotWrite', FILE])
     }
 
     void testHandleCommand_NoWriteAccessToDirectoryForNewFile() {
         fileSystem.getEntry(DIR).permissions = new Permissions('r-xr-xr-x')
-        commandHandler.handleCommand(createCommand([FILE]), session)
+        handleCommand([FILE])
         assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ['filesystem.cannotWrite', DIR])
     }
 
     void testHandleCommand_NoExecuteAccessToDirectory() {
         fileSystem.add(new FileEntry(path: FILE))
         fileSystem.getEntry(DIR).permissions = new Permissions('rw-rw-rw-')
-        commandHandler.handleCommand(createCommand([FILE]), session)
+        handleCommand([FILE])
         assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ['filesystem.cannotExecute', DIR])
     }
 

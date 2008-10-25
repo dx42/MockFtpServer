@@ -35,7 +35,7 @@ class SystCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand() {
         serverConfiguration.systemName = SYSTEM_NAME
-        commandHandler.handleCommand(createCommand([]), session)
+        handleCommand([])
         assertSessionReply(ReplyCodes.SYST_OK, ['syst', SYSTEM_NAME])
     }
 
