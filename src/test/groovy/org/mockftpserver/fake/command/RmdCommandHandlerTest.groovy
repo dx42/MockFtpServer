@@ -36,7 +36,7 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand() {
         createDirectory(DIR)
-        commandHandler.handleCommand(createCommand([DIR]), session)
+        handleCommand([DIR])
         assertSessionReply(ReplyCodes.RMD_OK, ['rmd', DIR])
         assert fileSystem.exists(DIR) == false
     }
@@ -45,19 +45,19 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         def SUB = "sub"
         createDirectory(p(DIR, SUB))
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
-        commandHandler.handleCommand(createCommand([SUB]), session)
+        handleCommand([SUB])
         assertSessionReply(ReplyCodes.RMD_OK, ['rmd', SUB])
         assert fileSystem.exists(p(DIR, SUB)) == false
     }
 
     void testHandleCommand_PathDoesNotExistInFileSystem() {
-        commandHandler.handleCommand(createCommand([DIR]), session)
+        handleCommand([DIR])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.doesNotExist', DIR])
     }
 
     void testHandleCommand_PathSpecifiesAFile() {
         createFile(DIR)
-        commandHandler.handleCommand(createCommand([DIR]), session)
+        handleCommand([DIR])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.isNotADirectory', DIR])
         assert fileSystem.exists(DIR)
     }
@@ -65,7 +65,7 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_DirectoryIsNotEmpty() {
         final FILE = DIR + "/file.txt"
         createFile(FILE)
-        commandHandler.handleCommand(createCommand([DIR]), session)
+        handleCommand([DIR])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.directoryIsNotEmpty', DIR])
         assert fileSystem.exists(DIR)
         assert fileSystem.exists(FILE)
@@ -92,7 +92,7 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_NoWriteAccessToParentDirectory() {
         createDirectory(DIR)
         fileSystem.getEntry(PARENT).permissions = new Permissions('r-xr-xr-x')
-        commandHandler.handleCommand(createCommand([DIR]), session)
+        handleCommand([DIR])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotWrite', PARENT])
         assert fileSystem.exists(DIR)
     }

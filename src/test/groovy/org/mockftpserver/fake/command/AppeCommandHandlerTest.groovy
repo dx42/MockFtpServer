@@ -51,7 +51,7 @@ class AppeCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
 
     void testHandleCommand_PathSpecifiesAnExistingDirectory() {
         createDirectory(FILE)
-        commandHandler.handleCommand(createCommand([FILE]), session)
+        handleCommand([FILE])
         assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, FILE)
     }
 

@@ -45,7 +45,7 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     protected fileSystem
     protected userAccount
 
-    /** Set this to false to skip the test that verifies that the CommandHandler requires a logged in user       */
+    /** Set this to false to skip the test that verifies that the CommandHandler requires a logged in user        */
     boolean testNotLoggedIn = true
 
     //-------------------------------------------------------------------------
@@ -206,7 +206,7 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
      * @param finalReplyCode - the expected final reply code; defaults to ReplyCodes.TRANSFER_DATA_FINAL_OK
      */
     protected handleCommandAndVerifySendDataReplies(parameters = [], int finalReplyCode = ReplyCodes.TRANSFER_DATA_FINAL_OK) {
-        commandHandler.handleCommand(createCommand(parameters), session)
+        handleCommand(parameters)
         assertSessionReplies([ReplyCodes.TRANSFER_DATA_INITIAL_OK, finalReplyCode])
     }
 
@@ -219,7 +219,7 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
      * @param finalReplyCode - the expected final reply code; defaults to ReplyCodes.TRANSFER_DATA_FINAL_OK
      */
     protected handleCommandAndVerifySendDataReplies(parameters, String initialReplyMessageKey, String finalReplyMessageKey, int finalReplyCode = ReplyCodes.TRANSFER_DATA_FINAL_OK) {
-        commandHandler.handleCommand(createCommand(parameters), session)
+        handleCommand(parameters)
         assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK, initialReplyMessageKey)
         assertSessionReply(1, finalReplyCode, finalReplyMessageKey)
     }

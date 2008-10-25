@@ -37,7 +37,7 @@ class PortCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     boolean testNotLoggedIn = false
 
     void testHandleCommand() {
-        commandHandler.handleCommand(createCommand(PARAMETERS), session)
+        handleCommand(PARAMETERS)
         assertSessionReply(ReplyCodes.PORT_OK, 'port')
         assert session.clientDataPort == PORT
         assert session.clientDataHost == HOST

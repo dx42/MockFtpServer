@@ -36,7 +36,7 @@ class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand() {
         createFile(FILE)
-        commandHandler.handleCommand(createCommand([FILE]), session)
+        handleCommand([FILE])
         assertSessionReply(ReplyCodes.DELE_OK, ['dele', FILE])
         assert fileSystem.exists(FILE) == false
     }
@@ -44,19 +44,19 @@ class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_PathIsRelative() {
         createFile(FILE)
         setCurrentDirectory("/")
-        commandHandler.handleCommand(createCommand([FILENAME]), session)
+        handleCommand([FILENAME])
         assertSessionReply(ReplyCodes.DELE_OK, ['dele', FILENAME])
         assert fileSystem.exists(FILE) == false
     }
 
     void testHandleCommand_PathDoesNotExistInFileSystem() {
-        commandHandler.handleCommand(createCommand([FILE]), session)
+        handleCommand([FILE])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.isNotAFile', FILE])
     }
 
     void testHandleCommand_PathSpecifiesADirectory() {
         createDirectory(FILE)
-        commandHandler.handleCommand(createCommand([FILE]), session)
+        handleCommand([FILE])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.isNotAFile', FILE])
         assert fileSystem.exists(FILE)
     }
@@ -75,7 +75,7 @@ class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_NoWriteAccessToParentDirectory() {
         createFile(FILE)
         fileSystem.getEntry(DIR).permissions = new Permissions('r-xr-xr-x')
-        commandHandler.handleCommand(createCommand([FILE]), session)
+        handleCommand([FILE])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotWrite', DIR])
         assert fileSystem.exists(FILE)
     }

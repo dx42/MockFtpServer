@@ -36,14 +36,14 @@ class CdupCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand() {
         setCurrentDirectory(SUBDIR)
-        commandHandler.handleCommand(createCommand([]), session)
+        handleCommand([])
         assertSessionReply(ReplyCodes.CDUP_OK, ['cdup', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == DIR
     }
 
     void testHandleCommand_NoParentDirectory() {
         setCurrentDirectory('/')
-        commandHandler.handleCommand(createCommand([]), session)
+        handleCommand([])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.parentDirectoryDoesNotExist', '/'])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == '/'
     }
@@ -52,7 +52,7 @@ class CdupCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         setCurrentDirectory(SUBDIR)
         def dir = fileSystem.getEntry(DIR)
         dir.permissions = new Permissions('rw-rw-rw-')
-        commandHandler.handleCommand(createCommand([]), session)
+        handleCommand([])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotExecute', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == SUBDIR
     }

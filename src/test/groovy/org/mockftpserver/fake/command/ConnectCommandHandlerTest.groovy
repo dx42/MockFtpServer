@@ -32,7 +32,7 @@ class ConnectCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     boolean testNotLoggedIn = false
 
     void testHandleCommand() {
-        commandHandler.handleCommand(createCommand([]), session)
+        handleCommand([])
         assertSessionReply(ReplyCodes.CONNECT_OK)
     }
 

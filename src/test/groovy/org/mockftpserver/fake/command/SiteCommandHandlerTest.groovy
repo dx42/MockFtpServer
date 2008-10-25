@@ -30,7 +30,7 @@ import org.mockftpserver.core.command.ReplyCodes
 class SiteCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand() {
-        commandHandler.handleCommand(createCommand([]), session)
+        handleCommand([])
         assertSessionReply(ReplyCodes.SITE_OK, 'site')
     }
 

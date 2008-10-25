@@ -61,25 +61,25 @@ class RetrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_PathSpecifiesAnExistingDirectory() {
-        commandHandler.handleCommand(createCommand([DIR]), session)
+        handleCommand([DIR])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.isNotAFile', DIR])
     }
 
     void testHandleCommand_PathDoesNotExist() {
         def path = FILE + "XXX"
-        commandHandler.handleCommand(createCommand([path]), session)
+        handleCommand([path])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.pathDoesNotExist', path])
     }
 
     void testHandleCommand_NoReadAccessToFile() {
         fileSystem.getEntry(FILE).permissions = Permissions.NONE
-        commandHandler.handleCommand(createCommand([FILE]), session)
+        handleCommand([FILE])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotRead', FILE])
     }
 
     void testHandleCommand_NoExecuteAccessToDirectory() {
         fileSystem.getEntry(DIR).permissions = Permissions.NONE
-        commandHandler.handleCommand(createCommand([FILE]), session)
+        handleCommand([FILE])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotExecute', DIR])
     }
 

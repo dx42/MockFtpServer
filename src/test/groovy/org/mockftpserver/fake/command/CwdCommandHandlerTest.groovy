@@ -35,7 +35,7 @@ class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand() {
         createDirectory(DIR)
-        commandHandler.handleCommand(createCommand([DIR]), session)
+        handleCommand([DIR])
         assertSessionReply(ReplyCodes.CWD_OK, ['cwd', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == DIR
     }
@@ -44,20 +44,20 @@ class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         def SUB = "sub"
         createDirectory(p(DIR, SUB))
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
-        commandHandler.handleCommand(createCommand([SUB]), session)
+        handleCommand([SUB])
         assertSessionReply(ReplyCodes.CWD_OK, ['cwd', SUB])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == p(DIR, SUB)
     }
 
     void testHandleCommand_PathDoesNotExistInFileSystem() {
-        commandHandler.handleCommand(createCommand([DIR]), session)
+        handleCommand([DIR])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.doesNotExist', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
 
     void testHandleCommand_PathSpecifiesAFile() {
         createFile(DIR)
-        commandHandler.handleCommand(createCommand([DIR]), session)
+        handleCommand([DIR])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.isNotADirectory', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
@@ -65,7 +65,7 @@ class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_NoExecuteAccessToParentDirectory() {
         def dir = createDirectory(DIR)
         dir.permissions = new Permissions('rw-rw-rw-')
-        commandHandler.handleCommand(createCommand([DIR]), session)
+        handleCommand([DIR])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotExecute', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
