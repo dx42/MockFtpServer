@@ -47,6 +47,12 @@ class RntoCommandHandler extends AbstractFakeCommandHandler {
 
         this.replyCodeForFileSystemException = ReplyCodes.WRITE_FILE_ERROR
         verifyFileSystemCondition(!fileSystem.isDirectory(toPath), toPath, 'filesystem.isDirectory')
+
+        // User must have write permission to the directory
+        def parentPath = fileSystem.getParent(toPath)
+        verifyFileSystemCondition(fileSystem.exists(parentPath), parentPath, 'filesystem.pathDoesNotExist')
+        verifyWritePermission(session, parentPath)
+
         fileSystem.rename(fromPath, toPath)
 
         session.removeAttribute(SessionKeys.RENAME_FROM)

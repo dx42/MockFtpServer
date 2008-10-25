@@ -38,26 +38,26 @@ class MkdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     static final DIR = p(PARENT, DIRNAME)
 
     void testHandleCommand() {
-        commandHandler.handleCommand(createCommand([DIR]), session)
+        handleCommand([DIR])
         assertSessionReply(ReplyCodes.MKD_OK, ['mkd', DIR])
         assert fileSystem.exists(DIR)
     }
 
     void testHandleCommand_PathIsRelative() {
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, '/')
-        commandHandler.handleCommand(createCommand([DIRNAME]), session)
+        handleCommand([DIRNAME])
         assertSessionReply(ReplyCodes.MKD_OK, ['mkd', DIRNAME])
         assert fileSystem.exists(DIR)
     }
 
     void testHandleCommand_ParentDirectoryDoesNotExist() {
-        commandHandler.handleCommand(createCommand(['/abc/def']), session)
+        handleCommand(['/abc/def'])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.doesNotExist', '/abc'])
     }
 
     void testHandleCommand_PathSpecifiesAFile() {
         createFile(DIR)
-        commandHandler.handleCommand(createCommand([DIR]), session)
+        handleCommand([DIR])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.alreadyExists', DIR])
         assert fileSystem.exists(DIR)
     }
