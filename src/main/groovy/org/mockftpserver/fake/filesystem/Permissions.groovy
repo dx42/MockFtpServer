@@ -17,7 +17,8 @@ package org.mockftpserver.fake.filesystem
 
 /**
  * Represents and encapsulates the read/write/execute permissions for a file or directory.
- * This is conceptually (and somewhat loosely) based on the permissions flags within the Unix file system.
+ * This is conceptually (and somewhat loosely) based on the permissions flags within the Unix
+ * file system. An instance of this class is immutable.
  *
  * @version $Revision: 86 $ - $Date: 2008-07-23 21:16:27 -0400 (Wed, 23 Jul 2008) $
  *
@@ -32,7 +33,7 @@ class Permissions {
     static final WRITE_CHAR = 'w'
     static final EXECUTE_CHAR = 'x'
 
-    String rwxString
+    private String rwxString
 
     /**
      * Costruct a new instance for the specified read/write/execute specification String
@@ -52,6 +53,13 @@ class Permissions {
      */
     String asRwxString() {
         rwxString
+    }
+
+    /**
+     * @return the RWX string for this instance
+     */
+    String getRwxString() {
+        return rwxString
     }
 
     /**
