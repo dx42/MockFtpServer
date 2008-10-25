@@ -45,6 +45,9 @@ class RnfrCommandHandler extends AbstractFakeCommandHandler {
         verifyFileSystemCondition(fileSystem.exists(fromPath), fromPath, 'filesystem.doesNotExist')
         verifyFileSystemCondition(fileSystem.isFile(fromPath), fromPath, 'filesystem.isNotAFile')
 
+        // User must have read permission to the file
+        verifyReadPermission(session, fromPath)
+
         session.setAttribute(SessionKeys.RENAME_FROM, fromPath)
         sendReply(session, ReplyCodes.RNFR_OK, 'rnfr')
     }

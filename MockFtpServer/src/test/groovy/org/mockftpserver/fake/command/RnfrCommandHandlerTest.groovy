@@ -20,6 +20,7 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.fake.filesystem.Permissions
 
 /**
  * Tests for RnfrCommandHandler
@@ -34,7 +35,7 @@ class RnfrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand() {
         createFile(FILE)
-        commandHandler.handleCommand(createCommand([FILE]), session)
+        handleCommand([FILE])
         assertSessionReply(ReplyCodes.RNFR_OK, 'rnfr')
         assert session.getAttribute(SessionKeys.RENAME_FROM) == FILE
     }
@@ -42,22 +43,29 @@ class RnfrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_PathIsRelative() {
         createFile(FILE)
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, "/")
-        commandHandler.handleCommand(createCommand(["file.txt"]), session)
+        handleCommand(["file.txt"])
         assertSessionReply(ReplyCodes.RNFR_OK, 'rnfr')
         assert session.getAttribute(SessionKeys.RENAME_FROM) == FILE
     }
 
     void testHandleCommand_PathDoesNotExistInFileSystem() {
-        commandHandler.handleCommand(createCommand([FILE]), session)
+        handleCommand([FILE])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.doesNotExist', FILE])
         assert session.getAttribute(SessionKeys.RENAME_FROM) == null
     }
 
     void testHandleCommand_PathSpecifiesADirectory() {
         createDirectory(FILE)
-        commandHandler.handleCommand(createCommand([FILE]), session)
+        handleCommand([FILE])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.isNotAFile', FILE])
         assert session.getAttribute(SessionKeys.RENAME_FROM) == null
+    }
+
+    void testHandleCommand_NoReadAccessToFile() {
+        createFile(FILE)
+        fileSystem.getEntry(FILE).permissions = new Permissions('-wx-wx-wx')
+        handleCommand([FILE])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotRead', FILE])
     }
 
     void testHandleCommand_MissingPathParameter() {

@@ -21,6 +21,7 @@ import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.filesystem.FileSystemException
+import org.mockftpserver.fake.filesystem.Permissions
 
 /**
  * Tests for RntoCommandHandler
@@ -31,26 +32,27 @@ import org.mockftpserver.fake.filesystem.FileSystemException
  */
 class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
-    def FROM_FILE = "/from.txt"
-    def TO_FILE = "/file.txt"
+    static final DIR = '/'
+    static final FROM_FILE = "/from.txt"
+    static final TO_FILE = "/file.txt"
 
     void testHandleCommand() {
         createFile(FROM_FILE)
-        commandHandler.handleCommand(createCommand([TO_FILE]), session)
+        handleCommand([TO_FILE])
         assertSessionReply(ReplyCodes.RNTO_OK, ['rnto', FROM_FILE, TO_FILE])
         assert !fileSystem.exists(FROM_FILE), FROM_FILE
         assert fileSystem.exists(TO_FILE), TO_FILE
-        assert session.getAttribute(SessionKeys.RENAME_FROM) == null
+        assertRenameFromSessionProperty(null)
     }
 
     void testHandleCommand_PathIsRelative() {
         createFile(FROM_FILE)
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, "/")
-        commandHandler.handleCommand(createCommand(["file.txt"]), session)
+        handleCommand(["file.txt"])
         assertSessionReply(ReplyCodes.RNTO_OK, ['rnto', FROM_FILE, 'file.txt'])
         assert !fileSystem.exists(FROM_FILE), FROM_FILE
         assert fileSystem.exists(TO_FILE), TO_FILE
-        assert session.getAttribute(SessionKeys.RENAME_FROM) == null
+        assertRenameFromSessionProperty(null)
     }
 
     void testHandleCommand_FromFileNotSetInSession() {
@@ -60,31 +62,50 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_ToFilenameNotValid() {
         createFile(FROM_FILE)
-        commandHandler.handleCommand(createCommand([""]), session)
+        handleCommand([""])
         assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, "")
-        assert session.getAttribute(SessionKeys.RENAME_FROM) == FROM_FILE
+        assertRenameFromSessionProperty(FROM_FILE)
     }
 
     void testHandleCommand_ToFilenameSpecifiesADirectory() {
         createDirectory(TO_FILE)
-        commandHandler.handleCommand(createCommand([TO_FILE]), session)
+        handleCommand([TO_FILE])
         assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ['filesystem.isDirectory', TO_FILE])
-        assert session.getAttribute(SessionKeys.RENAME_FROM) == FROM_FILE
+        assertRenameFromSessionProperty(FROM_FILE)
     }
 
-    void testHandleCommand_RenameFails() {
-        commandHandler.handleCommand(createCommand([TO_FILE]), session)
+    void testHandleCommand_NoWriteAccessToDirectory() {
+        createFile(FROM_FILE)
+        fileSystem.getEntry(DIR).permissions = new Permissions('r-xr-xr-x')
+        handleCommand([TO_FILE])
+        assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ['filesystem.cannotWrite', DIR])
+        assertRenameFromSessionProperty(FROM_FILE)
+    }
+
+    void testHandleCommand_FromFileDoesNotExist() {
+        createDirectory(DIR)
+        handleCommand([TO_FILE])
         assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, ['filesystem.pathDoesNotExist', FROM_FILE])
-        assert session.getAttribute(SessionKeys.RENAME_FROM) == FROM_FILE
+        assertRenameFromSessionProperty(FROM_FILE)
+    }
+
+    void testHandleCommand_ToFileParentDirectoryDoesNotExist() {
+        createFile(FROM_FILE)
+        final BAD_DIR = p(DIR, 'SUB')
+        final BAD_TO_FILE = p(BAD_DIR, 'Filename.txt')
+        handleCommand([BAD_TO_FILE])
+        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, ['filesystem.pathDoesNotExist', BAD_DIR])
+        assertRenameFromSessionProperty(FROM_FILE)
     }
 
     void testHandleCommand_RenameThrowsException() {
+        createDirectory(DIR)
         def newMethod = {String from, String to -> throw new FileSystemException("bad", 'msgkey') }
         overrideMethod(fileSystem, "rename", newMethod)
 
-        commandHandler.handleCommand(createCommand([TO_FILE]), session)
+        handleCommand([TO_FILE])
         assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ERROR_MESSAGE_KEY)
-        assert session.getAttribute(SessionKeys.RENAME_FROM) == FROM_FILE
+        assertRenameFromSessionProperty(FROM_FILE)
     }
 
     void testHandleCommand_MissingPathParameter() {
@@ -106,6 +127,10 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void setUp() {
         super.setUp()
         session.setAttribute(SessionKeys.RENAME_FROM, FROM_FILE)
+    }
+
+    private void assertRenameFromSessionProperty(String value) {
+        assert session.getAttribute(SessionKeys.RENAME_FROM) == value
     }
 
 }
