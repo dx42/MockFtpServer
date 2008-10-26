@@ -53,7 +53,10 @@ class MkdCommandHandler extends AbstractFakeCommandHandler {
         // User must have execute permission to the parent directory
         verifyExecutePermission(session, parent)
 
-        fileSystem.add(new DirectoryEntry(path))
+        DirectoryEntry dirEntry = new DirectoryEntry(path)
+        fileSystem.add(dirEntry)
+        dirEntry.permissions = getUserAccount(session).defaultPermissionsForNewDirectory
+
         sendReply(session, ReplyCodes.MKD_OK, 'mkd', [path])
     }
 
