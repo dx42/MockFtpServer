@@ -16,13 +16,13 @@
 package org.mockftpserver.fake.command
 
 import org.mockftpserver.core.command.Command
-import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystemEntry
 import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.Permissions
+
 
 /**
  * Abstract superclass for tests of Fake CommandHandlers that store a file (STOR, STOU, APPE)
@@ -96,12 +96,10 @@ abstract class AbstractStoreFileCommandHandlerTest extends AbstractFakeCommandHa
 
         def outputFile = verifyOutputFile()
 
-        def actualContents = fileSystem.getEntry(outputFile).createInputStream().text
+        FileSystemEntry fileEntry = fileSystem.getEntry(outputFile)
+        def actualContents = fileEntry.createInputStream().text
         assert actualContents == contents
-    }
-
-    CommandHandler createCommandHandler() {
-        new AppeCommandHandler()
+        assert fileEntry.permissions == userAccount.defaultPermissionsForNewFile
     }
 
     Command createValidCommand() {

@@ -23,6 +23,7 @@ import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.filesystem.FileSystemEntry
 import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.Permissions
+import org.mockftpserver.fake.user.UserAccount
 
 /**
  * Tests for MkdCommandHandler
@@ -36,11 +37,15 @@ class MkdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     static final PARENT = '/'
     static final DIRNAME = "usr"
     static final DIR = p(PARENT, DIRNAME)
+    static final PERMISSIONS = new Permissions('rwx------')
 
     void testHandleCommand() {
+        userAccount.defaultPermissionsForNewDirectory = PERMISSIONS
         handleCommand([DIR])
         assertSessionReply(ReplyCodes.MKD_OK, ['mkd', DIR])
         assert fileSystem.exists(DIR)
+        def dirEntry = fileSystem.getEntry(DIR)
+        assert dirEntry.permissions == PERMISSIONS
     }
 
     void testHandleCommand_PathIsRelative() {
@@ -48,6 +53,8 @@ class MkdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         handleCommand([DIRNAME])
         assertSessionReply(ReplyCodes.MKD_OK, ['mkd', DIRNAME])
         assert fileSystem.exists(DIR)
+        def dirEntry = fileSystem.getEntry(DIR)
+        assert dirEntry.permissions == UserAccount.DEFAULT_PERMISSIONS_FOR_NEW_DIRECTORY
     }
 
     void testHandleCommand_ParentDirectoryDoesNotExist() {

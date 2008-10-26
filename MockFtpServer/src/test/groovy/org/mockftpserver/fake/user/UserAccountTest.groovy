@@ -164,6 +164,11 @@ class UserAccountTest extends AbstractGroovyTest {
         testCanExecute(null, null, 'rwxrwxrw-', false)
     }
 
+    void testDefaultPermissions() {
+        assert userAccount.defaultPermissionsForNewFile == new Permissions('rw-rw-rw-')
+        assert userAccount.defaultPermissionsForNewDirectory == Permissions.ALL
+    }
+
     //--------------------------------------------------------------------------
     // Helper Methods
     //--------------------------------------------------------------------------

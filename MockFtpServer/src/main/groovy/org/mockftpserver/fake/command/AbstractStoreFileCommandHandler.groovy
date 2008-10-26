@@ -67,6 +67,7 @@ abstract class AbstractStoreFileCommandHandler extends AbstractFakeCommandHandle
             file = new FileEntry(path)
             fileSystem.add(file)
         }
+        file.permissions = getUserAccount(session).defaultPermissionsForNewFile
 
         if (contents) {
             def out = file.createOutputStream(appendToOutputFile())

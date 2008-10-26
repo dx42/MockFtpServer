@@ -16,6 +16,7 @@
 package org.mockftpserver.fake.user
 
 import org.mockftpserver.fake.filesystem.FileSystemEntry
+import org.mockftpserver.fake.filesystem.Permissions
 
 /**
  * Represents a single user account on the server, including the username, password and home
@@ -40,6 +41,8 @@ class UserAccount {
 
     public static final DEFAULT_USER = 'system'
     public static final DEFAULT_GROUP = 'users'
+    public static final DEFAULT_PERMISSIONS_FOR_NEW_FILE = new Permissions('rw-rw-rw-')
+    public static final DEFAULT_PERMISSIONS_FOR_NEW_DIRECTORY = Permissions.ALL
 
     String username
     String password
@@ -48,6 +51,8 @@ class UserAccount {
     boolean passwordRequiredForLogin = true
     boolean passwordCheckedDuringValidation = true
     boolean accountRequiredForLogin = false
+    Permissions defaultPermissionsForNewFile = DEFAULT_PERMISSIONS_FOR_NEW_FILE
+    Permissions defaultPermissionsForNewDirectory = DEFAULT_PERMISSIONS_FOR_NEW_DIRECTORY
 
     /**
      * Return the name of the primary group to which this user belongs. If this account has no associated

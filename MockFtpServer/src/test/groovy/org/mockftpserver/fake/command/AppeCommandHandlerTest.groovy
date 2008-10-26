@@ -20,6 +20,7 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.fake.filesystem.FileEntry
+import org.mockftpserver.fake.filesystem.Permissions
 
 /**
  * Tests for AppeCommandHandler
@@ -35,6 +36,7 @@ class AppeCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
     }
 
     void testHandleCommand_AbsolutePath() {
+        userAccount.defaultPermissionsForNewFile = Permissions.NONE
         testHandleCommand([FILE], 'appe', CONTENTS)
     }
 
