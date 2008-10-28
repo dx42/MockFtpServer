@@ -27,7 +27,7 @@ import org.mockftpserver.test.AbstractGroovyTest
  */
 abstract class AbstractFileSystemTest extends AbstractGroovyTest {
 
-    public static final FILENAME1 = "file1.txt"
+    public static final FILENAME1 = "File1.txt"
     public static final FILENAME2 = "file2.txt"
     public static final DIR1 = "dir1"
     public static final NEW_DIRNAME = "testdir"

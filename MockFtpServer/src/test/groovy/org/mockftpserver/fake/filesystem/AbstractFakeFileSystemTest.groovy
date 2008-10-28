@@ -79,8 +79,8 @@ abstract class AbstractFakeFileSystemTest extends AbstractFileSystemTest {
     void testToString() {
         String toString = fileSystem.toString()
         LOG.info("toString=" + toString)
-        assert toString.contains(fileSystem.normalize(EXISTING_DIR))
-        assert toString.contains(fileSystem.normalize(EXISTING_FILE))
+        assert toString.contains(EXISTING_DIR)
+        assert toString.contains(EXISTING_FILE)
     }
 
     void testFormatDirectoryListing() {
