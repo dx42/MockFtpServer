@@ -142,6 +142,12 @@ class WindowsFakeFileSystemTest extends AbstractFakeFileSystemTest {
         shouldFailWithMessageContaining("path") { fileSystem.isAbsolute(null) }
     }
 
+    void testCaseInsensitive() {
+        def fileEntry = fileSystem.getEntry(EXISTING_FILE)
+        assert fileEntry
+        assert fileEntry == fileSystem.getEntry(EXISTING_FILE.toLowerCase())
+    }
+
     //-------------------------------------------------------------------------
     // Test setup
     //-------------------------------------------------------------------------

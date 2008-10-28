@@ -27,7 +27,7 @@ import org.mockftpserver.core.util.PatternUtil
  * that do not already exist. If <code>false</code>, then creating a directory or file throws an
  * exception if its parent directory does not exist. This value defaults to <code>true</code>.
  * <p>
- * The <code>directoryListingFormatter</code> property holds an instance of          {@link DirectoryListingFormatter}                        ,
+ * The <code>directoryListingFormatter</code> property holds an instance of           {@link DirectoryListingFormatter}                         ,
  * used by the <code>formatDirectoryListing</code> method to format directory listings in a
  * filesystem-specific manner. This property must be initialized by concrete subclasses.
  *
@@ -48,7 +48,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     boolean createParentDirectoriesAutomatically = true
 
     /**
-     * The          {@link DirectoryListingFormatter}          used by the          {@link #formatDirectoryListing(FileSystemEntry)}
+     * The           {@link DirectoryListingFormatter}           used by the           {@link #formatDirectoryListing(FileSystemEntry)}
      * method. This must be initialized by concrete subclasses. 
      */
     DirectoryListingFormatter directoryListingFormatter
@@ -65,14 +65,14 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      * @param entry - the FileSystemEntry to add
      */
     public void add(FileSystemEntry entry) {
-        checkForInvalidFilename(entry.path)
-        def normalized = normalize(entry.path)
-        if (entries.get(normalized) != null) {
-            throw new FileSystemException(normalized, 'filesystem.pathAlreadyExists')
+        def path = entry.path
+        checkForInvalidFilename(path)
+        if (getEntry(path) != null) {
+            throw new FileSystemException(path, 'filesystem.pathAlreadyExists')
         }
 
-        if (!parentDirectoryExists(normalized)) {
-            String parent = getParent(normalized)
+        if (!parentDirectoryExists(path)) {
+            String parent = getParent(path)
             if (createParentDirectoriesAutomatically) {
                 add(new DirectoryEntry(parent))
             }
@@ -86,7 +86,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
             entry.setLastModified(new Date())
         }
 
-        entries.put(normalized, entry)
+        entries.put(getFileSystemEntryKey(path), entry)
         entry.lockPath()
     }
 
@@ -104,11 +104,9 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      */
     public boolean delete(String path) {
         assert path != null
-        String key = normalize(path)
-        FileSystemEntry entry = getEntry(key)
 
-        if (entry != null && !hasChildren(path)) {
-            entries.remove(key)
+        if (getEntry(path) != null && !hasChildren(path)) {
+            removeEntry(path)
             return true
         }
         return false
@@ -208,7 +206,8 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         List filenames = new ArrayList()
         List children = children(path)
         children.each {childPath ->
-            filenames.add(getName(childPath))
+            def fileSystemEntry = getEntry(childPath)
+            filenames.add(fileSystemEntry.getName())
         }
         return filenames
     }
@@ -251,7 +250,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
             renamePath(child, childToPath)
         }
         assert children(normalizedFromPath) == []
-        entries.remove(normalizedFromPath)
+        removeEntry(normalizedFromPath)
     }
 
     /**
@@ -345,7 +344,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      * @see FileSystem#getEntry(String)
      */
     public FileSystemEntry getEntry(String path) {
-        return (FileSystemEntry) entries.get(normalize(path))
+        return (FileSystemEntry) entries.get(getFileSystemEntryKey(path))
     }
 
     //-------------------------------------------------------------------------
@@ -379,6 +378,15 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     //-------------------------------------------------------------------------
 
     /**
+     * Return the normalized and unique key used to access the file system entry
+     * @param path - the path
+     * @return the corresponding normalized key
+     */
+    protected String getFileSystemEntryKey(String path) {
+        return normalize(path)
+    }
+
+    /**
      * Return the standard, normalized form of the path.
      * @param path - the path
      * @return the path in a standard, unique, canonical form
@@ -410,7 +418,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         def newEntry = entry.cloneWithNewPath(normalizedTo)
         add(newEntry)
         // Do this at the end, in case the addEntry() failed
-        entries.remove(normalizedFrom)
+        removeEntry(normalizedFrom)
     }
 
     /**
@@ -492,7 +500,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      * @return true if the path exists
      */
     private boolean pathExists(String path) {
-        return entries.get(normalize(path)) != null
+        return getEntry(path) != null
     }
 
     /**
@@ -574,8 +582,8 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         if (!isDirectory(path)) {
             return false
         }
-        String normalizedPath = normalize(path)
-        return entries.keySet().find {p -> p.startsWith(normalizedPath) && !normalizedPath.equals(p) }
+        String key = getFileSystemEntryKey(path)
+        return entries.keySet().find {p -> p.startsWith(key) && !key.equals(p) }
     }
 
     /**
@@ -585,7 +593,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
      */
     private List descendents(String path) {
         if (isDirectory(path)) {
-            String normalizedPath = normalize(path)
+            String normalizedPath = getFileSystemEntryKey(path)
             String separator = (normalizedPath.endsWith(SEPARATOR)) ? '' : SEPARATOR
             String normalizedDirPrefix = normalizedPath + separator
             List descendents = new ArrayList()
@@ -609,7 +617,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
         def containsWildcards = PatternUtil.containsWildcards(lastComponent)
         def dir = containsWildcards ? getParent(path) : path
         def pattern = containsWildcards ? PatternUtil.convertStringWithWildcardsToRegex(getName(path)) : null
-        LOG.info("path=$path  lastComponent=$lastComponent  containsWildcards=$containsWildcards  dir=$dir  pattern=$pattern")
+        LOG.debug("path=$path  lastComponent=$lastComponent  containsWildcards=$containsWildcards  dir=$dir  pattern=$pattern")
 
         List descendents = descendents(dir)
         List children = []
@@ -622,6 +630,10 @@ abstract class AbstractFakeFileSystem implements FileSystem {
             }
         }
         return children
+    }
+
+    private void removeEntry(String path) {
+        entries.remove(getFileSystemEntryKey(path))
     }
 
 }

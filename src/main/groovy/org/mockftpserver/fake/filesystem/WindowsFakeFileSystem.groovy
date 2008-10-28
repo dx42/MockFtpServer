@@ -16,7 +16,7 @@
 package org.mockftpserver.fake.filesystem
 
 /**
- * Implementation of the       {@link FileSystem}       interface that simulates a Microsoft
+ * Implementation of the        {@link FileSystem}        interface that simulates a Microsoft
  * Windows file system. The rules for file and directory names include: 
  * <ul>
  *   <li>Filenames are case-insensitive (and normalized to lower-case)</li>
@@ -26,7 +26,7 @@ package org.mockftpserver.fake.filesystem
  * </ul>
  *
  * The <code>directoryListingFormatter</code> property is automatically initialized to an instance
- * of    {@link WindowsDirectoryListingFormatter}   .
+ * of     {@link WindowsDirectoryListingFormatter}    .
  *
  * @version $Revision$ - $Date$
  *
@@ -46,8 +46,18 @@ class WindowsFakeFileSystem extends AbstractFakeFileSystem {
     }
 
     //-------------------------------------------------------------------------
-    // Abstract Method Implementations
+    // Abstract Or Overridden Method Implementations
     //-------------------------------------------------------------------------
+
+    /**
+     * Return the normalized and unique key used to access the file system entry. Windows is case-insensitive,
+     * so normalize all paths to lower-case.
+     * @param path - the path
+     * @return the corresponding normalized key
+     */
+    protected String getFileSystemEntryKey(String path) {
+        return normalize(path).toLowerCase()
+    }
 
     protected String getSeparator() {
         return SEPARATOR
