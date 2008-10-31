@@ -27,7 +27,7 @@ import org.mockftpserver.core.util.PatternUtil
  * that do not already exist. If <code>false</code>, then creating a directory or file throws an
  * exception if its parent directory does not exist. This value defaults to <code>true</code>.
  * <p>
- * The <code>directoryListingFormatter</code> property holds an instance of           {@link DirectoryListingFormatter}                         ,
+ * The <code>directoryListingFormatter</code> property holds an instance of            {@link DirectoryListingFormatter}                          ,
  * used by the <code>formatDirectoryListing</code> method to format directory listings in a
  * filesystem-specific manner. This property must be initialized by concrete subclasses.
  *
@@ -48,7 +48,7 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     boolean createParentDirectoriesAutomatically = true
 
     /**
-     * The           {@link DirectoryListingFormatter}           used by the           {@link #formatDirectoryListing(FileSystemEntry)}
+     * The            {@link DirectoryListingFormatter}            used by the            {@link #formatDirectoryListing(FileSystemEntry)}
      * method. This must be initialized by concrete subclasses. 
      */
     DirectoryListingFormatter directoryListingFormatter
@@ -58,6 +58,15 @@ abstract class AbstractFakeFileSystem implements FileSystem {
     //-------------------------------------------------------------------------
     // Public API
     //-------------------------------------------------------------------------
+
+    /**
+     * Add each of the entries in the specified List to this filesystem. Note that this does not affect
+     * entries already existing within this filesystem.
+     * @param entriesToAdd - the List of FileSystemEntry entries to add
+     */
+    public void setEntries(List entriesToAdd) {
+        entriesToAdd.each {FileSystemEntry entry -> add(entry) }
+    }
 
     /**
      * Add the specified file system entry (file or directory) to this file system
