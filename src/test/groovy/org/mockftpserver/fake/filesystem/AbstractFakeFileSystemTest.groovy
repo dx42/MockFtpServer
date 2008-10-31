@@ -76,6 +76,14 @@ abstract class AbstractFakeFileSystemTest extends AbstractFileSystemTest {
         assert !fileSystem.exists(NEW_DIR), "After createDirectory"
     }
 
+    void testSetEntries() {
+        fileSystem.createParentDirectoriesAutomatically = false
+        def entries = [new FileEntry(NEW_FILE), new DirectoryEntry(NEW_DIR)]
+        fileSystem.setEntries(entries)
+        assert fileSystem.exists(NEW_DIR)
+        assert fileSystem.exists(NEW_FILE)
+    }
+
     void testToString() {
         String toString = fileSystem.toString()
         LOG.info("toString=" + toString)
