@@ -18,7 +18,6 @@ package org.mockftpserver.fake.filesystem
 import java.text.SimpleDateFormat
 import org.apache.log4j.Logger
 
-
 /**
  * Unix-specific implementation of the DirectoryListingFormatter interface.
  *
@@ -34,6 +33,7 @@ class UnixDirectoryListingFormatter implements DirectoryListingFormatter {
     static final SIZE_WIDTH = 15
     static final OWNER_WIDTH = 8
     static final GROUP_WIDTH = 8
+    static final NONE = 'none'
 
     // "-rw-rw-r--    1 ftp      ftp           254 Feb 23  2007 robots.txt"
     // "-rw-r--r--    1 ftp      ftp      30014925 Apr 15 00:19 md5.sums.gz"
@@ -60,11 +60,11 @@ class UnixDirectoryListingFormatter implements DirectoryListingFormatter {
     }
 
     private String padRight(String string, int width) {
-        (string ?: '').padRight(width)
+        (string ?: NONE).padRight(width)
     }
 
     private String padLeft(String string, int width) {
-        (string ?: '').padLeft(width)
+        (string ?: NONE).padLeft(width)
     }
 
 }

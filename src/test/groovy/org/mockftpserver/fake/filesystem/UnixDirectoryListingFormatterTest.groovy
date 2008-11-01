@@ -58,7 +58,7 @@ class UnixDirectoryListingFormatterTest extends AbstractGroovyTest {
     void testFormat_File_Defaults() {
         def fileSystemEntry = new FileEntry(path: FILE_PATH, contents: '12345678901', lastModified: LAST_MODIFIED)
         LOG.info(fileSystemEntry)
-        verifyFormat(fileSystemEntry, "-rwxrwxrwx  1                                11 $lastModifiedFormatted def.txt")
+        verifyFormat(fileSystemEntry, "-rwxrwxrwx  1 none     none                  11 $lastModifiedFormatted def.txt")
     }
 
     void testFormat_Directory() {
@@ -71,7 +71,7 @@ class UnixDirectoryListingFormatterTest extends AbstractGroovyTest {
     void testFormat_Directory_Defaults() {
         def fileSystemEntry = new DirectoryEntry(path: DIR_PATH, lastModified: LAST_MODIFIED)
         LOG.info(fileSystemEntry)
-        verifyFormat(fileSystemEntry, "drwxrwxrwx  1                                 0 $lastModifiedFormatted etc")
+        verifyFormat(fileSystemEntry, "drwxrwxrwx  1 none     none                   0 $lastModifiedFormatted etc")
     }
 
     void setUp() {
