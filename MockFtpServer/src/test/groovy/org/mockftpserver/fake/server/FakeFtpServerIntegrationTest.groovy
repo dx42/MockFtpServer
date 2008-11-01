@@ -21,11 +21,11 @@ import org.apache.commons.net.ftp.FTPFile
 import org.mockftpserver.fake.filesystem.DirectoryEntry
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystem
+import org.mockftpserver.fake.filesystem.UnixFakeFileSystem
 import org.mockftpserver.fake.filesystem.WindowsFakeFileSystem
 import org.mockftpserver.fake.user.UserAccount
 import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.test.PortTestUtil
-
 
 /**
  * Integration tests for FakeFtpServer.
@@ -141,6 +141,28 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         assert files.length == 2
         verifyFTPFile(files[0], FTPFile.FILE_TYPE, FILENAME1, ASCII_DATA.size())
         verifyFTPFile(files[1], FTPFile.DIRECTORY_TYPE, SUBDIR_NAME2, 0)
+        verifyReplyCode("list", 226)
+    }
+
+    void testList_Unix() {
+        ftpServer.systemName = 'UNIX'
+        userAccount.homeDirectory = '/'
+
+        def unixFileSystem = new UnixFakeFileSystem()
+        unixFileSystem.createParentDirectoriesAutomatically = true
+        unixFileSystem.add(new DirectoryEntry('/'))
+        ftpServer.fileSystem = unixFileSystem
+
+        def LAST_MODIFIED = new Date()
+        unixFileSystem.add(new FileEntry(path: p('/', FILENAME1), lastModified: LAST_MODIFIED, contents: ASCII_DATA))
+        unixFileSystem.add(new DirectoryEntry(path: p('/', SUBDIR_NAME2), lastModified: LAST_MODIFIED))
+
+        ftpClientConnectAndLogin()
+
+        FTPFile[] files = ftpClient.listFiles('/')
+        assert files.length == 2
+        verifyFTPFile(files[0], FTPFile.DIRECTORY_TYPE, SUBDIR_NAME2, 0)
+        verifyFTPFile(files[1], FTPFile.FILE_TYPE, FILENAME1, ASCII_DATA.size())
         verifyReplyCode("list", 226)
     }
 
