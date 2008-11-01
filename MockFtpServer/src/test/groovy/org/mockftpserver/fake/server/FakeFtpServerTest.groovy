@@ -20,7 +20,6 @@ import org.mockftpserver.core.server.AbstractFtpServer
 import org.mockftpserver.core.server.AbstractFtpServerTest
 import org.mockftpserver.fake.user.UserAccount
 
-
 /**
  * Tests for FakeFtpServer.
  *
@@ -56,8 +55,8 @@ class FakeFtpServerTest extends AbstractFtpServerTest {
     }
 
     void testUserAccounts() {
-        def userAccount = new UserAccount()
-        def userAccounts = ["abc": userAccount]
+        def userAccount = new UserAccount(username: 'abc')
+        def userAccounts = [userAccount]
         ftpServer.userAccounts = userAccounts
         assert ftpServer.getUserAccount("abc") == userAccount
     }

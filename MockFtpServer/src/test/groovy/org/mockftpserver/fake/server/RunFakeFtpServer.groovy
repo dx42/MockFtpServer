@@ -44,7 +44,7 @@ class RunFakeFtpServer {
 
         def ftpServer = new FakeFtpServer()
         ftpServer.fileSystem = fileSystem
-        ftpServer.userAccounts = [(ANONYMOUS): userAccount]
+        ftpServer.userAccounts = [userAccount]
         ftpServer.run()
     }
 }

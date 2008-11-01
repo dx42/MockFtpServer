@@ -36,9 +36,10 @@ import org.mockftpserver.fake.user.UserAccount
 class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
 
     FileSystem fileSystem
-    Map userAccounts = [:]
     String systemName = "WINDOWS"
     Map helpText = [:]
+
+    private Map userAccounts = [:]
 
     FakeFtpServer() {
         setCommandHandler(CommandNames.ACCT, new AcctCommandHandler())
@@ -90,7 +91,7 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
     }
 
     /**
-     * @return the {@link UserAccount}       configured for this server for the specified user name
+     * @return the {@link UserAccount}        configured for this server for the specified user name
      */
     public UserAccount getUserAccount(String username) {
         userAccounts[username]
@@ -104,6 +105,14 @@ class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
     String getHelpText(String name) {
         def key = name == null ? '' : name
         return helpText[key];
+    }
+
+    /**
+     * Add the UserAccount objects in the <code>userAccountList</code> to the set of UserAccounts.
+     * @param userAccountList - the List of UserAccount objects to add
+     */
+    void setUserAccounts(List userAccountList) {
+        userAccountList.each {userAccount -> userAccounts[userAccount.username] = userAccount }
     }
 
 }
