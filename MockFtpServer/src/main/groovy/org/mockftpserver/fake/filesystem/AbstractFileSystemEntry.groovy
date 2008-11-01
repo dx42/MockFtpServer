@@ -75,6 +75,14 @@ abstract class AbstractFileSystemEntry implements FileSystemEntry {
         this.pathLocked = true
     }
 
+    void setPermissions(String permissionsString) {
+        this.permissions = new Permissions(permissionsString)
+    }
+
+    void setPermissions(Permissions permissions) {
+        this.permissions = permissions
+    }
+
 //    /**
 //     * @see java.lang.Object#equals(java.lang.Object)
 //     */
