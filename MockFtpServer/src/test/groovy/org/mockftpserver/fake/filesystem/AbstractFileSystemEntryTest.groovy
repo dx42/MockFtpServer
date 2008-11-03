@@ -69,7 +69,7 @@ public abstract class AbstractFileSystemEntryTest extends AbstractGroovyTest {
     void testSetPermissionsFromString() {
         def entry = createFileSystemEntry('abc')
         final PERM = 'rw-r---wx'
-        entry.setPermissions(PERM)
+        entry.setPermissionsFromString(PERM)
         assert entry.permissions == new Permissions(PERM)
     }
 

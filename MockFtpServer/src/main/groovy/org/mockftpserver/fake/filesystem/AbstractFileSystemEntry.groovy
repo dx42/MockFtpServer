@@ -75,34 +75,9 @@ abstract class AbstractFileSystemEntry implements FileSystemEntry {
         this.pathLocked = true
     }
 
-    void setPermissions(String permissionsString) {
+    void setPermissionsFromString(String permissionsString) {
         this.permissions = new Permissions(permissionsString)
     }
-
-    void setPermissions(Permissions permissions) {
-        this.permissions = permissions
-    }
-
-//    /**
-//     * @see java.lang.Object#equals(java.lang.Object)
-//     */
-//    boolean equals(Object obj) {
-//        (obj
-//                && obj.class == this.class
-//                && obj.hashCode() == hashCode())
-//    }
-//
-//    /**
-//     * Return the hash code for this object. Note that only the directory (boolean),
-//     * path and length properties affect the hash code value. The lastModified
-//     * property is ignored.
-//     *
-//     * @see java.lang.Object#hashCode()
-//     */
-//    int hashCode() {
-//        String str = [directory, path, size].join(":")
-//        return str.hashCode()
-//    }
 
     /**
      * Abstract method -- must be implemented within concrete subclasses
