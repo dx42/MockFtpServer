@@ -32,17 +32,13 @@ class FakeFtpServerSpringConfigurationTest extends AbstractGroovyTest {
     private FakeFtpServer fakeFtpServer
     private FTPClient ftpClient
 
-    void testFakeFtpServer() {
-        fakeFtpServer.start()
-
-        ftpClient.connect(SERVER, PORT)
-
-        // USER and PASS
-        assert ftpClient.login(USERNAME, PASSWORD)
+    void testFakeFtpServer_Unix() {
+        startFtpServer('fakeftpserver-beans.xml')
+        connectAndLogin()
 
         // PWD
         String dir = ftpClient.printWorkingDirectory()
-        assert dir == 'c:\\'
+        assert dir == '/'
 
         // LIST
         FTPFile[] files = ftpClient.listFiles()
@@ -55,18 +51,50 @@ class FakeFtpServerSpringConfigurationTest extends AbstractGroovyTest {
         LOG.info("File contents=[" + outputStream.toString() + "]")
     }
 
+    void testFakeFtpServer_Windows_WithPermissions() {
+        startFtpServer('fakeftpserver-permissions-beans.xml')
+        connectAndLogin()
+
+        // PWD
+        String dir = ftpClient.printWorkingDirectory()
+        assert dir == 'c:\\'
+
+        // LIST
+        FTPFile[] files = ftpClient.listFiles()
+        assert files.length == 2
+        LOG.info("FTPFile[0]=" + files[0])
+        LOG.info("FTPFile[1]=" + files[1])
+
+        // RETR - File1.txt; we have required permissions
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
+        assert ftpClient.retrieveFile("File1.txt", outputStream)
+        LOG.info("File contents=[" + outputStream.toString() + "]")
+
+        // RETR - File2.txt; we DO NOT have required permissions
+        outputStream = new ByteArrayOutputStream()
+        assert !ftpClient.retrieveFile("File2.txt", outputStream)
+        assert ftpClient.replyCode == 550
+    }
+
     void setUp() throws Exception {
         super.setUp()
-
-        ApplicationContext context = new ClassPathXmlApplicationContext("fakeftpserver-beans.xml")
-        fakeFtpServer = (FakeFtpServer) context.getBean("fakeFtpServer")
-
         ftpClient = new FTPClient()
     }
 
     void tearDown() throws Exception {
         super.tearDown()
-        fakeFtpServer.stop()
+        fakeFtpServer?.stop()
+    }
+
+    private void startFtpServer(String springConfigFile) {
+        ApplicationContext context = new ClassPathXmlApplicationContext(springConfigFile)
+        fakeFtpServer = (FakeFtpServer) context.getBean("fakeFtpServer")
+        fakeFtpServer.start()
+    }
+
+    private void connectAndLogin() {
+        ftpClient.connect(SERVER, PORT)
+        assert ftpClient.login(USERNAME, PASSWORD)
     }
 
 }

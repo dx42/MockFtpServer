@@ -26,28 +26,44 @@
 
     <bean id="fakeFtpServer" class="org.mockftpserver.fake.server.FakeFtpServer">
         <property name="serverControlPort" value="9981"/>
-        <property name="systemName" value="UNIX"/>
         <property name="userAccounts">
             <list>
                 <bean class="org.mockftpserver.fake.user.UserAccount">
                     <property name="username" value="joe"/>
                     <property name="password" value="password"/>
-                    <property name="homeDirectory" value="/"/>
+                    <property name="homeDirectory" value="c:\"/>
                 </bean>
             </list>
         </property>
 
         <property name="fileSystem">
-            <bean class="org.mockftpserver.fake.filesystem.UnixFakeFileSystem">
+            <bean class="org.mockftpserver.fake.filesystem.WindowsFakeFileSystem">
                 <property name="createParentDirectoriesAutomatically" value="false"/>
                 <property name="entries">
                     <list>
                         <bean class="org.mockftpserver.fake.filesystem.DirectoryEntry">
-                            <property name="path" value="/"/>
+                            <property name="path" value="c:\"/>
+                            <property name="permissionsFromString" value="rwxrwxrwx"/>
+                            <property name="owner" value="joe"/>
+                            <property name="group" value="users"/>
                         </bean>
                         <bean class="org.mockftpserver.fake.filesystem.FileEntry">
-                            <property name="path" value="/File.txt"/>
+                            <property name="path" value="c:\File1.txt"/>
+                            <property name="contents" value="1234567890"/>
+                            <property name="permissionsFromString" value="rwxrwxrwx"/>
+                            <property name="owner" value="peter"/>
+                            <property name="group" value="users"/>
+                        </bean>
+                        <bean class="org.mockftpserver.fake.filesystem.FileEntry">
+                            <property name="path" value="c:\File2.txt"/>
                             <property name="contents" value="abcdefghijklmnopqrstuvwxyz"/>
+                            <property name="permissions">
+                                <bean class="org.mockftpserver.fake.filesystem.Permissions">
+                                    <constructor-arg value="rwx------"/>
+                                </bean>
+                            </property>
+                            <property name="owner" value="peter"/>
+                            <property name="group" value="users"/>
                         </bean>
                     </list>
                 </property>
