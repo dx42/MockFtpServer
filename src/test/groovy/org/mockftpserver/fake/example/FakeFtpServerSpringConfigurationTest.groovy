@@ -76,12 +76,12 @@ class FakeFtpServerSpringConfigurationTest extends AbstractGroovyTest {
         assert ftpClient.replyCode == 550
     }
 
-    void setUp() throws Exception {
+    void setUp() {
         super.setUp()
         ftpClient = new FTPClient()
     }
 
-    void tearDown() throws Exception {
+    void tearDown() {
         super.tearDown()
         fakeFtpServer?.stop()
     }
