@@ -15,28 +15,30 @@
  */
 package org.mockftpserver.stub.example;
 
+import org.apache.commons.net.ftp.FTPClient;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.SocketException;
-
-import org.apache.commons.net.ftp.FTPClient;
 
 /**
  * Simple FTP client code example.
- * 
- * @version $Revision$ - $Date$
  *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public class RemoteFile {
+
+    public static final String USERNAME = "user";
+    public static final String PASSWORD = "password";
 
     private String server;
     private int port;
 
-    public String readFile(String filename) throws SocketException, IOException {
+    public String readFile(String filename) throws IOException {
 
         FTPClient ftpClient = new FTPClient();
         ftpClient.connect(server, port);
+        ftpClient.login(USERNAME, PASSWORD);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         boolean success = ftpClient.retrieveFile(filename, outputStream);
@@ -47,9 +49,10 @@ public class RemoteFile {
         }
         return outputStream.toString();
     }
-    
+
     /**
      * Set the hostname of the FTP server
+     *
      * @param server - the hostname of the FTP server
      */
     public void setServer(String server) {
@@ -58,11 +61,12 @@ public class RemoteFile {
 
     /**
      * Set the port number for the FTP server
+     *
      * @param port - the port number
      */
     public void setPort(int port) {
         this.port = port;
     }
-    
+
     // Other methods ...
 }
