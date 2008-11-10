@@ -15,6 +15,11 @@ FakeFtpServer Filesystems
   <<<WindowsFakeFileSystem>>> and <<<UnixFakeFileSystem>>>. They both manage the files and directories in memory,
   simulating a real file system. You are also free to implement your own <<<FileSystem>>> implementation.
 
+  Note that both <<<WindowsFakeFileSystem>>> and <<<UnixFakeFileSystem>>> are <virtual> file systems, and do
+  not depend on the <real> operating systems or file systems on which <<FakeFtpServer>> is running. In other
+  words, you can configure and run a <<FakeFtpServer>> with a <<<WindowsFakeFileSystem>>> on top of a <real>
+  Unix system, or run a <<FakeFtpServer>> with a <<<UnixFakeFileSystem>>> on top of a <real> Windows system.
+
   See the javadoc for these classes for more information.
 
 * WindowsFakeFileSystem

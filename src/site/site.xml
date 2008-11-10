@@ -35,7 +35,7 @@
 
         <menu name="FakeFtpServer">
             <item name="Features and Limitations" href="/fakeftpserver-features.html"/>
-            <!-- <item name="Getting Started" href="/stubftpserver-getting-started.html"/> -->
+            <item name="Getting Started" href="/fakeftpserver-getting-started.html"/>
             <item name="File Systems" href="/fakeftpserver-filesystems.html"/>
         </menu>
 
