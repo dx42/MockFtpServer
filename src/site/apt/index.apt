@@ -8,8 +8,8 @@ MockFtpServer
   useful for testing of FTP client code. Two FTP Server implementations are provided, each at a different
   level of abstraction.
 
-  <<FakeFtpServer>> provides a high-level abstraction for an FTP server and is suitable for most testing
-  and simulation scenarios. You define a filesystem (internal, in-memory) containing an arbitrary set of
+  <<FakeFtpServer>> provides a higher-level abstraction for an FTP server and is suitable for most testing
+  and simulation scenarios. You define a filesystem (virtual, in-memory) containing an arbitrary set of
   files and directories. These files and directories can (optionally) have associated access permissions.
   You also configure a set of one or more user accounts that control which users can login to the FTP server,
   and their home (default) directories. The user account is also used when assigning file and directory
@@ -22,7 +22,7 @@ MockFtpServer
   also be interrogated to verify command invocation data such as command parameters and timestamps.
   See {{{stubftpserver-features.html}StubFtpServer Features and Limitations}}.
 
-  See the {{{fakeftpserver-versus-stubftpserver.html}FakeFtpServer versus StubFtpServer}} page for more
+  See the {{{fakeftpserver-versus-stubftpserver.html}FakeFtpServer or StubFtpServer?}} page for more
   information on deciding whether to use <<FakeFtpServer>> or <<StubFtpServer>>.
 
   The <<MockFtpServer>> project is written in Java, and is ideally suited to testing Java code. But because

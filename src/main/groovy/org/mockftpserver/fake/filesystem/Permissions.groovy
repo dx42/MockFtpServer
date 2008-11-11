@@ -25,9 +25,9 @@ package org.mockftpserver.fake.filesystem
  * @author Chris Mair
  */
 class Permissions {
-    public static final ALL = new Permissions('rwxrwxrwx')
-    public static final NONE = new Permissions('---------')
-    public static final DEFAULT = ALL
+    public static final Permissions ALL = new Permissions('rwxrwxrwx')
+    public static final Permissions NONE = new Permissions('---------')
+    public static final Permissions DEFAULT = ALL
 
     static final READ_CHAR = 'r'
     static final WRITE_CHAR = 'w'
