@@ -37,7 +37,7 @@ public class PatternUtilTest extends AbstractGroovyTest {
         assert PatternUtil.convertStringWithWildcardsToRegex('??x?.*') == /..x.\..*/
     }
 
-    void testContaisWildcards() {
+    void testContainsWildcards() {
         assert !PatternUtil.containsWildcards('')
         assert !PatternUtil.containsWildcards('abc')
         assert !PatternUtil.containsWildcards('abc.def')
