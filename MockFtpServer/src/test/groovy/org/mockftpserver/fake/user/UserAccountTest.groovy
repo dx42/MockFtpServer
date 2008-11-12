@@ -20,6 +20,7 @@ import org.mockftpserver.fake.filesystem.FileSystemEntry
 import org.mockftpserver.fake.filesystem.Permissions
 import org.mockftpserver.test.AbstractGroovyTest
 
+
 /**
  * Tests for UserAccount
  *
@@ -62,10 +63,10 @@ class UserAccountTest extends AbstractGroovyTest {
 
     void testIsValidPassword_UsernameNullOrEmpty() {
         userAccount.password = PASSWORD
-        shouldFail(AssertionError) { userAccount.isValidPassword(PASSWORD) }
+        shouldFailWithMessageContaining('username') { userAccount.isValidPassword(PASSWORD) }
 
         userAccount.username = ''
-        shouldFail(AssertionError) { userAccount.isValidPassword(PASSWORD) }
+        shouldFailWithMessageContaining('username') { userAccount.isValidPassword(PASSWORD) }
     }
 
     void testIsValidPassword_OverrideComparePassword() {
