@@ -56,6 +56,12 @@ interface FileSystemEntry {
     Date getLastModified()
 
     /**
+     * Set the timestamp Date for the last modification of this file system entry
+     * @param lastModified - the lastModified value, as a Date
+     */
+    void setLastModified(Date lastModified)
+
+    /**
      * @return the username of the owner of this file system entry
      */
     String getOwner()

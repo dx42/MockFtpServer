@@ -16,7 +16,7 @@
 package org.mockftpserver.fake.filesystem
 
 /**
- * Implementation of the       {@link FileSystem}       interface that simulates a Unix
+ * Implementation of the         {@link FileSystem}         interface that simulates a Unix
  * file system. The rules for file and directory names include: 
  * <ul>
  *   <li>Filenames are case-sensitive</li>
@@ -24,7 +24,7 @@ package org.mockftpserver.fake.filesystem
  * </ul>
  *
  * The <code>directoryListingFormatter</code> property is automatically initialized to an instance
- * of    {@link UnixDirectoryListingFormatter}   .
+ * of      {@link UnixDirectoryListingFormatter}     .
  *
  * @version $Revision$ - $Date$
  *
@@ -32,7 +32,7 @@ package org.mockftpserver.fake.filesystem
  */
 class UnixFakeFileSystem extends AbstractFakeFileSystem {
 
-    public static final String SEPARATOR = "/"
+    public static final char SEPARATOR = '/';
 
     /**
      * Construct a new instance and initialize the directoryListingFormatter to a UnixDirectoryListingFormatter.
@@ -45,7 +45,7 @@ class UnixFakeFileSystem extends AbstractFakeFileSystem {
     // Abstract Method Implementations
     //-------------------------------------------------------------------------
 
-    protected String getSeparator() {
+    protected char getSeparatorChar() {
         return SEPARATOR
     }
 
@@ -71,7 +71,7 @@ class UnixFakeFileSystem extends AbstractFakeFileSystem {
      * @return true if the specified char is a separator character ('\' or '/')
      */
     protected boolean isSeparator(char c) {
-        return c == SEPARATOR.charAt(0)
+        return c == SEPARATOR
     }
 
     /**
