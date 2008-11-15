@@ -34,6 +34,7 @@ public interface ServerConfiguration {
     public FileSystem getFileSystem();
 
     /**
+     * @param username - the user name
      * @return the {@link UserAccount}    configured for this server for the specified user name
      */
     public UserAccount getUserAccount(String username);
