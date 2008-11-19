@@ -24,4 +24,12 @@ package org.mockftpserver.fake.filesystem
  */
 class TestUnixFakeFileSystem extends UnixFakeFileSystem {
 
+    Throwable addMethodException
+
+    void add(FileSystemEntry entry) {
+        if (addMethodException) {
+            throw addMethodException
+        }
+        super.add(entry)
+    }
 }

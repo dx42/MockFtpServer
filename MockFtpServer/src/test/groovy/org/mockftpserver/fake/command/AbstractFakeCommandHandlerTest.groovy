@@ -45,7 +45,7 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     protected fileSystem
     protected userAccount
 
-    /** Set this to false to skip the test that verifies that the CommandHandler requires a logged in user          */
+    /** Set this to false to skip the test that verifies that the CommandHandler requires a logged in user           */
     boolean testNotLoggedIn = true
 
     //-------------------------------------------------------------------------
@@ -231,6 +231,7 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
      * @param newMethod - the Closure representing the new method for this single instance
      */
     protected void overrideMethod(object, String methodName, Closure newMethod) {
+        LOG.info("Overriding method [$methodName] for class [${object.class}]")
         def emc = new ExpandoMetaClass(object.class, false)
         emc."$methodName" = newMethod
         emc.initialize()

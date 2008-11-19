@@ -132,7 +132,6 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
     void testVerifyFileSystemCondition() {
         commandHandler.verifyFileSystemCondition(true, PATH, '')    // no exception expected
         shouldFail(FileSystemException) { commandHandler.verifyFileSystemCondition(false, PATH, '') }
-        shouldFail(FileSystemException) { commandHandler.verifyFileSystemCondition([], PATH, '') }
     }
 
     void testGetRealPath() {

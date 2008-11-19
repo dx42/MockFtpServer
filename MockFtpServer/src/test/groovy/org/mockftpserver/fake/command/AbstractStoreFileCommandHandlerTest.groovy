@@ -23,7 +23,6 @@ import org.mockftpserver.fake.filesystem.FileSystemEntry
 import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.Permissions
 
-
 /**
  * Abstract superclass for tests of Fake CommandHandlers that store a file (STOR, STOU, APPE)
  *
@@ -63,11 +62,7 @@ abstract class AbstractStoreFileCommandHandlerTest extends AbstractFakeCommandHa
     }
 
     void testHandleCommand_ThrowsFileSystemException() {
-        def newMethod = {FileSystemEntry entry ->
-            println "Calling add() - throwing exception"
-            throw new FileSystemException("bad", ERROR_MESSAGE_KEY)
-        }
-        overrideMethod(fileSystem, "add", newMethod)
+        fileSystem.addMethodException = new FileSystemException("bad", ERROR_MESSAGE_KEY)
 
         handleCommand([FILE])
         assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
