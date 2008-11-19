@@ -415,4 +415,8 @@ public abstract class AbstractFakeCommandHandler implements CommandHandler, Serv
         return string != null && string.length() > 0;
     }
 
+    protected String defaultIfNullOrEmpty(String string, String defaultString) {
+        return (notNullOrEmpty(string) ? string : defaultString);
+    }
+
 }
