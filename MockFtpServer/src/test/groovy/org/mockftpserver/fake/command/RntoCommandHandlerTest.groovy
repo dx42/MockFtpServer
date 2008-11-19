@@ -100,8 +100,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_RenameThrowsException() {
         createDirectory(DIR)
-        def newMethod = {String from, String to -> throw new FileSystemException("bad", 'msgkey') }
-        overrideMethod(fileSystem, "rename", newMethod)
+        fileSystem.renameMethodException = new FileSystemException("bad", ERROR_MESSAGE_KEY)
 
         handleCommand([TO_FILE])
         assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ERROR_MESSAGE_KEY)

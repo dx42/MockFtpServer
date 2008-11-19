@@ -20,6 +20,7 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.Permissions
 
 /**
@@ -77,14 +78,14 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_ListNamesThrowsException() {
         createDirectory(DIR)
-        overrideMethodToThrowFileSystemException("listNames")
+        fileSystem.listNamesMethodException = new FileSystemException("bad", ERROR_MESSAGE_KEY)
         handleCommand([DIR])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
     void testHandleCommand_DeleteThrowsException() {
         createDirectory(DIR)
-        overrideMethodToThrowFileSystemException("delete")
+        fileSystem.deleteMethodException = new FileSystemException("bad", ERROR_MESSAGE_KEY)
         handleCommand([DIR])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ERROR_MESSAGE_KEY)
     }

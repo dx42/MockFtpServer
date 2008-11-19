@@ -125,7 +125,7 @@ public abstract class AbstractFakeCommandHandler implements CommandHandler, Serv
      * @see MessageFormat
      */
     protected void sendReply(Session session, int replyCode, String messageKey) {
-        sendReply(session, replyCode, messageKey, Collections.emptyList());
+        sendReply(session, replyCode, messageKey, Collections.EMPTY_LIST);
     }
 
     /**
@@ -167,7 +167,7 @@ public abstract class AbstractFakeCommandHandler implements CommandHandler, Serv
      * @see MessageFormat
      */
     protected void sendReply(Session session, int replyCode) {
-        sendReply(session, replyCode, Collections.emptyList());
+        sendReply(session, replyCode, Collections.EMPTY_LIST);
     }
 
     /**
