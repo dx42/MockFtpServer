@@ -96,7 +96,7 @@ public class WindowsFakeFileSystem extends AbstractFakeFileSystem {
      * @return true if the specified path component is a root for this filesystem
      */
     protected boolean isRoot(String pathComponent) {
-        return pathComponent.contains(":");
+        return pathComponent.indexOf(":") != -1;
     }
 
 }

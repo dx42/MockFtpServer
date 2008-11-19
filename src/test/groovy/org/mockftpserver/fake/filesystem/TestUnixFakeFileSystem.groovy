@@ -25,6 +25,9 @@ package org.mockftpserver.fake.filesystem
 class TestUnixFakeFileSystem extends UnixFakeFileSystem {
 
     Throwable addMethodException
+    Throwable renameMethodException
+    Throwable listNamesMethodException
+    Throwable deleteMethodException
 
     void add(FileSystemEntry entry) {
         if (addMethodException) {
@@ -32,4 +35,26 @@ class TestUnixFakeFileSystem extends UnixFakeFileSystem {
         }
         super.add(entry)
     }
+
+    void rename(String fromPath, String toPath) {
+        if (renameMethodException) {
+            throw renameMethodException
+        }
+        super.rename(fromPath, toPath)
+    }
+
+    List listNames(String path) {
+        if (listNamesMethodException) {
+            throw listNamesMethodException
+        }
+        super.listNames(path)
+    }
+
+    boolean delete(String path) {
+        if (deleteMethodException) {
+            throw deleteMethodException
+        }
+        super.delete(path)
+    }
+
 }
