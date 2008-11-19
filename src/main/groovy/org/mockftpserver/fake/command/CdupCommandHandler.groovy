@@ -42,7 +42,7 @@ class CdupCommandHandler extends AbstractFakeCommandHandler {
         def path = getFileSystem().getParent(currentDirectory)
 
         this.replyCodeForFileSystemException = ReplyCodes.READ_FILE_ERROR
-        verifyFileSystemCondition(path, currentDirectory, 'filesystem.parentDirectoryDoesNotExist')
+        verifyFileSystemCondition(notNullOrEmpty(path), currentDirectory, 'filesystem.parentDirectoryDoesNotExist')
         verifyFileSystemCondition(fileSystem.isDirectory(path), path, 'filesystem.isNotADirectory')
 
         // User must have execute permission to the parent directory

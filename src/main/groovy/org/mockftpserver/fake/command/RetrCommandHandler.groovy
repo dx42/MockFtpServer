@@ -48,7 +48,7 @@ class RetrCommandHandler extends AbstractFakeCommandHandler {
 
         def path = getRealPath(session, command.getRequiredParameter(0))
         FileSystemEntry fileEntry = fileSystem.getEntry(path)
-        verifyFileSystemCondition(fileEntry, path, 'filesystem.pathDoesNotExist')
+        verifyFileSystemCondition(fileEntry != null, path, 'filesystem.pathDoesNotExist')
         verifyFileSystemCondition(!fileEntry.directory, path, 'filesystem.isNotAFile')
 
         // User must have read permission to the file
