@@ -16,6 +16,7 @@
 package org.mockftpserver.core.util;
 
 import org.mockftpserver.core.CommandSyntaxException;
+import org.mockftpserver.core.MockFtpServerException;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -49,11 +50,10 @@ public final class PortParser {
      *                   high order 8 bits of the port number.
      * @return the InetAddres representing the host parsed from the parameters
      * @throws org.mockftpserver.core.util.AssertFailedException
-     *                                       - if parameters is null or contains an insufficient number of elements
-     * @throws NumberFormatException         - if one of the parameters does not contain a parsable integer
-     * @throws java.net.UnknownHostException
+     *                               - if parameters is null or contains an insufficient number of elements
+     * @throws NumberFormatException - if one of the parameters does not contain a parsable integer
      */
-    public static InetAddress parseHost(String[] parameters) throws UnknownHostException {
+    public static InetAddress parseHost(String[] parameters) {
         verifySufficientParameters(parameters);
 
         byte host1 = parseByte(parameters[0]);
@@ -62,7 +62,13 @@ public final class PortParser {
         byte host4 = parseByte(parameters[3]);
 
         byte[] address = {host1, host2, host3, host4};
-        InetAddress inetAddress = InetAddress.getByAddress(address);
+        InetAddress inetAddress = null;
+        try {
+            inetAddress = InetAddress.getByAddress(address);
+        }
+        catch (UnknownHostException e) {
+            throw new MockFtpServerException("Error parsing host", e);
+        }
 
         return inetAddress;
     }
