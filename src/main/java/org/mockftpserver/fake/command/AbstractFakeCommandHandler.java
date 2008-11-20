@@ -150,7 +150,7 @@ public abstract class AbstractFakeCommandHandler implements CommandHandler, Serv
 
         String replyTextToLog = (replyText == null) ? "" : " " + replyText;
         // TODO change to LOG.debug()
-        String argsToLog = (args != null && !args.isEmpty()) ? " args=$args" : "";
+        String argsToLog = (args != null && !args.isEmpty()) ? (" args=" + args) : "";
         LOG.info("Sending reply [" + replyCode + replyTextToLog + "]" + argsToLog);
         session.sendReply(replyCode, replyText);
     }
