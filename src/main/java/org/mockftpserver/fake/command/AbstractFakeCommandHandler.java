@@ -87,10 +87,10 @@ public abstract class AbstractFakeCommandHandler implements CommandHandler, Serv
             handleException(command, session, e, ReplyCodes.NOT_LOGGED_IN);
         }
         catch (InvalidFilenameException e) {
-            handleFileSystemException(session, e, ReplyCodes.FILENAME_NOT_VALID, list(e.getPath()));
+            handleFileSystemException(command, session, e, ReplyCodes.FILENAME_NOT_VALID, list(e.getPath()));
         }
         catch (FileSystemException e) {
-            handleFileSystemException(session, e, replyCodeForFileSystemException, list(e.getPath()));
+            handleFileSystemException(command, session, e, replyCodeForFileSystemException, list(e.getPath()));
         }
     }
 
@@ -202,13 +202,14 @@ public abstract class AbstractFakeCommandHandler implements CommandHandler, Serv
     /**
      * Handle the exception caught during handleCommand()
      *
+     * @param command   - the Command
      * @param session   - the Session
      * @param exception - the caught exception
      * @param replyCode - the reply code that should be sent back
      * @param arg       - the arg for the reply (message)
      */
-    private void handleFileSystemException(Session session, FileSystemException exception, int replyCode, Object arg) {
-        LOG.warn("Error handling command: $command; ${exception}", exception);
+    private void handleFileSystemException(Command command, Session session, FileSystemException exception, int replyCode, Object arg) {
+        LOG.warn("Error handling command: " + command + "; " + exception, exception);
         sendReply(session, replyCode, exception.getMessageKey(), Collections.singletonList(arg));
     }
 
