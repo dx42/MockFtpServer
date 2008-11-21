@@ -20,6 +20,7 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
+import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.Permissions
 
 /**
@@ -83,7 +84,7 @@ class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_ListNamesThrowsException() {
-        overrideMethodToThrowFileSystemException("listNames")
+        fileSystem.listNamesMethodException = new FileSystemException("bad", ERROR_MESSAGE_KEY)
         handleCommand([DIR])
         assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
         assertSessionReply(1, ReplyCodes.SYSTEM_ERROR, ERROR_MESSAGE_KEY)

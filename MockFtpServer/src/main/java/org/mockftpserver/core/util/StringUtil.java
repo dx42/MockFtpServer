@@ -15,6 +15,9 @@
  */
 package org.mockftpserver.core.util;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 /**
  * Contains static String-related utility methods.
  *
@@ -32,6 +35,26 @@ public class StringUtil {
         int numSpaces = width - string.length();
         return (numSpaces > 0) ? spaces(numSpaces) + string : string;
     }
+
+    public static String join(Collection parts, String delimiter) {
+        Assert.notNull(parts, "parts");
+        Assert.notNull(delimiter, "delimiter");
+
+        StringBuffer buf = new StringBuffer();
+        Iterator iter = parts.iterator();
+        while (iter.hasNext()) {
+            String component = (String) iter.next();
+            buf.append(component);
+            if (iter.hasNext()) {
+                buf.append(delimiter);
+            }
+        }
+        return buf.toString();
+    }
+
+    //--------------------------------------------------------------------------
+    // Internal Helper Methods
+    //--------------------------------------------------------------------------
 
     private static String spaces(int numSpaces) {
         StringBuffer buf = new StringBuffer();

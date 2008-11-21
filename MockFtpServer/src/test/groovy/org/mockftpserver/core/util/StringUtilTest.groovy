@@ -46,4 +46,16 @@ class StringUtilTest extends AbstractGroovyTest {
         assert StringUtil.padLeft('z', 5) == '    z'
     }
 
+    void testJoin() {
+        assert StringUtil.join([], ' ') == ''
+        assert StringUtil.join([], 'x') == ''
+        assert StringUtil.join(['a'], 'x') == 'a'
+        assert StringUtil.join(['a', 'b'], '') == 'ab'
+        assert StringUtil.join(['a', 'b'], ',') == 'a,b'
+        assert StringUtil.join(['a', 'b', 'c'], ':') == 'a:b:c'
+
+        shouldFailWithMessageContaining('parts') { StringUtil.join(null, '') }
+        shouldFailWithMessageContaining('delimiter') { StringUtil.join([], null) }
+    }
+
 }
