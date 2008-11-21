@@ -20,7 +20,6 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.fake.filesystem.FileSystemEntry
 import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.Permissions
 import org.mockftpserver.fake.user.UserAccount
@@ -86,9 +85,7 @@ class MkdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_CreateDirectoryThrowsException() {
-        def newMethod = {FileSystemEntry entry -> throw new FileSystemException("Error thrown by method [$methodName]", ERROR_MESSAGE_KEY) }
-        overrideMethod(fileSystem, "add", newMethod)
-
+        fileSystem.addMethodException = new FileSystemException("bad", ERROR_MESSAGE_KEY)
         handleCommand([DIR])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ERROR_MESSAGE_KEY)
     }

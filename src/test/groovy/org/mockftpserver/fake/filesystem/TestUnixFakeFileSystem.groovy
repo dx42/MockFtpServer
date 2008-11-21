@@ -27,6 +27,7 @@ class TestUnixFakeFileSystem extends UnixFakeFileSystem {
     Throwable addMethodException
     Throwable renameMethodException
     Throwable listNamesMethodException
+    Throwable listFilesMethodException
     Throwable deleteMethodException
 
     void add(FileSystemEntry entry) {
@@ -48,6 +49,13 @@ class TestUnixFakeFileSystem extends UnixFakeFileSystem {
             throw listNamesMethodException
         }
         super.listNames(path)
+    }
+
+    List listFiles(String path) {
+        if (listFilesMethodException) {
+            throw listFilesMethodException
+        }
+        super.listFiles(path)
     }
 
     boolean delete(String path) {

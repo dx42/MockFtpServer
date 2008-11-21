@@ -19,7 +19,9 @@ import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
+import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.Permissions
+
 
 /**
  * Tests for DeleCommandHandler
@@ -67,7 +69,8 @@ class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
     void testHandleCommand_DeleteThrowsException() {
         createFile(FILE)
-        overrideMethodToThrowFileSystemException("delete")
+//        overrideMethodToThrowFileSystemException("delete")
+        fileSystem.deleteMethodException = new FileSystemException("bad", ERROR_MESSAGE_KEY)
         handleCommand([FILE])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ERROR_MESSAGE_KEY)
     }

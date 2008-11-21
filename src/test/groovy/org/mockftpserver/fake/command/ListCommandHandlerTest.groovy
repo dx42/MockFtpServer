@@ -24,6 +24,7 @@ import org.mockftpserver.fake.filesystem.DirectoryEntry
 import org.mockftpserver.fake.filesystem.DirectoryListingFormatter
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystemEntry
+import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.Permissions
 
 /**
@@ -99,7 +100,7 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     }
 
     void testHandleCommand_ListFilesThrowsException() {
-        overrideMethodToThrowFileSystemException("listFiles")
+        fileSystem.listFilesMethodException = new FileSystemException("bad", ERROR_MESSAGE_KEY)
         handleCommand([DIR])
         assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
         assertSessionReply(1, ReplyCodes.SYSTEM_ERROR, ERROR_MESSAGE_KEY)
