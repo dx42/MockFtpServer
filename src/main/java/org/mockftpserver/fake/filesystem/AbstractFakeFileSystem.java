@@ -18,6 +18,7 @@ package org.mockftpserver.fake.filesystem;
 import org.apache.log4j.Logger;
 import org.mockftpserver.core.util.Assert;
 import org.mockftpserver.core.util.PatternUtil;
+import org.mockftpserver.core.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -516,17 +517,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
                 return first + this.getSeparator();
             }
         }
-        StringBuffer buf = new StringBuffer();
-        Iterator iter = components.iterator();
-        while (iter.hasNext()) {
-            String component = (String) iter.next();
-            buf.append(component);
-            if (iter.hasNext()) {
-                buf.append(this.getSeparator());
-            }
-        }
-        return buf.toString();
-//        return components.join(this.getSeparator());
+        return StringUtil.join(components, this.getSeparator());
     }
 
     /**
@@ -639,8 +630,6 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
             }
         }
         return false;
-
-        //return entries.keySet().find {p -> p.startsWith(key) && !key.equals(p) }
     }
 
     /**
@@ -662,12 +651,6 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
                     descendents.add(p);
                 }
             }
-
-//            entries.keySet().each {p ->
-//                if (p.startsWith(normalizedDirPrefix) && !normalizedPath.equals(p)) {
-//                    descendents.add(p);
-//                }
-//            }
             return descendents;
         }
         return Collections.EMPTY_LIST;
@@ -693,7 +676,6 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
         while (iter.hasNext()) {
             String descendentPath = (String) iter.next();
 
-//        descendents.each {descendentPath ->
             boolean patternEmpty = pattern == null || pattern.length() == 0;
             if (normalizedDir.equals(getParent(descendentPath))) {
                 if (patternEmpty
