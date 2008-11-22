@@ -10,7 +10,7 @@
         or failure scenarios. You can also verify expected command invocations.
     </description>
     <packaging>jar</packaging>
-    <version>2.0.0</version>
+    <version>2.0.0-SNAPSHOT</version>
     <url>http://mockftpserver.sourceforge.net/</url>
 
     <scm>
@@ -23,18 +23,19 @@
     <dependencies>
 
         <dependency>
-            <groupId>org.codehaus.groovy.maven.runtime</groupId>
-            <artifactId>gmaven-runtime-default</artifactId>
-            <version>1.0-rc-3</version>
-        </dependency>
-
-        <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.13</version>
         </dependency>
 
         <!-- TESTING ONLY -->
+
+        <dependency>
+            <groupId>org.codehaus.groovy.maven.runtime</groupId>
+            <artifactId>gmaven-runtime-default</artifactId>
+            <version>1.0-rc-3</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>commons-net</groupId>
@@ -100,8 +101,8 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>generateStubs</goal>
-                            <goal>compile</goal>
+                            <!-- <goal>generateStubs</goal> -->
+                            <!-- <goal>compile</goal> -->
                             <goal>generateTestStubs</goal>
                             <goal>testCompile</goal>
                         </goals>
