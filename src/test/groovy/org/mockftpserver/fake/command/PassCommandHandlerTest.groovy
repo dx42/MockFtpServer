@@ -119,10 +119,7 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTest {
 
         createDirectory(HOME_DIRECTORY)
 
-        userAccount = new UserAccount()
-        userAccount.username = USERNAME
-        userAccount.password = PASSWORD
-        userAccount.homeDirectory = HOME_DIRECTORY
+        userAccount = new UserAccount(USERNAME, PASSWORD, HOME_DIRECTORY)
 
         session.setAttribute(SessionKeys.USERNAME, USERNAME)
         session.removeAttribute(SessionKeys.USER_ACCOUNT)

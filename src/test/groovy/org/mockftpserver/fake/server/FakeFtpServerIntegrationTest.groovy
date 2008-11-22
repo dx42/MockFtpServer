@@ -355,8 +355,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         fileSystem.add(new DirectoryEntry(SUBDIR))
         ftpServer.fileSystem = fileSystem
 
-        userAccount = new UserAccount(username: USERNAME, password: PASSWORD,
-                passwordRequiredForLogin: true, homeDirectory: HOME_DIR)
+        userAccount = new UserAccount(USERNAME, PASSWORD, HOME_DIR)
         ftpServer.userAccounts[USERNAME] = userAccount
 
         ftpServer.start()

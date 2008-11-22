@@ -20,7 +20,6 @@ import org.mockftpserver.fake.filesystem.FileSystemEntry
 import org.mockftpserver.fake.filesystem.Permissions
 import org.mockftpserver.test.AbstractGroovyTest
 
-
 /**
  * Tests for UserAccount
  *
@@ -35,8 +34,14 @@ class UserAccountTest extends AbstractGroovyTest {
     private static final HOME_DIR = "/usr/user123"
     private static final GROUP = 'group'
 
-
     private UserAccount userAccount
+
+    void testConstructor() {
+        def acct = new UserAccount(USERNAME, PASSWORD, HOME_DIR)
+        assert acct.username == USERNAME
+        assert acct.password == PASSWORD
+        assert acct.homeDirectory == HOME_DIR
+    }
 
     void testGetPrimaryGroup() {
         assert userAccount.primaryGroup == UserAccount.DEFAULT_GROUP

@@ -25,8 +25,6 @@ import org.mockftpserver.test.AbstractTest;
 import org.mockftpserver.test.IntegrationTest;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Example test using FakeFtpServer, with programmatic configuration.
@@ -68,12 +66,8 @@ public class RemoteFileTest extends AbstractTest implements IntegrationTest {
         fileSystem.add(new FileEntry(FILE, CONTENTS));
         fakeFtpServer.setFileSystem(fileSystem);
 
-        UserAccount userAccount = new UserAccount();
-        userAccount.setUsername(RemoteFile.USERNAME);
-        userAccount.setPassword(RemoteFile.PASSWORD);
-        userAccount.setHomeDirectory(HOME_DIR);
-        List userAccounts = Collections.singletonList(userAccount);
-        fakeFtpServer.setUserAccounts(userAccounts);
+        UserAccount userAccount = new UserAccount(RemoteFile.USERNAME, RemoteFile.PASSWORD, HOME_DIR);
+        fakeFtpServer.addUserAccount(userAccount);
 
         fakeFtpServer.start();
     }

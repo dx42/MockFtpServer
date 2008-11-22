@@ -56,6 +56,12 @@ class FakeFtpServerTest extends AbstractFtpServerTest {
 
     void testUserAccounts() {
         def userAccount = new UserAccount(username: 'abc')
+
+        // addUserAccount()
+        ftpServer.addUserAccount(userAccount)
+        assert ftpServer.getUserAccount("abc") == userAccount
+
+        // setUserAccounts
         def userAccounts = [userAccount]
         ftpServer.userAccounts = userAccounts
         assert ftpServer.getUserAccount("abc") == userAccount
