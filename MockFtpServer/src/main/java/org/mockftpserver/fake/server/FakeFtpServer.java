@@ -202,6 +202,16 @@ public class FakeFtpServer extends AbstractFtpServer implements ServerConfigurat
     }
 
     /**
+     * Add a single UserAccount. If an account with the same <code>username</code> already exists,
+     * it will be replaced.
+     *
+     * @param userAccount - the UserAccount to add
+     */
+    public void addUserAccount(UserAccount userAccount) {
+        userAccounts.put(userAccount.getUsername(), userAccount);
+    }
+
+    /**
      * Add the UserAccount objects in the <code>userAccountList</code> to the set of UserAccounts.
      *
      * @param userAccountList - the List of UserAccount objects to add

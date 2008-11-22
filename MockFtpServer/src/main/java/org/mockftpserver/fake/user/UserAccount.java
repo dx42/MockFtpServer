@@ -25,6 +25,8 @@ import java.util.List;
  * Represents a single user account on the server, including the username, password and home
  * directory. It also includes several configuration flags, described below.
  * <p/>
+ * The <code>username</code> and <code>homeDirectory</code> property must be non-null and non-empty.
+ * <p/>
  * The <code>isValidPassword()</code> method returns true if the specified password matches
  * the password value configured for this user account. This implementation uses the
  * <code>isEquals()</code> method to compare passwords.
@@ -55,6 +57,25 @@ public class UserAccount {
     private boolean passwordCheckedDuringValidation = true;
     private boolean accountRequiredForLogin = false;
     private Permissions defaultPermissionsForNewFile = DEFAULT_PERMISSIONS_FOR_NEW_FILE;
+
+    /**
+     * Construct a new uninitialized instance.
+     */
+    public UserAccount() {
+    }
+
+    /**
+     * Construct a new initialized instance.
+     *
+     * @param username      - the user name
+     * @param password      - the password
+     * @param homeDirectory - the home directory
+     */
+    public UserAccount(String username, String password, String homeDirectory) {
+        setUsername(username);
+        setPassword(password);
+        setHomeDirectory(homeDirectory);
+    }
 
     public String getUsername() {
         return username;
