@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.fake.server;
+package org.mockftpserver.fake;
 
 import org.mockftpserver.fake.filesystem.FileSystem;
-import org.mockftpserver.fake.user.UserAccount;
 
 import java.util.ResourceBundle;
 

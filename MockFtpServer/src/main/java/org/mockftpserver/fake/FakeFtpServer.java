@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.fake.server;
+package org.mockftpserver.fake;
 
 import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.server.AbstractFtpServer;
 import org.mockftpserver.fake.command.*;
 import org.mockftpserver.fake.filesystem.FileSystem;
-import org.mockftpserver.fake.user.UserAccount;
 
 import java.util.HashMap;
 import java.util.List;

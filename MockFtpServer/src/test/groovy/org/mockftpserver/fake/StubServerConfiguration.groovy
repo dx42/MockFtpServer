@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.fake.server
+package org.mockftpserver.fake
 
+import org.mockftpserver.fake.ServerConfiguration
+import org.mockftpserver.fake.UserAccount
 import org.mockftpserver.fake.filesystem.FileSystem
-import org.mockftpserver.fake.server.ServerConfiguration
-import org.mockftpserver.fake.user.UserAccount
 
 /**
- * Stub implementation of the          {@link ServerConfiguration}          interface for testing
+ * Stub implementation of the            {@link org.mockftpserver.fake.ServerConfiguration}            interface for testing
  *
  * @version $Revision$ - $Date$
  *
@@ -54,7 +54,7 @@ class StubServerConfiguration implements ServerConfiguration {
 
     /**
      * Set the text to be returned for the specified key by the
-     * {@link #getReplyTextBundle()}        resource bundle.
+     * {@link #getReplyTextBundle()}          resource bundle.
      */
     void setTextForKey(key, String text) {
         textForReplyCodeMap[key.toString()] = text

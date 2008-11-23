@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.fake.user
+package org.mockftpserver.fake
+
+import org.mockftpserver.fake.UserAccount
 
 /**
  * Test-only subclass of UserAccount tha provides a custom implementation of password comparison

@@ -13,12 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.fake.user
+package org.mockftpserver.fake
 
+import org.mockftpserver.fake.CustomUserAccount
+import org.mockftpserver.fake.UserAccount
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystemEntry
 import org.mockftpserver.fake.filesystem.Permissions
 import org.mockftpserver.test.AbstractGroovyTest
+
+
 
 /**
  * Tests for UserAccount

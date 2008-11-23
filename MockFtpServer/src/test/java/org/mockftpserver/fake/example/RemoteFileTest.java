@@ -15,11 +15,11 @@
  */
 package org.mockftpserver.fake.example;
 
+import org.mockftpserver.fake.FakeFtpServer;
+import org.mockftpserver.fake.UserAccount;
 import org.mockftpserver.fake.filesystem.FileEntry;
 import org.mockftpserver.fake.filesystem.FileSystem;
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem;
-import org.mockftpserver.fake.server.FakeFtpServer;
-import org.mockftpserver.fake.user.UserAccount;
 import org.mockftpserver.stub.example.RemoteFile;
 import org.mockftpserver.test.AbstractTest;
 import org.mockftpserver.test.IntegrationTest;

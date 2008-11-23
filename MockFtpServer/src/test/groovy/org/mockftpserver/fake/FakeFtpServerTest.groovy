@@ -13,12 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.fake.server
+package org.mockftpserver.fake
 
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.server.AbstractFtpServer
 import org.mockftpserver.core.server.AbstractFtpServerTest
-import org.mockftpserver.fake.user.UserAccount
+import org.mockftpserver.fake.FakeFtpServer
+import org.mockftpserver.fake.TestCommandHandler
+import org.mockftpserver.fake.TestCommandHandlerNotServerConfigurationAware
+import org.mockftpserver.fake.UserAccount
+
 
 /**
  * Tests for FakeFtpServer.
