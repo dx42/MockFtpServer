@@ -24,12 +24,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans 
        		http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-    <bean id="fakeFtpServer" class="org.mockftpserver.fake.server.FakeFtpServer">
+    <bean id="fakeFtpServer" class="org.mockftpserver.fake.FakeFtpServer">
         <property name="serverControlPort" value="9981"/>
         <property name="systemName" value="UNIX"/>
         <property name="userAccounts">
             <list>
-                <bean class="org.mockftpserver.fake.user.UserAccount">
+                <bean class="org.mockftpserver.fake.UserAccount">
                     <property name="username" value="joe"/>
                     <property name="password" value="password"/>
                     <property name="homeDirectory" value="/"/>

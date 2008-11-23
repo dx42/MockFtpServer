@@ -34,8 +34,8 @@ import java.util.List;
  *
  * @author Chris Mair
  * @version $Revision: 89 $ - $Date: 2008-08-02 08:07:44 -0400 (Sat, 02 Aug 2008) $
- * @see org.mockftpserver.fake.server.ServerConfiguration
- * @see org.mockftpserver.fake.server.FakeFtpServer
+ * @see org.mockftpserver.fake.ServerConfiguration
+ * @see org.mockftpserver.fake.FakeFtpServer
  */
 public class HelpCommandHandler extends AbstractFakeCommandHandler {
 

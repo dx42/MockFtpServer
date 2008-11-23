@@ -13,22 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.fake.server
+package org.mockftpserver.fake
 
-import org.mockftpserver.core.server.AbstractFtpServer
-import org.mockftpserver.core.server.AbstractFtpServer_StartTest
+import org.mockftpserver.core.command.Command
+import org.mockftpserver.core.command.CommandHandler
+import org.mockftpserver.core.session.Session
+
 
 /**
- * Tests for FakeFtpServer that require the server thread to be started.
+ * Test CommandHandler - does not implement ServerConfigurationAware
  *
  * @version $Revision: 54 $ - $Date: 2008-05-13 21:54:53 -0400 (Tue, 13 May 2008) $
  *
  * @author Chris Mair
  */
-class FakeFtpServer_StartTest extends AbstractFtpServer_StartTest {
+class TestCommandHandlerNotServerConfigurationAware implements CommandHandler {
 
-    protected AbstractFtpServer createFtpServer() {
-        return new FakeFtpServer();
+    public void handleCommand(Command command, Session session) {
     }
 
 }

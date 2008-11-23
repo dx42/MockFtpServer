@@ -16,7 +16,7 @@
 package org.mockftpserver.fake.filesystem;
 
 import org.apache.log4j.Logger;
-import org.mockftpserver.fake.server.FakeFtpServer;
+import org.mockftpserver.fake.FakeFtpServer;
 import org.mockftpserver.test.AbstractTest;
 import org.mockftpserver.test.IntegrationTest;
 

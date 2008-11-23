@@ -25,7 +25,7 @@ import org.mockftpserver.core.session.Session;
  * <li>Reply with 215 along with the system name</li>
  * </ol>
  * The default system name is "WINDOWS", but it can be customized on the
- * {@link org.mockftpserver.fake.server.FakeFtpServer}  .
+ * {@link org.mockftpserver.fake.FakeFtpServer}  .
  * <p/>
  * See the available system names listed in the Assigned Numbers document (RFC 943).
  *

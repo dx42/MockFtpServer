@@ -19,7 +19,7 @@ import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.ReplyCodes;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.session.SessionKeys;
-import org.mockftpserver.fake.user.UserAccount;
+import org.mockftpserver.fake.UserAccount;
 
 /**
  * CommandHandler for the USER command. Handler logic:

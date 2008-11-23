@@ -20,7 +20,8 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.fake.user.UserAccount
+import org.mockftpserver.fake.UserAccount
+
 
 /**
  * Tests for PassCommandHandler

@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.fake.server
+package org.mockftpserver.fake
 
+import org.mockftpserver.fake.FakeFtpServer
+import org.mockftpserver.fake.UserAccount
 import org.mockftpserver.fake.filesystem.DirectoryEntry
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem
-import org.mockftpserver.fake.user.UserAccount
+
 
 /**
  * Run the FakeFtpServer with a minimal configuration for interactive testing and exploration.

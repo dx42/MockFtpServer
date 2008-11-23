@@ -13,19 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.fake.server
+package org.mockftpserver.fake
 
 import org.apache.commons.net.ftp.FTP
 import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.net.ftp.FTPFile
+import org.mockftpserver.fake.FakeFtpServer
+import org.mockftpserver.fake.UserAccount
 import org.mockftpserver.fake.filesystem.DirectoryEntry
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystem
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem
 import org.mockftpserver.fake.filesystem.WindowsFakeFileSystem
-import org.mockftpserver.fake.user.UserAccount
 import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.test.PortTestUtil
+
 
 /**
  * Integration tests for FakeFtpServer.

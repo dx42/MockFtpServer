@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.fake.user;
+package org.mockftpserver.fake;
 
 import org.mockftpserver.core.util.Assert;
 import org.mockftpserver.fake.filesystem.FileSystemEntry;
@@ -23,9 +23,11 @@ import java.util.List;
 
 /**
  * Represents a single user account on the server, including the username, password and home
- * directory. It also includes several configuration flags, described below.
+ * directory. The <code>username</code> and <code>homeDirectory</code> property must be non-null
+ * and non-empty. The <code>homeDirectory</code> property must also match the name of an existing
+ * directory within the file system configured for the <code>FakeFtpServer</code>/
  * <p/>
- * The <code>username</code> and <code>homeDirectory</code> property must be non-null and non-empty.
+ * This class also includes several configuration flags, described below.
  * <p/>
  * The <code>isValidPassword()</code> method returns true if the specified password matches
  * the password value configured for this user account. This implementation uses the
