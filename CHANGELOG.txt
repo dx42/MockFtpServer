@@ -1,6 +1,36 @@
 MockFtpServer Change Log
 -------------------------------------------------------------------------------
 
+Changes in version 2.0-rc1 (23 Nov 2008)
+------------------------------------------
+NEW FakeFtpServer.
+  This is an alternative "mock" FTP server implementation. FakeFtpServer provides a higher-level abstraction
+  than StubFtpServer. You define a virtual file system, including directories and files, as well as a set of
+  valid user accounts and credentials. The FakeFtpServer then responds with appropriate replies and reply
+  codes based on that configuration. See online documentation for more information.
+StubFtpServer
+- StubFtpServer: Refactored to inherit from common AbstractFtpServer superclass.
+- Change default org.mockftpserver.stub.command.CdupCommandHandler CDUP reply code from 250 to 200.
+- Rename ReplyCodes.SEND_DATA_INITIAL_OK and SEND_DATA_FINAL_OK to TRANSFER_DATA_.. indicate bi-directionality.
+- Rename Command.getRequiredString(int) to getRequiredParameter(int).
+- Change StubFtpServer CommandHandlers to reply with 501 if required command parameters are missing. Changed AbstractCommandHandler and AbstractCommandHandlerTest.
+- Refactor (Stub)PortCommandHandler - pull out common logic into PortParser util class.
+
+
+Changes in version 1.2.4 (01 Sep 2008)
+------------------------------------------
+- BUG FIX: StubFtpServer: Only execute serverSocket.close() if serverSocket != null.
+- BUG FIX: Terminate replies with <CRLF> (\r\n).
+- DOCS: Fix Getting Started Guide code example: setOverrideFinalReplyCode() to setFinalReplyCode().
+- DOCS: Add note to Getting Started Guide about calling setServerControlPort() if on Unix system.
+
+
+Changes in version 1.2.3 (13 Aug 2008)
+------------------------------------------
+- BUG FIX: Tracker item #2047355. Parse host IP numbers as unsigned bytes.
+  See https://sourceforge.net/tracker/index.php?func=detail&aid=2047355&group_id=208647&atid=1006533
+
+
 Changes in version 1.2.2 (27 May 2008)
 ------------------------------------------
 - BUG FIX: Move serverThread.start() into synchronized block to avoid server hang if
