@@ -139,7 +139,8 @@ public class RemoteFileTest extends AbstractTest {
         fileSystem.add(new FileEntry(FILE, CONTENTS));
         fakeFtpServer.setFileSystem(fileSystem);
 
-        UserAccount userAccount = new UserAccount(RemoteFile.USERNAME, RemoteFile.PASSWORD, HOME_DIR);
+        UserAccount userAccount = new UserAccount(
+            RemoteFile.USERNAME, RemoteFile.PASSWORD, HOME_DIR);
         fakeFtpServer.addUserAccount(userAccount);
 
         fakeFtpServer.start();
