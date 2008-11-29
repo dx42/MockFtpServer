@@ -254,6 +254,8 @@
               <option name="branchUrls">
                 <list>
                   <option value="https://mockftpserver.svn.sourceforge.net/svnroot/mockftpserver/branches/1.x_Branch" />
+                  <option value="https://mockftpserver.svn.sourceforge.net/svnroot/mockftpserver/tags/1.2.4" />
+                  <option value="https://mockftpserver.svn.sourceforge.net/svnroot/mockftpserver/tags" />
                 </list>
               </option>
               <option name="trunkUrl" value="https://mockftpserver.svn.sourceforge.net/svnroot/mockftpserver/MockFtpServer" />
