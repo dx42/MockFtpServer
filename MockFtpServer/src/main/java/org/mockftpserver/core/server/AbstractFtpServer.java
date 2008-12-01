@@ -35,51 +35,28 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
- * <b>StubFtpServer</b> is the top-level class for a "stub" implementation of an FTP Server,
+ * This is the abstract superclass for "mock" implementations of an FTP Server,
  * suitable for testing FTP client code or standing in for a live FTP server. It supports
  * the main FTP commands by defining handlers for each of the corresponding low-level FTP
  * server commands (e.g. RETR, DELE, LIST). These handlers implement the {@link org.mockftpserver.core.command.CommandHandler}
  * interface.
  * <p/>
- * <b>StubFtpServer</b> works out of the box with default command handlers that return
- * success reply codes and empty data (for retrieved files, directory listings, etc.).
- * The command handler for any command can be easily configured to return custom data
- * or reply codes. Or it can be replaced with a custom {@link org.mockftpserver.core.command.CommandHandler}
- * implementation. This allows simulation of a complete range of both success and
- * failure scenarios. The command handlers can also be interrogated to verify command
- * invocation data such as command parameters and timestamps.
+ * By default, mock FTP Servers bind to the server control port of 21. You can use a different server
+ * control port by setting the the <code>serverControlPort</code> property. This is usually necessary
+ * when running on Unix or some other system where that port number is already in use or cannot be bound
+ * from a user process.
  * <p/>
- * <b>StubFtpServer</b> can be fully configured programmatically or within a Spring Framework
- * (http://www.springframework.org/) or similar container.
- * <p/>
- * <h4>Starting the StubFtpServer</h4>
- * Here is how to start the <b>StubFtpServer</b> with the default configuration.
- * <pre><code>
- * StubFtpServer stubFtpServer = new StubFtpServer();
- * stubFtpServer.start();
- * </code></pre>
- * <p/>
- * <h4>Retrieving Command Handlers</h4>
- * You can retrieve the existing {@link org.mockftpserver.core.command.CommandHandler} defined for an FTP server command
- * by calling the {@link #getCommandHandler(String)} method, passing in the FTP server
- * command name. For example:
- * <pre><code>
- * PwdCommandHandler pwdCommandHandler = (PwdCommandHandler) stubFtpServer.getCommandHandler("PWD");
- * </code></pre>
- * <p/>
- * <h4>Replacing Command Handlers</h4>
- * You can replace the existing {@link org.mockftpserver.core.command.CommandHandler} defined for an FTP server command
- * by calling the {@link #setCommandHandler(String, org.mockftpserver.core.command.CommandHandler)} method, passing
- * in the FTP server command name and {@link org.mockftpserver.core.command.CommandHandler} instance. For example:
- * <pre><code>
- * PwdCommandHandler pwdCommandHandler = new PwdCommandHandler();
- * pwdCommandHandler.setDirectory("some/dir");
- * stubFtpServer.setCommandHandler("PWD", pwdCommandHandler);
- * </code></pre>
- * You can also replace multiple command handlers at once by using the {@link #setCommandHandlers(java.util.Map)}
+ * <h4>Command Handlers</h4>
+ * You can set the existing {@link CommandHandler} defined for an FTP server command
+ * by calling the {@link #setCommandHandler(String, CommandHandler)} method, passing
+ * in the FTP server command name and {@link CommandHandler} instance.
+ * You can also replace multiple command handlers at once by using the {@link #setCommandHandlers(Map)}
  * method. That is especially useful when configuring the server through the <b>Spring Framework</b>.
- * <h4>FTP Command Reply Text ResourceBundle</h4>
  * <p/>
+ * You can retrieve the existing {@link CommandHandler} defined for an FTP server command by
+ * calling the {@link #getCommandHandler(String)} method, passing in the FTP server command name.
+ * <p/>
+ * <h4>FTP Command Reply Text ResourceBundle</h4>
  * The default text asociated with each FTP command reply code is contained within the
  * "ReplyText.properties" ResourceBundle file. You can customize these messages by providing a
  * locale-specific ResourceBundle file on the CLASSPATH, according to the normal lookup rules of
@@ -89,6 +66,8 @@ import java.util.ResourceBundle;
  *
  * @author Chris Mair
  * @version $Revision$ - $Date$
+ * @see org.mockftpserver.fake.FakeFtpServer
+ * @see org.mockftpserver.stub.StubFtpServer
  */
 public abstract class AbstractFtpServer implements Runnable {
 

@@ -31,6 +31,8 @@ import java.util.List;
  * <li>Otherwise, reply with 214 along with the configured default help text that has been configured
  * (or empty if none)</li>
  * </ol>
+ * <p/>
+ * The help text is configured within the {@link org.mockftpserver.fake.FakeFtpServer}.
  *
  * @author Chris Mair
  * @version $Revision: 89 $ - $Date: 2008-08-02 08:07:44 -0400 (Sat, 02 Aug 2008) $
@@ -45,7 +47,6 @@ public class HelpCommandHandler extends AbstractFakeCommandHandler {
         String help = getServerConfiguration().getHelpText(key);
         if (help == null) {
             sendReply(session, ReplyCodes.HELP_OK, "help.noHelpTextDefined", list(key));
-            ;
         } else {
             sendReply(session, ReplyCodes.HELP_OK, "help", list(help));
         }

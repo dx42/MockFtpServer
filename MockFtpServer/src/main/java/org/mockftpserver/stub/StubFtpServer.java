@@ -38,8 +38,8 @@ import java.util.Map;
  * failure scenarios. The command handlers can also be interrogated to verify command
  * invocation data such as command parameters and timestamps.
  * <p/>
- * <b>StubFtpServer</b> can be fully configured programmatically or within a Spring Framework
- * ({@link http://www.springframework.org/}) or similar container.
+ * <b>StubFtpServer</b> can be fully configured programmatically or within the
+ * <a href="http://www.springframework.org/">Spring Framework</a> or similar container.
  * <p/>
  * <h4>Starting the StubFtpServer</h4>
  * Here is how to start the <b>StubFtpServer</b> with the default configuration.
@@ -48,6 +48,11 @@ import java.util.Map;
  * stubFtpServer.start();
  * </code></pre>
  * <p/>
+ * <h4>FTP Server Control Port</h4>
+ * By default, <b>StubFtpServer</b> binds to the server control port of 21. You can use a different server
+ * control port by setting the the <code>serverControlPort</code> property. This is usually necessary
+ * when running on Unix or some other system where that port number is already in use or cannot be bound
+ * from a user process.
  * <h4>Retrieving Command Handlers</h4>
  * You can retrieve the existing {@link CommandHandler} defined for an FTP server command
  * by calling the {@link #getCommandHandler(String)} method, passing in the FTP server
