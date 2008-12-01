@@ -40,7 +40,7 @@ import java.util.Map;
  * including file and directory permissions, if they have been configured.
  * <p/>
  * <b>FakeFtpServer</b> can be fully configured programmatically or within the
- * <b>Spring Framework</b> or other dependency-injection container.
+ * <a href="http://www.springframework.org/">Spring Framework</a> or other dependency-injection container.
  * <p/>
  * In general the steps for setting up and starting the <b>FakeFtpServer</b> are:
  * <ol>
@@ -50,23 +50,42 @@ import java.util.Map;
  * </ol>
  * <h4>Example Code</h4>
  * <pre><code>
+ * FakeFtpServer fakeFtpServer = new FakeFtpServer();
+ * <p/>
  * FileSystem fileSystem = new WindowsFakeFileSystem();
- * DirectoryEntry directoryEntry1 = new DirectoryEntry("c:\\");
+ * fileSystem.add(new DirectoryEntry("c:\\"));
+ * fileSystem.add(new DirectoryEntry("c:\\data"));
+ * fileSystem.add(new FileEntry("c:\\data\\file1.txt", "abcdef 1234567890"));
+ * fileSystem.add(new FileEntry("c:\\data\\run.exe"));
+ * fakeFtpServer.setFileSystem(fileSystem);
+ * <p/>
+ * // Create UserAccount with username, password, home-directory
+ * UserAccount userAccount = new UserAccount("joe", "joe123", "c:\\");
+ * fakeFtpServer.addUserAccounts(userAccount);
+ * <p/>
+ * fakeFtpServer.start();
+ * </code></pre>
+ * <p/>
+ * <h4>Example Code with Permissions</h4>
+ * You can optionally set the permissions and owner/group for each file and directory, as in the following example.
+ * <pre><code>
+ * FileSystem fileSystem = new UnixFakeFileSystem();
+ * DirectoryEntry directoryEntry1 = new DirectoryEntry("/");
  * directoryEntry1.setPermissions(new Permissions("rwxrwx---"));
  * directoryEntry1.setOwner("joe");
  * directoryEntry1.setGroup("dev");
  * <p/>
- * DirectoryEntry directoryEntry2 = new DirectoryEntry("c:\\data");
+ * DirectoryEntry directoryEntry2 = new DirectoryEntry("/data");
  * directoryEntry2.setPermissions(Permissions.ALL);
  * directoryEntry2.setOwner("joe");
  * directoryEntry2.setGroup("dev");
  * <p/>
- * FileEntry fileEntry1 = new FileEntry("c:\\data\\file1.txt", "abcdef 1234567890");
+ * FileEntry fileEntry1 = new FileEntry("/data/file1.txt", "abcdef 1234567890");
  * fileEntry1.setPermissionsFromString("rw-rw-rw-");
  * fileEntry1.setOwner("joe");
  * fileEntry1.setGroup("dev");
  * <p/>
- * FileEntry fileEntry2 = new FileEntry("c:\\data\\run.exe");
+ * FileEntry fileEntry2 = new FileEntry("/data/run.exe");
  * fileEntry2.setPermissionsFromString("rwxrwx---");
  * fileEntry2.setOwner("mary");
  * fileEntry2.setGroup("dev");
@@ -79,18 +98,30 @@ import java.util.Map;
  * FakeFtpServer fakeFtpServer = new FakeFtpServer();
  * fakeFtpServer.setFileSystem(fileSystem);
  * <p/>
- * UserAccount userAccount = new UserAccount();
- * userAccount.setUsername("joe");
- * userAccount.setPassword("joe123");
- * userAccount.setHomeDirectory("c:\\");
- * List userAccounts = Collections.singletonList(userAccount);
- * fakeFtpServer.setUserAccounts(userAccounts);
+ * // Create UserAccount with username, password, home-directory
+ * UserAccount userAccount = new UserAccount("joe", "joe123", "/");
+ * fakeFtpServer.addUserAccounts(userAccount);
  * <p/>
  * fakeFtpServer.start();
  * </code></pre>
  * <p/>
- * <h4>FTP Command Reply Text ResourceBundle</h4>
+ * <h4>FTP Server Control Port</h4>
+ * By default, <b>MockFtpServer</b> binds to the server control port of 21. You can use a different server
+ * control port by setting the the <code>serverControlPort</code> property. This is usually necessary
+ * when running on Unix or some other system where that port number is already in use or cannot be bound
+ * from a user process.
  * <p/>
+ * <h4>Other Configuration</h4>
+ * The <code>systemName</code> property specifies the value returned by the <code>SYST</code>
+ * command. Note that this is typically used by an FTP client to determine how to parse
+ * system-dependent reply text, such as directory listings. This value defaults to <code>"WINDOWS"</code>.
+ * <p/>
+ * The <code>helpText</code> property specifies a <i>Map</i> of help text replies sent by the
+ * <code>HELP</code> command. The keys in that <i>Map</i> correspond to the command names passed as
+ * parameters to the <code>HELP</code> command. An entry with the key of an empty string ("") indicates the
+ * text used as the default help text when no command name parameter is specified for the <code>HELP</code> command.
+ * <p/>
+ * <h4>FTP Command Reply Text ResourceBundle</h4>
  * The default text asociated with each FTP command reply code is contained within the
  * "ReplyText.properties" ResourceBundle file. You can customize these messages by providing a
  * locale-specific ResourceBundle file on the CLASSPATH, according to the normal lookup rules of
