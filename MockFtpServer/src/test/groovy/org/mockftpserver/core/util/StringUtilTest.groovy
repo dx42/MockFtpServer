@@ -20,7 +20,7 @@ import org.mockftpserver.test.AbstractGroovyTest
 /**
  * Tests for the IoUtil class
  *
- * @version $Revision: 85 $ - $Date: 2008-07-22 21:43:19 -0400 (Tue, 22 Jul 2008) $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

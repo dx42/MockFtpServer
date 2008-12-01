@@ -32,7 +32,7 @@ import org.mockftpserver.fake.filesystem.DirectoryEntry;
  * The supplied pathname may be absolute or relative to the current directory.
  *
  * @author Chris Mair
- * @version $Revision: 140 $ - $Date: 2008-10-26 19:03:35 -0400 (Sun, 26 Oct 2008) $
+ * @version $Revision$ - $Date$
  */
 public class MkdCommandHandler extends AbstractFakeCommandHandler {
 

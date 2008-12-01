@@ -27,7 +27,7 @@ import org.mockftpserver.core.session.Session;
  * connection from the client, rather than an explicit FTP command.
  *
  * @author Chris Mair
- * @version $Revision: 58 $ - $Date: 2008-05-26 21:40:29 -0400 (Mon, 26 May 2008) $
+ * @version $Revision$ - $Date$
  */
 public class ConnectCommandHandler extends AbstractFakeCommandHandler {
 

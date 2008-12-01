@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
  * Windows-specific implementation of the DirectoryListingFormatter interface.
  *
  * @author Chris Mair
- * @version $Revision: 86 $ - $Date: 2008-07-23 21:16:27 -0400 (Wed, 23 Jul 2008) $
+ * @version $Revision$ - $Date$
  */
 public class WindowsDirectoryListingFormatter implements DirectoryListingFormatter {
 

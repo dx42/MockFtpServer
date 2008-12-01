@@ -27,7 +27,7 @@ import org.mockftpserver.core.session.Session;
  * </ol>
  *
  * @author Chris Mair
- * @version $Revision: 80 $ - $Date: 2008-07-07 22:15:50 -0400 (Mon, 07 Jul 2008) $
+ * @version $Revision$ - $Date$
  */
 public class AlloCommandHandler extends AbstractFakeCommandHandler {
 

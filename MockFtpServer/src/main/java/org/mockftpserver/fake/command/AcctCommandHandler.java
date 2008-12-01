@@ -29,7 +29,7 @@ import org.mockftpserver.core.session.SessionKeys;
  * </ol>
  *
  * @author Chris Mair
- * @version $Revision: 83 $ - $Date: 2008-07-16 20:32:04 -0400 (Wed, 16 Jul 2008) $
+ * @version $Revision$ - $Date$
  */
 public class AcctCommandHandler extends AbstractFakeCommandHandler {
 

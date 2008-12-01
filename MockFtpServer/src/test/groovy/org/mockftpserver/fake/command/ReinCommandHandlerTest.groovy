@@ -26,7 +26,7 @@ import org.mockftpserver.fake.UserAccount
 /**
  * Tests for ReinCommandHandler
  *
- * @version $Revision: 67 $ - $Date: 2008-06-11 21:38:50 -0400 (Wed, 11 Jun 2008) $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

@@ -42,7 +42,7 @@ import java.util.Map;
  * filesystem-specific manner. This property must be initialized by concrete subclasses.
  *
  * @author Chris Mair
- * @version $Revision: 142 $ - $Date: 2008-10-30 21:11:18 -0400 (Thu, 30 Oct 2008) $
+ * @version $Revision$ - $Date$
  */
 public abstract class AbstractFakeFileSystem implements FileSystem {
 
