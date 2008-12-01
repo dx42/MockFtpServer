@@ -51,21 +51,21 @@ import java.util.Map;
  * <h4>Example Code</h4>
  * <pre><code>
  * FakeFtpServer fakeFtpServer = new FakeFtpServer();
- * <p/>
+ *
  * FileSystem fileSystem = new WindowsFakeFileSystem();
  * fileSystem.add(new DirectoryEntry("c:\\"));
  * fileSystem.add(new DirectoryEntry("c:\\data"));
  * fileSystem.add(new FileEntry("c:\\data\\file1.txt", "abcdef 1234567890"));
  * fileSystem.add(new FileEntry("c:\\data\\run.exe"));
  * fakeFtpServer.setFileSystem(fileSystem);
- * <p/>
+ *
  * // Create UserAccount with username, password, home-directory
  * UserAccount userAccount = new UserAccount("joe", "joe123", "c:\\");
  * fakeFtpServer.addUserAccounts(userAccount);
- * <p/>
+ *
  * fakeFtpServer.start();
  * </code></pre>
- * <p/>
+ *
  * <h4>Example Code with Permissions</h4>
  * You can optionally set the permissions and owner/group for each file and directory, as in the following example.
  * <pre><code>
@@ -74,43 +74,43 @@ import java.util.Map;
  * directoryEntry1.setPermissions(new Permissions("rwxrwx---"));
  * directoryEntry1.setOwner("joe");
  * directoryEntry1.setGroup("dev");
- * <p/>
+ *
  * DirectoryEntry directoryEntry2 = new DirectoryEntry("/data");
  * directoryEntry2.setPermissions(Permissions.ALL);
  * directoryEntry2.setOwner("joe");
  * directoryEntry2.setGroup("dev");
- * <p/>
+ *
  * FileEntry fileEntry1 = new FileEntry("/data/file1.txt", "abcdef 1234567890");
  * fileEntry1.setPermissionsFromString("rw-rw-rw-");
  * fileEntry1.setOwner("joe");
  * fileEntry1.setGroup("dev");
- * <p/>
+ *
  * FileEntry fileEntry2 = new FileEntry("/data/run.exe");
  * fileEntry2.setPermissionsFromString("rwxrwx---");
  * fileEntry2.setOwner("mary");
  * fileEntry2.setGroup("dev");
- * <p/>
+ *
  * fileSystem.add(directoryEntry1);
  * fileSystem.add(directoryEntry2);
  * fileSystem.add(fileEntry1);
  * fileSystem.add(fileEntry2);
- * <p/>
+ *
  * FakeFtpServer fakeFtpServer = new FakeFtpServer();
  * fakeFtpServer.setFileSystem(fileSystem);
- * <p/>
+ *
  * // Create UserAccount with username, password, home-directory
  * UserAccount userAccount = new UserAccount("joe", "joe123", "/");
  * fakeFtpServer.addUserAccounts(userAccount);
- * <p/>
+ *
  * fakeFtpServer.start();
  * </code></pre>
- * <p/>
+ *
  * <h4>FTP Server Control Port</h4>
  * By default, <b>MockFtpServer</b> binds to the server control port of 21. You can use a different server
  * control port by setting the the <code>serverControlPort</code> property. This is usually necessary
  * when running on Unix or some other system where that port number is already in use or cannot be bound
  * from a user process.
- * <p/>
+ *
  * <h4>Other Configuration</h4>
  * The <code>systemName</code> property specifies the value returned by the <code>SYST</code>
  * command. Note that this is typically used by an FTP client to determine how to parse
@@ -120,7 +120,7 @@ import java.util.Map;
  * <code>HELP</code> command. The keys in that <i>Map</i> correspond to the command names passed as
  * parameters to the <code>HELP</code> command. An entry with the key of an empty string ("") indicates the
  * text used as the default help text when no command name parameter is specified for the <code>HELP</code> command.
- * <p/>
+ *
  * <h4>FTP Command Reply Text ResourceBundle</h4>
  * The default text asociated with each FTP command reply code is contained within the
  * "ReplyText.properties" ResourceBundle file. You can customize these messages by providing a
