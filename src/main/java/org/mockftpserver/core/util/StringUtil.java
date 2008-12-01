@@ -22,7 +22,7 @@ import java.util.Iterator;
  * Contains static String-related utility methods.
  *
  * @author Chris Mair
- * @version $Revision: 51 $ - $Date: 2008-05-09 22:16:32 -0400 (Fri, 09 May 2008) $
+ * @version $Revision$ - $Date$
  */
 public class StringUtil {
 

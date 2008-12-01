@@ -34,7 +34,7 @@ import java.net.InetAddress;
  * </ol>
  *
  * @author Chris Mair
- * @version $Revision: 81 $ - $Date: 2008-07-11 15:28:15 -0400 (Fri, 11 Jul 2008) $
+ * @version $Revision$ - $Date$
  */
 public class PasvCommandHandler extends AbstractFakeCommandHandler {
 

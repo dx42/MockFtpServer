@@ -23,10 +23,11 @@ import org.mockftpserver.fake.filesystem.FileSystemEntry
 import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.Permissions
 
+
 /**
  * Abstract superclass for tests of Fake CommandHandlers that store a file (STOR, STOU, APPE)
  *
- * @version $Revision: 80 $ - $Date: 2008-07-07 22:15:50 -0400 (Mon, 07 Jul 2008) $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

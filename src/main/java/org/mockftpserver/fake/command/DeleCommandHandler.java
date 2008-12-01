@@ -30,7 +30,7 @@ import org.mockftpserver.core.session.Session;
  * The supplied pathname may be absolute or relative to the current directory.
  *
  * @author Chris Mair
- * @version $Revision: 136 $ - $Date: 2008-10-23 22:17:29 -0400 (Thu, 23 Oct 2008) $
+ * @version $Revision$ - $Date$
  */
 public class DeleCommandHandler extends AbstractFakeCommandHandler {
 

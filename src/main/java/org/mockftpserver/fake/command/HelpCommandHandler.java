@@ -35,7 +35,7 @@ import java.util.List;
  * The help text is configured within the {@link org.mockftpserver.fake.FakeFtpServer}.
  *
  * @author Chris Mair
- * @version $Revision: 89 $ - $Date: 2008-08-02 08:07:44 -0400 (Sat, 02 Aug 2008) $
+ * @version $Revision$ - $Date$
  * @see org.mockftpserver.fake.ServerConfiguration
  * @see org.mockftpserver.fake.FakeFtpServer
  */

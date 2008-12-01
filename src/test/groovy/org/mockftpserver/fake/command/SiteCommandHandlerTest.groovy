@@ -20,10 +20,11 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 
+
 /**
  * Tests for SiteCommandHandler
  *
- * @version $Revision: 65 $ - $Date: 2008-06-10 21:46:27 -0400 (Tue, 10 Jun 2008) $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

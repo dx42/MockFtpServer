@@ -37,7 +37,7 @@ import java.io.OutputStream;
  * </ol>
  *
  * @author Chris Mair
- * @version $Revision: 78 $ - $Date: 2008-07-02 20:47:17 -0400 (Wed, 02 Jul 2008) $
+ * @version $Revision$ - $Date$
  */
 public abstract class AbstractStoreFileCommandHandler extends AbstractFakeCommandHandler {
 

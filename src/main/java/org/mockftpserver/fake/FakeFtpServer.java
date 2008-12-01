@@ -130,7 +130,7 @@ import java.util.Map;
  * {@link #setReplyTextBaseName(String)} method.
  *
  * @author Chris Mair
- * @version $Revision: 143 $ - $Date: 2008-10-31 21:07:23 -0400 (Fri, 31 Oct 2008) $
+ * @version $Revision$ - $Date$
  */
 public class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
 

@@ -20,7 +20,7 @@ package org.mockftpserver.core;
  * that a server command is invoked when its preconditions have not been met.
  *
  * @author Chris Mair
- * @version $Revision: 51 $ - $Date: 2008-05-09 22:16:32 -0400 (Fri, 09 May 2008) $
+ * @version $Revision$ - $Date$
  */
 public class IllegalStateException extends MockFtpServerException {
 

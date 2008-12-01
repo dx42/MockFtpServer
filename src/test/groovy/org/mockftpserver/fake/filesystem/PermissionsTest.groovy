@@ -20,7 +20,7 @@ import org.mockftpserver.test.AbstractGroovyTest
 /**
  * Tests for the Permissions class
  *
- * @version $Revision: 86 $ - $Date: 2008-07-23 21:16:27 -0400 (Wed, 23 Jul 2008) $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

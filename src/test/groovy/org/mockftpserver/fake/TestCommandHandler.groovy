@@ -23,7 +23,7 @@ import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 /**
  * Test CommandHandler - subclass of AbstractCommandHandler
  *
- * @version $Revision: 54 $ - $Date: 2008-05-13 21:54:53 -0400 (Tue, 13 May 2008) $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

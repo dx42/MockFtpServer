@@ -21,10 +21,11 @@ import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 
+
 /**
  * Tests for TestCommandHandler
  *
- * @version $Revision: 67 $ - $Date: 2008-06-11 21:38:50 -0400 (Wed, 11 Jun 2008) $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

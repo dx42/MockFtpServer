@@ -42,7 +42,7 @@ import java.io.InputStream;
  * </ol>
  *
  * @author Chris Mair
- * @version $Revision: 164 $ - $Date: 2008-11-18 21:00:39 -0500 (Tue, 18 Nov 2008) $
+ * @version $Revision$ - $Date$
  */
 public class RetrCommandHandler extends AbstractFakeCommandHandler {
 

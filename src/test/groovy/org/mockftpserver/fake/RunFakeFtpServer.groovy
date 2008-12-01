@@ -21,11 +21,10 @@ import org.mockftpserver.fake.filesystem.DirectoryEntry
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem
 
-
 /**
  * Run the FakeFtpServer with a minimal configuration for interactive testing and exploration.
  *
- * @version $Revision: 83 $ - $Date: 2008-07-16 20:32:04 -0400 (Wed, 16 Jul 2008) $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

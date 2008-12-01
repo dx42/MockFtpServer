@@ -20,7 +20,7 @@ package org.mockftpserver.fake.filesystem;
  * Interface for an object that can format a file system directory listing.
  *
  * @author Chris Mair
- * @version $Revision: 123 $ - $Date: 2008-09-24 22:23:19 -0400 (Wed, 24 Sep 2008) $
+ * @version $Revision$ - $Date$
  */
 public interface DirectoryListingFormatter {
 

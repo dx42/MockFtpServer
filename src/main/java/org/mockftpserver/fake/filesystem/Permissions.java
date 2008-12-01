@@ -23,7 +23,7 @@ import org.mockftpserver.core.util.Assert;
  * file system. An instance of this class is immutable.
  *
  * @author Chris Mair
- * @version $Revision: 86 $ - $Date: 2008-07-23 21:16:27 -0400 (Wed, 23 Jul 2008) $
+ * @version $Revision$ - $Date$
  */
 public class Permissions {
     public static final Permissions ALL = new Permissions("rwxrwxrwx");
