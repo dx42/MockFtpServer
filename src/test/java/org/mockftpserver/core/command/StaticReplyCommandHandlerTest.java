@@ -16,10 +16,7 @@
 package org.mockftpserver.core.command;
 
 import org.apache.log4j.Logger;
-import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.StaticReplyCommandHandler;
 import org.mockftpserver.core.util.AssertFailedException;
-import org.mockftpserver.stub.command.AbstractCommandHandlerTest;
 
 /**
  * Tests for the StaticReplyCommandHandler class
@@ -131,7 +128,7 @@ public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerT
     }
     
     /**
-     * @see org.mockftpserver.stub.command.AbstractCommandHandlerTest#setUp()
+     * @see AbstractCommandHandlerTest#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();

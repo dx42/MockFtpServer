@@ -15,17 +15,10 @@
  */
 package org.mockftpserver.core.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-
 import org.apache.log4j.Logger;
-import org.mockftpserver.core.util.Assert;
-import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTest;
+
+import java.util.*;
 
 /**
  * Tests for the Assert class

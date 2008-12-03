@@ -15,9 +15,6 @@
  */
 package org.mockftpserver.core.command;
 
-import java.util.ListResourceBundle;
-import java.util.ResourceBundle;
-
 import org.apache.log4j.Logger;
 import org.easymock.MockControl;
 import org.mockftpserver.core.session.Session;
@@ -25,17 +22,20 @@ import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.stub.command.AbstractStubCommandHandler;
 import org.mockftpserver.test.AbstractTest;
 
+import java.util.ListResourceBundle;
+import java.util.ResourceBundle;
+
 /**
- * Tests for the AbstractCommandHandler class. The class name is prefixed with an underscore
- * so that it is not filtered out by Maven's Surefire test plugin.
+ * Tests for the AbstractTrackingCommandHandler class. The class name is prefixed with an
+ * underscore so that it is not filtered out by Maven's Surefire test plugin.
  *  
  * @version $Revision$ - $Date$
  * 
  * @author Chris Mair
  */
-public final class _AbstractCommandHandlerTest extends AbstractTest {
+public final class _AbstractTrackingCommandHandlerTest extends AbstractTest {
 
-    private static final Logger LOG = Logger.getLogger(_AbstractCommandHandlerTest.class);
+    private static final Logger LOG = Logger.getLogger(_AbstractTrackingCommandHandlerTest.class);
     private static final String COMMAND_NAME = "abc";
     private static final Object ARG = "123";
     private static final Object[] ARGS = { ARG };
@@ -51,7 +51,7 @@ public final class _AbstractCommandHandlerTest extends AbstractTest {
     private static final String MESSAGE_KEY = "key.123";
     private static final String MESSAGE_TEXT = "message.123";
     
-    private AbstractCommandHandler commandHandler;
+    private AbstractTrackingCommandHandler commandHandler;
     private Session session;
     private ResourceBundle replyTextBundle; 
     
@@ -250,7 +250,7 @@ public final class _AbstractCommandHandlerTest extends AbstractTest {
         super.setUp();
         session = (Session) createMock(Session.class);
         control(session).setDefaultMatcher(MockControl.ARRAY_MATCHER);
-        commandHandler = new AbstractCommandHandler() {
+        commandHandler = new AbstractTrackingCommandHandler() {
             public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) throws Exception {
             } 
         };

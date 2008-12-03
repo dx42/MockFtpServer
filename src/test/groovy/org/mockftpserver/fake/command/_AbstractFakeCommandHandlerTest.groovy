@@ -30,7 +30,6 @@ import org.mockftpserver.fake.filesystem.InvalidFilenameException
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem
 import org.mockftpserver.test.AbstractGroovyTest
 
-
 /**
  * Tests for AbstractFakeCommandHandler
  *

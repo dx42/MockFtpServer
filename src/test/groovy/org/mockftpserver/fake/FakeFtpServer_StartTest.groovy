@@ -19,7 +19,6 @@ import org.mockftpserver.core.server.AbstractFtpServer
 import org.mockftpserver.core.server.AbstractFtpServer_StartTest
 import org.mockftpserver.fake.FakeFtpServer
 
-
 /**
  * Tests for FakeFtpServer that require the server thread to be started.
  *

@@ -15,14 +15,14 @@
  */
 package org.mockftpserver.stub.example;
 
-import java.io.IOException;
-
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.stub.StubFtpServer;
 import org.mockftpserver.stub.command.RetrCommandHandler;
 import org.mockftpserver.test.AbstractTest;
 import org.mockftpserver.test.IntegrationTest;
+
+import java.io.IOException;
 
 /**
  * Example test using StubFtpServer, with programmatic configuration.

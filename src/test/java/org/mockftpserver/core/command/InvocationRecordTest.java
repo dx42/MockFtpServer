@@ -15,16 +15,13 @@
  */
 package org.mockftpserver.core.command;
 
+import org.apache.log4j.Logger;
+import org.mockftpserver.core.util.AssertFailedException;
+import org.mockftpserver.test.AbstractTest;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-
-import org.apache.log4j.Logger;
-import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.InvocationRecord;
-import org.mockftpserver.core.util.AssertFailedException;
-import org.mockftpserver.test.AbstractTest;
 
 /**
  * Tests for InvocationRecord

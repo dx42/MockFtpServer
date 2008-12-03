@@ -15,14 +15,14 @@
  */
 package org.mockftpserver.core.command;
 
+import org.mockftpserver.core.session.Session;
+import org.mockftpserver.core.util.Assert;
+import org.mockftpserver.core.util.AssertFailedException;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import org.mockftpserver.core.session.Session;
-import org.mockftpserver.core.util.Assert;
-import org.mockftpserver.core.util.AssertFailedException;
 
 /**
  * Composite CommandHandler that manages an internal list of CommandHandlers to which it delegates.

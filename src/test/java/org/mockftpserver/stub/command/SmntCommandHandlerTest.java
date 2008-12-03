@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.stub.command;
 
+import org.mockftpserver.core.command.AbstractCommandHandlerTest;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
@@ -59,7 +60,7 @@ public final class SmntCommandHandlerTest extends AbstractCommandHandlerTest {
 
     /**
      * Perform initialization before each test
-     * @see org.mockftpserver.stub.command.AbstractCommandHandlerTest#setUp()
+     * @see org.mockftpserver.core.command.AbstractCommandHandlerTest#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();

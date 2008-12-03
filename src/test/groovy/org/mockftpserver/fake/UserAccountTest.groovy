@@ -22,8 +22,6 @@ import org.mockftpserver.fake.filesystem.FileSystemEntry
 import org.mockftpserver.fake.filesystem.Permissions
 import org.mockftpserver.test.AbstractGroovyTest
 
-
-
 /**
  * Tests for UserAccount
  *

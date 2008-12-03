@@ -24,7 +24,6 @@ import org.mockftpserver.fake.UserAccount
 import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.Permissions
 
-
 /**
  * Tests for MkdCommandHandler
  *
