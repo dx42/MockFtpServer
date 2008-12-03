@@ -19,7 +19,6 @@ import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.session.Session
 
-
 /**
  * Test CommandHandler - does not implement ServerConfigurationAware
  *

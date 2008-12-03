@@ -15,11 +15,7 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.mockftpserver.core.command.AbstractCommandHandler;
-import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.CommandHandler;
-import org.mockftpserver.core.command.InvocationRecord;
-import org.mockftpserver.core.command.ReplyCodes;
+import org.mockftpserver.core.command.*;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 
@@ -31,7 +27,7 @@ import org.mockftpserver.core.util.AssertFailedException;
  * is complete.
  * <p/>
  * This class implements the <i>Template Method</i> pattern. Subclasses must implement the abstract
- * {@link #processData()} method to perform read or writes across the data connection.
+ * <code>processData</code> method to perform read or writes across the data connection.
  * <p/>
  * Subclasses can optionally override the {@link #beforeProcessData(Command, Session, InvocationRecord)}
  * method for logic before the data transfer or the {@link #afterProcessData(Command, Session, InvocationRecord)}
@@ -49,7 +45,7 @@ import org.mockftpserver.core.util.AssertFailedException;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public abstract class AbstractStubDataCommandHandler extends AbstractCommandHandler implements CommandHandler {
+public abstract class AbstractStubDataCommandHandler extends AbstractTrackingCommandHandler implements CommandHandler {
 
     // The completion reply code sent before the data transfer
     protected int preliminaryReplyCode = 0;
@@ -85,16 +81,16 @@ public abstract class AbstractStubDataCommandHandler extends AbstractCommandHand
     /**
      * Handle the command. Perform the following steps:
      * <ol>
-     * <li>Invoke the {@link #beforeProcessData()} method</li>
+     * <li>Invoke the <code>beforeProcessData()</code> method</li>
      * <li>Open the data connection</li>
      * <li>Send an preliminary reply, default reply code 150</li>
-     * <li>Invoke the {@link #processData()} method</li>
+     * <li>Invoke the <code>processData()</code> method</li>
      * <li>Close the data connection</li>
      * <li>Send the final reply, default reply code 226</li>
-     * <li>Invoke the {@link #afterProcessData()} method</li>
+     * <li>Invoke the <code>afterProcessData()</code> method</li>
      * </ol>
      *
-     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(Command, Session, InvocationRecord)
+     * @see org.mockftpserver.core.command.AbstractTrackingCommandHandler#handleCommand(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session, org.mockftpserver.core.command.InvocationRecord) 
      */
     public final void handleCommand(Command command, Session session, InvocationRecord invocationRecord) throws Exception {
 

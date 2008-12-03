@@ -18,7 +18,6 @@ package org.mockftpserver.fake.filesystem
 import org.apache.log4j.Logger
 import org.mockftpserver.core.util.IoUtil
 
-
 /**
  * Tests for FileEntry
  *

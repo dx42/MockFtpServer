@@ -15,15 +15,11 @@
  */
 package org.mockftpserver.core.command;
 
-import java.net.InetAddress;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import org.mockftpserver.core.util.Assert;
 import org.mockftpserver.core.util.AssertFailedException;
+
+import java.net.InetAddress;
+import java.util.*;
 
 /**
  * Represents information about a single FTP Command invocation. Manages and provides access to

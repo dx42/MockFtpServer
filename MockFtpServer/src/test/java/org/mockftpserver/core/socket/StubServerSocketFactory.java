@@ -18,8 +18,6 @@ package org.mockftpserver.core.socket;
 import java.io.IOException;
 import java.net.ServerSocket;
 
-import org.mockftpserver.core.socket.ServerSocketFactory;
-
 /**
  * Test-only implementation of ServerSocketFactory. It always returns the predefined
  * ServerSocket instance specified on the constructor.

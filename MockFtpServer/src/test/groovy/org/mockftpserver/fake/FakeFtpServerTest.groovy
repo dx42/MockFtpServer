@@ -23,7 +23,6 @@ import org.mockftpserver.fake.TestCommandHandler
 import org.mockftpserver.fake.TestCommandHandlerNotServerConfigurationAware
 import org.mockftpserver.fake.UserAccount
 
-
 /**
  * Tests for FakeFtpServer.
  *

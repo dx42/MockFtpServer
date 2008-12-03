@@ -22,7 +22,6 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.fake.UserAccount
 
-
 /**
  * Tests for ReinCommandHandler
  *

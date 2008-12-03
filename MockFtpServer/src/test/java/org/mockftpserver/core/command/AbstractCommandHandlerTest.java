@@ -13,15 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.stub.command;
+package org.mockftpserver.core.command;
 
 import org.apache.log4j.Logger;
 import org.easymock.MockControl;
-import org.mockftpserver.core.command.AbstractCommandHandler;
-import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.InvocationHistory;
-import org.mockftpserver.core.command.InvocationRecord;
-import org.mockftpserver.core.command.ReplyCodes;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.test.AbstractTest;
 
@@ -55,7 +50,7 @@ public abstract class AbstractCommandHandlerTest extends AbstractTest {
      * @param commandName    - the name for the Command
      * @param parameters     - the Command parameters
      */
-    protected void testHandleCommand_InvalidParameters(AbstractCommandHandler commandHandler,
+    protected void testHandleCommand_InvalidParameters(AbstractTrackingCommandHandler commandHandler,
                                                        String commandName, String[] parameters) throws Exception {
         Command command = new Command(commandName, parameters);
         session.sendReply(ReplyCodes.COMMAND_SYNTAX_ERROR, replyTextFor(ReplyCodes.COMMAND_SYNTAX_ERROR));

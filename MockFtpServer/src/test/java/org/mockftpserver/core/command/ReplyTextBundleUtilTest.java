@@ -15,12 +15,12 @@
  */
 package org.mockftpserver.core.command;
 
-import java.util.ListResourceBundle;
-import java.util.ResourceBundle;
-
 import org.apache.log4j.Logger;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTest;
+
+import java.util.ListResourceBundle;
+import java.util.ResourceBundle;
 
 /**
  * Tests for the ReplyTextBundleUtil class.
@@ -41,7 +41,7 @@ public final class ReplyTextBundleUtilTest extends AbstractTest {
      * the ResourceBundleAware interface, and the replyTextBundle has not yet been set. 
      */
     public void testSetReplyTextBundleIfAppropriate_ReplyTextBundleAware_NotSetYet() {
-        AbstractCommandHandler commandHandler = new StaticReplyCommandHandler();
+        AbstractTrackingCommandHandler commandHandler = new StaticReplyCommandHandler();
         ReplyTextBundleUtil.setReplyTextBundleIfAppropriate(commandHandler, resourceBundle1);
         assertSame(resourceBundle1, commandHandler.getReplyTextBundle());
     }
@@ -51,7 +51,7 @@ public final class ReplyTextBundleUtilTest extends AbstractTest {
      * the ResourceBundleAware interface, and the replyTextBundle has already been set. 
      */
     public void testSetReplyTextBundleIfAppropriate_ReplyTextBundleAware_AlreadySet() {
-        AbstractCommandHandler commandHandler = new StaticReplyCommandHandler();
+        AbstractTrackingCommandHandler commandHandler = new StaticReplyCommandHandler();
         commandHandler.setReplyTextBundle(resourceBundle2);
         ReplyTextBundleUtil.setReplyTextBundleIfAppropriate(commandHandler, resourceBundle1);
         assertSame(resourceBundle2, commandHandler.getReplyTextBundle());

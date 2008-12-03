@@ -18,7 +18,6 @@ package org.mockftpserver.fake.filesystem
 import java.text.SimpleDateFormat
 import org.mockftpserver.test.AbstractGroovyTest
 
-
 /**
  * Tests for WindowsDirectoryListingFormatter
  *

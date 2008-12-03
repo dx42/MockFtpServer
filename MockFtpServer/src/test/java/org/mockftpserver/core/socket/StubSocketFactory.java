@@ -19,8 +19,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import org.mockftpserver.core.socket.SocketFactory;
-
 /**
  * Test-only implementation of SocketFactory. It always returns the predefined
  * StubSocket instance specified on the constructor. It allows direct access to the

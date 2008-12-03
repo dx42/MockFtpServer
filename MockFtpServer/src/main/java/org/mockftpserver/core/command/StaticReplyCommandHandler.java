@@ -17,7 +17,6 @@ package org.mockftpserver.core.command;
 
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
-import org.mockftpserver.stub.command.AbstractStubCommandHandler;
 
 /**
  * CommandHandler that sends back the configured reply code and text. You can customize the 
@@ -32,7 +31,7 @@ import org.mockftpserver.stub.command.AbstractStubCommandHandler;
  * 
  * @author Chris Mair
  */
-public final class StaticReplyCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
+public final class StaticReplyCommandHandler extends AbstractStaticReplyCommandHandler {
 
     /**
      * Create a new uninitialized instance
@@ -59,9 +58,9 @@ public final class StaticReplyCommandHandler extends AbstractStubCommandHandler 
         setReplyCode(replyCode);
         setReplyText(replyText);
     }
-    
+
     /**
-     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(Command, Session, InvocationRecord)
+     * @see AbstractTrackingCommandHandler#handleCommand(Command, org.mockftpserver.core.session.Session, InvocationRecord)
      */
     public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
         sendReply(session);

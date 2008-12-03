@@ -15,9 +15,9 @@
  */
 package org.mockftpserver.core.command;
 
-import java.util.ResourceBundle;
-
 import org.mockftpserver.core.util.Assert;
+
+import java.util.ResourceBundle;
 
 /**
  * Contains common utility method to conditionally set the reply text ResourceBundle on a
@@ -38,7 +38,7 @@ public final class ReplyTextBundleUtil {
      * @param commandHandler - the CommandHandler instance
      * @param replyTextBundle - the ResourceBundle to use for localizing reply text
      * 
-     * @throws AssertFailedException - if the commandHandler is null
+     * @throws org.mockftpserver.core.util.AssertFailedException - if the commandHandler is null
      */
     public static void setReplyTextBundleIfAppropriate(CommandHandler commandHandler, ResourceBundle replyTextBundle) {
         Assert.notNull(commandHandler, "commandHandler");

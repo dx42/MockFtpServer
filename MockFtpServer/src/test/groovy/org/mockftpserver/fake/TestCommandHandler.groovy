@@ -19,9 +19,8 @@ import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 
-
 /**
- * Test CommandHandler - subclass of AbstractCommandHandler
+ * Test CommandHandler - subclass of AbstractFakeCommandHandler
  *
  * @version $Revision$ - $Date$
  *

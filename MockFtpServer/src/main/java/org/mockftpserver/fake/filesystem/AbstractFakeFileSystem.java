@@ -20,13 +20,7 @@ import org.mockftpserver.core.util.Assert;
 import org.mockftpserver.core.util.PatternUtil;
 import org.mockftpserver.core.util.StringUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Abstract superclass for implementation of the FileSystem interface that manage the files

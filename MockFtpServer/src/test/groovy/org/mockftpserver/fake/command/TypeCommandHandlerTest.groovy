@@ -21,7 +21,6 @@ import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
 
-
 /**
  * Tests for TestCommandHandler
  *

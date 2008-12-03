@@ -15,26 +15,17 @@
  */
 package org.mockftpserver.test;
 
-import java.io.File;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import junit.framework.TestCase;
-
 import org.apache.log4j.Logger;
 import org.easymock.MockControl;
 import org.mockftpserver.core.MockFtpServerException;
 import org.mockftpserver.core.util.Assert;
 import org.mockftpserver.core.util.AssertFailedException;
+
+import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.*;
 
 /**
  * Abstract superclass for all project test classes

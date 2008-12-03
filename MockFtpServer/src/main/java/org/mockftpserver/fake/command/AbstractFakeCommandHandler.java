@@ -149,7 +149,6 @@ public abstract class AbstractFakeCommandHandler implements CommandHandler, Serv
         String replyText = (args != null && !args.isEmpty()) ? MessageFormat.format(text, args.toArray()) : text;
 
         String replyTextToLog = (replyText == null) ? "" : " " + replyText;
-        // TODO change to LOG.debug()
         String argsToLog = (args != null && !args.isEmpty()) ? (" args=" + args) : "";
         LOG.info("Sending reply [" + replyCode + replyTextToLog + "]" + argsToLog);
         session.sendReply(replyCode, replyText);
@@ -401,10 +400,21 @@ public abstract class AbstractFakeCommandHandler implements CommandHandler, Serv
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, userAccount.getHomeDirectory());
     }
 
+    /**
+     * Convenience method to return a List with the specified single item
+     * @param item - the single item in the returned List
+     * @return a new List with that single item
+     */
     protected List list(Object item) {
         return Collections.singletonList(item);
     }
 
+    /**
+     * Convenience method to return a List with the specified two items
+     * @param item1 - the first item in the returned List
+     * @param item2 - the second item in the returned List
+     * @return a new List with the specified items
+     */
     protected List list(Object item1, Object item2) {
         List list = new ArrayList(2);
         list.add(item1);
@@ -412,10 +422,21 @@ public abstract class AbstractFakeCommandHandler implements CommandHandler, Serv
         return list;
     }
 
+    /**
+     * Return true if the specified string is null or empty
+     * @param string - the String to check; may be null
+     * @return true only if the specified String is null or empyt
+     */
     protected boolean notNullOrEmpty(String string) {
         return string != null && string.length() > 0;
     }
 
+    /**
+     * Return the string unless it is null or empty, in which case return the defaultString.
+     * @param string - the String to check; may be null
+     * @param defaultString - the value to return if string is null or empty
+     * @return string if not null and not empty; otherwise return defaultString
+     */
     protected String defaultIfNullOrEmpty(String string, String defaultString) {
         return (notNullOrEmpty(string) ? string : defaultString);
     }

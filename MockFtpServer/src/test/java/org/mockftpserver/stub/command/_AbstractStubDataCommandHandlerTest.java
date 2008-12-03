@@ -15,16 +15,15 @@
  */
 package org.mockftpserver.stub.command;
 
-import java.util.ListResourceBundle;
-import java.util.ResourceBundle;
-
 import org.apache.log4j.Logger;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
-import org.mockftpserver.stub.command.AbstractStubDataCommandHandler;
 import org.mockftpserver.test.AbstractTest;
+
+import java.util.ListResourceBundle;
+import java.util.ResourceBundle;
 
 /**
  * Tests for AbstractStubDataCommandHandler. The class name is prefixed with an underscore

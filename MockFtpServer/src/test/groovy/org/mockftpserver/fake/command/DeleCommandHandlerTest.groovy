@@ -22,7 +22,6 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.Permissions
 
-
 /**
  * Tests for DeleCommandHandler
  *

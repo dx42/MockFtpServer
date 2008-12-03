@@ -15,9 +15,7 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.mockftpserver.core.command.AbstractCommandHandler;
-import org.mockftpserver.core.session.Session;
-import org.mockftpserver.core.util.AssertFailedException;
+import org.mockftpserver.core.command.AbstractStaticReplyCommandHandler;
 import org.mockftpserver.stub.StubFtpServer;
 
 /**
@@ -30,73 +28,6 @@ import org.mockftpserver.stub.StubFtpServer;
  * 
  * @author Chris Mair
  */
-public abstract class AbstractStubCommandHandler extends AbstractCommandHandler {
-
-    // Defaults to zero; must be set to non-zero
-    protected int replyCode = 0;
-
-    // Defaults to null; if set to non-null, this value will override the default reply text associated with
-    // the replyCode.
-    protected String replyText = null;
-
-    // The message key for the reply text. Defaults to null. If null, use the default message associated 
-    // with the reply code 
-    protected String replyMessageKey = null;
-
-    /**
-     * Set the reply code.
-     * 
-     * @param replyCode - the replyCode
-     * 
-     * @throws AssertFailedException - if the replyCode is not valid
-     */
-    public void setReplyCode(int replyCode) {
-        assertValidReplyCode(replyCode);
-        this.replyCode = replyCode;
-    }
-
-    /**
-     * Set the reply text. If null, then use the (default) message key for the replyCode.
-     * 
-     * @param replyText - the replyText
-     */
-    public void setReplyText(String replyText) {
-        this.replyText = replyText;
-    }
-
-    /**
-     * Set the message key for the reply text. If null, then use the default message key.
-     * 
-     * @param replyMessageKey - the replyMessageKey to set
-     */
-    public void setReplyMessageKey(String replyMessageKey) {
-        this.replyMessageKey = replyMessageKey;
-    }
-
-    // -------------------------------------------------------------------------
-    // Utility methods for subclasses
-    // -------------------------------------------------------------------------
-
-    /**
-     * Send the reply using the replyCode and message key/text configured for this command handler.
-     * @param session - the Session
-     * 
-     * @throws AssertFailedException if the replyCode is not valid
-     */
-    protected void sendReply(Session session) {
-        sendReply(session, null);
-    }
-    
-    /**
-     * Send the reply using the replyCode and message key/text configured for this command handler.
-     * @param session - the Session
-     * @param messageParameter - message parameter; may be null
-     * 
-     * @throws AssertFailedException if the replyCode is not valid
-     */
-    protected void sendReply(Session session, Object messageParameter) {
-        Object[] parameters = (messageParameter == null) ? null : new Object[] { messageParameter };
-        sendReply(session, replyCode, replyMessageKey, replyText, parameters);
-    }
+public abstract class AbstractStubCommandHandler extends AbstractStaticReplyCommandHandler {
 
 }

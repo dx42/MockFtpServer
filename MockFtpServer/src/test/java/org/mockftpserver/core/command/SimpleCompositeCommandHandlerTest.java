@@ -15,19 +15,15 @@
  */
 package org.mockftpserver.core.command;
 
+import org.apache.log4j.Logger;
+import org.mockftpserver.core.session.Session;
+import org.mockftpserver.core.util.AssertFailedException;
+import org.mockftpserver.test.AbstractTest;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
-
-
-import org.apache.log4j.Logger;
-import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.CommandHandler;
-import org.mockftpserver.core.command.SimpleCompositeCommandHandler;
-import org.mockftpserver.core.session.Session;
-import org.mockftpserver.core.util.AssertFailedException;
-import org.mockftpserver.test.AbstractTest;
 
 /**
  * Tests for SimpleCompositeCommandHandler
@@ -234,8 +230,8 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTest {
      */
     public void testSetReplyTextBundle() {
         
-        AbstractCommandHandler replyTextBundleAwareCommandHandler1 = new StaticReplyCommandHandler(); 
-        AbstractCommandHandler replyTextBundleAwareCommandHandler2 = new StaticReplyCommandHandler(); 
+        AbstractTrackingCommandHandler replyTextBundleAwareCommandHandler1 = new StaticReplyCommandHandler();
+        AbstractTrackingCommandHandler replyTextBundleAwareCommandHandler2 = new StaticReplyCommandHandler();
         simpleCompositeCommandHandler.addCommandHandler(replyTextBundleAwareCommandHandler1);
         simpleCompositeCommandHandler.addCommandHandler(commandHandler1);
         simpleCompositeCommandHandler.addCommandHandler(replyTextBundleAwareCommandHandler2);

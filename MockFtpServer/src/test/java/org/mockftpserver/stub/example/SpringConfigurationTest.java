@@ -15,8 +15,6 @@
  */
 package org.mockftpserver.stub.example;
 
-import java.io.ByteArrayOutputStream;
-
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.log4j.Logger;
@@ -24,6 +22,8 @@ import org.mockftpserver.stub.StubFtpServer;
 import org.mockftpserver.test.AbstractTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.io.ByteArrayOutputStream;
 
 /**
  * Example test for StubFtpServer, using the Spring Framework ({@link http://www.springframework.org/}) 

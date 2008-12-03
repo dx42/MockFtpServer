@@ -35,9 +35,9 @@ import java.util.ResourceBundle;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public abstract class AbstractCommandHandler implements CommandHandler, ReplyTextBundleAware, InvocationHistory {
+public abstract class AbstractTrackingCommandHandler implements CommandHandler, ReplyTextBundleAware, InvocationHistory {
 
-    private static final Logger LOG = Logger.getLogger(AbstractCommandHandler.class);
+    private static final Logger LOG = Logger.getLogger(AbstractTrackingCommandHandler.class);
 
     private ResourceBundle replyTextBundle;
     private List invocations = new ArrayList();
