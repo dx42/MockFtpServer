@@ -18,6 +18,7 @@ package org.mockftpserver.fake
 import org.apache.commons.net.ftp.FTP
 import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.net.ftp.FTPFile
+import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.StaticReplyCommandHandler
 import org.mockftpserver.fake.FakeFtpServer
 import org.mockftpserver.fake.UserAccount
@@ -110,7 +111,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
     void testCwd_UseStaticReplyCommandHandler() {
         final int REPLY_CODE = 500;
         StaticReplyCommandHandler cwdCommandHandler = new StaticReplyCommandHandler(REPLY_CODE);
-        ftpServer.setCommandHandler("CWD", cwdCommandHandler);
+        ftpServer.setCommandHandler(CommandNames.CWD, cwdCommandHandler);
 
         ftpClientConnectAndLogin()
         assert !ftpClient.changeWorkingDirectory(SUBDIR_NAME)
@@ -121,7 +122,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         final int REPLY_CODE = 502;
         CwdCommandHandler cwdCommandHandler = new CwdCommandHandler();     // Stub command handler
         cwdCommandHandler.setReplyCode(REPLY_CODE);
-        ftpServer.setCommandHandler("CWD", cwdCommandHandler);
+        ftpServer.setCommandHandler(CommandNames.CWD, cwdCommandHandler);
 
         ftpClientConnectAndLogin()
         assert !ftpClient.changeWorkingDirectory(SUBDIR_NAME)
@@ -136,6 +137,15 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         assert ftpClient.deleteFile(FILENAME1)
         verifyReplyCode("deleteFile", 250)
         assert !fileSystem.exists(FILENAME1)
+    }
+
+    void testFeat_UseStaticReplyCommandHandler() {
+        // The FEAT command is not supported out of the box
+        StaticReplyCommandHandler featCommandHandler = new StaticReplyCommandHandler(211, "No Features");
+        ftpServer.setCommandHandler("FEAT", featCommandHandler);
+
+        ftpClientConnectAndLogin()
+        assert ftpClient.sendCommand("FEAT") == 211
     }
 
     void testHelp() {
