@@ -27,6 +27,7 @@ import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.TestUnixFakeFileSystem
 import org.mockftpserver.test.AbstractGroovyTest
+import org.mockftpserver.test.StubResourceBundle
 
 /**
  * Abstract superclass for CommandHandler tests
@@ -41,11 +42,12 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
 
     protected session
     protected serverConfiguration
+    protected replyTextBundle
     protected commandHandler
     protected fileSystem
     protected userAccount
 
-    /** Set this to false to skip the test that verifies that the CommandHandler requires a logged in user             */
+    /** Set this to false to skip the test that verifies that the CommandHandler requires a logged in user              */
     boolean testNotLoggedIn = true
 
     //-------------------------------------------------------------------------
@@ -99,6 +101,7 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
         super.setUp()
         session = new StubSession()
         serverConfiguration = new StubServerConfiguration()
+        replyTextBundle = new StubResourceBundle()
         fileSystem = new TestUnixFakeFileSystem()
         fileSystem.createParentDirectoriesAutomatically = true
         serverConfiguration.setFileSystem(fileSystem)
@@ -108,6 +111,7 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
 
         commandHandler = createCommandHandler()
         commandHandler.serverConfiguration = serverConfiguration
+        commandHandler.replyTextBundle = replyTextBundle
     }
 
     //-------------------------------------------------------------------------

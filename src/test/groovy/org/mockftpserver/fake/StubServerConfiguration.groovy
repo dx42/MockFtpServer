@@ -20,7 +20,7 @@ import org.mockftpserver.fake.UserAccount
 import org.mockftpserver.fake.filesystem.FileSystem
 
 /**
- * Stub implementation of the            {@link org.mockftpserver.fake.ServerConfiguration}            interface for testing
+ * Stub implementation of the  {@link org.mockftpserver.fake.ServerConfiguration}  interface for testing
  *
  * @version $Revision$ - $Date$
  *
@@ -28,19 +28,13 @@ import org.mockftpserver.fake.filesystem.FileSystem
  */
 class StubServerConfiguration implements ServerConfiguration {
 
-    ResourceBundle replyTextBundle
     Map userAccounts = [:]
     Map helpText = [:]
     FileSystem fileSystem
     String systemName = "WINDOWS"
-    private Map textForReplyCodeMap = [:]
 
     UserAccount getUserAccount(String username) {
         (UserAccount) userAccounts[username]
-    }
-
-    ResourceBundle getReplyTextBundle() {
-        return new TestResources(map: textForReplyCodeMap)
     }
 
     public String getHelpText(String name) {
@@ -52,28 +46,4 @@ class StubServerConfiguration implements ServerConfiguration {
     // Stub-specific API - Helper methods not part of ServerConfiguration interface
     //-------------------------------------------------------------------------
 
-    /**
-     * Set the text to be returned for the specified key by the
-     * {@link #getReplyTextBundle()}          resource bundle.
-     */
-    void setTextForKey(key, String text) {
-        textForReplyCodeMap[key.toString()] = text
-    }
-
-}
-
-/**
- * Map-based implementation of ResourceBundle for testing
- */
-class TestResources extends ResourceBundle {
-
-    Map map
-
-    Object handleGetObject(String key) {
-        return map[key] ?: "key=$key arg0={0} arg1={1}".toString()
-    }
-
-    public Enumeration getKeys() {
-        return new Vector(map.keySet()).elements()
-    }
 }

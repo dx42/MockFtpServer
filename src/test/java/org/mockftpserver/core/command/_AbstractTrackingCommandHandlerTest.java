@@ -19,7 +19,6 @@ import org.apache.log4j.Logger;
 import org.easymock.MockControl;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
-import org.mockftpserver.stub.command.AbstractStubCommandHandler;
 import org.mockftpserver.test.AbstractTest;
 
 import java.util.ListResourceBundle;
@@ -28,17 +27,16 @@ import java.util.ResourceBundle;
 /**
  * Tests for the AbstractTrackingCommandHandler class. The class name is prefixed with an
  * underscore so that it is not filtered out by Maven's Surefire test plugin.
- *  
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class _AbstractTrackingCommandHandlerTest extends AbstractTest {
 
     private static final Logger LOG = Logger.getLogger(_AbstractTrackingCommandHandlerTest.class);
     private static final String COMMAND_NAME = "abc";
     private static final Object ARG = "123";
-    private static final Object[] ARGS = { ARG };
+    private static final Object[] ARGS = {ARG};
     private static final Command COMMAND = new Command(COMMAND_NAME, EMPTY);
     private static final Command COMMAND_WITH_ARGS = new Command(COMMAND_NAME, EMPTY);
     private static final int REPLY_CODE1 = 777;
@@ -50,11 +48,10 @@ public final class _AbstractTrackingCommandHandlerTest extends AbstractTest {
     private static final String OVERRIDE_REPLY_TEXT = "overridden reply ... abcdef";
     private static final String MESSAGE_KEY = "key.123";
     private static final String MESSAGE_TEXT = "message.123";
-    
+
     private AbstractTrackingCommandHandler commandHandler;
     private Session session;
-    private ResourceBundle replyTextBundle; 
-    
+
     /**
      * Test the handleCommand(Command,Session) method
      */
@@ -77,7 +74,7 @@ public final class _AbstractTrackingCommandHandlerTest extends AbstractTest {
             LOG.info("Expected: " + expected);
         }
     }
-    
+
     /**
      * Test the handleCommand(Command,Session) method, passing in a null Session
      */
@@ -90,7 +87,7 @@ public final class _AbstractTrackingCommandHandlerTest extends AbstractTest {
             LOG.info("Expected: " + expected);
         }
     }
-    
+
     /**
      * Test the numberOfInvocations(), addInvocationRecord() and clearInvocationRecord() methods
      */
@@ -109,7 +106,8 @@ public final class _AbstractTrackingCommandHandlerTest extends AbstractTest {
 
     /**
      * Test the getInvocation() method
-     * @throws Exception 
+     *
+     * @throws Exception
      */
     public void testGetInvocation() throws Exception {
         control(session).expectAndDefaultReturn(session.getClientHost(), DEFAULT_HOST);
@@ -136,53 +134,6 @@ public final class _AbstractTrackingCommandHandlerTest extends AbstractTest {
     }
 
     /**
-     * Test the quotes utility method 
-     */
-    public void testQuotes() {
-        assertEquals("abc", "\"abc\"", AbstractStubCommandHandler.quotes("abc"));
-        assertEquals("<empty>", "\"\"", AbstractStubCommandHandler.quotes(""));
-    }
-    
-    /**
-     * Test the quotes utility method, passing in a null 
-     */
-    public void testQuotes_Null() {
-        try {
-            AbstractStubCommandHandler.quotes(null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
-    }
-    
-    /**
-     * Test the assertValidReplyCode() method 
-     */
-    public void testAssertValidReplyCode() {
-        // These are valid, so expect no exceptions
-        commandHandler.assertValidReplyCode(1);
-        commandHandler.assertValidReplyCode(100);
-
-        // These are invalid
-        testAssertValidReplyCodeWithInvalid(0);
-        testAssertValidReplyCodeWithInvalid(-1);
-    }
-
-    /**
-     * Test the assertValidReplyCode() method , passing in an invalid replyCode value
-     */
-    private void testAssertValidReplyCodeWithInvalid(int invalidReplyCode) {
-        try {
-            commandHandler.assertValidReplyCode(invalidReplyCode);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
-    }
-
-    /**
      * Test the sendReply() method, when no message arguments are specified
      */
     public void testSendReply() {
@@ -191,29 +142,29 @@ public final class _AbstractTrackingCommandHandlerTest extends AbstractTest {
         session.sendReply(REPLY_CODE1, OVERRIDE_REPLY_TEXT);
         session.sendReply(REPLY_CODE3, null);
         replay(session);
-        
+
         commandHandler.sendReply(session, REPLY_CODE1, null, null, null);
         commandHandler.sendReply(session, REPLY_CODE1, MESSAGE_KEY, null, null);
         commandHandler.sendReply(session, REPLY_CODE1, MESSAGE_KEY, OVERRIDE_REPLY_TEXT, null);
         commandHandler.sendReply(session, REPLY_CODE3, null, null, null);
-        
+
         verify(session);
     }
-    
+
     /**
-     * Test the sendReply() method, passing in message arguments 
+     * Test the sendReply() method, passing in message arguments
      */
     public void testSendReply_WithMessageArguments() {
         session.sendReply(REPLY_CODE1, REPLY_TEXT2_FORMATTED);
         replay(session);
-        
+
         commandHandler.sendReply(session, REPLY_CODE1, null, REPLY_TEXT2, ARGS);
-        
+
         verify(session);
     }
-    
+
     /**
-     * Test the sendReply() method, passing in a null Session 
+     * Test the sendReply() method, passing in a null Session
      */
     public void testSendReply_NullSession() {
         try {
@@ -226,7 +177,7 @@ public final class _AbstractTrackingCommandHandlerTest extends AbstractTest {
     }
 
     /**
-     * Test the sendReply() method, passing in an invalid replyCode 
+     * Test the sendReply() method, passing in an invalid replyCode
      */
     public void testSendReply_InvalidReplyCode() {
         try {
@@ -241,9 +192,10 @@ public final class _AbstractTrackingCommandHandlerTest extends AbstractTest {
     //-------------------------------------------------------------------------
     // Test setup
     //-------------------------------------------------------------------------
-    
+
     /**
      * Perform initialization before each test
+     *
      * @see org.mockftpserver.test.AbstractTest#setUp()
      */
     protected void setUp() throws Exception {
@@ -252,18 +204,18 @@ public final class _AbstractTrackingCommandHandlerTest extends AbstractTest {
         control(session).setDefaultMatcher(MockControl.ARRAY_MATCHER);
         commandHandler = new AbstractTrackingCommandHandler() {
             public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) throws Exception {
-            } 
+            }
         };
-        replyTextBundle = new ListResourceBundle() {
+        ResourceBundle replyTextBundle = new ListResourceBundle() {
             protected Object[][] getContents() {
-                return new Object[][] { 
-                        { Integer.toString(REPLY_CODE1), REPLY_TEXT1 }, 
-                        { Integer.toString(REPLY_CODE2), REPLY_TEXT2 }, 
-                        { MESSAGE_KEY, MESSAGE_TEXT } 
+                return new Object[][]{
+                        {Integer.toString(REPLY_CODE1), REPLY_TEXT1},
+                        {Integer.toString(REPLY_CODE2), REPLY_TEXT2},
+                        {MESSAGE_KEY, MESSAGE_TEXT}
                 };
             }
         };
         commandHandler.setReplyTextBundle(replyTextBundle);
     }
-    
+
 }
