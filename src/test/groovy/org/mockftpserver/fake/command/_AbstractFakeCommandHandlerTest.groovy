@@ -88,7 +88,7 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
         assert session.sentReplies[1] == [REPLY_CODE, MSG_WITH_ARG], session.sentReplies[0]
 
         shouldFailWithMessageContaining('session') { commandHandler.sendReply(null, REPLY_CODE) }
-        shouldFailWithMessageContaining('replyCode') { commandHandler.sendReply(session, 0) }
+        shouldFailWithMessageContaining('reply code') { commandHandler.sendReply(session, 0) }
     }
 
     void testSendReply_MessageKey() {
@@ -96,7 +96,7 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
         assert session.sentReplies[0] == [REPLY_CODE, MSG_FOR_KEY], session.sentReplies[0]
 
         shouldFailWithMessageContaining('session') { commandHandler.sendReply(null, REPLY_CODE, MESSAGE_KEY) }
-        shouldFailWithMessageContaining('replyCode') { commandHandler.sendReply(session, 0, MESSAGE_KEY) }
+        shouldFailWithMessageContaining('reply code') { commandHandler.sendReply(session, 0, MESSAGE_KEY) }
     }
 
     void testSendReply_NullMessageKey() {
