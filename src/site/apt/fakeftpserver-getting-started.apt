@@ -328,6 +328,83 @@ beans xmlns="http://www.springframework.org/schema/beans"
   []
 
 
+* Configuring Custom CommandHandlers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  <<FakeFtpServer>> is intentionally designed to keep the lower-level details of FTP server implementation
+  hidden from the user. In most cases, you can simply define the files and directories in the file
+  system, configure one or more login users, and then fire up the server, expecting it to behave like
+  a <real> FTP server.
+
+  There are some cases, however, where you might want to further customize the internal behavior of the
+  server. Such cases might include:
+
+  * You want to have a particular FTP server command return a predetermined error reply
+
+  * You want to add support for a command that is not provided out of the box by <<FakeFtpServer>>
+
+  Note that if you need the FTP server to reply with entirely predetermined (canned) responses, then
+  you may want to consider using <<StubFtpServer>> instead.  
+
+
+** Using a StaticReplyCommandHandler
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  You can use one of the <CommandHandler> classes defined within the <<<org.mockftpserver.core.command>>>
+  package to configure a custom <CommandHandler>. The following example uses the <<<StaticReplyCommandHandler>>>
+  from that package to add support for the FEAT command. Note that in this case, we are setting the
+  <CommandHandler> for a new command (i.e., one that is not supported out of the box by <<FakeFtpServer>>).
+  We could just as easily set the <CommandHandler> for an existing command, overriding the default <CommandHandler>.
+
++------------------------------------------------------------------------------
+import org.mockftpserver.core.command.StaticReplyCommandHandler
+
+FakeFtpServer ftpServer = new FakeFtpServer()
+// ... set up files, directories and user accounts as usual
+
+StaticReplyCommandHandler featCommandHandler = new StaticReplyCommandHandler(211, "No Features");
+ftpServer.setCommandHandler("FEAT", featCommandHandler);
+
+// ...
+ftpServer.start()
++------------------------------------------------------------------------------
+
+
+** Using a Stub CommandHandler
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  You can also use a <<StubFtpServer>> <CommandHandler> -- i.e., one defined within the
+  <<<org.mockftpserver.stub.command>>> package. The following example uses the <stub> version of the
+  <<<CwdCommandHandler>>> from that package.
+
++------------------------------------------------------------------------------
+import org.mockftpserver.stub.command.CwdCommandHandler
+
+FakeFtpServer ftpServer = new FakeFtpServer()
+// ... set up files, directories and user accounts as usual
+
+final int REPLY_CODE = 502;
+CwdCommandHandler cwdCommandHandler = new CwdCommandHandler();
+cwdCommandHandler.setReplyCode(REPLY_CODE);
+ftpServer.setCommandHandler(CommandNames.CWD, cwdCommandHandler);
+
+// ...
+ftpServer.start()
++------------------------------------------------------------------------------
+
+
+** Creating Your Own Custom CommandHandler Class
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  If one of the existing <CommandHandler> classes does not fulfill your needs, you can alternately create
+  your own custom <CommandHandler> class. The only requirement is that it implement the
+  <<<org.mockftpserver.core.command.CommandHandler>>> interface. You would, however, likely benefit from
+  inheriting from one of the existing abstract <CommandHandler> superclasses, such as
+  <<<org.mockftpserver.core.command.AbstractStaticReplyCommandHandler>>> or
+  <<<org.mockftpserver.core.command.AbstractCommandHandler>>>. See the javadoc of these classes for
+  more information.
+
+
 * FTP Command Reply Text ResourceBundle
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

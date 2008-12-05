@@ -35,24 +35,14 @@ import java.util.ResourceBundle;
 public final class _AbstractCommandHandlerTest extends AbstractTest {
 
     private static final Logger LOG = Logger.getLogger(_AbstractTrackingCommandHandlerTest.class);
-    private static final String COMMAND_NAME = "abc";
-    private static final Object ARG = "123";
-    private static final Object[] ARGS = {ARG};
-    private static final Command COMMAND = new Command(COMMAND_NAME, EMPTY);
-    private static final Command COMMAND_WITH_ARGS = new Command(COMMAND_NAME, EMPTY);
     private static final int REPLY_CODE1 = 777;
     private static final int REPLY_CODE2 = 888;
-    private static final int REPLY_CODE3 = 999;
     private static final String REPLY_TEXT1 = "reply1 ... abcdef";
     private static final String REPLY_TEXT2 = "abc {0} def";
-    private static final String REPLY_TEXT2_FORMATTED = "abc 123 def";
-    private static final String OVERRIDE_REPLY_TEXT = "overridden reply ... abcdef";
     private static final String MESSAGE_KEY = "key.123";
     private static final String MESSAGE_TEXT = "message.123";
 
     private AbstractCommandHandler commandHandler;
-    private Session session;
-    private ResourceBundle replyTextBundle;
 
     /**
      * Test the quotes utility method
@@ -90,6 +80,8 @@ public final class _AbstractCommandHandlerTest extends AbstractTest {
 
     /**
      * Test the assertValidReplyCode() method , passing in an invalid replyCode value
+     *
+     * @param invalidReplyCode - a reply code that is expected to be invalid
      */
     private void testAssertValidReplyCodeWithInvalid(int invalidReplyCode) {
         try {
@@ -112,13 +104,13 @@ public final class _AbstractCommandHandlerTest extends AbstractTest {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        session = (Session) createMock(Session.class);
+        Session session = (Session) createMock(Session.class);
         control(session).setDefaultMatcher(MockControl.ARRAY_MATCHER);
         commandHandler = new AbstractCommandHandler() {
             public void handleCommand(Command command, Session session) throws Exception {
             }
         };
-        replyTextBundle = new ListResourceBundle() {
+        ResourceBundle replyTextBundle = new ListResourceBundle() {
             protected Object[][] getContents() {
                 return new Object[][]{
                         {Integer.toString(REPLY_CODE1), REPLY_TEXT1},
