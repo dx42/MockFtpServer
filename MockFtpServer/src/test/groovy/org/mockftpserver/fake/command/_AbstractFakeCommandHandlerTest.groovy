@@ -29,6 +29,7 @@ import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.InvalidFilenameException
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem
 import org.mockftpserver.test.AbstractGroovyTest
+import org.mockftpserver.test.StubResourceBundle
 
 /**
  * Tests for AbstractFakeCommandHandler
@@ -51,6 +52,7 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
     private AbstractFakeCommandHandler commandHandler
     private session
     private serverConfiguration
+    private replyTextBundle
     private fileSystem
     private userAccount
 
@@ -152,15 +154,17 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
         commandHandler = new TestFakeCommandHandler()
         session = new StubSession()
         serverConfiguration = new StubServerConfiguration()
+        replyTextBundle = new StubResourceBundle()
         userAccount = new UserAccount()
         fileSystem = new UnixFakeFileSystem()
         serverConfiguration.setFileSystem(fileSystem)
 
-        serverConfiguration.setTextForKey(REPLY_CODE, MSG)
-        serverConfiguration.setTextForKey(MESSAGE_KEY, MSG_FOR_KEY)
-        serverConfiguration.setTextForKey(INTERNAL_ERROR, MSG_INTERNAL_ERROR)
+        replyTextBundle.put(REPLY_CODE as String, MSG)
+        replyTextBundle.put(MESSAGE_KEY as String, MSG_FOR_KEY)
+        replyTextBundle.put(INTERNAL_ERROR as String, MSG_INTERNAL_ERROR)
 
         commandHandler.serverConfiguration = serverConfiguration
+        commandHandler.replyTextBundle = replyTextBundle
     }
 
     //-------------------------------------------------------------------------

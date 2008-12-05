@@ -17,6 +17,7 @@ package org.mockftpserver.fake;
 
 import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.ReplyTextBundleUtil;
 import org.mockftpserver.core.server.AbstractFtpServer;
 import org.mockftpserver.fake.command.*;
 import org.mockftpserver.fake.filesystem.FileSystem;
@@ -211,6 +212,8 @@ public class FakeFtpServer extends AbstractFtpServer implements ServerConfigurat
             ServerConfigurationAware sca = (ServerConfigurationAware) commandHandler;
             sca.setServerConfiguration(this);
         }
+
+        ReplyTextBundleUtil.setReplyTextBundleIfAppropriate(commandHandler, getReplyTextBundle());
     }
 
     /**

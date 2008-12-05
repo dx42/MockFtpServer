@@ -17,8 +17,6 @@ package org.mockftpserver.fake;
 
 import org.mockftpserver.fake.filesystem.FileSystem;
 
-import java.util.ResourceBundle;
-
 /**
  * Interface for objects that provide access to server-specific information.
  *
@@ -37,11 +35,6 @@ public interface ServerConfiguration {
      * @return the {@link UserAccount}    configured for this server for the specified user name
      */
     public UserAccount getUserAccount(String username);
-
-    /**
-     * @return the {@link ResourceBundle}    used by this server for reply messages
-     */
-    public ResourceBundle getReplyTextBundle();
 
     /**
      * @return the System Name for this server (used by the SYST command)

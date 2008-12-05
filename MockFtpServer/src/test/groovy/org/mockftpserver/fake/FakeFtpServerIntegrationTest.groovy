@@ -21,7 +21,12 @@ import org.apache.commons.net.ftp.FTPFile
 import org.mockftpserver.core.command.StaticReplyCommandHandler
 import org.mockftpserver.fake.FakeFtpServer
 import org.mockftpserver.fake.UserAccount
-import org.mockftpserver.fake.filesystem.*
+import org.mockftpserver.fake.filesystem.DirectoryEntry
+import org.mockftpserver.fake.filesystem.FileEntry
+import org.mockftpserver.fake.filesystem.FileSystem
+import org.mockftpserver.fake.filesystem.UnixFakeFileSystem
+import org.mockftpserver.fake.filesystem.WindowsFakeFileSystem
+import org.mockftpserver.stub.command.CwdCommandHandler
 import org.mockftpserver.test.AbstractGroovyTest
 import org.mockftpserver.test.PortTestUtil
 
@@ -105,12 +110,23 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
     void testCwd_UseStaticReplyCommandHandler() {
         final int REPLY_CODE = 500;
         StaticReplyCommandHandler cwdCommandHandler = new StaticReplyCommandHandler(REPLY_CODE);
-        cwdCommandHandler.replyTextBundle = ftpServer.replyTextBundle 
         ftpServer.setCommandHandler("CWD", cwdCommandHandler);
-      
+
         ftpClientConnectAndLogin()
         assert !ftpClient.changeWorkingDirectory(SUBDIR_NAME)
-        verifyReplyCode("changeWorkingDirectory", 500)
+        verifyReplyCode("changeWorkingDirectory", REPLY_CODE)
+    }
+
+    void testCwd_UseStubCommandHandler() {
+        final int REPLY_CODE = 502;
+        CwdCommandHandler cwdCommandHandler = new CwdCommandHandler();     // Stub command handler
+        cwdCommandHandler.setReplyCode(REPLY_CODE);
+        ftpServer.setCommandHandler("CWD", cwdCommandHandler);
+
+        ftpClientConnectAndLogin()
+        assert !ftpClient.changeWorkingDirectory(SUBDIR_NAME)
+        verifyReplyCode("changeWorkingDirectory", REPLY_CODE)
+        assert cwdCommandHandler.getInvocation(0)
     }
 
     void testDele() {

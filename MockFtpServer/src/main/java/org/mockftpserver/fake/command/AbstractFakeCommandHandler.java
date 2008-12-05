@@ -15,12 +15,11 @@
  */
 package org.mockftpserver.fake.command;
 
-import org.apache.log4j.Logger;
 import org.mockftpserver.core.CommandSyntaxException;
 import org.mockftpserver.core.IllegalStateException;
 import org.mockftpserver.core.NotLoggedInException;
+import org.mockftpserver.core.command.AbstractCommandHandler;
 import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.ReplyCodes;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.session.SessionKeys;
@@ -45,10 +44,9 @@ import java.util.MissingResourceException;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public abstract class AbstractFakeCommandHandler implements CommandHandler, ServerConfigurationAware {
+public abstract class AbstractFakeCommandHandler extends AbstractCommandHandler implements ServerConfigurationAware {
 
     protected static final String INTERNAL_ERROR_KEY = "internalError";
-    protected final Logger LOG = Logger.getLogger(this.getClass());
 
     private ServerConfiguration serverConfiguration;
 
@@ -104,7 +102,11 @@ public abstract class AbstractFakeCommandHandler implements CommandHandler, Serv
     }
 
     /**
-     * Subclasses must implement this
+     * Handle the specified command for the session. All checked exceptions are expected to be wrapped or handled
+     * by the caller.
+     *
+     * @param command - the Command to be handled
+     * @param session - the session on which the Command was submitted
      */
     protected abstract void handle(Command command, Session session);
 
@@ -210,16 +212,6 @@ public abstract class AbstractFakeCommandHandler implements CommandHandler, Serv
     private void handleFileSystemException(Command command, Session session, FileSystemException exception, int replyCode, Object arg) {
         LOG.warn("Error handling command: " + command + "; " + exception, exception);
         sendReply(session, replyCode, exception.getMessageKey(), Collections.singletonList(arg));
-    }
-
-    /**
-     * Assert that the specified number is a valid reply code
-     *
-     * @param replyCode - the reply code to check
-     * @throws AssertionError - if the replyCode is invalid
-     */
-    protected void assertValidReplyCode(int replyCode) {
-        Assert.isTrue(replyCode > 0, "The replyCode [" + replyCode + "] is not valid");
     }
 
     /**
@@ -336,6 +328,8 @@ public abstract class AbstractFakeCommandHandler implements CommandHandler, Serv
 
     /**
      * Return the end-of-line character(s) used when building multi-line responses
+     *
+     * @return "\r\n"
      */
     protected String endOfLine() {
         return "\r\n";
@@ -344,7 +338,7 @@ public abstract class AbstractFakeCommandHandler implements CommandHandler, Serv
     private String getTextForKey(String key) {
         String msgKey = (key != null) ? key : INTERNAL_ERROR_KEY;
         try {
-            return serverConfiguration.getReplyTextBundle().getString(msgKey);
+            return getReplyTextBundle().getString(msgKey);
         }
         catch (MissingResourceException e) {
             // No reply text is mapped for the specified key
@@ -402,6 +396,7 @@ public abstract class AbstractFakeCommandHandler implements CommandHandler, Serv
 
     /**
      * Convenience method to return a List with the specified single item
+     *
      * @param item - the single item in the returned List
      * @return a new List with that single item
      */
@@ -411,6 +406,7 @@ public abstract class AbstractFakeCommandHandler implements CommandHandler, Serv
 
     /**
      * Convenience method to return a List with the specified two items
+     *
      * @param item1 - the first item in the returned List
      * @param item2 - the second item in the returned List
      * @return a new List with the specified items
@@ -424,6 +420,7 @@ public abstract class AbstractFakeCommandHandler implements CommandHandler, Serv
 
     /**
      * Return true if the specified string is null or empty
+     *
      * @param string - the String to check; may be null
      * @return true only if the specified String is null or empyt
      */
@@ -433,7 +430,8 @@ public abstract class AbstractFakeCommandHandler implements CommandHandler, Serv
 
     /**
      * Return the string unless it is null or empty, in which case return the defaultString.
-     * @param string - the String to check; may be null
+     *
+     * @param string        - the String to check; may be null
      * @param defaultString - the value to return if string is null or empty
      * @return string if not null and not empty; otherwise return defaultString
      */

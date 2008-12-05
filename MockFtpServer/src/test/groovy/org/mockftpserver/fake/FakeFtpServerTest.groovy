@@ -15,9 +15,12 @@
  */
 package org.mockftpserver.fake
 
+import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
+import org.mockftpserver.core.command.ReplyTextBundleAware
 import org.mockftpserver.core.server.AbstractFtpServer
 import org.mockftpserver.core.server.AbstractFtpServerTest
+import org.mockftpserver.core.session.Session
 import org.mockftpserver.fake.FakeFtpServer
 import org.mockftpserver.fake.TestCommandHandler
 import org.mockftpserver.fake.TestCommandHandlerNotServerConfigurationAware
@@ -39,22 +42,22 @@ class FakeFtpServerTest extends AbstractFtpServerTest {
     // Extra tests  (Standard tests defined in superclass)
     //-------------------------------------------------------------------------
 
-    /**
-     * Test the setCommandHandler() method, for a CommandHandler that does not implement ResourceBundleAware
-     */
     void testSetCommandHandler_NotServerConfigurationAware() {
-        ftpServer.setCommandHandler("ZZZ", commandHandler_NotServerConfigurationAware);
+        ftpServer.setCommandHandler("ZZZ", commandHandler_NotServerConfigurationAware)
         assert ftpServer.getCommandHandler("ZZZ") == commandHandler_NotServerConfigurationAware
     }
 
-    /**
-     * Test the setCommandHandler() method, for a CommandHandler that implements ReplyTextBundleAware,
-     * and whose replyTextBundle attribute is null.
-     */
     void testSetCommandHandler_ServerConfigurationAware() {
-        ftpServer.setCommandHandler("ZZZ", commandHandler);
+        ftpServer.setCommandHandler("ZZZ", commandHandler)
         assert ftpServer.getCommandHandler("ZZZ") == commandHandler
         assert ftpServer == commandHandler.serverConfiguration
+    }
+
+    void testSetCommandHandler_ReplyTextBundleAware() {
+        def cmdHandler = new TestCommandHandlerReplyTextBundleAware()
+        ftpServer.setCommandHandler("ZZZ", cmdHandler)
+        assert ftpServer.getCommandHandler("ZZZ") == cmdHandler
+        assert ftpServer.replyTextBundle == cmdHandler.replyTextBundle
     }
 
     void testUserAccounts() {
@@ -115,6 +118,13 @@ class FakeFtpServerTest extends AbstractFtpServerTest {
 
     protected void verifyCommandHandlerInitialized(CommandHandler commandHandler) {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+}
+class TestCommandHandlerReplyTextBundleAware implements CommandHandler, ReplyTextBundleAware {
+    ResourceBundle replyTextBundle
+
+    public void handleCommand(Command command, Session session) {
     }
 
 }

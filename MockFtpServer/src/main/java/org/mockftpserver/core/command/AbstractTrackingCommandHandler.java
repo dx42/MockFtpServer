@@ -15,7 +15,6 @@
  */
 package org.mockftpserver.core.command;
 
-import org.apache.log4j.Logger;
 import org.mockftpserver.core.CommandSyntaxException;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.Assert;
@@ -25,21 +24,16 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 /**
- * The abstract superclass for CommandHandler classes. This class manages the List of
- * InvocationRecord objects corresponding to each invocation of the command handler,
- * and provides helper methods for subclasses.
+ * The abstract superclass for CommandHandler classes that manage the List of InvocationRecord
+ * objects corresponding to each invocation of the command handler, and provide helper methods for subclasses.
  *
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public abstract class AbstractTrackingCommandHandler implements CommandHandler, ReplyTextBundleAware, InvocationHistory {
+public abstract class AbstractTrackingCommandHandler extends AbstractCommandHandler implements InvocationHistory {
 
-    private static final Logger LOG = Logger.getLogger(AbstractTrackingCommandHandler.class);
-
-    private ResourceBundle replyTextBundle;
     private List invocations = new ArrayList();
 
     // -------------------------------------------------------------------------
@@ -86,30 +80,6 @@ public abstract class AbstractTrackingCommandHandler implements CommandHandler, 
     protected abstract void handleCommand(Command command, Session session, InvocationRecord invocationRecord)
             throws Exception;
 
-    //-------------------------------------------------------------------------
-    // Support for reply text ResourceBundle
-    //-------------------------------------------------------------------------
-
-    /**
-     * Return the ResourceBundle containing the reply text messages
-     *
-     * @return the replyTextBundle
-     * @see org.mockftpserver.core.command.ReplyTextBundleAware#getReplyTextBundle()
-     */
-    public ResourceBundle getReplyTextBundle() {
-        return replyTextBundle;
-    }
-
-    /**
-     * Set the ResourceBundle containing the reply text messages
-     *
-     * @param replyTextBundle - the replyTextBundle to set
-     * @see org.mockftpserver.core.command.ReplyTextBundleAware#setReplyTextBundle(java.util.ResourceBundle)
-     */
-    public void setReplyTextBundle(ResourceBundle replyTextBundle) {
-        this.replyTextBundle = replyTextBundle;
-    }
-
     // -------------------------------------------------------------------------
     // Utility methods for subclasses
     // -------------------------------------------------------------------------
@@ -145,35 +115,11 @@ public abstract class AbstractTrackingCommandHandler implements CommandHandler, 
         Assert.notNull(session, "session");
         assertValidReplyCode(replyCode);
 
-        final Logger HANDLER_LOG = Logger.getLogger(getClass());
         String key = (replyMessageKey != null) ? replyMessageKey : Integer.toString(replyCode);
         String text = getTextForReplyCode(replyCode, key, replyText, arguments);
         String replyTextToLog = (text == null) ? "" : " " + text;
-        HANDLER_LOG.debug("Sending reply [" + replyCode + replyTextToLog + "]");
+        LOG.debug("Sending reply [" + replyCode + replyTextToLog + "]");
         session.sendReply(replyCode, text);
-    }
-
-    /**
-     * Return the specified text surrounded with double quotes
-     *
-     * @param text - the text to surround with quotes
-     * @return the text with leading and trailing double quotes
-     * @throws AssertFailedException - if text is null
-     */
-    protected static String quotes(String text) {
-        Assert.notNull(text, "text");
-        final String QUOTES = "\"";
-        return QUOTES + text + QUOTES;
-    }
-
-    /**
-     * Assert that the specified number is a valid reply code
-     *
-     * @param replyCode - the reply code to check
-     * @throws AssertFailedException - if the replyCode is invalid
-     */
-    protected void assertValidReplyCode(int replyCode) {
-        Assert.isTrue(replyCode > 0, "The number [" + replyCode + "] is not a valid reply code");
     }
 
     // -------------------------------------------------------------------------
@@ -234,7 +180,7 @@ public abstract class AbstractTrackingCommandHandler implements CommandHandler, 
      */
     private String getTextForReplyCode(int code, String messageKey, String overrideText, Object[] arguments) {
         try {
-            String t = (overrideText == null) ? replyTextBundle.getString(messageKey) : overrideText;
+            String t = (overrideText == null) ? getReplyTextBundle().getString(messageKey) : overrideText;
             String formattedMessage = MessageFormat.format(t, arguments);
             return (formattedMessage == null) ? null : formattedMessage.trim();
         }
