@@ -19,15 +19,14 @@ import org.apache.log4j.Logger;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.ConnectCommandHandler;
 import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.core.socket.StubSocket;
 import org.mockftpserver.stub.command.AbstractStubCommandHandler;
-import org.mockftpserver.stub.command.ConnectCommandHandler;
 import org.mockftpserver.test.AbstractTest;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.ListResourceBundle;
@@ -53,20 +52,12 @@ public final class DefaultSession_RunTest extends AbstractTest {
     private StubSocket stubSocket;
     private boolean commandHandled = false;
 
-    /**
-     * Perform initialization before each test
-     *
-     * @see org.mockftpserver.test.AbstractTest#setUp()
-     */
     protected void setUp() throws Exception {
         super.setUp();
         commandHandlerMap = new HashMap();
         outputStream = new ByteArrayOutputStream();
     }
 
-    /**
-     * Test that the CommandHandler is properly initialized and passed the expected parameters
-     */
     public void testInvocationOfCommandHandler() throws Exception {
         AbstractStubCommandHandler commandHandler = new AbstractStubCommandHandler() {
             public void handleCommand(Command command, Session cmdSession, InvocationRecord invocationRecord) {
@@ -80,11 +71,6 @@ public final class DefaultSession_RunTest extends AbstractTest {
         runCommandAndVerifyOutput(commandHandler, "");
     }
 
-    /**
-     * Test the close() method
-     *
-     * @throws IOException
-     */
     public void testClose() throws Exception {
         CommandHandler commandHandler = new AbstractStubCommandHandler() {
             public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
@@ -96,11 +82,6 @@ public final class DefaultSession_RunTest extends AbstractTest {
         assertFalse("socket should not be closed", stubSocket.isClosed());
     }
 
-    /**
-     * Test the getClientHost() method
-     *
-     * @throws IOException
-     */
     public void testGetClientHost() throws Exception {
         CommandHandler commandHandler = new AbstractStubCommandHandler() {
             public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
@@ -112,9 +93,6 @@ public final class DefaultSession_RunTest extends AbstractTest {
         assertEquals("clientHost", DEFAULT_HOST, session.getClientHost());
     }
 
-    /**
-     * Test the sendReply() method, when the specified reply text is null
-     */
     public void testSendReply_NullReplyText() throws Exception {
         CommandHandler commandHandler = new AbstractStubCommandHandler() {
             public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
@@ -125,9 +103,6 @@ public final class DefaultSession_RunTest extends AbstractTest {
         runCommandAndVerifyOutput(commandHandler, Integer.toString(REPLY_CODE));
     }
 
-    /**
-     * Test the sendReply() method, verifying that extra extra whitespace is trimmed from the reply text
-     */
     public void testSendReply_TrimReplyText() throws Exception {
         CommandHandler commandHandler = new AbstractStubCommandHandler() {
             public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
@@ -138,9 +113,6 @@ public final class DefaultSession_RunTest extends AbstractTest {
         runCommandAndVerifyOutput(commandHandler, REPLY_CODE + " " + REPLY_TEXT);
     }
 
-    /**
-     * Test the sendReply() method, when the text contains multiple lines
-     */
     public void testSendReply_MultiLineText() throws Exception {
         final String MULTILINE_REPLY_TEXT = "abc\ndef\nghi\njkl";
         final String FORMATTED_MULTILINE_REPLY_TEXT = "123-abc\ndef\nghi\n123 jkl";
@@ -154,9 +126,6 @@ public final class DefaultSession_RunTest extends AbstractTest {
         runCommandAndVerifyOutput(commandHandler, FORMATTED_MULTILINE_REPLY_TEXT);
     }
 
-    /**
-     * Test the sendReply() method when the reply code has associated reply text
-     */
     public void testSendReply_ReplyText() throws Exception {
         CommandHandler commandHandler = new AbstractStubCommandHandler() {
             public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
@@ -215,7 +184,7 @@ public final class DefaultSession_RunTest extends AbstractTest {
      *
      * @param commandHandler - the CommandHandler to invoke
      * @param expectedOutput - the text expected within the session output
-     * @throws InterruptedException
+     * @throws InterruptedException - if the thread sleep is interrupted
      */
     private void runCommandAndVerifyOutput(CommandHandler commandHandler, String expectedOutput)
             throws InterruptedException {
