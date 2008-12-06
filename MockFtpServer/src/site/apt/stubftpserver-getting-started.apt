@@ -3,6 +3,7 @@
 		--------------------------------------------------
 
 StubFtpServer - Getting Started
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   <<StubFtpServer>> is a "stub" implementation of an FTP server. It supports the main FTP commands by 
   implementing command handlers for each of the corresponding low-level FTP server commands (e.g. RETR, 
@@ -27,6 +28,7 @@ stubFtpServer.start();
   number, such as 9187.
 
 * CommandHandlers
+~~~~~~~~~~~~~~~~~
 
   <CommandHandler>s are the heart of the <<StubFtpServer>>.
 
@@ -55,6 +57,7 @@ stubFtpServer.setCommandHandler("PWD", pwdCommandHandler);
 
 
 ** Generic CommandHandlers
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   <<StubFtpServer>> includes a couple generic <CommandHandler> classes that can be used to replace
   the default command handler for an FTP command. See the Javadoc for more information.
@@ -73,99 +76,45 @@ stubFtpServer.setCommandHandler("PWD", pwdCommandHandler);
     the current internal <CommandHander>. Then it moves on the next <CommandHandler> in the internal list.
 
 
-* Programmatic Configuration
+** Configuring CommandHandler for a New (Unsupported) Command
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  You can customize the behavior of the FTP server through programmatic configuration.
-  <<StubFtpServer>> automatically creates a default <CommandHandler> for each supported command.
-  If you want to customize the behavior of the server, you should create and configure a replacement
-  <CommandHandler> for each command to be customized.
-  
-  The {{{#Example}Example Test Using Stub Ftp Server}} illustrates replacing the default 
-  <CommandHandler> with a customized handler.
+  If you want to add support for a command that is not provided out of the box by <<StubFtpServer>>,
+  you can create a <CommandHandler> instance and set it within the <<StubFtpServer>> using the
+  <<<StubFtpServer.setCommandHandler(String name, CommandHandler commandHandler)>>> method in the
+  same way that you replace an existing <CommandHandler> (see above). The following example uses
+  the <<<StaticReplyCommandHandler>>> to add support for the FEAT command.
 
-* Spring Configuration
++------------------------------------------------------------------------------
+final String FEAT_TEXT = "Extensions supported:\n" +
+        "MLST size*;create;modify*;perm;media-type\n" +
+        "SIZE\n" +
+        "COMPRESSION\n" +
+        "END";
+StaticReplyCommandHandler featCommandHandler = new StaticReplyCommandHandler(211, FEAT_TEXT);
+stubFtpServer.setCommandHandler("FEAT", featCommandHandler);
++------------------------------------------------------------------------------
 
-  You can easily configure a <<StubFtpServer>> instance in the 
-  {{{http://www.springframework.org/}Spring Framework}}. The following example shows a <Spring>
-  configuration file.
-  
-+------------------------------------------------------------------------------  
-<?xml version="1.0" encoding="UTF-8"?>
 
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans 
-           http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+** Creating Your Own Custom CommandHandler Class
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  <bean id="stubFtpServer" class="org.mockftpserver.stub.StubFtpServer">
-  
-    <property name="commandHandlers">
-      <map>
-        <entry key="LIST">
-          <bean class="org.mockftpserver.stub.command.ListCommandHandler">
-            <property name="directoryListing">
-              <value>
-                11-09-01 12:30PM  406348 File2350.log
-                11-01-01 1:30PM &lt;DIR&gt; 0 archive
-              </value>
-            </property>
-          </bean>
-        </entry>
-
-        <entry key="PWD">
-          <bean class="org.mockftpserver.stub.command.PwdCommandHandler">
-            <property name="directory" value="foo/bar" />
-          </bean>
-        </entry>
-
-        <entry key="DELE">
-          <bean class="org.mockftpserver.stub.command.DeleCommandHandler">
-            <property name="replyCode" value="450" />
-          </bean>
-        </entry>
-
-        <entry key="RETR">
-          <bean class="org.mockftpserver.stub.command.RetrCommandHandler">
-            <property name="fileContents" 
-              value="Sample file contents line 1&#10;Line 2&#10;Line 3"/>
-          </bean>
-        </entry>
-
-      </map>
-    </property>
-  </bean>
-
-</beans>
-+------------------------------------------------------------------------------  
-
-  This example overrides the default handlers for the following FTP commands:
-  
-  * LIST - replies with a predefined directory listing
-  
-  * PWD - replies with a predefined directory pathname
-  
-  * DELE - replies with an error reply code (450)
-  
-  * RETR - replies with predefined contents for a retrieved file
-
-  []
-
-  And here is the Java code to load the above <Spring> configuration file and start the
-  configured <<StubFtpServer>>.
-
-+------------------------------------------------------------------------------  
-ApplicationContext context = new ClassPathXmlApplicationContext("stubftpserver-beans.xml");
-stubFtpServer = (StubFtpServer) context.getBean("stubFtpServer");
-stubFtpServer.start();
-+------------------------------------------------------------------------------  
+  If one of the existing <CommandHandler> classes does not fulfill your needs, you can alternately create
+  your own custom <CommandHandler> class. The only requirement is that it implement the
+  <<<org.mockftpserver.core.command.CommandHandler>>> interface. You would, however, likely benefit from
+  inheriting from one of the existing abstract <CommandHandler> superclasses, such as
+  <<<org.mockftpserver.stub.command.AbstractStubCommandHandler>>> or
+  <<<org.mockftpserver.core.command.AbstractCommandHandler>>>. See the javadoc of these classes for
+  more information.
 
 
 * Retrieving Command Invocation Data
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  Each <CommandHandler> manages a List of <<<InvocationRecord>>> objects -- one for each time the
-  <CommandHandler> is invoked. An <<<InvocationRecord>>> contains the <<<Command>>> that triggered
-  the invocation (containing the command name and parameters), as well as the invocation timestamp
-  and client host address. The <<<InvocationRecord>>> also contains a <<<Map>>>, with optional 
+  Each predefined <<StubFtpServer>> <CommandHandler> manages a List of <<<InvocationRecord>>> objects -- one
+  for each time the <CommandHandler> is invoked. An <<<InvocationRecord>>> contains the <<<Command>>> 
+  that triggered the invocation (containing the command name and parameters), as well as the invocation
+  timestamp and client host address. The <<<InvocationRecord>>> also contains a <<<Map>>>, with optional
   <CommandHandler>-specific data. See the Javadoc for more information.
   
   You can retrieve the <<<InvocationRecord>>> from a <CommandHandler> by calling the
@@ -174,14 +123,15 @@ stubFtpServer.start();
   <<<numberOfInvocations()>>>. The {{{#Example}Example Test Using Stub Ftp Server}} below illustrates 
   retrieving and interrogating an <<<InvocationRecord>>> from a <CommandHandler>.
   
-  
-  
+
 * {Example} Test Using StubFtpServer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   This section includes a simplified example of FTP client code to be tested, and a JUnit 
   test for it that uses <<StubFtpServer>>.
 
 ** FTP Client Code
+~~~~~~~~~~~~~~~~~~
 
   The following <<<RemoteFile>>> class includes a <<<readFile()>>> method that retrieves a remote 
   ASCII file and returns its contents as a String. This class uses the <<<FTPClient>>> from the
@@ -216,9 +166,11 @@ public class RemoteFile {
 +------------------------------------------------------------------------------  
 
 ** JUnit Test For FTP Client Code Using StubFtpServer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   The following <<<RemoteFileTest>>> class includes a couple of JUnit tests that use 
-  <<StubFtpServer>>.
+  <<StubFtpServer>>. The test illustrates replacing the default <CommandHandler> with
+  a customized handler.
 
 +------------------------------------------------------------------------------  
 import java.io.IOException;
@@ -234,9 +186,6 @@ public class RemoteFileTest extends AbstractTest {
     private RemoteFile remoteFile;
     private StubFtpServer stubFtpServer;
     
-    /**
-     * Test readFile() method 
-     */
     public void testReadFile() throws Exception {
 
         final String CONTENTS = "abcdef 1234567890";
@@ -280,9 +229,6 @@ public class RemoteFileTest extends AbstractTest {
         }
     }
     
-    /**
-     * @see org.mockftpserver.test.AbstractTest#setUp()
-     */
     protected void setUp() throws Exception {
         super.setUp();
         remoteFile = new RemoteFile();
@@ -290,9 +236,6 @@ public class RemoteFileTest extends AbstractTest {
         stubFtpServer = new StubFtpServer();
     }
 
-    /**
-     * @see org.mockftpserver.test.AbstractTest#tearDown()
-     */
     protected void tearDown() throws Exception {
         super.tearDown();
         stubFtpServer.stop();
@@ -307,7 +250,86 @@ public class RemoteFileTest extends AbstractTest {
     is stopped in the <<<tearDown()>>> method, to ensure that it is stopped, even if the test fails.
   
 
+* Spring Configuration
+~~~~~~~~~~~~~~~~~~~~~~
+
+  You can easily configure a <<StubFtpServer>> instance in the
+  {{{http://www.springframework.org/}Spring Framework}}. The following example shows a <Spring>
+  configuration file.
+
++------------------------------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="stubFtpServer" class="org.mockftpserver.stub.StubFtpServer">
+
+    <property name="commandHandlers">
+      <map>
+        <entry key="LIST">
+          <bean class="org.mockftpserver.stub.command.ListCommandHandler">
+            <property name="directoryListing">
+              <value>
+                11-09-01 12:30PM  406348 File2350.log
+                11-01-01 1:30PM &lt;DIR&gt; 0 archive
+              </value>
+            </property>
+          </bean>
+        </entry>
+
+        <entry key="PWD">
+          <bean class="org.mockftpserver.stub.command.PwdCommandHandler">
+            <property name="directory" value="foo/bar" />
+          </bean>
+        </entry>
+
+        <entry key="DELE">
+          <bean class="org.mockftpserver.stub.command.DeleCommandHandler">
+            <property name="replyCode" value="450" />
+          </bean>
+        </entry>
+
+        <entry key="RETR">
+          <bean class="org.mockftpserver.stub.command.RetrCommandHandler">
+            <property name="fileContents"
+              value="Sample file contents line 1&#10;Line 2&#10;Line 3"/>
+          </bean>
+        </entry>
+
+      </map>
+    </property>
+  </bean>
+
+</beans>
++------------------------------------------------------------------------------
+
+  This example overrides the default handlers for the following FTP commands:
+
+  * LIST - replies with a predefined directory listing
+
+  * PWD - replies with a predefined directory pathname
+
+  * DELE - replies with an error reply code (450)
+
+  * RETR - replies with predefined contents for a retrieved file
+
+  []
+
+  And here is the Java code to load the above <Spring> configuration file and start the
+  configured <<StubFtpServer>>.
+
++------------------------------------------------------------------------------
+ApplicationContext context = new ClassPathXmlApplicationContext("stubftpserver-beans.xml");
+stubFtpServer = (StubFtpServer) context.getBean("stubFtpServer");
+stubFtpServer.start();
++------------------------------------------------------------------------------
+
+
 * FTP Command Reply Text ResourceBundle
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   The default text asociated with each FTP command reply code is contained within the
   "ReplyText.properties" ResourceBundle file. You can customize these messages by providing a

@@ -19,7 +19,11 @@ import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.log4j.Logger;
-import org.mockftpserver.core.command.*;
+import org.mockftpserver.core.command.CommandHandler;
+import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.InvocationRecord;
+import org.mockftpserver.core.command.SimpleCompositeCommandHandler;
+import org.mockftpserver.core.command.StaticReplyCommandHandler;
 import org.mockftpserver.stub.command.*;
 import org.mockftpserver.test.AbstractTest;
 import org.mockftpserver.test.IntegrationTest;
@@ -54,9 +58,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
     // Tests
     //-------------------------------------------------------------------------
 
-    /**
-     * Test connecting and logging in
-     */
     public void testLogin() throws Exception {
         // Connect
         LOG.info("Conecting to " + SERVER);
@@ -76,9 +77,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         verifyReplyCode("quit", 221);
     }
 
-    /**
-     * Test the ACCT command
-     */
     public void testAcct() throws Exception {
         ftpClientConnect();
 
@@ -94,9 +92,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         LOG.info("Testing a stop() when no session has ever been started");
     }
 
-    /**
-     * Test help (HELP)
-     */
     public void testHelp() throws Exception {
         // Modify HELP CommandHandler to return a predefined help message
         final String HELP = "help message";
@@ -148,9 +143,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         verifyReplyCode("list", 226);
     }
 
-    /**
-     * Test the NLST command.
-     */
     public void testNlst() throws Exception {
         ftpClientConnect();
 
@@ -183,9 +175,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         verifyReplyCode("printWorkingDirectory", 257);
     }
 
-    /**
-     * Test getting the status (STAT)
-     */
     public void testStat() throws Exception {
         // Modify Stat CommandHandler to return predefined text
         final String STATUS = "some information 123";
@@ -218,9 +207,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         verifyReplyCode("getStatus", 211);
     }
 
-    /**
-     * Test the System (SYST) command
-     */
     public void testSyst() throws Exception {
         ftpClientConnect();
 
@@ -229,9 +215,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         verifyReplyCode("syst", 215);
     }
 
-    /**
-     * Test changing the current working directory (CWD)
-     */
     public void testCwd() throws Exception {
         // Connect
         LOG.info("Conecting to " + SERVER);
@@ -261,9 +244,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         verifyReplyCode("changeWorkingDirectory", REPLY_CODE);
     }
 
-    /**
-     * Test changing to the parent directory (CDUP)
-     */
     public void testCdup() throws Exception {
         ftpClientConnect();
 
@@ -273,9 +253,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         verifyReplyCode("changeToParentDirectory", 200);
     }
 
-    /**
-     * Test delete (DELE)
-     */
     public void testDele() throws Exception {
         ftpClientConnect();
 
@@ -285,9 +262,21 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         verifyReplyCode("deleteFile", 250);
     }
 
-    /**
-     * Test make directory (MKD)
-     */
+    public void testFeat_UseStaticReplyCommandHandler() throws IOException {
+        // The FEAT command is not supported out of the box
+        final String FEAT_TEXT = "Extensions supported:\n" +
+                "MLST size*;create;modify*;perm;media-type\n" +
+                "SIZE\n" +
+                "COMPRESSION\n" +
+                "END";
+        StaticReplyCommandHandler featCommandHandler = new StaticReplyCommandHandler(211, FEAT_TEXT);
+        stubFtpServer.setCommandHandler("FEAT", featCommandHandler);
+
+        ftpClientConnect();
+        assertEquals(ftpClient.sendCommand("FEAT"), 211);
+        LOG.info(ftpClient.getReplyString());
+    }
+
     public void testMkd() throws Exception {
         ftpClientConnect();
 
@@ -297,9 +286,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         verifyReplyCode("makeDirectory", 257);
     }
 
-    /**
-     * Test NOOP
-     */
     public void testNoop() throws Exception {
         ftpClientConnect();
 
@@ -309,9 +295,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         verifyReplyCode("NOOP", 200);
     }
 
-    /**
-     * Test restart (REST)
-     */
     public void testRest() throws Exception {
         ftpClientConnect();
 
@@ -320,9 +303,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         assertEquals("Unable to REST", 350, replyCode);
     }
 
-    /**
-     * Test changing the current working directory (RMD)
-     */
     public void testRmd() throws Exception {
         ftpClientConnect();
 
@@ -332,9 +312,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         verifyReplyCode("removeDirectory", 250);
     }
 
-    /**
-     * Test rename (RNFR/RNTO)
-     */
     public void testRename() throws Exception {
         ftpClientConnect();
 
@@ -344,9 +321,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         verifyReplyCode("rename", 250);
     }
 
-    /**
-     * Test the ALLO command
-     */
     public void testAllo() throws Exception {
         ftpClientConnect();
 
@@ -406,9 +380,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         assertEquals("File contents", BINARY_CONTENTS, contents);
     }
 
-    /**
-     * Test the STOU command
-     */
     public void testStou() throws Exception {
         StouCommandHandler stouCommandHandler = (StouCommandHandler) stubFtpServer.getCommandHandler(CommandNames.STOU);
         stouCommandHandler.setFilename(FILENAME);
@@ -424,9 +395,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         assertEquals("File contents", ASCII_CONTENTS.getBytes(), contents);
     }
 
-    /**
-     * Test the APPE command
-     */
     public void testAppe() throws Exception {
         AppeCommandHandler appeCommandHandler = (AppeCommandHandler) stubFtpServer.getCommandHandler(CommandNames.APPE);
 
@@ -441,9 +409,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         assertEquals("File contents", ASCII_CONTENTS.getBytes(), contents);
     }
 
-    /**
-     * Test the ABOR command
-     */
     public void testAbor() throws Exception {
         ftpClientConnect();
 
@@ -451,9 +416,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         assertTrue("ABOR", ftpClient.abort());
     }
 
-    /**
-     * Test the Passive (PASV) command
-     */
     public void testPasv() throws Exception {
         ftpClientConnect();
 
@@ -462,9 +424,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         // no reply code; the PASV command is sent only when the data connection is opened 
     }
 
-    /**
-     * Test Mode (MODE)
-     */
     public void testMode() throws Exception {
         ftpClientConnect();
 
@@ -474,9 +433,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         verifyReplyCode("setFileTransferMode", 200);
     }
 
-    /**
-     * Test file structure (STRU)
-     */
     public void testStru() throws Exception {
         ftpClientConnect();
 
@@ -486,9 +442,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         verifyReplyCode("setFileStructure", 200);
     }
 
-    /**
-     * Test the SimpleCompositeCommandHandler
-     */
     public void testSimpleCompositeCommandHandler() throws Exception {
         // Replace CWD CommandHandler with a SimpleCompositeCommandHandler
         CommandHandler commandHandler1 = new StaticReplyCommandHandler(500);
@@ -506,9 +459,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         assertTrue("first", ftpClient.changeWorkingDirectory("dir1/dir2"));
     }
 
-    /**
-     * Test site parameters (SITE)
-     */
     public void testSite() throws Exception {
         ftpClientConnect();
 
@@ -517,9 +467,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         assertEquals("SITE", 200, replyCode);
     }
 
-    /**
-     * Test structure mount (SMNT)
-     */
     public void testSmnt() throws Exception {
         ftpClientConnect();
 
@@ -528,9 +475,6 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         verifyReplyCode("structureMount", 250);
     }
 
-    /**
-     * Test reinitialize (REIN)
-     */
     public void testRein() throws Exception {
         ftpClientConnect();
 
