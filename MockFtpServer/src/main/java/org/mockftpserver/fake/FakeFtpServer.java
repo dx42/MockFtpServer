@@ -17,6 +17,7 @@ package org.mockftpserver.fake;
 
 import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.ConnectCommandHandler;
 import org.mockftpserver.core.command.ReplyTextBundleUtil;
 import org.mockftpserver.core.server.AbstractFtpServer;
 import org.mockftpserver.fake.command.*;
