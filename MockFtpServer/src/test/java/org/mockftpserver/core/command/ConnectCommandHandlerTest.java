@@ -13,45 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mockftpserver.stub.command;
-
-import org.mockftpserver.core.command.AbstractCommandHandlerTest;
-import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.CommandNames;
-import org.mockftpserver.core.command.ReplyCodes;
+package org.mockftpserver.core.command;
 
 /**
  * Tests for the ConnectCommandHandler class
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class ConnectCommandHandlerTest extends AbstractCommandHandlerTest {
 
     private ConnectCommandHandler commandHandler;
     private Command command1;
 
-    /**
-     * Test the handleCommand() method
-     * @throws Exception
-     */
     public void testHandleCommand() throws Exception {
 
         session.sendReply(ReplyCodes.CONNECT_OK, replyTextFor(ReplyCodes.CONNECT_OK));
         replay(session);
-        
+
         commandHandler.handleCommand(command1, session);
         verify(session);
-        
+
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));
     }
-    
-    /**
-     * Perform initialization before each test
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTest#setUp()
-     */
+
     protected void setUp() throws Exception {
         super.setUp();
         commandHandler = new ConnectCommandHandler();
