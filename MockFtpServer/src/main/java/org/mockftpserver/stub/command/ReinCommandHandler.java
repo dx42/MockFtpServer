@@ -22,29 +22,25 @@ import org.mockftpserver.core.command.ReplyCodes;
 import org.mockftpserver.core.session.Session;
 
 /**
-/**
+ * /**
  * CommandHandler for the REIN (Reinitialize) command. Send back a reply code of 220.
  * <p>
  * Each invocation record stored by this CommandHandler contains no data elements.
- * 
- * @version $Revision$ - $Date$
  *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
-public final class ReinCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
+public class ReinCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
     /**
-     * Constructor. Initialize the replyCode. 
+     * Constructor. Initialize the replyCode.
      */
     public ReinCommandHandler() {
         setReplyCode(ReplyCodes.REIN_OK);
     }
-    
-    /**
-     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(Command, Session, InvocationRecord)
-     */
+
     public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
         sendReply(session);
     }
-    
+
 }

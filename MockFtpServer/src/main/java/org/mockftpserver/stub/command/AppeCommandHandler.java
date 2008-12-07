@@ -16,7 +16,6 @@
 package org.mockftpserver.stub.command;
 
 import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.core.session.Session;
 
@@ -33,10 +32,7 @@ import org.mockftpserver.core.session.Session;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class AppeCommandHandler extends AbstractStubDataCommandHandler implements CommandHandler {
-
-    public static final String PATHNAME_KEY = "pathname";
-    public static final String FILE_CONTENTS_KEY = "filecontents";
+public class AppeCommandHandler extends AbstractStorCommandHandler {
 
     /**
      * @see org.mockftpserver.stub.command.AbstractStubDataCommandHandler#beforeProcessData(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session, org.mockftpserver.core.command.InvocationRecord)
@@ -44,16 +40,6 @@ public final class AppeCommandHandler extends AbstractStubDataCommandHandler imp
     protected void beforeProcessData(Command command, Session session, InvocationRecord invocationRecord) throws Exception {
         String filename = command.getRequiredParameter(0);
         invocationRecord.set(PATHNAME_KEY, filename);
-    }
-
-    /**
-     * @see org.mockftpserver.stub.command.AbstractStubDataCommandHandler#processData(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session, org.mockftpserver.core.command.InvocationRecord)
-     */
-    protected void processData(Command command, Session session, InvocationRecord invocationRecord) {
-        byte[] data = session.readData();
-        LOG.info("Received " + data.length + " bytes");
-        LOG.trace("Received data [" + new String(data) + "]");
-        invocationRecord.set(FILE_CONTENTS_KEY, data);
     }
 
 }

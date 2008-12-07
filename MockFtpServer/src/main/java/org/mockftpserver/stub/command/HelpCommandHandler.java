@@ -23,34 +23,33 @@ import org.mockftpserver.core.session.Session;
 
 /**
  * CommandHandler for the HELP command. By default, return an empty help message,
- * along with a reply code of 214. You can customize the returned help message by 
+ * along with a reply code of 214. You can customize the returned help message by
  * setting the <code>helpMessage</code> property.
  * <p>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
- *    <li>{@link #COMMAND_NAME_KEY} ("commandName") - the command name optionally submitted on 
- *          the invocation (the first command parameter). May be null.
+ * <li>{@link #COMMAND_NAME_KEY} ("commandName") - the command name optionally submitted on
+ * the invocation (the first command parameter). May be null.
  * </ul>
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class HelpCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
     public static final String COMMAND_NAME_KEY = "commandName";
-    
+
     private String helpMessage = "";
-    
+
     /**
-     * Constructor. Initialize the replyCode. 
+     * Constructor. Initialize the replyCode.
      */
     public HelpCommandHandler() {
         setReplyCode(ReplyCodes.HELP_OK);
     }
-    
+
     /**
-     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(Command, Session, InvocationRecord)
+     * @see org.mockftpserver.core.command.AbstractTrackingCommandHandler#handleCommand(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session, org.mockftpserver.core.command.InvocationRecord)
      */
     public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
         invocationRecord.set(COMMAND_NAME_KEY, command.getOptionalString(0));
@@ -59,10 +58,11 @@ public final class HelpCommandHandler extends AbstractStubCommandHandler impleme
 
     /**
      * Set the help message String to be returned by this command
-     * @param directory - the directory
+     *
+     * @param helpMessage - the help message
      */
-    public void setHelpMessage(String response) {
-        this.helpMessage = response;
+    public void setHelpMessage(String helpMessage) {
+        this.helpMessage = helpMessage;
     }
-    
+
 }

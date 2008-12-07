@@ -46,7 +46,7 @@ import java.io.InputStream;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class FileRetrCommandHandler extends AbstractStubDataCommandHandler implements CommandHandler {
+public class FileRetrCommandHandler extends AbstractStubDataCommandHandler implements CommandHandler {
 
     public static final String PATHNAME_KEY = "pathname";
     static final int BUFFER_SIZE = 512;     // package-private for testing
@@ -85,7 +85,7 @@ public final class FileRetrCommandHandler extends AbstractStubDataCommandHandler
         Assert.notNull(inputStream, "InputStream for [" + file + "]");
         byte[] buffer = new byte[BUFFER_SIZE];
         try {
-            int numBytes = 0;
+            int numBytes;
             while ((numBytes = inputStream.read(buffer)) != -1) {
                 LOG.trace("Sending " + numBytes + " bytes...");
                 session.sendData(buffer, numBytes);

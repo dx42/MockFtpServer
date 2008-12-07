@@ -25,25 +25,21 @@ import org.mockftpserver.core.session.Session;
  * CommandHandler for the CDUP (Change To Parent Directory) command. Send back a reply code of 250.
  * <p>
  * Each invocation record stored by this CommandHandler contains no data elements.
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
-public final class CdupCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
+public class CdupCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
     /**
-     * Constructor. Initialize the replyCode. 
+     * Constructor. Initialize the replyCode.
      */
     public CdupCommandHandler() {
         setReplyCode(ReplyCodes.CDUP_OK);
     }
-    
-    /**
-     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(Command, Session, InvocationRecord)
-     */
+
     public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
         sendReply(session);
     }
-    
+
 }

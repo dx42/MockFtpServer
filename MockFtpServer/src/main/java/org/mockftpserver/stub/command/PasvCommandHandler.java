@@ -39,7 +39,7 @@ import java.net.InetAddress;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class PasvCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
+public class PasvCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
     /**
      * Constructor. Initialize the replyCode.

@@ -37,7 +37,7 @@ import java.net.UnknownHostException;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class PortCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
+public class PortCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
     public static final String HOST_KEY = "host";
     public static final String PORT_KEY = "port";

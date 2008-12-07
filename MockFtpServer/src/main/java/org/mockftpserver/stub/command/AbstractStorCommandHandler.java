@@ -16,39 +16,34 @@
 package org.mockftpserver.stub.command;
 
 import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.InvocationRecord;
-import org.mockftpserver.core.command.ReplyCodes;
 import org.mockftpserver.core.session.Session;
 
 /**
- * CommandHandler for the SMNT (Structure Mount) command. Send back a reply code of 250.
+ * Abstract superclass for CommandHandler for commands that store a file. Send back two replies on the
+ * control connection: a reply code of 150 and another of 226.
  * <p/>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
- * <li>{@link #PATHNAME_KEY} ("pathname") - the pathname of the directory submitted on the invocation (the first command parameter)
+ * <li>{@link #FILE_CONTENTS_KEY} ("fileContents") - the file contents (<code>byte[]</code>) sent on the data connection
  * </ul>
  *
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public class SmntCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
+public abstract class AbstractStorCommandHandler extends AbstractStubDataCommandHandler {
 
     public static final String PATHNAME_KEY = "pathname";
+    public static final String FILE_CONTENTS_KEY = "filecontents";
 
     /**
-     * Constructor. Initiate the replyCode.
+     * @see AbstractStubDataCommandHandler#processData(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session, org.mockftpserver.core.command.InvocationRecord)
      */
-    public SmntCommandHandler() {
-        setReplyCode(ReplyCodes.SMNT_OK);
-    }
-
-    /**
-     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session)
-     */
-    public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
-        invocationRecord.set(PATHNAME_KEY, command.getRequiredParameter(0));
-        sendReply(session);
+    protected void processData(Command command, Session session, InvocationRecord invocationRecord) {
+        byte[] data = session.readData();
+        LOG.info("Received " + data.length + " bytes");
+        LOG.trace("Received data [" + new String(data) + "]");
+        invocationRecord.set(FILE_CONTENTS_KEY, data);
     }
 
 }

@@ -32,7 +32,7 @@ import org.mockftpserver.core.session.Session;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class DeleCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
+public class DeleCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
     public static final String PATHNAME_KEY = "pathname";
 

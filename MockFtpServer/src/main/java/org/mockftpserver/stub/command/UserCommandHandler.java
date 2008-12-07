@@ -21,9 +21,6 @@ import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.core.command.ReplyCodes;
 import org.mockftpserver.core.session.Session;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * CommandHandler for the USER command. The <code>passwordRequired</code> property defaults to true,
  * indicating that a password is required following the user name. If true, this command handler
@@ -37,12 +34,11 @@ import java.util.List;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class UserCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
+public class UserCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
     public static final String USERNAME_KEY = "username";
 
     private boolean passwordRequired = true;
-    private List usernames = new ArrayList();
 
     /**
      * Constructor.
@@ -55,7 +51,6 @@ public final class UserCommandHandler extends AbstractStubCommandHandler impleme
      * @see org.mockftpserver.core.command.CommandHandler#handleCommand(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session)
      */
     public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
-        usernames.add(command.getRequiredParameter(0));
         invocationRecord.set(USERNAME_KEY, command.getRequiredParameter(0));
 
         // Only use dynamic reply code if the replyCode property was NOT explicitly set

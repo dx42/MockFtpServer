@@ -36,7 +36,7 @@ import org.mockftpserver.core.util.Assert;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class RetrCommandHandler extends AbstractStubDataCommandHandler implements CommandHandler {
+public class RetrCommandHandler extends AbstractStubDataCommandHandler implements CommandHandler {
 
     public static final String PATHNAME_KEY = "pathname";
 

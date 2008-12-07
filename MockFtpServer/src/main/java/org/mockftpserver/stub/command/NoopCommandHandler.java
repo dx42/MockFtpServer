@@ -25,25 +25,21 @@ import org.mockftpserver.core.session.Session;
  * CommandHandler for the NOOP command. Return a reply code of 200.
  * <p>
  * Each invocation record stored by this CommandHandler contains no data elements.
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
-public final class NoopCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
+public class NoopCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
     /**
-     * Constructor. Initialize the replyCode. 
+     * Constructor. Initialize the replyCode.
      */
     public NoopCommandHandler() {
         setReplyCode(ReplyCodes.NOOP_OK);
     }
-    
-    /**
-     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(Command, Session, InvocationRecord)
-     */
+
     public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
         sendReply(session);
     }
-    
+
 }
