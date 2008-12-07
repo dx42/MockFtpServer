@@ -19,6 +19,7 @@ import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ConnectCommandHandler;
 import org.mockftpserver.core.command.ReplyTextBundleUtil;
+import org.mockftpserver.core.command.UnsupportedCommandHandler;
 import org.mockftpserver.core.server.AbstractFtpServer;
 import org.mockftpserver.stub.command.*;
 
@@ -129,6 +130,7 @@ public class StubFtpServer extends AbstractFtpServer {
         setCommandHandler(CommandNames.SYST, new SystCommandHandler());
         setCommandHandler(CommandNames.TYPE, new TypeCommandHandler());
         setCommandHandler(CommandNames.USER, new UserCommandHandler());
+        setCommandHandler(CommandNames.UNSUPPORTED, new UnsupportedCommandHandler());
         setCommandHandler(CommandNames.XPWD, pwdCommandHandler);           // same as PWD
     }
 

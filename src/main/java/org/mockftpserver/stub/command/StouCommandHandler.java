@@ -15,7 +15,6 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.apache.log4j.Logger;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.InvocationRecord;
@@ -40,8 +39,6 @@ public final class StouCommandHandler extends AbstractStubDataCommandHandler imp
 
     public static final String FILE_CONTENTS_KEY = "filecontents";
     private static final String FINAL_REPLY_TEXT_KEY = "226.WithFilename";
-
-    private static final Logger LOG = Logger.getLogger(StouCommandHandler.class);
 
     private String filename = "";
 

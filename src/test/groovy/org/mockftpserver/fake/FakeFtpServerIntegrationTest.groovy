@@ -366,6 +366,12 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         verifyReplyCode("TYPE", 200)
     }
 
+    void testUnrecognizedCommand() {
+        ftpClientConnectAndLogin()
+        assert ftpClient.sendCommand("XXX") == 502
+        verifyReplyCode("XXX", 502)
+    }
+
     // -------------------------------------------------------------------------
     // Test setup and tear-down
     // -------------------------------------------------------------------------

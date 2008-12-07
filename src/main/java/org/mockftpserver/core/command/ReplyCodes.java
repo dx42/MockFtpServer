@@ -65,6 +65,7 @@ public final class ReplyCodes {
     // GENERIC
     public static final int SYSTEM_ERROR = 451;
     public static final int COMMAND_SYNTAX_ERROR = 501;
+    public static final int COMMAND_NOT_SUPPORTED = 502;
     public static final int ILLEGAL_STATE = 503;       // Bad sequence
     public static final int NOT_LOGGED_IN = 530;
     public static final int READ_FILE_ERROR = 550;

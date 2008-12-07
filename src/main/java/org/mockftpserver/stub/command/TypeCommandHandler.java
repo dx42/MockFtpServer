@@ -15,7 +15,6 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.apache.log4j.Logger;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.InvocationRecord;
@@ -37,8 +36,6 @@ import org.mockftpserver.core.session.Session;
 public final class TypeCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
     public static final String TYPE_INFO_KEY = "typeInfo";
-
-    private static final Logger LOG = Logger.getLogger(TypeCommandHandler.class);
 
     /**
      * Constructor. Initialize the replyCode.

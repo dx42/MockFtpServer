@@ -19,6 +19,7 @@ import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ConnectCommandHandler;
 import org.mockftpserver.core.command.ReplyTextBundleUtil;
+import org.mockftpserver.core.command.UnsupportedCommandHandler;
 import org.mockftpserver.core.server.AbstractFtpServer;
 import org.mockftpserver.fake.command.*;
 import org.mockftpserver.fake.filesystem.FileSystem;
@@ -170,7 +171,6 @@ public class FakeFtpServer extends AbstractFtpServer implements ServerConfigurat
         setCommandHandler(CommandNames.ABOR, new AborCommandHandler());
         setCommandHandler(CommandNames.ALLO, new AlloCommandHandler());
         setCommandHandler(CommandNames.APPE, new AppeCommandHandler());
-        setCommandHandler(CommandNames.CONNECT, new ConnectCommandHandler());
         setCommandHandler(CommandNames.CWD, new CwdCommandHandler());
         setCommandHandler(CommandNames.CDUP, new CdupCommandHandler());
         setCommandHandler(CommandNames.DELE, new DeleCommandHandler());
@@ -199,6 +199,10 @@ public class FakeFtpServer extends AbstractFtpServer implements ServerConfigurat
         setCommandHandler(CommandNames.TYPE, new TypeCommandHandler());
         setCommandHandler(CommandNames.USER, new UserCommandHandler());
         setCommandHandler(CommandNames.XPWD, new PwdCommandHandler());
+
+        // "Special" Command Handlers
+        setCommandHandler(CommandNames.CONNECT, new ConnectCommandHandler());
+        setCommandHandler(CommandNames.UNSUPPORTED, new UnsupportedCommandHandler());
     }
 
     /**

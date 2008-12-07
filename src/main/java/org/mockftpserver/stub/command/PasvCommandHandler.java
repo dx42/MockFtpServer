@@ -15,7 +15,6 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.apache.log4j.Logger;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.InvocationRecord;
@@ -41,8 +40,6 @@ import java.net.InetAddress;
  * @version $Revision$ - $Date$
  */
 public final class PasvCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
-
-    private static final Logger LOG = Logger.getLogger(PasvCommandHandler.class);
 
     /**
      * Constructor. Initialize the replyCode.

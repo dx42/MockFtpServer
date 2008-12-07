@@ -15,7 +15,6 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.apache.log4j.Logger;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.InvocationRecord;
@@ -38,8 +37,6 @@ public final class AppeCommandHandler extends AbstractStubDataCommandHandler imp
 
     public static final String PATHNAME_KEY = "pathname";
     public static final String FILE_CONTENTS_KEY = "filecontents";
-
-    private static final Logger LOG = Logger.getLogger(AppeCommandHandler.class);
 
     /**
      * @see org.mockftpserver.stub.command.AbstractStubDataCommandHandler#beforeProcessData(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session, org.mockftpserver.core.command.InvocationRecord)
