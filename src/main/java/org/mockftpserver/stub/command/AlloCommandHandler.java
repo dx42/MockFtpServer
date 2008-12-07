@@ -38,7 +38,7 @@ import java.util.StringTokenizer;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class AlloCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
+public class AlloCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
     public static final String NUMBER_OF_BYTES_KEY = "numberOfBytes";
     public static final String RECORD_SIZE_KEY = "recordSize";

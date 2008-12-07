@@ -23,45 +23,41 @@ import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.Assert;
 
 /**
- * CommandHandler for the SYST (System) command. Send back a reply code of 215. By default, 
- * return "WINDOWS" as the system name. You can customize the returned name by 
+ * CommandHandler for the SYST (System) command. Send back a reply code of 215. By default,
+ * return "WINDOWS" as the system name. You can customize the returned name by
  * setting the <code>systemName</code> property.
- * <p>
- * See the available system names listed in the Assigned Numbers document (RFC 943). 
- * <p>
+ * <p/>
+ * See the available system names listed in the Assigned Numbers document
+ * (<a href="http://www.ietf.org/rfc/rfc943">RFC 943</a>).
+ * <p/>
  * Each invocation record stored by this CommandHandler contains no data elements.
-
- * @see http://www.ietf.org/rfc/rfc943
- *  
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
-public final class SystCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
+public class SystCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
     private String systemName = "WINDOWS";
-    
+
     /**
-     * Constructor. Initialize the replyCode. 
+     * Constructor. Initialize the replyCode.
      */
     public SystCommandHandler() {
         setReplyCode(ReplyCodes.SYST_OK);
     }
-    
-    /**
-     * @see org.mockftpserver.core.command.CommandHandler#handleCommand(Command, Session, InvocationRecord)
-     */
+
     public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
         sendReply(session, quotes(systemName));
     }
 
     /**
      * Set the systemName String to be returned by this command
+     *
      * @param systemName - the systemName
      */
     public void setSystemName(String systemName) {
         Assert.notNull(systemName, "systemName");
         this.systemName = systemName;
     }
-    
+
 }

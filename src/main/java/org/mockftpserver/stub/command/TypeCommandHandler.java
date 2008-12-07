@@ -33,7 +33,7 @@ import org.mockftpserver.core.session.Session;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class TypeCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
+public class TypeCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
     public static final String TYPE_INFO_KEY = "typeInfo";
 

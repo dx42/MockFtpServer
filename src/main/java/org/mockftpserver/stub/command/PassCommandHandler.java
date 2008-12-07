@@ -32,7 +32,7 @@ import org.mockftpserver.core.session.Session;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class PassCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
+public class PassCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 
     public static final String PASSWORD_KEY = "password";
 
