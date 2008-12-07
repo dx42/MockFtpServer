@@ -81,8 +81,8 @@ public abstract class AbstractFtpServer implements Runnable {
 
     // Simple value object that holds the socket and thread for a single session
     private static class SessionInfo {
-        private Socket socket;
-        private Thread thread;
+        Socket socket;
+        Thread thread;
     }
 
     private ServerSocketFactory serverSocketFactory = new DefaultServerSocketFactory();

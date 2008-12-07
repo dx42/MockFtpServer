@@ -20,7 +20,12 @@ import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.SessionKeys
-import org.mockftpserver.fake.filesystem.*
+import org.mockftpserver.fake.filesystem.DirectoryEntry
+import org.mockftpserver.fake.filesystem.DirectoryListingFormatter
+import org.mockftpserver.fake.filesystem.FileEntry
+import org.mockftpserver.fake.filesystem.FileSystemEntry
+import org.mockftpserver.fake.filesystem.FileSystemException
+import org.mockftpserver.fake.filesystem.Permissions
 
 /**
  * Tests for ListCommandHandler

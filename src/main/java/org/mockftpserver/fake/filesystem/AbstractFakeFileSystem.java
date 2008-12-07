@@ -20,7 +20,13 @@ import org.mockftpserver.core.util.Assert;
 import org.mockftpserver.core.util.PatternUtil;
 import org.mockftpserver.core.util.StringUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Abstract superclass for implementation of the FileSystem interface that manage the files
@@ -348,6 +354,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
      * pathname.  This is just the last name in the pathname's name
      * sequence.  If the pathname's name sequence is empty, then the empty string is returned.
      *
+     * @param path - the path
      * @return The name of the file or directory denoted by this abstract pathname, or the
      *         empty string if this pathname's name sequence is empty
      */
@@ -375,6 +382,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
     //-------------------------------------------------------------------------
 
     /**
+     * @param path - the path
      * @return true if the specified dir/file path name is valid according to the current filesystem.
      */
     protected abstract boolean isValidName(String path);
@@ -385,6 +393,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
     protected abstract char getSeparatorChar();
 
     /**
+     * @param pathComponent - the component (piece) of the path to check
      * @return true if the specified path component is a root for this filesystem
      */
     protected abstract boolean isRoot(String pathComponent);
@@ -431,6 +440,8 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
 
     /**
      * Throw an InvalidFilenameException if the specified path is not valid.
+     *
+     * @param path - the path
      */
     protected void checkForInvalidFilename(String path) {
         if (!isValidName(path)) {
@@ -474,6 +485,9 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
     /**
      * Return the components of the specified path as a List. The components are normalized, and
      * the returned List does not include path separator characters.
+     *
+     * @param path - the path
+     * @return the List of normalized components
      */
     protected List normalizedComponents(String path) {
         Assert.notNull(path, "path");
@@ -536,73 +550,14 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
     }
 
     /**
-     * Throw AssertionError if the path is null. Throw FileSystemException if the specified
-     * path does not exist.
-     *
-     * @param path - the path
-     * @throws AssertionError      - if the specified path is null
-     * @throws FileSystemException - if the specified path does not exist
-     */
-    private void verifyPathExists(String path) {
-        Assert.notNull(path, "path");
-        getRequiredEntry(path);
-    }
-
-    /**
-     * Verify that the path refers to an existing directory. Throw AssertionError if the path is null. Throw
-     * FileSystemException if the specified path does not exist or is not a directory.
-     *
-     * @param path - the path
-     * @throws AssertionError      - if the specified path is null
-     * @throws FileSystemException - if the specified path does not exist or is not a directory
-     */
-    private void verifyIsDirectory(String path) {
-        Assert.notNull(path, "path");
-        FileSystemEntry entry = getRequiredEntry(path);
-        if (!entry.isDirectory()) {
-            throw new FileSystemException(path, "filesystem.isDirectory");
-        }
-    }
-
-    /**
-     * Verify that the path refers to an existing file. Throw AssertionError if the path is null. Throw
-     * FileSystemException if the specified path does not exist or is not a file.
-     *
-     * @param path - the path
-     * @throws AssertionError      - if the specified path is null
-     * @throws FileSystemException - if the specified path does not exist or is not a file
-     */
-    private void verifyIsFile(String path) {
-        Assert.notNull(path, "path");
-        FileSystemEntry entry = getRequiredEntry(path);
-        if (entry.isDirectory()) {
-            throw new FileSystemException(path, "filesystem.isFile");
-        }
-    }
-
-    /**
-     * Throw a FileSystemException if the parent directory for the specified path does not exist.
-     *
-     * @param path - the path
-     * @throws FileSystemException - if the parent directory of the path does not exist
-     */
-    private void verifyParentDirectoryExists(String path) throws FileSystemException {
-        if (!parentDirectoryExists(path)) {
-            throw new FileSystemException(getParent(path), "filesystem.parentDirectoryDoesNotExist");
-        }
-    }
-
-    /**
      * If the specified path has a parent, then verify that the parent exists
      *
      * @param path - the path
+     * @return true if the parent of the specified path exists
      */
     private boolean parentDirectoryExists(String path) {
         String parent = getParent(path);
-        if (parent != null) {
-            return pathExists(parent);
-        }
-        return true;
+        return parent == null || pathExists(parent);
     }
 
     /**
@@ -671,11 +626,9 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
             String descendentPath = (String) iter.next();
 
             boolean patternEmpty = pattern == null || pattern.length() == 0;
-            if (normalizedDir.equals(getParent(descendentPath))) {
-                if (patternEmpty
-                        || (!patternEmpty && getName(descendentPath).matches(pattern))) {
-                    children.add(descendentPath);
-                }
+            if (normalizedDir.equals(getParent(descendentPath)) &&
+                    (patternEmpty || (getName(descendentPath).matches(pattern)))) {
+                children.add(descendentPath);
             }
         }
         return children;
