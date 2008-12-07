@@ -16,17 +16,15 @@
 package org.mockftpserver.stub.command;
 
 import org.mockftpserver.core.command.AbstractStaticReplyCommandHandler;
-import org.mockftpserver.stub.StubFtpServer;
 
 /**
- * The abstract superclass for CommandHandler classes for the {@link StubFtpServer}.
+ * The abstract superclass for CommandHandler classes for the {@link org.mockftpserver.stub.StubFtpServer}.
  * <p>
  * Subclasses can optionally override the reply code and/or text for the reply by calling
  * {@link #setReplyCode(int)}, {@link #setReplyMessageKey(String)} and {@link #setReplyText(String)}.
- * 
- * @version $Revision$ - $Date$
- * 
+ *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public abstract class AbstractStubCommandHandler extends AbstractStaticReplyCommandHandler {
 

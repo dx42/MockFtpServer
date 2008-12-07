@@ -23,8 +23,6 @@ import org.mockftpserver.core.command.UnsupportedCommandHandler;
 import org.mockftpserver.core.server.AbstractFtpServer;
 import org.mockftpserver.stub.command.*;
 
-import java.util.Map;
-
 /**
  * <b>StubFtpServer</b> is the top-level class for a "stub" implementation of an FTP Server,
  * suitable for testing FTP client code or standing in for a live FTP server. It supports
@@ -72,7 +70,7 @@ import java.util.Map;
  * pwdCommandHandler.setDirectory("some/dir");
  * stubFtpServer.setCommandHandler("PWD", pwdCommandHandler);
  * </code></pre>
- * You can also replace multiple command handlers at once by using the {@link #setCommandHandlers(Map)}
+ * You can also replace multiple command handlers at once by using the {@link #setCommandHandlers(java.util.Map)}
  * method. That is especially useful when configuring the server through the <b>Spring Framework</b>.
  * <h4>FTP Command Reply Text ResourceBundle</h4>
  * <p/>
