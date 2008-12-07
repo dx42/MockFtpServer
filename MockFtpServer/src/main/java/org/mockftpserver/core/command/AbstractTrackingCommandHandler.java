@@ -118,7 +118,7 @@ public abstract class AbstractTrackingCommandHandler extends AbstractCommandHand
         String key = (replyMessageKey != null) ? replyMessageKey : Integer.toString(replyCode);
         String text = getTextForReplyCode(replyCode, key, replyText, arguments);
         String replyTextToLog = (text == null) ? "" : " " + text;
-        LOG.debug("Sending reply [" + replyCode + replyTextToLog + "]");
+        LOG.info("Sending reply [" + replyCode + replyTextToLog + "]");
         session.sendReply(replyCode, text);
     }
 

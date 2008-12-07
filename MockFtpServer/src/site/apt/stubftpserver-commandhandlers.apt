@@ -22,8 +22,6 @@ StubFtpServer - FTP Commands and CommandHandlers
 *------------------------*------------------------*------------------------------------------*
 | CDUP                   | --                     | CdupCommandHandler                       |
 *------------------------*------------------------*------------------------------------------*
-| <CONNECT> (1)          | OPEN                   | ConnectCommandHandler  (core)            |
-*------------------------*------------------------*------------------------------------------*
 | CWD                    | CD                     | CwdCommandHandler                        |
 *------------------------*------------------------*------------------------------------------*
 | DELE                   | DELETE                 | DeleCommandHandler                       |
@@ -55,7 +53,7 @@ StubFtpServer - FTP Commands and CommandHandlers
 | REST                   | --                     | RestCommandHandler                       |
 *------------------------*------------------------*------------------------------------------*
 | RETR                   | GET / RECV             | RetrCommandHandler                       |
-|                        |                        | FileRetrCommandHandler (2)               |
+|                        |                        | FileRetrCommandHandler (1)               |
 *------------------------*------------------------*------------------------------------------*
 | RMD                    | RMDIR                  | RmdCommandHandler                        |
 *------------------------*------------------------*------------------------------------------*
@@ -82,8 +80,15 @@ StubFtpServer - FTP Commands and CommandHandlers
 | USER                   | USER                   | UserCommandHandler                       |
 *------------------------*------------------------*------------------------------------------*
 
-  (1) This is not a <real> FTP Server command, but rather encapsulates the sending of the
-      220 reply code after the initial connection to the server.
-  
-  (2) An alternative to the default <CommandHandler> implementation. See its class Javadoc.
+  (1) An alternative to the default <CommandHandler> implementation. See its class Javadoc.
 
+
+* Special Command Handlers
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  There are also <special> <CommandHandler> classes defined (in the <<core>> package).
+
+  * <<ConnectCommandHandler>> - Sends a 220 reply code after the initial connection to the server.
+     
+  * <<UnsupportedCommandHandler>> - Sends a 502 reply when an unrecognized/unsupported
+    command name is sent from a client.

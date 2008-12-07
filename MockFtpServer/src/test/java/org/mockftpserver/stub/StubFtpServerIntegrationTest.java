@@ -494,6 +494,12 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         assertEquals("Rein", 220, ftpClient.sendCommand("Rein"));
     }
 
+    public void testUnrecognizedCommand() throws Exception {
+        ftpClientConnect();
+
+        assertEquals("Unrecognized:XXXX", 502, ftpClient.sendCommand("XXXX"));
+    }
+
     // -------------------------------------------------------------------------
     // Test setup and tear-down
     // -------------------------------------------------------------------------

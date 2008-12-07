@@ -16,11 +16,10 @@
 package org.mockftpserver.core.command;
 
 /**
- * FTP command name constants. 
- * 
- * @version $Revision$ - $Date$
+ * FTP command name constants.
  *
  * @author Chris Mair
+ * @version $Revision$ - $Date$
  */
 public final class CommandNames {
 
@@ -29,7 +28,6 @@ public final class CommandNames {
     public static final String ALLO = "ALLO";
     public static final String APPE = "APPE";
     public static final String CDUP = "CDUP";
-    public static final String CONNECT = "CONNECT";
     public static final String CWD = "CWD";
     public static final String DELE = "DELE";
     public static final String HELP = "HELP";
@@ -60,6 +58,10 @@ public final class CommandNames {
     public static final String USER = "USER";
 
     public static final String XPWD = "XPWD";
+
+    // Special commands - not "real" FTP commands
+    public static final String CONNECT = "CONNECT";
+    public static final String UNSUPPORTED = "UNSUPPORTED";
 
     /**
      * Private constructor. This class should not be instantiated.

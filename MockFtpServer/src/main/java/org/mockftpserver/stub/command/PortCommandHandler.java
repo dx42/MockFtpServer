@@ -15,7 +15,6 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.apache.log4j.Logger;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.InvocationRecord;
@@ -42,7 +41,6 @@ public final class PortCommandHandler extends AbstractStubCommandHandler impleme
 
     public static final String HOST_KEY = "host";
     public static final String PORT_KEY = "port";
-    private static final Logger LOG = Logger.getLogger(PortCommandHandler.class);
 
     /**
      * Constructor. Initialize the replyCode.

@@ -167,6 +167,7 @@ public abstract class AbstractCommandHandlerTest extends AbstractTest {
                         {"331", replyTextFor(331)},
                         {"350", replyTextFor(350)},
                         {"501", replyTextFor(501)},
+                        {"502", replyTextFor(502)},
                 };
             }
         };

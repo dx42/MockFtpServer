@@ -51,6 +51,7 @@ public final class DefaultSession_RunTest extends AbstractTest {
     private Map commandHandlerMap;
     private StubSocket stubSocket;
     private boolean commandHandled = false;
+    private String commandToRegister = COMMAND.getName();
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -136,6 +137,20 @@ public final class DefaultSession_RunTest extends AbstractTest {
         runCommandAndVerifyOutput(commandHandler, REPLY_CODE + " " + REPLY_TEXT);
     }
 
+    public void testUnrecognizedCommand() throws Exception {
+        // Register a handler for unsupported commands
+        CommandHandler commandHandler = new AbstractStubCommandHandler() {
+            public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
+                session.sendReply(502, "Unsupported");
+                commandHandled = true;
+            }
+        };
+        // Register the UNSUPPORTED command handler instead of the command that will be sent. So when we
+        // send the regular command, it will trigger the handling for unsupported/unrecognized commands.
+        commandToRegister = CommandNames.UNSUPPORTED;
+        runCommandAndVerifyOutput(commandHandler, "502 Unsupported");
+    }
+
     // -------------------------------------------------------------------------
     // Internal Helper Methods
     // -------------------------------------------------------------------------
@@ -149,7 +164,7 @@ public final class DefaultSession_RunTest extends AbstractTest {
      */
     private DefaultSession createDefaultSession(CommandHandler commandHandler) {
         stubSocket = createTestSocket(COMMAND.getName());
-        commandHandlerMap.put(COMMAND.getName(), commandHandler);
+        commandHandlerMap.put(commandToRegister, commandHandler);
 
         ConnectCommandHandler connectCommandHandler = new ConnectCommandHandler();
 
