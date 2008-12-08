@@ -319,6 +319,11 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         assert ftpClient.site("parameters,1,2,3") == 200
     }
 
+    void testSmnt() {
+        ftpClientConnectAndLogin()
+        assert ftpClient.smnt("dir") == 250
+    }
+
     void testStor() {
         ftpClientConnectAndLogin()
 
@@ -397,7 +402,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         ftpServer.fileSystem = fileSystem
 
         userAccount = new UserAccount(USERNAME, PASSWORD, HOME_DIR)
-        ftpServer.userAccounts[USERNAME] = userAccount
+        ftpServer.addUserAccount(userAccount)
 
         ftpServer.start()
         ftpClient = new FTPClient()
