@@ -175,7 +175,7 @@ public abstract class AbstractFtpServer implements Runnable {
                     serverSocket.close();
                 }
 
-                for (Iterator iter = sessions.keySet().iterator(); iter.hasNext();) {
+                for (Iterator iter = sessions.values().iterator(); iter.hasNext();) {
                     Session session = (Session) iter.next();
                     SessionInfo sessionInfo = (SessionInfo) sessions.get(session);
                     session.close();
@@ -302,7 +302,7 @@ public abstract class AbstractFtpServer implements Runnable {
     public boolean isShutdown() {
         boolean shutdown = !serverThread.isAlive() && serverSocket.isClosed();
 
-        for (Iterator iter = sessions.keySet().iterator(); iter.hasNext();) {
+        for (Iterator iter = sessions.values().iterator(); iter.hasNext();) {
             SessionInfo sessionInfo = (SessionInfo) iter.next();
             shutdown = shutdown && sessionInfo.socket.isClosed() && !sessionInfo.thread.isAlive();
         }

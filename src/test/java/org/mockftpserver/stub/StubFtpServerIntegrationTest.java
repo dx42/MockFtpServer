@@ -71,6 +71,9 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         assertTrue("Unable to login with " + userAndPassword, success);
         verifyReplyCode("login with " + userAndPassword, 230);
 
+        assertTrue("isStarted", stubFtpServer.isStarted());
+        assertFalse("isShutdown", stubFtpServer.isShutdown());
+
         // Quit
         LOG.info("Quit");
         ftpClient.quit();
