@@ -206,6 +206,9 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         LOG.info("Logging in as $USERNAME/$PASSWORD")
         assert ftpClient.login(USERNAME, PASSWORD)
         verifyReplyCode("login with $USERNAME/$PASSWORD", 230)
+
+        assertTrue("isStarted", ftpServer.isStarted());
+        assertFalse("isShutdown", ftpServer.isShutdown());
     }
 
     void testLogin_WithAccount() {
