@@ -56,10 +56,10 @@ public class DefaultSession implements Session {
 
     private static final Logger LOG = Logger.getLogger(DefaultSession.class);
     private static final String END_OF_LINE = "\r\n";
-    static final int DEFAULT_CLIENT_DATA_PORT = 21;
+    protected static final int DEFAULT_CLIENT_DATA_PORT = 21;
 
-    SocketFactory socketFactory = new DefaultSocketFactory();
-    ServerSocketFactory serverSocketFactory = new DefaultServerSocketFactory();
+    protected SocketFactory socketFactory = new DefaultSocketFactory();
+    protected ServerSocketFactory serverSocketFactory = new DefaultServerSocketFactory();
 
     private BufferedReader controlConnectionReader;
     private Writer controlConnectionWriter;

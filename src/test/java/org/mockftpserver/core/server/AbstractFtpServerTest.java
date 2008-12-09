@@ -18,9 +18,11 @@ package org.mockftpserver.core.server;
 import org.apache.log4j.Logger;
 import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.session.DefaultSession;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTest;
 
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -131,6 +133,10 @@ public abstract class AbstractFtpServerTest extends AbstractTest {
      */
     public void testStopWithoutStart() {
         ftpServer.stop();
+    }
+
+    public void testCreateSession() {
+        assertEquals(ftpServer.createSession(new Socket()).getClass(), DefaultSession.class);
     }
 
     //-------------------------------------------------------------------------

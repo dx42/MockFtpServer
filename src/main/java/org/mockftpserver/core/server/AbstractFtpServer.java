@@ -85,7 +85,7 @@ public abstract class AbstractFtpServer implements Runnable {
         Thread thread;
     }
 
-    private ServerSocketFactory serverSocketFactory = new DefaultServerSocketFactory();
+    protected ServerSocketFactory serverSocketFactory = new DefaultServerSocketFactory();
     private ServerSocket serverSocket = null;
     private ResourceBundle replyTextBundle;
     private volatile boolean terminate = false;
@@ -149,7 +149,7 @@ public abstract class AbstractFtpServer implements Runnable {
                     Socket clientSocket = serverSocket.accept();
                     LOG.info("Connection accepted from host " + clientSocket.getInetAddress());
 
-                    DefaultSession session = new DefaultSession(clientSocket, commandHandlers);
+                    Session session = createSession(clientSocket);
                     Thread sessionThread = new Thread(session);
                     sessionThread.start();
 
@@ -317,6 +317,16 @@ public abstract class AbstractFtpServer implements Runnable {
      */
     public boolean isStarted() {
         return serverThread != null && serverThread.isAlive() && serverSocket != null;
+    }
+
+    /**
+     * Create a new Session instance for the specified client Socket
+     *
+     * @param clientSocket - the Socket associated with the client
+     * @return a Session
+     */
+    protected Session createSession(Socket clientSocket) {
+        return new DefaultSession(clientSocket, commandHandlers);
     }
 
     //------------------------------------------------------------------------------------
