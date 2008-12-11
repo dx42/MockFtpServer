@@ -24,8 +24,8 @@ import org.mockftpserver.core.session.Session;
  * <ol>
  * <li>If the user has not logged in, then reply with 530</li>
  * <li>If the required pathname parameter is missing, then reply with 501</li>
- * <li>If the pathname parameter does not specify an existing file, or if the delete fails, then reply with 550</li>
- * <li>Otherwise, reply with 250</li>
+ * <li>If the pathname parameter does not specify an existing file then reply with 550</li>
+ * <li>Otherwise, delete the named file and reply with 250</li>
  * </ol>
  * The supplied pathname may be absolute or relative to the current directory.
  *

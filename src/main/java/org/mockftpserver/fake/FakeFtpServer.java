@@ -50,6 +50,7 @@ import java.util.Map;
  * <li>Create a new <b>FakeFtpServer</b> instance, and optionally set the server control port.</li>
  * <li>Create and configure a <b>FileSystem</b>, and attach to the <b>FakeFtpServer</b> instance.</li>
  * <li>Create and configure one or more <b>UserAccount</b> objects and attach to the <b>FakeFtpServer</b> instance.</li>
+ * <li>Start the <b>FakeFtpServer</b> instance.</li>
  * </ol>
  * <h4>Example Code</h4>
  * <pre><code>
@@ -207,9 +208,13 @@ public class FakeFtpServer extends AbstractFtpServer implements ServerConfigurat
     }
 
     /**
-     * Initialize a CommandHandler that has been registered to this server. If the CommandHandler implements
-     * the <code>ServerConfigurationAware</code> interface, then set its <code>ServerConfiguration</code>
-     * property to <code>this</code>.
+     * Initialize a CommandHandler that has been registered to this server.
+     *
+     * If the CommandHandler implements the <code>ServerConfigurationAware</code> interface, then set its
+     * <code>ServerConfiguration</code> property to <code>this</code>.
+     *
+     * If the CommandHandler implements the <code>ReplyTextBundleAware</code> interface, then set its
+     * <code>replyTextBundle</code> property using the reply text bundle for this server.
      *
      * @param commandHandler - the CommandHandler to initialize
      */

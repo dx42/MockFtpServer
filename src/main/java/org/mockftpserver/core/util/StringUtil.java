@@ -26,16 +26,39 @@ import java.util.Iterator;
  */
 public class StringUtil {
 
+    /**
+     * Pad the specified String with spaces to the right to the specified width. If the length
+     * of string is already equal to or greater than width, then just return string.
+     *
+     * @param string - the String to pad
+     * @param width  - the target width
+     * @return a String of at least width characters, padded on the right with spaces as necessary
+     */
     public static String padRight(String string, int width) {
         int numSpaces = width - string.length();
         return (numSpaces > 0) ? string + spaces(numSpaces) : string;
     }
 
+    /**
+     * Pad the specified String with spaces to the left to the specified width. If the length
+     * of string is already equal to or greater than width, then just return string.
+     *
+     * @param string - the String to pad
+     * @param width  - the target width
+     * @return a String of at least width characters, padded on the left with spaces as necessary
+     */
     public static String padLeft(String string, int width) {
         int numSpaces = width - string.length();
         return (numSpaces > 0) ? spaces(numSpaces) + string : string;
     }
 
+    /**
+     * Join the Strings within the parts Collection, inserting the delimiter in between elements
+     *
+     * @param parts     - the Collection of Strings to join
+     * @param delimiter - the delimiter String to insert between the parts
+     * @return the Strings within the parts collection joined together using the specified delimiter
+     */
     public static String join(Collection parts, String delimiter) {
         Assert.notNull(parts, "parts");
         Assert.notNull(delimiter, "delimiter");
