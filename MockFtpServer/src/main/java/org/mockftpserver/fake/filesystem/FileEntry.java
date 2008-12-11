@@ -32,7 +32,6 @@ public class FileEntry extends AbstractFileSystemEntry {
     private static final byte[] EMPTY = new byte[0];
 
     private byte[] bytes = EMPTY;
-    //private Object bytes = EMPTY;
     private ByteArrayOutputStream out;
 
     /**
@@ -62,9 +61,9 @@ public class FileEntry extends AbstractFileSystemEntry {
     }
 
     /**
-     * Abstract method -- must be implemented within concrete subclasses
+     * Return false to indicate that this entry represents a file
      *
-     * @return true if this file system entry represents a directory
+     * @return false
      */
     public boolean isDirectory() {
         return false;

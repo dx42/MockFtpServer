@@ -39,9 +39,9 @@ public class DirectoryEntry extends AbstractFileSystemEntry {
     }
 
     /**
-     * Abstract method -- must be implemented within concrete subclasses
+     * Return true to indicate that this entry represents a directory
      *
-     * @return true if this file system entry represents a directory
+     * @return true
      */
     public boolean isDirectory() {
         return true;
