@@ -22,12 +22,21 @@ import org.mockftpserver.fake.filesystem.Permissions;
 import java.util.List;
 
 /**
- * Represents a single user account on the server, including the username, password and home
- * directory. The <code>username</code> and <code>homeDirectory</code> property must be non-null
- * and non-empty. The <code>homeDirectory</code> property must also match the name of an existing
- * directory within the file system configured for the <code>FakeFtpServer</code>/
+ * Represents a single user account on the server, including the username, password, home
+ * directory, list of groups to which this user belongs, and default permissions applied to
+ * newly-created files and directories.
  * <p/>
- * This class also includes several configuration flags, described below.
+ * The <code>username</code> and <code>homeDirectory</code> property must be non-null
+ * and non-empty. The <code>homeDirectory</code> property must also match the name of an existing
+ * directory within the file system configured for the <code>FakeFtpServer</code>.
+ * <p/>
+ * The group name applied to newly created files/directories is determined by the <code>groups</code> property.
+ * If null or empty, then the default group name ("users") is used. Otherwise, the first value in the
+ * <code>groups</code> List is used. The <code>groups</code> property defaults to an empty List.
+ * <p/>
+ * The default value for <code>defaultPermissionsForNewFile</code> is read and write permissions for
+ * all (user/group/world). The default value for <code>defaultPermissionsForNewDirectory</code> is read,
+ * write and execute permissions for all (user/group/world).
  * <p/>
  * The <code>isValidPassword()</code> method returns true if the specified password matches
  * the password value configured for this user account. This implementation uses the
@@ -59,6 +68,8 @@ public class UserAccount {
     private boolean passwordCheckedDuringValidation = true;
     private boolean accountRequiredForLogin = false;
     private Permissions defaultPermissionsForNewFile = DEFAULT_PERMISSIONS_FOR_NEW_FILE;
+    private Permissions defaultPermissionsForNewDirectory = DEFAULT_PERMISSIONS_FOR_NEW_DIRECTORY;
+
 
     /**
      * Construct a new uninitialized instance.
@@ -151,8 +162,6 @@ public class UserAccount {
         this.defaultPermissionsForNewDirectory = defaultPermissionsForNewDirectory;
     }
 
-    private Permissions defaultPermissionsForNewDirectory = DEFAULT_PERMISSIONS_FOR_NEW_DIRECTORY;
-
     /**
      * Return the name of the primary group to which this user belongs. If this account has no associated
      * groups set, then this method returns the <code>DEFAULT_GROUP</code>. Otherwise, this method
@@ -177,7 +186,7 @@ public class UserAccount {
      */
     public boolean isValidPassword(String password) {
         Assert.notNullOrEmpty(username, "username");
-        return passwordCheckedDuringValidation ? comparePassword(password) : true;
+        return !passwordCheckedDuringValidation || comparePassword(password);
     }
 
     /**
@@ -207,7 +216,7 @@ public class UserAccount {
             return true;
         }
 
-        if (username == entry.getOwner()) {
+        if (equalOrBothNull(username, entry.getOwner())) {
             return permissions.canUserRead();
         }
         if (groups != null && groups.contains(entry.getGroup())) {
@@ -228,7 +237,7 @@ public class UserAccount {
             return true;
         }
 
-        if (username == entry.getOwner()) {
+        if (equalOrBothNull(username, entry.getOwner())) {
             return permissions.canUserWrite();
         }
         if (groups != null && groups.contains(entry.getGroup())) {
@@ -249,7 +258,7 @@ public class UserAccount {
             return true;
         }
 
-        if (username == entry.getOwner()) {
+        if (equalOrBothNull(username, entry.getOwner())) {
             return permissions.canUserExecute();
         }
         if (groups != null && groups.contains(entry.getGroup())) {
@@ -269,6 +278,17 @@ public class UserAccount {
      */
     protected boolean comparePassword(String password) {
         return password != null && password.equals(this.password);
+    }
+
+    /**
+     * Return true only if both Strings are null or they are equal (have the same contents).
+     *
+     * @param string1 - the first String
+     * @param string2 - the second String
+     * @return true if both are null or both are equal
+     */
+    protected boolean equalOrBothNull(String string1, String string2) {
+        return (string1 == null && string2 == null) || (string1 != null && string1.equals(string2));
     }
 
 }

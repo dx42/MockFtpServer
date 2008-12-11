@@ -26,8 +26,9 @@ import org.mockftpserver.fake.UserAccount;
  * <ol>
  * <li>If the required pathname parameter is missing, then reply with 501</li>
  * <li>If the user account configured for the named user is not valid, then reply with 530</li>
- * <li>If the named user does not need a password for login, then reply with 230</li>
- * <li>Otherwise, reply with 331</li>
+ * <li>If the named user does not need a password for login, then set the UserAccount and
+ * current directory in the session, and reply with 230</li>
+ * <li>Otherwise, set the username in the session and reply with 331</li>
  * </ol>
  *
  * @author Chris Mair
