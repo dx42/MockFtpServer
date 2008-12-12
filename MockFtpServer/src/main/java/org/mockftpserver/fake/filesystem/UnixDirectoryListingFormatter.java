@@ -39,7 +39,7 @@ public class UnixDirectoryListingFormatter implements DirectoryListingFormatter 
 
     // "-rw-rw-r--    1 ftp      ftp           254 Feb 23  2007 robots.txt"
     // "-rw-r--r--    1 ftp      ftp      30014925 Apr 15 00:19 md5.sums.gz"
-    // "-rwxr-xr-x   1 c096336  iawebgrp    5778 Dec  1  2005 FU_WyCONN_updateplanaccess.sql"
+    // "-rwxr-xr-x   1 henry    users       5778 Dec  1  2005 planaccess.sql"
 
     /**
      * Format the directory listing for a single file/directory entry.
