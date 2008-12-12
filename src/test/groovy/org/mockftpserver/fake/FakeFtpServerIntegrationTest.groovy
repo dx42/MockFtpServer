@@ -327,6 +327,13 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         assert ftpClient.smnt("dir") == 250
     }
 
+    void testStat() {
+        ftpClientConnectAndLogin()
+        def status = ftpClient.getStatus()
+        assert status.contains('Connected')
+        verifyReplyCode("stat", 211)
+    }
+
     void testStor() {
         ftpClientConnectAndLogin()
 

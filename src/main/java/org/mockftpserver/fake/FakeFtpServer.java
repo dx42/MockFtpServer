@@ -140,6 +140,7 @@ public class FakeFtpServer extends AbstractFtpServer implements ServerConfigurat
 
     private FileSystem fileSystem;
     private String systemName = "WINDOWS";
+    private String systemStatus = "Connected";
     private Map helpText = new HashMap();
     private Map userAccounts = new HashMap();
 
@@ -194,6 +195,7 @@ public class FakeFtpServer extends AbstractFtpServer implements ServerConfigurat
         setCommandHandler(CommandNames.RNTO, new RntoCommandHandler());
         setCommandHandler(CommandNames.SITE, new SiteCommandHandler());
         setCommandHandler(CommandNames.SMNT, new SmntCommandHandler());
+        setCommandHandler(CommandNames.STAT, new StatCommandHandler());
         setCommandHandler(CommandNames.STOR, new StorCommandHandler());
         setCommandHandler(CommandNames.STOU, new StouCommandHandler());
         setCommandHandler(CommandNames.STRU, new StruCommandHandler());
@@ -265,6 +267,24 @@ public class FakeFtpServer extends AbstractFtpServer implements ServerConfigurat
             UserAccount userAccount = (UserAccount) userAccountList.get(i);
             userAccounts.put(userAccount.getUsername(), userAccount);
         }
+    }
+
+    /**
+     * Return the system status description
+     *
+     * @return the system status
+     */
+    public String getSystemStatus() {
+        return systemStatus;
+    }
+
+    /**
+     * Set the system status description text, used by the STAT command handler.
+     *
+     * @param systemStatus - the system status description text
+     */
+    public void setSystemStatus(String systemStatus) {
+        this.systemStatus = systemStatus;
     }
 
 }

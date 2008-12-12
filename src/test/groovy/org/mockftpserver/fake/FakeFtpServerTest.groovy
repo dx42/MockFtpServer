@@ -87,6 +87,12 @@ class FakeFtpServerTest extends AbstractFtpServerTest {
         assert ftpServer.systemName == "abc"
     }
 
+    void testSystemStatus() {
+        assert ftpServer.systemStatus == "Connected"
+        ftpServer.systemStatus = "abc"
+        assert ftpServer.systemStatus == "abc"
+    }
+
     void testReplyText() {
         ftpServer.replyTextBaseName = "SampleReplyText"
 

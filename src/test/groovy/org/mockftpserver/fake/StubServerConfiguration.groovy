@@ -20,7 +20,7 @@ import org.mockftpserver.fake.UserAccount
 import org.mockftpserver.fake.filesystem.FileSystem
 
 /**
- * Stub implementation of the  {@link org.mockftpserver.fake.ServerConfiguration}  interface for testing
+ * Stub implementation of the   {@link org.mockftpserver.fake.ServerConfiguration}   interface for testing
  *
  * @version $Revision$ - $Date$
  *
@@ -32,6 +32,7 @@ class StubServerConfiguration implements ServerConfiguration {
     Map helpText = [:]
     FileSystem fileSystem
     String systemName = "WINDOWS"
+    String systemStatus
 
     UserAccount getUserAccount(String username) {
         (UserAccount) userAccounts[username]
@@ -41,9 +42,5 @@ class StubServerConfiguration implements ServerConfiguration {
         def key = name == null ? '' : name
         return helpText[key]
     }
-
-    //-------------------------------------------------------------------------
-    // Stub-specific API - Helper methods not part of ServerConfiguration interface
-    //-------------------------------------------------------------------------
 
 }
