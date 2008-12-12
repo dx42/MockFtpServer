@@ -1,6 +1,28 @@
 MockFtpServer Change Log
 -------------------------------------------------------------------------------
 
+Changes in version 2.0-rc2 (12 Dec 2008)
+------------------------------------------
+- BUG FIX: AbstractFtpServer: Fix bug when iterating through sessions.
+- [BREAKING CHANGE] Move ConnectCommandHandler into core package.
+- [BREAKING CHANGE] Unify Fake and Stub CommandHandlers. Change ServerConfiguration to remove getReplyTextBundle(); make AbstractFakeCommandHandler implement ReplyTextBundleAware instead. Change FakeFtpServer to check for ReplyTextBundleAware and set replyTextBundle. Pull common from stub/fake into AbstractCommandHandler.
+- [BREAKING CHANGE] Rename AbstractCommandHandler to AbstractTrackingCommandHandler.
+- Create AbstractStaticReplyCommandHandler, and make both AbstractStubCommandHandler and StaticReplyCommandHandler subclasses.
+- Create new UnrecognizedCommandHandler, and use to return 502 reply from FakeFtpServer and StubFtpServer when a requested command is not supported.
+- Add support for STAT command; Add systemStatus property to FakeFtpServer.
+- Add support for SMNT command to FakeFtpServer;
+- AbstractFtpServer: Add createSession() method. Make some attributes protected.
+- StubFtpServer: Introduce AbstractStorCommandHandler. Remove final from stub CommandHandler classes.
+- Cleanup code and javadoc
+- DOCS:	Add “Requirements” section to main (index) page. Also “Maven” section.
+- DOCS: Add "Configuring CommandHandler for New (Unsupported) Command" and “Creating Your Own Custom CommandHandler Class” sections to StubFtpServer Getting Started Guide.
+- DOCS: Add "Configuring Custom CommandHandlers" section to Getting Started Guide (FakeFtpServer).
+- TESTS: Move AbstractCommandHandlerTest into core package.
+- TESTS: Create sample test of FakeFtpServer with StaticReplyCommandHandler command handler(s).
+- Create source jar during package and include within assemblies.
+- Change "assembly.xml" to include "fakeftpserver*.xml" files.
+
+
 Changes in version 2.0-rc1 (23 Nov 2008)
 ------------------------------------------
 NEW FakeFtpServer.
