@@ -26,6 +26,7 @@ import org.mockftpserver.core.session.SessionKeys;
  * <li>If the user has not logged in, then reply with 530</li>
  * <li>If the required FROM pathname parameter is missing, then reply with 501</li>
  * <li>If the FROM pathname parameter does not specify a valid file, then reply with 550</li>
+ * <li>If the current user does not have read access to the path, then reply with 550</li>
  * <li>Otherwise, reply with 350 and store the FROM path in the session</li>
  * </ol>
  * The supplied pathname may be absolute or relative to the current directory.
