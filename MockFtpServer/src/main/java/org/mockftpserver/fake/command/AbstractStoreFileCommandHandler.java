@@ -30,6 +30,9 @@ import java.io.OutputStream;
  * <li>If the user has not logged in, then reply with 530 and terminate</li>
  * <li>If the pathname parameter is required but missing, then reply with 501 and terminate</li>
  * <li>If the required pathname parameter does not specify a valid filename, then reply with 553 and terminate</li>
+ * <li>If the current user does not have write access to the named file, if it already exists, or else to its
+ * parent directory, then reply with 553 and terminate</li>
+ * <li>If the current user does not have execute access to the parent directory, then reply with 553 and terminate</li>
  * <li>Send an initial reply of 150</li>
  * <li>Read all available bytes from the data connection and store/append to the named file in the server file system</li>
  * <li>If file write/store fails, then reply with 553 and terminate</li>
@@ -94,6 +97,9 @@ public abstract class AbstractStoreFileCommandHandler extends AbstractFakeComman
     /**
      * Return the path (absolute or relative) for the output file. The default behavior is to return
      * the required first parameter for the specified Command. Subclasses may override the default behavior.
+     *
+     * @param command - the Command
+     * @return the output file name
      */
     protected String getOutputFile(Command command) {
         return command.getRequiredParameter(0);

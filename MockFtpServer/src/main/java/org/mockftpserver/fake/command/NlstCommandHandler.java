@@ -27,6 +27,7 @@ import java.util.List;
  * <ol>
  * <li>If the user has not logged in, then reply with 530 and terminate</li>
  * <li>Send an initial reply of 150</li>
+ * <li>If the current user does not have read access to the file or directory to be listed, then reply with 550 and terminate</li>
  * <li>If an error occurs during processing, then send a reply of 451 and terminate</li>
  * <li>If the optional pathname parameter is missing, then send a directory listing for
  * the current directory across the data connection</li>

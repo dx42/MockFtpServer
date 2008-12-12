@@ -21,7 +21,10 @@ import org.mockftpserver.core.command.Command;
  * CommandHandler for the STOU command. Handler logic:
  * <ol>
  * <li>If the user has not logged in, then reply with 530 and terminate</li>
- * <li>Create a new file within the current directory with a unique name</li>
+ * <li>Create new unique filename within the current directory</li>
+ * <li>If the current user does not have write access to the named file, if it already exists, or else to its
+ * parent directory, then reply with 553 and terminate</li>
+ * <li>If the current user does not have execute access to the parent directory, then reply with 553 and terminate</li>
  * <li>Send an initial reply of 150</li>
  * <li>Read all available bytes from the data connection and write out to the unique file in the server file system</li>
  * <li>If file write/store fails, then reply with 553 and terminate</li>

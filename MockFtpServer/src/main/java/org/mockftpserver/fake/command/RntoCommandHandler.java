@@ -28,6 +28,7 @@ import org.mockftpserver.core.session.SessionKeys;
  * <li>If the required TO pathname parameter is missing, then reply with 501</li>
  * <li>If the TO pathname parameter does not specify a valid filename, then reply with 553</li>
  * <li>If the TO pathname parameter specifies an existing directory, then reply with 553</li>
+ * <li>If the current user does not have write access to the parent directory, then reply with 553</li>
  * <li>Otherwise, rename the file, remove the FROM path stored in the session by the RNFR command, and reply with 250</li>
  * </ol>
  * The supplied pathname may be absolute or relative to the current directory.

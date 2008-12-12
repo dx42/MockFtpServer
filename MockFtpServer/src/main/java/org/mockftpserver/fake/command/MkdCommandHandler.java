@@ -27,6 +27,7 @@ import org.mockftpserver.fake.filesystem.DirectoryEntry;
  * <li>If the required pathname parameter is missing, then reply with 501</li>
  * <li>If the parent directory of the specified pathname does not exist, then reply with 550</li>
  * <li>If the pathname parameter specifies an existing file or directory, or if the create directory fails, then reply with 550</li>
+ * <li>If the current user does not have write and execute access to the parent directory, then reply with 550</li>
  * <li>Otherwise, reply with 257</li>
  * </ol>
  * The supplied pathname may be absolute or relative to the current directory.

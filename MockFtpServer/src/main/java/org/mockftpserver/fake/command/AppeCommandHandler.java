@@ -21,6 +21,9 @@ package org.mockftpserver.fake.command;
  * <li>If the user has not logged in, then reply with 530 and terminate</li>
  * <li>If the required pathname parameter is missing, then reply with 501 and terminate</li>
  * <li>If the pathname parameter does not specify a valid filename, then reply with 553 and terminate</li>
+ * <li>If the current user does not have write access to the named file, if it already exists, or else to its
+ * parent directory, then reply with 553 and terminate</li>
+ * <li>If the current user does not have execute access to the parent directory, then reply with 553 and terminate</li>
  * <li>Send an initial reply of 150</li>
  * <li>Read all available bytes from the data connection and append to the named file in the server file system</li>
  * <li>If file write/store fails, then reply with 553 and terminate</li>
