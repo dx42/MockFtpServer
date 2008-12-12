@@ -41,6 +41,10 @@ public interface ServerConfiguration {
      */
     public String getSystemName();
 
+    /**
+     * @return the System Status text for this server (used by the STAT command)
+     */
+    public String getSystemStatus();
 
     /**
      * Return the help text for a command or the default help text if no command name is specified
