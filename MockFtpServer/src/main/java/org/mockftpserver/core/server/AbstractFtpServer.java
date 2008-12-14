@@ -175,7 +175,7 @@ public abstract class AbstractFtpServer implements Runnable {
                     serverSocket.close();
                 }
 
-                for (Iterator iter = sessions.values().iterator(); iter.hasNext();) {
+                for (Iterator iter = sessions.keySet().iterator(); iter.hasNext();) {
                     Session session = (Session) iter.next();
                     SessionInfo sessionInfo = (SessionInfo) sessions.get(session);
                     session.close();
