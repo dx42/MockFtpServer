@@ -29,6 +29,27 @@ FakeFtpServer - Getting Started
 
   []
 
+  Here is an example showing configuration and starting of an <<FakeFtpServer>> with a single user
+  account and a (simulated) Windows file system, defining a directory containing two files.
+
++------------------------------------------------------------------------------
+FakeFtpServer fakeFtpServer = new FakeFtpServer();
+fakeFtpServer.addUserAccount(new UserAccount("user", "password", "c:\\data"));
+
+FileSystem fileSystem = new WindowsFakeFileSystem();
+fileSystem.add(new DirectoryEntry("c:\\data"));
+fileSystem.add(new FileEntry("c:\\data\\file1.txt", "abcdef 1234567890"));
+fileSystem.add(new FileEntry("c:\\data\\run.exe"));
+fakeFtpServer.setFileSystem(fileSystem);
+
+fakeFtpServer.start();
++------------------------------------------------------------------------------
+
+  If you are running on a system where the default port (21) is already in use or cannot be bound
+  from a user process (such as Unix), you probably need to use a different server control port. Use the
+  <<<FakeFtpServer.setServerControlPort(int serverControlPort)>>> method to set a different port
+  number, such as 9187.
+
   <<FakeFtpServer>>  can be fully configured programmatically or within the
   {{{http://www.springframework.org/}Spring Framework}} or other dependency-injection container.
   The {{{#Example}Example Test Using FakeFtpServer}} below illustrates programmatic configuration of
