@@ -1,6 +1,12 @@
 MockFtpServer Change Log
 -------------------------------------------------------------------------------
 
+Changes in version 2.0-rc3 (14 Dec 2008)
+------------------------------------------
+- BUG FIX: ClassCastException in AbstractFtpServer during server cleanup.
+- Reorganize sample code and include in online doc.
+
+
 Changes in version 2.0-rc2 (12 Dec 2008)
 ------------------------------------------
 - BUG FIX: AbstractFtpServer: Fix bug when iterating through sessions.
