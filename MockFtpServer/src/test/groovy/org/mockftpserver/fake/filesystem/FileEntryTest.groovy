@@ -115,7 +115,18 @@ public class FileEntryTest extends AbstractFileSystemEntryTest {
         assert clone.owner == USER
         assert clone.group == GROUP
         assert clone.permissions == PERMISSIONS
-        assert Arrays.equals(clone.bytes, entry.bytes)
+        assert clone.createInputStream().text == 'abc'
+        assert !clone.directory
+    }
+
+    void testCloneWithNewPath_WriteToOutputStream() {
+        def outputStream = entry.createOutputStream(false)
+        outputStream.withWriter { writer -> writer.write('ABCDEF') }
+        def clone = entry.cloneWithNewPath(NEW_PATH)
+
+        assert !clone.is(entry)
+        assert clone.path == NEW_PATH
+        assert clone.createInputStream().text == 'ABCDEF' 
         assert !clone.directory
     }
 
