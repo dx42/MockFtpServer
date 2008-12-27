@@ -68,7 +68,7 @@ class RetrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_PathDoesNotExist() {
         def path = FILE + "XXX"
         handleCommand([path])
-        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.pathDoesNotExist', path])
+        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.doesNotExist', path])
     }
 
     void testHandleCommand_NoReadAccessToFile() {

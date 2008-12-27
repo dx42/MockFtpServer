@@ -52,7 +52,7 @@ public class RetrCommandHandler extends AbstractFakeCommandHandler {
 
         String path = getRealPath(session, command.getRequiredParameter(0));
         FileSystemEntry entry = getFileSystem().getEntry(path);
-        verifyFileSystemCondition(entry != null, path, "filesystem.pathDoesNotExist");
+        verifyFileSystemCondition(entry != null, path, "filesystem.doesNotExist");
         verifyFileSystemCondition(!entry.isDirectory(), path, "filesystem.isNotAFile");
         FileEntry fileEntry = (FileEntry) entry;
 
