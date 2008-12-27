@@ -145,7 +145,7 @@ public class FileEntry extends AbstractFileSystemEntry {
         clone.setOwner(getOwner());
         clone.setGroup(getGroup());
         clone.setPermissions(getPermissions());
-        clone.setContents(bytes);
+        clone.setContents(getCurrentBytes());
         return clone;
     }
 
