@@ -85,10 +85,10 @@ public abstract class AbstractFakeCommandHandler extends AbstractCommandHandler 
             handleException(command, session, e, ReplyCodes.NOT_LOGGED_IN);
         }
         catch (InvalidFilenameException e) {
-            handleFileSystemException(command, session, e, ReplyCodes.FILENAME_NOT_VALID, list(e.getPath()));
+            handleFileSystemException(command, session, e, ReplyCodes.FILENAME_NOT_VALID, e.getPath());
         }
         catch (FileSystemException e) {
-            handleFileSystemException(command, session, e, replyCodeForFileSystemException, list(e.getPath()));
+            handleFileSystemException(command, session, e, replyCodeForFileSystemException, e.getPath());
         }
     }
 

@@ -85,7 +85,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_FromFileDoesNotExist() {
         createDirectory(DIR)
         handleCommand([TO_FILE])
-        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, ['filesystem.pathDoesNotExist', FROM_FILE])
+        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, ['filesystem.doesNotExist', FROM_FILE])
         assertRenameFromSessionProperty(FROM_FILE)
     }
 
@@ -94,7 +94,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         final BAD_DIR = p(DIR, 'SUB')
         final BAD_TO_FILE = p(BAD_DIR, 'Filename.txt')
         handleCommand([BAD_TO_FILE])
-        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, ['filesystem.pathDoesNotExist', BAD_DIR])
+        assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, ['filesystem.doesNotExist', BAD_DIR])
         assertRenameFromSessionProperty(FROM_FILE)
     }
 

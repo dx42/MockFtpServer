@@ -477,7 +477,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
         FileSystemEntry entry = getEntry(path);
         if (entry == null) {
             LOG.error("Path does not exist: " + path);
-            throw new FileSystemException(normalize(path), "filesystem.pathDoesNotExist");
+            throw new FileSystemException(normalize(path), "filesystem.doesNotExist");
         }
         return entry;
     }
