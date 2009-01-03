@@ -1,6 +1,13 @@
 MockFtpServer Change Log
 -------------------------------------------------------------------------------
 
+Changes in version 2.0 (03 Jan 2009)
+------------------------------------------
+- BUG FIX: #2462794 filesystem.pathDoesNotExist key is missing from the ReplyText resource bundle. See https://sourceforge.net/tracker2/?func=detail&aid=2462794&group_id=208647&atid=1006533
+- BUG FIX: #2462973 FileEntry.cloneWithNewPath doesn't clone out field. See https://sourceforge.net/tracker/index.php?func=detail&aid=2462973&group_id=208647&atid=1006533
+- Add note to online doc about requiring Log4J configuration file if you want to see log output.
+
+
 Changes in version 2.0-rc3 (14 Dec 2008)
 ------------------------------------------
 - BUG FIX: ClassCastException in AbstractFtpServer during server cleanup.
