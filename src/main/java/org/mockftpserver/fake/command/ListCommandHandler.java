@@ -67,6 +67,7 @@ public class ListCommandHandler extends AbstractFakeCommandHandler {
             lines.add(getFileSystem().formatDirectoryListing(entry));
         }
         String result = StringUtil.join(lines, endOfLine());
+        result += result.length() > 0 ? endOfLine() : "";
 
         session.openDataConnection();
         LOG.info("Sending [" + result + "]");

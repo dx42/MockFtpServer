@@ -58,6 +58,8 @@ public class NlstCommandHandler extends AbstractFakeCommandHandler {
         this.replyCodeForFileSystemException = ReplyCodes.SYSTEM_ERROR;
         List names = getFileSystem().listNames(path);
         String directoryListing = StringUtil.join(names, endOfLine());
+        directoryListing += directoryListing.length() > 0 ? endOfLine() : "";
+
         session.openDataConnection();
         session.sendData(directoryListing.getBytes(), directoryListing.length());
         session.closeDataConnection();

@@ -37,7 +37,7 @@ class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_SingleFile() {
         createFile("/usr/f1.txt")
         handleCommandAndVerifySendDataReplies([DIR])
-        assertSessionData("f1.txt")
+        assertSessionDataWithEndOfLine("f1.txt")
     }
 
     void testHandleCommand_FilesAndDirectories() {
@@ -51,13 +51,14 @@ class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         def actualLines = session.sentData[0].tokenize(endOfLine()) as Set
         LOG.info("actualLines=$actualLines")
         assert actualLines == EXPECTED
+        assertSessionDataEndsWithEndOfLine()
     }
 
     void testHandleCommand_NoPath_UseCurrentDirectory() {
         createFile("/usr/f1.txt")
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
         handleCommandAndVerifySendDataReplies([])
-        assertSessionData("f1.txt")
+        assertSessionDataWithEndOfLine("f1.txt")
     }
 
     void testHandleCommand_EmptyDirectory() {
@@ -68,7 +69,7 @@ class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTest {
     void testHandleCommand_PathSpecifiesAFile() {
         createFile("/usr/f1.txt")
         handleCommandAndVerifySendDataReplies(["/usr/f1.txt"])
-        assertSessionData("f1.txt")
+        assertSessionDataWithEndOfLine("f1.txt")
     }
 
     void testHandleCommand_PathDoesNotExist() {
