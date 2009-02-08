@@ -95,7 +95,11 @@ public class FileEntry extends AbstractFileSystemEntry {
      */
     public void setContents(byte[] contents) {
         // Copy the bytes[] to guard against subsequent modification of the source array
-        byte[] newBytes = (contents != null) ? new String(contents).getBytes() : EMPTY;
+        byte[] newBytes = EMPTY;
+        if (contents != null) {
+            newBytes = new byte[contents.length];
+            System.arraycopy(contents, 0, newBytes, 0, contents.length);
+        }
         setContentsInternal(newBytes);
     }
 
