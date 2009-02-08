@@ -44,7 +44,7 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         final entry = new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc")
         fileSystem.add(entry)
         handleCommandAndVerifySendDataReplies([DIR])
-        assertSessionData(listingFor(entry))
+        assertSessionDataWithEndOfLine(listingFor(entry))
     }
 
     void testHandleCommand_FilesAndDirectories() {
@@ -65,6 +65,7 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
                 listingFor(entry2),
                 listingFor(entry3)] as Set
         assert actualLines == EXPECTED
+        assertSessionDataEndsWithEndOfLine()
     }
 
     void testHandleCommand_NoPath_UseCurrentDirectory() {
@@ -72,7 +73,7 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         fileSystem.add(entry)
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
         handleCommandAndVerifySendDataReplies([])
-        assertSessionData(listingFor(entry))
+        assertSessionDataWithEndOfLine(listingFor(entry))
     }
 
     void testHandleCommand_EmptyDirectory() {
@@ -84,7 +85,7 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
         final entry = new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc")
         fileSystem.add(entry)
         handleCommandAndVerifySendDataReplies([p(DIR, NAME)])
-        assertSessionData(listingFor(entry))
+        assertSessionDataWithEndOfLine(listingFor(entry))
     }
 
     void testHandleCommand_PathDoesNotExist() {

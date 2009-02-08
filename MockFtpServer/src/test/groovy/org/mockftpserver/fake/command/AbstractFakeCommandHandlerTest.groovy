@@ -204,6 +204,21 @@ abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
     }
 
     /**
+     * Assert that the specified data was sent through the session, terminated by an end-of-line.
+     * @param expectedData - the expected data
+     */
+    protected assertSessionDataWithEndOfLine(String expectedData) {
+        assertSessionData(expectedData + endOfLine())
+    }
+
+    /**
+     * Assert that the data sent through the session terminated with an end-of-line.
+     */
+    protected assertSessionDataEndsWithEndOfLine() {
+        assert session.sentData[0].endsWith(endOfLine())
+    }
+
+    /**
      * Execute the handleCommand() method with the specified parameters and 
      * assert that the standard SEND DATA replies were sent through the session.
      * @param parameters - the command parameters to use; defaults to []
