@@ -50,6 +50,12 @@ public class FileEntryTest extends AbstractFileSystemEntryTest {
         verifyContents(CONTENTS)
     }
 
+    void testSetContents_BytesNotInCharSet() {
+        byte[] contents = [65, -99, 91, -115] as byte[]
+        entry.setContents(contents)
+        verifyContents(contents)
+    }
+
     void testSetContents_NullString() {
         entry.setContents((String) null)
         assert entry.size == 0
@@ -174,9 +180,6 @@ public class FileEntryTest extends AbstractFileSystemEntryTest {
     // Test setup
     //-------------------------------------------------------------------------
 
-    /**
-     * @see org.mockftpserver.test.AbstractTest#setUp()
-     */
     void setUp() {
         super.setUp()
         entry = new FileEntry(PATH)
@@ -188,14 +191,25 @@ public class FileEntryTest extends AbstractFileSystemEntryTest {
 
     /**
      * Verify the expected contents of the file entry, read from its InputSteam
-     * @param expectedContents - the expected contents
+     * @param expectedContents - the expected contents, as a String
      * @throws IOException
      */
     private void verifyContents(String expectedContents) {
+        LOG.info("expectedContents=$expectedContents")
+        verifyContents(expectedContents.bytes)
+    }
+
+    /**
+     * Verify the expected contents of the file entry, read from its InputSteam
+     * @param expectedContents - the expected contents, as a byte[]
+     * @throws IOException
+     */
+    private void verifyContents(byte[] expectedContents) {
         byte[] bytes = IoUtil.readBytes(entry.createInputStream())
-        LOG.info("bytes=[" + new String(bytes) + "]")
-        assertEquals("contents: actual=[" + new String(bytes) + "]", expectedContents.getBytes(), bytes)
-        assert entry.getSize() == expectedContents.length()
+        def bytesAsList = bytes as List
+        LOG.info("bytes=$bytesAsList")
+        assert bytes == expectedContents, "actual=$bytesAsList  expected=${expectedContents as byte[]}"
+        assert entry.getSize() == expectedContents.length
     }
 
 }
