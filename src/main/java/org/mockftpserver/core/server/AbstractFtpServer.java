@@ -174,17 +174,7 @@ public abstract class AbstractFtpServer implements Runnable {
                 if (serverSocket != null) {
                     serverSocket.close();
                 }
-
-                for (Iterator iter = sessions.keySet().iterator(); iter.hasNext();) {
-                    Session session = (Session) iter.next();
-                    SessionInfo sessionInfo = (SessionInfo) sessions.get(session);
-                    session.close();
-                    sessionInfo.thread.join(500L);
-                    Socket sessionSocket = sessionInfo.socket;
-                    if (sessionSocket != null) {
-                        sessionSocket.close();
-                    }
-                }
+                closeSessions();
             }
             catch (IOException e) {
                 LOG.error("Error cleaning up server", e);
@@ -289,10 +279,6 @@ public abstract class AbstractFtpServer implements Runnable {
         this.serverControlPort = serverControlPort;
     }
 
-    //-------------------------------------------------------------------------
-    // Internal Helper Methods
-    //-------------------------------------------------------------------------
-
     /**
      * Return true if this server is fully shutdown -- i.e., there is no active (alive) threads and
      * all sockets are closed. This method is intended for testing only.
@@ -319,6 +305,10 @@ public abstract class AbstractFtpServer implements Runnable {
         return serverThread != null && serverThread.isAlive() && serverSocket != null;
     }
 
+    //-------------------------------------------------------------------------
+    // Internal Helper Methods
+    //-------------------------------------------------------------------------
+
     /**
      * Create a new Session instance for the specified client Socket
      *
@@ -327,6 +317,20 @@ public abstract class AbstractFtpServer implements Runnable {
      */
     protected Session createSession(Socket clientSocket) {
         return new DefaultSession(clientSocket, commandHandlers);
+    }
+
+    private void closeSessions() throws InterruptedException, IOException {
+        for (Iterator iter = sessions.entrySet().iterator(); iter.hasNext();) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            Session session = (Session) entry.getKey();
+            SessionInfo sessionInfo = (SessionInfo) entry.getValue();
+            session.close();
+            sessionInfo.thread.join(500L);
+            Socket sessionSocket = sessionInfo.socket;
+            if (sessionSocket != null) {
+                sessionSocket.close();
+            }
+        }
     }
 
     //------------------------------------------------------------------------------------
