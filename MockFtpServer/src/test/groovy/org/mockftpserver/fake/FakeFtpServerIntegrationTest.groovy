@@ -108,6 +108,28 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         verifyReplyCode("changeWorkingDirectory", 250)
     }
 
+    /**
+     * Test that a CWD to ".." properly resolves the current dir (without the "..") so that PWD returns the parent 
+     */
+    void testCwd_DotDot_Pwd() {
+        ftpClientConnectAndLogin()
+        assert ftpClient.changeWorkingDirectory("..")
+        verifyReplyCode("changeWorkingDirectory", 250)
+        assert p(ftpClient.printWorkingDirectory()) == p(ROOT_DIR)
+        assert ftpClient.changeWorkingDirectory("home")
+        assert p(ftpClient.printWorkingDirectory()) == p(HOME_DIR)
+    }
+
+    /**
+     * Test that a CWD to "." properly resolves the current dir (without the ".") so that PWD returns the parent
+     */
+    void testCwd_Dot_Pwd() {
+        ftpClientConnectAndLogin()
+        assert ftpClient.changeWorkingDirectory(".")
+        verifyReplyCode("changeWorkingDirectory", 250)
+        assert p(ftpClient.printWorkingDirectory()) == p(HOME_DIR)
+    }
+
     void testCwd_UseStaticReplyCommandHandler() {
         final int REPLY_CODE = 500;
         StaticReplyCommandHandler cwdCommandHandler = new StaticReplyCommandHandler(REPLY_CODE);

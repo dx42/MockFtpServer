@@ -62,6 +62,9 @@ class UnixFakeFileSystemTest extends AbstractFakeFileSystemTest {
         assert fileSystem.path("/abc/", "def") == "/abc/def"
         assert fileSystem.path("/ABC", "/def") == "/ABC/def"
         assert fileSystem.path("abc", "/def") == "abc/def"
+        assert fileSystem.path("abc", "def/..") == "abc"
+        assert fileSystem.path("abc", "./def") == "abc/def"
+        assert fileSystem.path("abc/.", null) == "abc"
     }
 
     void testNormalize() {

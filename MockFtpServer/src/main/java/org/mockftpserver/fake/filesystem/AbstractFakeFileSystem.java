@@ -310,7 +310,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
      *
      * @param path1 - the first path component may be null or empty
      * @param path2 - the second path component may be null or empty
-     * @return the path resulting from concatenating path1 to path2
+     * @return the normalized path resulting from concatenating path1 to path2
      */
     public String path(String path1, String path2) {
         StringBuffer buf = new StringBuffer();
@@ -325,7 +325,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
             }
             buf.append(path2);
         }
-        return buf.toString();
+        return normalize(buf.toString());
     }
 
     /**
@@ -498,15 +498,16 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
         if (p.equals(this.getSeparator())) {
             return Collections.singletonList("");
         }
-
-        String[] parts = p.split("\\" + this.getSeparator());
         List result = new ArrayList();
-        for (int i = 0; i < parts.length; i++) {
-            String part = parts[i];
-            if (part.equals("..")) {
-                result.remove(result.size() - 1);
-            } else if (!part.equals(".")) {
-                result.add(part);
+        if (p.length() > 0) {
+            String[] parts = p.split("\\" + this.getSeparator());
+            for (int i = 0; i < parts.length; i++) {
+                String part = parts[i];
+                if (part.equals("..")) {
+                    result.remove(result.size() - 1);
+                } else if (!part.equals(".")) {
+                    result.add(part);
+                }
             }
         }
         return result;
