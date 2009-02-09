@@ -72,7 +72,7 @@ abstract class AbstractGroovyTest extends GroovyTestCase {
      * @return p[0] + '/' + p[1] + '/' + p[2] + ...
      */
     protected static String p(String[] paths) {
-        return paths.join("/").replace("//", "/")
+        return paths.join("/").replace('\\', '/').replace("//", "/")
     }
 
     /**

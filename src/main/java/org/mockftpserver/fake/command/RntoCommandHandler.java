@@ -48,6 +48,7 @@ public class RntoCommandHandler extends AbstractFakeCommandHandler {
 
         // User must have write permission to the directory
         String parentPath = getFileSystem().getParent(toPath);
+        verifyFileSystemCondition(notNullOrEmpty(parentPath), parentPath, "filesystem.doesNotExist");
         verifyFileSystemCondition(getFileSystem().exists(parentPath), parentPath, "filesystem.doesNotExist");
         verifyWritePermission(session, parentPath);
 

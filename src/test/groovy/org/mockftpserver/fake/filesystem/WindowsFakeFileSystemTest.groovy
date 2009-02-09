@@ -64,9 +64,13 @@ class WindowsFakeFileSystemTest extends AbstractFakeFileSystemTest {
         assert fileSystem.path("abc", "") == "abc"
         assert fileSystem.path("abc", "def") == "abc" + SEP + "def"
         assert fileSystem.path("abc\\", "def") == "abc\\def"
-        assert fileSystem.path("c:/abc/", "def") == "c:/abc/def"
+        assert fileSystem.path("c:/abc/", "def") == "c:\\abc\\def"
         assert fileSystem.path("d:\\abc", "\\def") == "d:\\abc\\def"
-        assert fileSystem.path("abc", "/def") == "abc/def"
+        assert fileSystem.path("abc", "/def") == "abc\\def"
+        assert fileSystem.path("abc/def", "..") == "abc"
+        assert fileSystem.path("abc", "def/..") == "abc"
+        assert fileSystem.path("abc", "./def") == "abc\\def"
+        assert fileSystem.path("abc/.", null) == "abc"
     }
 
     void testNormalize() {
