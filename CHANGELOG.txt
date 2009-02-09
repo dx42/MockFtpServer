@@ -1,6 +1,14 @@
 MockFtpServer Change Log
 -------------------------------------------------------------------------------
 
+Changes in version 2.0.1 (09 Feb 2009)
+------------------------------------------
+- BUG FIX: #2543193 “"cd .." and "pwd" don't work properly together” (https://sourceforge.net/tracker2/?func=detail&aid=2543193&group_id=208647&atid=1006533).
+- BUG FIX: #2540548 “Missing new line on directory listing” (https://sourceforge.net/tracker2/?func=detail&aid=2540548&group_id=208647&atid=1006533).
+- BUG FIX: #2540366 “FileEntry.setContents( byte [] contents ) change the content” (https://sourceforge.net/tracker2/?func=detail&aid=2540366&group_id=208647&atid=1006533).
+ - AbstractFtpServer: Use entrySet() to iterate through sessions (From Rijk van Haaften).
+
+
 Changes in version 2.0 (03 Jan 2009)
 ------------------------------------------
 - BUG FIX: #2462794 filesystem.pathDoesNotExist key is missing from the ReplyText resource bundle. See https://sourceforge.net/tracker2/?func=detail&aid=2462794&group_id=208647&atid=1006533
