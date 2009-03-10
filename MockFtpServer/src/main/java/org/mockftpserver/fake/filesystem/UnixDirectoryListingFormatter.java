@@ -20,6 +20,7 @@ import org.mockftpserver.core.util.StringUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * Unix-specific implementation of the DirectoryListingFormatter interface.
@@ -37,6 +38,8 @@ public class UnixDirectoryListingFormatter implements DirectoryListingFormatter 
     private static final int GROUP_WIDTH = 8;
     private static final String NONE = "none";
 
+    private Locale locale = Locale.ENGLISH;
+
     // "-rw-rw-r--    1 ftp      ftp           254 Feb 23  2007 robots.txt"
     // "-rw-r--r--    1 ftp      ftp      30014925 Apr 15 00:19 md5.sums.gz"
     // "-rwxr-xr-x   1 henry    users       5778 Dec  1  2005 planaccess.sql"
@@ -48,7 +51,7 @@ public class UnixDirectoryListingFormatter implements DirectoryListingFormatter 
      * @return the formatted directory listing
      */
     public String format(FileSystemEntry fileSystemEntry) {
-        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, locale);
         String dateStr = dateFormat.format(fileSystemEntry.getLastModified());
         String dirOrFile = fileSystemEntry.isDirectory() ? "d" : "-";
         Permissions permissions = fileSystemEntry.getPermissions() != null ? fileSystemEntry.getPermissions() : Permissions.DEFAULT;
@@ -60,6 +63,14 @@ public class UnixDirectoryListingFormatter implements DirectoryListingFormatter 
         String listing = "" + dirOrFile + permissionsStr + "  " + linkCountStr + " " + ownerStr + " " + groupStr + " " + sizeStr + " " + dateStr + " " + fileSystemEntry.getName();
         LOG.info("listing=[" + listing + "]");
         return listing;
+    }
+
+    /**
+     * Set the Locale to be used in formatting the date within file/directory listings
+     * @param locale - the Locale instance
+     */
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 
     private String stringOrNone(String string) {

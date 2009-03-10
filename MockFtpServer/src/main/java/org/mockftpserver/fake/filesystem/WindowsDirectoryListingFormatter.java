@@ -19,6 +19,7 @@ import org.mockftpserver.core.util.StringUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * Windows-specific implementation of the DirectoryListingFormatter interface.
@@ -38,7 +39,7 @@ public class WindowsDirectoryListingFormatter implements DirectoryListingFormatt
      * @return the formatted directory listing
      */
     public String format(FileSystemEntry fileSystemEntry) {
-        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
         String dateStr = dateFormat.format(fileSystemEntry.getLastModified());
         String dirOrSize = fileSystemEntry.isDirectory()
                 ? StringUtil.padRight("<DIR>", SIZE_WIDTH)
