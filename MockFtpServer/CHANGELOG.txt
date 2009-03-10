@@ -1,6 +1,12 @@
 MockFtpServer Change Log
 -------------------------------------------------------------------------------
 
+Changes in version 2.0.2 (09 Mar 2009)
+------------------------------------------
+- BUG FIX: #2654577: 'month' in UnixDirectoryListingFormatter is Locale specific. http://sourceforge.net/tracker/index.php?func=detail&aid=2654577&group_id=208647&atid=1006533.
+- BUG FIX: #2653626: Cannot start() server after calling stop(). https://sourceforge.net/tracker2/index.php?func=detail&aid=2653626&group_id=208647&atid=1006533.
+
+
 Changes in version 2.0.1 (09 Feb 2009)
 ------------------------------------------
 - BUG FIX: #2543193 “"cd .." and "pwd" don't work properly together” (https://sourceforge.net/tracker2/?func=detail&aid=2543193&group_id=208647&atid=1006533).
