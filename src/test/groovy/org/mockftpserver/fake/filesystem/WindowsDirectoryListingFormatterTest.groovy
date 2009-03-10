@@ -35,6 +35,7 @@ class WindowsDirectoryListingFormatterTest extends AbstractGroovyTest {
     private formatter
     private dateFormat
     private lastModifiedFormatted
+    private defaultLocale
 
     void testFormat_File() {
         def fileEntry = new FileEntry(path: PATH, contents: 'abcd', lastModified: LAST_MODIFIED)
@@ -54,10 +55,27 @@ class WindowsDirectoryListingFormatterTest extends AbstractGroovyTest {
         assert result == expected
     }
 
+    void testFormat_File_NonEnglishDefaultLocale() {
+        Locale.setDefault(Locale.GERMAN)
+        def fileEntry = new FileEntry(path: PATH, contents: 'abcd', lastModified: LAST_MODIFIED)
+        def sizeStr = 4.toString().padLeft(SIZE_WIDTH)
+        def expected = "$lastModifiedFormatted  $sizeStr  $NAME"
+        def result = formatter.format(fileEntry)
+        LOG.info("result=$result")
+        assert result == expected
+    }
+
     void setUp() {
         super.setUp()
         formatter = new WindowsDirectoryListingFormatter()
         dateFormat = new SimpleDateFormat(WindowsDirectoryListingFormatter.DATE_FORMAT)
         lastModifiedFormatted = dateFormat.format(LAST_MODIFIED)
+        defaultLocale = Locale.default
     }
+
+    void tearDown() {
+        super.tearDown()
+        Locale.setDefault(defaultLocale)
+    }
+
 }

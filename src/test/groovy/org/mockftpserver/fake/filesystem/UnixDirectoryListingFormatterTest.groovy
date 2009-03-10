@@ -39,8 +39,8 @@ class UnixDirectoryListingFormatterTest extends AbstractGroovyTest {
     static final DIR_PERMISSIONS = new Permissions('rwxr-xr-x')
 
     private formatter
-    private dateFormat
     private lastModifiedFormatted
+    private defaultLocale
 
     // "-rw-rw-r--    1 ftp      ftp           254 Feb 23  2007 robots.txt"
     // "-rw-r--r--    1 ftp      ftp      30014925 Apr 15 00:19 md5.sums.gz"
@@ -61,6 +61,23 @@ class UnixDirectoryListingFormatterTest extends AbstractGroovyTest {
         verifyFormat(fileSystemEntry, "-rwxrwxrwx  1 none     none                  11 $lastModifiedFormatted def.txt")
     }
 
+    void testFormat_File_NonEnglishDefaultLocale() {
+        Locale.setDefault(Locale.GERMAN)
+        def fileSystemEntry = new FileEntry(path: FILE_PATH, contents: '12345678901', lastModified: LAST_MODIFIED)
+        LOG.info(fileSystemEntry)
+        verifyFormat(fileSystemEntry, "-rwxrwxrwx  1 none     none                  11 $lastModifiedFormatted def.txt")
+    }
+
+    void testFormat_File_NonEnglishLocale() {
+        formatter.setLocale(Locale.FRENCH)
+        def fileSystemEntry = new FileEntry(path: FILE_PATH, contents: '12345678901', lastModified: LAST_MODIFIED)
+        LOG.info(fileSystemEntry)
+        def dateFormat = new SimpleDateFormat(UnixDirectoryListingFormatter.DATE_FORMAT, Locale.FRENCH)
+        def formattedDate = dateFormat.format(LAST_MODIFIED)
+        def result = formatter.format(fileSystemEntry)
+        assert result.contains(formattedDate)
+    }
+
     void testFormat_Directory() {
         def fileSystemEntry = new DirectoryEntry(path: DIR_PATH, lastModified: LAST_MODIFIED,
                 owner: OWNER, group: GROUP, permissions: DIR_PERMISSIONS)
@@ -77,8 +94,14 @@ class UnixDirectoryListingFormatterTest extends AbstractGroovyTest {
     void setUp() {
         super.setUp()
         formatter = new UnixDirectoryListingFormatter()
-        dateFormat = new SimpleDateFormat(UnixDirectoryListingFormatter.DATE_FORMAT)
+        def dateFormat = new SimpleDateFormat(UnixDirectoryListingFormatter.DATE_FORMAT, Locale.ENGLISH)
         lastModifiedFormatted = dateFormat.format(LAST_MODIFIED)
+        defaultLocale = Locale.default
+    }
+
+    void tearDown() {
+        super.tearDown()
+        Locale.setDefault(defaultLocale)
     }
 
     private void verifyFormat(FileSystemEntry fileSystemEntry, String expectedResult) {
