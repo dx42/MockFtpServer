@@ -183,6 +183,7 @@ public abstract class AbstractFtpServer implements Runnable {
                 LOG.error("Error cleaning up server", e);
             }
             LOG.info("Server stopped.");
+            terminate = false;
         }
     }
 
