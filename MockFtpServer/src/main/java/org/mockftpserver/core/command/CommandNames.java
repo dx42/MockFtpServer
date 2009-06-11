@@ -30,6 +30,8 @@ public final class CommandNames {
     public static final String CDUP = "CDUP";
     public static final String CWD = "CWD";
     public static final String DELE = "DELE";
+    public static final String EPRT = "EPRT";
+    public static final String EPSV = "EPSV";
     public static final String HELP = "HELP";
     public static final String LIST = "LIST";
     public static final String MKD = "MKD";

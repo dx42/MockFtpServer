@@ -161,6 +161,16 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
         assert !fileSystem.exists(FILENAME1)
     }
 
+    void testEprt() {
+        ftpClientConnectAndLogin()
+        assert ftpClient.sendCommand("EPRT", "|2|1080::8:800:200C:417A|5282|") == 200
+    }
+
+    void testEpsv() {
+        ftpClientConnectAndLogin()
+        assert ftpClient.sendCommand("EPSV") == 229
+    }
+
     void testFeat_UseStaticReplyCommandHandler() {
         // The FEAT command is not supported out of the box
         StaticReplyCommandHandler featCommandHandler = new StaticReplyCommandHandler(211, "No Features");
