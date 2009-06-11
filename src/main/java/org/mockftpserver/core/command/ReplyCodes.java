@@ -29,6 +29,8 @@ public final class ReplyCodes {
     public static final int CDUP_OK = 200;
     public static final int CWD_OK = 250;
     public static final int DELE_OK = 250;
+    public static final int EPRT_OK = 200;
+    public static final int EPSV_OK = 229;
     public static final int HELP_OK = 214;
     public static final int MKD_OK = 257;
     public static final int MODE_OK = 200;
