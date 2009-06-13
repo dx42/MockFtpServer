@@ -63,15 +63,12 @@ public final class PortParser {
             throw new CommandSyntaxException("Error parsing host [" + tokens[2] + "]", e);
         }
 
-        HostAndPort hostAndPort = new HostAndPort();
-        hostAndPort.host = host;
-        hostAndPort.port = port;
-
-        return hostAndPort;
+        return new HostAndPort(host, port);
     }
 
     /**
-     * Parse a 32-bit IP address from the String[] of FTP command parameters.
+     * Parse a 32-bit IP address and 16-bit port number from the String[] of FTP command parameters.
+     * This is used by the FTP "PORT" command.
      *
      * @param parameters - the String[] of command parameters. It is the concatenation
      *                   of a 32-bit internet host address and a 16-bit TCP port address. This address
@@ -81,12 +78,12 @@ public final class PortParser {
      *                   h1,h2,h3,h4,p1,p2
      *                   where h1 is the high order 8 bits of the internet host address, and p1 is the
      *                   high order 8 bits of the port number.
-     * @return the InetAddres representing the host parsed from the parameters
+     * @return the HostAndPort object with the host InetAddres and int port parsed from the parameters
      * @throws org.mockftpserver.core.util.AssertFailedException
      *                               - if parameters is null or contains an insufficient number of elements
      * @throws NumberFormatException - if one of the parameters does not contain a parsable integer
      */
-    public static InetAddress parseHost(String[] parameters) {
+    public static HostAndPort parseHostAndPort(String[] parameters) {
         verifySufficientParameters(parameters);
 
         byte host1 = parseByte(parameters[0]);
@@ -103,33 +100,11 @@ public final class PortParser {
             throw new MockFtpServerException("Error parsing host", e);
         }
 
-        return inetAddress;
-    }
-
-    /**
-     * Parse a 16-bit port number from the String[] of FTP command parameters.
-     *
-     * @param parameters - the String[] of command parameters. It is the concatenation
-     *                   of a 32-bit internet host address and a 16-bit TCP port address. This address
-     *                   information is broken into 8-bit fields and the value of each field is encoded
-     *                   as a separate parameter whose value is a decimal number (in character string
-     *                   representation).  Thus, the six parameters for the port command would be:
-     *                   h1,h2,h3,h4,p1,p2
-     *                   where h1 is the high order 8 bits of the internet host address, and p1 is the
-     *                   high order 8 bits of the port number.
-     * @return the port number parsed from the parameters
-     * @throws org.mockftpserver.core.util.AssertFailedException
-     *                               - if parameters is null or contains an insufficient number of elements
-     * @throws NumberFormatException - if one of the parameters does not contain a parsable integer
-     */
-    public static int parsePortNumber(String[] parameters) {
-        verifySufficientParameters(parameters);
-
         int port1 = Integer.parseInt(parameters[4]);
         int port2 = Integer.parseInt(parameters[5]);
         int port = (port1 << 8) + port2;
 
-        return port;
+        return new HostAndPort(inetAddress, port);
     }
 
     /**

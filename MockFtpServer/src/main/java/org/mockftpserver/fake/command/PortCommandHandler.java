@@ -18,9 +18,8 @@ package org.mockftpserver.fake.command;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.ReplyCodes;
 import org.mockftpserver.core.session.Session;
+import org.mockftpserver.core.util.HostAndPort;
 import org.mockftpserver.core.util.PortParser;
-
-import java.net.InetAddress;
 
 /**
  * CommandHandler for the PORT command. Handler logic:
@@ -37,11 +36,10 @@ import java.net.InetAddress;
 public class PortCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
-        InetAddress host = PortParser.parseHost(command.getParameters());
-        int port = PortParser.parsePortNumber(command.getParameters());
-        LOG.debug("host=" + host + " port=" + port);
-        session.setClientDataHost(host);
-        session.setClientDataPort(port);
+        HostAndPort client = PortParser.parseHostAndPort(command.getParameters());
+        LOG.debug("host=" + client.host + " port=" + client.port);
+        session.setClientDataHost(client.host);
+        session.setClientDataPort(client.port);
         sendReply(session, ReplyCodes.PORT_OK, "port");
     }
 

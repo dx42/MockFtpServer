@@ -29,4 +29,14 @@ import java.net.InetAddress;
 public class HostAndPort {
     public InetAddress host;
     public int port;
+
+    /**
+     * Construct a new instance with the specified host and port
+     * @param host - the InetAddress host
+     * @param port - the port number
+     */
+    public HostAndPort(InetAddress host, int port) {
+        this.host = host;
+        this.port = port;
+    }
 }
