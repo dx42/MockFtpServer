@@ -161,6 +161,7 @@ public abstract class AbstractCommandHandlerTest extends AbstractTest {
                         {"226", replyTextFor(226)},
                         {"226.WithFilename", replyTextWithParameterFor("226.WithFilename")},
                         {"227", replyTextWithParameterFor(227)},
+                        {"229", replyTextWithParameterFor(229)},
                         {"230", replyTextFor(230)},
                         {"250", replyTextFor(250)},
                         {"257", replyTextWithParameterFor(257)},

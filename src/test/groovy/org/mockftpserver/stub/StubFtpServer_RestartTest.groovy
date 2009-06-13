@@ -22,7 +22,7 @@ import org.mockftpserver.test.PortTestUtil
 /**
  * Integration tests for restart of an StubFtpServer.
  *
- * @version $Revision: 221 $ - $Date: 2009-02-08 21:48:12 -0500 (Sun, 08 Feb 2009) $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

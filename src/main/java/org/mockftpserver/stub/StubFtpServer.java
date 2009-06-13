@@ -103,6 +103,8 @@ public class StubFtpServer extends AbstractFtpServer {
         setCommandHandler(CommandNames.CWD, new CwdCommandHandler());
         setCommandHandler(CommandNames.CDUP, new CdupCommandHandler());
         setCommandHandler(CommandNames.DELE, new DeleCommandHandler());
+        setCommandHandler(CommandNames.EPRT, new EprtCommandHandler());
+        setCommandHandler(CommandNames.EPSV, new EpsvCommandHandler());
         setCommandHandler(CommandNames.HELP, new HelpCommandHandler());
         setCommandHandler(CommandNames.LIST, new ListCommandHandler());
         setCommandHandler(CommandNames.MKD, new MkdCommandHandler());

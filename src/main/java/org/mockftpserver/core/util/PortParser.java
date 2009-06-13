@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Utility class for parsing port values from command arguments.
+ * Utility class for parsing host and port values from command arguments.
  *
  * @author Chris Mair
  * @version $Revision$ - $Date$
@@ -32,9 +32,42 @@ import java.util.List;
 public final class PortParser {
 
     /**
-     * Private constructor. All methods are static.
+     * Parse the host address and port number of an extended address. This encoded format is used by
+     * the EPRT FTP command, and supports IPv6.
+     * <p/>
+     * The client network address can be in IPv4 format (e.g., "132.235.1.2") or
+     * IPv6 format (e.g., "1080::8:800:200C:417A"). See RFC2428 for more information.
+     *
+     * @param parameter - the single parameter String containing the encoded host and port number
+     * @return the populated HostAndPort object
      */
-    private PortParser() {
+    public static HostAndPort parseExtendedAddressHostAndPort(String parameter) {
+        if (parameter == null || parameter.length() == 0) {
+            throw new CommandSyntaxException("The parameter string must not be empty or null");
+        }
+
+        String delimiter = parameter.substring(0,1);
+        String[] tokens = parameter.split("\\" + delimiter);
+
+        if (tokens.length < 4) {
+            throw new CommandSyntaxException("Error parsing host and port number [" + parameter + "]");
+        }
+
+        int port = Integer.parseInt(tokens[3]);
+
+        InetAddress host;
+        try {
+            host = InetAddress.getByName(tokens[2]);
+        }
+        catch (UnknownHostException e) {
+            throw new CommandSyntaxException("Error parsing host [" + tokens[2] + "]", e);
+        }
+
+        HostAndPort hostAndPort = new HostAndPort();
+        hostAndPort.host = host;
+        hostAndPort.port = port;
+
+        return hostAndPort;
     }
 
     /**
@@ -100,19 +133,6 @@ public final class PortParser {
     }
 
     /**
-     * Verify that the parameters is not null and contains the required number of elements
-     *
-     * @param parameters - the String[] of command parameters
-     * @throws CommandSyntaxException - if parameters is null or contains an insufficient number of elements
-     */
-    private static void verifySufficientParameters(String[] parameters) {
-        if (parameters == null || parameters.length < 6) {
-            List parms = parameters == null ? null : Arrays.asList(parameters);
-            throw new CommandSyntaxException("The PORT command must contain least be 6 parameters: " + parms);
-        }
-    }
-
-    /**
      * Convert the InetAddess and port number to a comma-delimited list of byte values,
      * suitable for the response String from the PASV command.
      *
@@ -137,6 +157,19 @@ public final class PortParser {
     }
 
     /**
+     * Verify that the parameters is not null and contains the required number of elements
+     *
+     * @param parameters - the String[] of command parameters
+     * @throws CommandSyntaxException - if parameters is null or contains an insufficient number of elements
+     */
+    private static void verifySufficientParameters(String[] parameters) {
+        if (parameters == null || parameters.length < 6) {
+            List parms = parameters == null ? null : Arrays.asList(parameters);
+            throw new CommandSyntaxException("The PORT command must contain least be 6 parameters: " + parms);
+        }
+    }
+
+    /**
      * Parse the specified String as an unsigned decimal byte value (i.e., 0..255). We can't just use
      * Byte.parseByte(string) because that parses the string as a signed byte.
      *
@@ -145,6 +178,12 @@ public final class PortParser {
      */
     private static byte parseByte(String string) {
         return (byte) (0xFF & Short.parseShort(string));
+    }
+
+    /**
+     * Private constructor. All methods are static.
+     */
+    private PortParser() {
     }
 
 }
