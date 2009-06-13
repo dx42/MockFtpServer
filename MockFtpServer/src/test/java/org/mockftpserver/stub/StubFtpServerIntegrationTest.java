@@ -265,6 +265,18 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
         verifyReplyCode("deleteFile", 250);
     }
 
+    public void testEprt() throws Exception {
+        ftpClientConnect();
+        ftpClient.sendCommand("EPRT", "|2|1080::8:800:200C:417A|5282|");
+        verifyReplyCode("EPRT", 200);
+    }
+
+    public void testEpsv() throws Exception {
+        ftpClientConnect();
+        ftpClient.sendCommand("EPSV");
+        verifyReplyCode("EPSV", 229);
+    }
+    
     public void testFeat_UseStaticReplyCommandHandler() throws IOException {
         // The FEAT command is not supported out of the box
         final String FEAT_TEXT = "Extensions supported:\n" +

@@ -23,7 +23,7 @@ import org.mockftpserver.core.command.ReplyCodes
 /**
  * Tests for StatCommandHandler
  *
- * @version $Revision: 138 $ - $Date: 2008-10-24 22:08:52 -0400 (Fri, 24 Oct 2008) $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

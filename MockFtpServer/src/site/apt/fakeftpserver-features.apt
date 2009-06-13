@@ -24,6 +24,8 @@ FakeFtpServer Features
 
   * Supports active and passive mode data transfers.
 
+  * Supports extended address (IPv6) data transfers (RFC2428)
+
   * Fully supports configuration within the <<Spring Framework>> or other dependency-injection container.
   
   * Can be used to test FTP client code written in any language
@@ -54,6 +56,8 @@ FTP Scenarios Supported by FakeFtpServer
     * Remove directory (RMD)
 
     * Both active and passive mode (PASV) data transfers
+
+    * Extended Address (IPv6) data transfers (EPRT and EPSV commands)
 
   Some of the error scenarios that you can simulate with <<FakeFtpServer>> include:
 

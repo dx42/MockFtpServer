@@ -24,7 +24,7 @@ import org.mockftpserver.core.command.ReplyCodes
 /**
  * Tests for SmntCommandHandler
  *
- * @version $Revision: 184 $ - $Date: 2008-12-03 17:52:39 -0500 (Wed, 03 Dec 2008) $
+ * @version $Revision$ - $Date$
  *
  * @author Chris Mair
  */

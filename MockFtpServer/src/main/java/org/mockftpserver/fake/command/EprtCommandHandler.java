@@ -15,13 +15,11 @@
  */
 package org.mockftpserver.fake.command;
 
-import org.mockftpserver.core.CommandSyntaxException;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.ReplyCodes;
 import org.mockftpserver.core.session.Session;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import org.mockftpserver.core.util.HostAndPort;
+import org.mockftpserver.core.util.PortParser;
 
 /**
  * CommandHandler for the EPRT command. Handler logic:
@@ -41,26 +39,10 @@ public class EprtCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         String parameter = command.getRequiredParameter(0);
-        String delimiter = parameter.substring(0,1);
-        String[] tokens = parameter.split("\\" + delimiter);
-
-        if (tokens.length < 4) {
-            throw new CommandSyntaxException("Error parsing host and port number [" + parameter + "]");
-        }
-
-        int port = Integer.parseInt(tokens[3]);
-
-        InetAddress host;
-        try {
-            host = InetAddress.getByName(tokens[2]);
-        }
-        catch (UnknownHostException e) {
-            throw new CommandSyntaxException("Error parsing host [" + tokens[2] + "]", e);
-        }
-
-        LOG.debug("host=" + host + " port=" + port);
-        session.setClientDataHost(host);
-        session.setClientDataPort(port);
+        HostAndPort client = PortParser.parseExtendedAddressHostAndPort(parameter);
+        LOG.debug("host=" + client.host + " port=" + client.port);
+        session.setClientDataHost(client.host);
+        session.setClientDataPort(client.port);
         sendReply(session, ReplyCodes.EPRT_OK, "eprt");
     }
 
