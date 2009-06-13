@@ -80,30 +80,18 @@ class PortParserTest extends AbstractGroovyTest {
         shouldFail(CommandSyntaxException) { PortParser.parseExtendedAddressHostAndPort('') }
     }
 
-    void testParseHost() {
-        InetAddress host = PortParser.parseHost(PARAMETERS)
-        assertEquals("InetAddress", HOST, host)
+    void testParseHostAndPort() {
+        def client = PortParser.parseHostAndPort(PARAMETERS)
+        assert client.host == HOST
+        assert client.port == PORT
     }
 
-    void testParsePortNumber() {
-        int portNumber = PortParser.parsePortNumber(PARAMETERS)
-        assertEquals("portNumber", PORT, portNumber)
+    void testParseHostAndPort_Null() {
+        shouldFail(CommandSyntaxException) { PortParser.parseHostAndPort(null) }
     }
 
-    void testParseHost_Null() {
-        shouldFail(CommandSyntaxException) { PortParser.parseHost(null) }
-    }
-
-    void testParseHost_InsufficientParameters() throws UnknownHostException {
-        shouldFail(CommandSyntaxException) { PortParser.parseHost(PARAMETERS_INSUFFICIENT) }
-    }
-
-    void testParsePortNumber_Null() {
-        shouldFail(CommandSyntaxException) { PortParser.parsePortNumber(null) }
-    }
-
-    void testParsePortNumber_InsufficientParameters() {
-        shouldFail(CommandSyntaxException) { PortParser.parsePortNumber(PARAMETERS_INSUFFICIENT) }
+    void testParseHostAndPort_InsufficientParameters() throws UnknownHostException {
+        shouldFail(CommandSyntaxException) { PortParser.parseHostAndPort(PARAMETERS_INSUFFICIENT) }
     }
 
     void testConvertHostAndPortToStringOfBytes() {

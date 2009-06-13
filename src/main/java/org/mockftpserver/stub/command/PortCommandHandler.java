@@ -20,9 +20,9 @@ import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.core.command.ReplyCodes;
 import org.mockftpserver.core.session.Session;
+import org.mockftpserver.core.util.HostAndPort;
 import org.mockftpserver.core.util.PortParser;
 
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
@@ -56,13 +56,12 @@ public class PortCommandHandler extends AbstractStubCommandHandler implements Co
      * @see org.mockftpserver.core.command.CommandHandler#handleCommand(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session)
      */
     public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) throws UnknownHostException {
-        InetAddress host = PortParser.parseHost(command.getParameters());
-        int port = PortParser.parsePortNumber(command.getParameters());
-        LOG.debug("host=" + host + " port=" + port);
-        session.setClientDataHost(host);
-        session.setClientDataPort(port);
-        invocationRecord.set(HOST_KEY, host);
-        invocationRecord.set(PORT_KEY, new Integer(port));
+        HostAndPort client = PortParser.parseHostAndPort(command.getParameters());
+        LOG.debug("host=" + client.host + " port=" + client.port);
+        session.setClientDataHost(client.host);
+        session.setClientDataPort(client.port);
+        invocationRecord.set(HOST_KEY, client.host);
+        invocationRecord.set(PORT_KEY, new Integer(client.port));
         sendReply(session);
     }
 
