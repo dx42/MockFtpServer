@@ -52,8 +52,9 @@ public class UnixFakeFileSystem extends AbstractFakeFileSystem {
 
     /**
      * Return true if the specified path designates a valid (absolute) file path. For Unix,
-     * a path is valid if it starts with the '/' character, followed by an optional sequence of
-     * any characters except '/'.
+     * a path is valid if it starts with the '/' character, followed by zero or more names
+     * (a sequence of any characters except '/'), delimited by '/'. The path may optionally
+     * contain a terminating '/'.
      *
      * @param path - the path
      * @return true if path is valid, false otherwise
@@ -62,7 +63,8 @@ public class UnixFakeFileSystem extends AbstractFakeFileSystem {
     protected boolean isValidName(String path) {
         Assert.notNull(path, "path");
         // Any character but '/'
-        return path.matches("\\/|(\\/[^\\/]+)+");
+        return path.matches("\\/|(\\/[^\\/]+\\/?)+");
+
     }
 
     /**
