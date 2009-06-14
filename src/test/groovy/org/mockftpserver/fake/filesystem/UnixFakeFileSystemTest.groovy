@@ -92,6 +92,7 @@ class UnixFakeFileSystemTest extends AbstractFakeFileSystemTest {
 
     void testIsValidName() {
         ["/abc",
+                "/test/",
                 "/ABC/def",
                 "/abc/d!ef",
                 "/abc/DEF/h(ij)!@#\$%^&*()-_+=~`,.<>?;:[]{}\\|abc",
