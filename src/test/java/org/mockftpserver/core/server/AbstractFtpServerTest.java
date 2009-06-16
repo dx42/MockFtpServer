@@ -108,6 +108,12 @@ public abstract class AbstractFtpServerTest extends AbstractTest {
         }
     }
 
+    public void testSetServerControlPort() {
+        assertEquals("default", 21, ftpServer.getServerControlPort());
+        ftpServer.setServerControlPort(99);
+        assertEquals("99", 99, ftpServer.getServerControlPort());
+    }
+
     /**
      * Test the setCommandHandler() and getCommandHandler() methods for commands in lower case or mixed case
      */
