@@ -1,6 +1,16 @@
 MockFtpServer Change Log
 -------------------------------------------------------------------------------
 
+Changes in version 2.1 (16 Jun 2009)
+------------------------------------------
+- Added support for IPv6 (EPRT and EPSV commands) to FakeFtpServer and StubFtpServer. Thanks to Fernando Martinez for testing.
+- BUG FIX: #2696898: “WindowsFakeFilesystem DirectoryEntry case sensitivity” (https://sourceforge.net/tracker/?func=detail&atid=1006533&aid=2696898&group_id=208647).
+- BUG FIX: #2797980: “UnixFakeFileSystem IsValidName Regex incorrect” (https://sourceforge.net/tracker/?func=detail&atid=1006533&aid=2797980&group_id=208647).
+- Add getServerControlPort() to AbstractFtpServer.
+- Create HostAndPort class. Refactor both PortCommandHandler(s) and the PortParser classes to use HostAndPort.
+- TESTS: Convert PortParserTest to Groovy.
+
+
 Changes in version 2.0.2 (09 Mar 2009)
 ------------------------------------------
 - BUG FIX: #2654577: 'month' in UnixDirectoryListingFormatter is Locale specific. http://sourceforge.net/tracker/index.php?func=detail&aid=2654577&group_id=208647&atid=1006533.
