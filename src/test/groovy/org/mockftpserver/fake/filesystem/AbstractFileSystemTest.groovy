@@ -30,7 +30,7 @@ abstract class AbstractFileSystemTest extends AbstractGroovyTest {
     public static final FILENAME1 = "File1.txt"
     public static final FILENAME2 = "file2.txt"
     public static final DIR1 = "dir1"
-    public static final NEW_DIRNAME = "testdir"
+    public static final NEW_DIRNAME = "testDir"
     public static final ILLEGAL_FILE = "xx/yy////z!<>?*z.txt"
     public static final EXISTING_FILE_CONTENTS = "abc 123 %^& xxx"
     public static final DATE = new Date()

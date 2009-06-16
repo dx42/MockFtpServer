@@ -594,11 +594,13 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
             String separator = (normalizedPath.endsWith(getSeparator())) ? "" : getSeparator();
             String normalizedDirPrefix = normalizedPath + separator;
             List descendents = new ArrayList();
-            Iterator iter = entries.keySet().iterator();
+            Iterator iter = entries.entrySet().iterator();
             while (iter.hasNext()) {
-                String p = (String) iter.next();
+                Map.Entry mapEntry = (Map.Entry) iter.next();
+                String p = (String) mapEntry.getKey();
                 if (p.startsWith(normalizedDirPrefix) && !normalizedPath.equals(p)) {
-                    descendents.add(p);
+                    FileSystemEntry fileSystemEntry = (FileSystemEntry) mapEntry.getValue();
+                    descendents.add(fileSystemEntry.getPath());
                 }
             }
             return descendents;
