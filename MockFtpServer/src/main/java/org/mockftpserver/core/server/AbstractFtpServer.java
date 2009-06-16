@@ -281,6 +281,15 @@ public abstract class AbstractFtpServer implements Runnable {
     }
 
     /**
+     * Return the port number to which the server control connection socket will bind. The default value is 21.
+     *
+     * @return the port number for the server control connection ServerSocket
+     */
+    public int getServerControlPort() {
+        return serverControlPort;
+    }
+
+    /**
      * Return true if this server is fully shutdown -- i.e., there is no active (alive) threads and
      * all sockets are closed. This method is intended for testing only.
      *
