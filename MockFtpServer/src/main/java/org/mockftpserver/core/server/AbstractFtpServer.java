@@ -170,6 +170,11 @@ public abstract class AbstractFtpServer implements Runnable {
 
             LOG.debug("Cleaning up server...");
 
+            // Ensure that the start() method is not still blocked
+            synchronized (startLock) {
+                startLock.notifyAll();
+            }
+
             try {
                 if (serverSocket != null) {
                     serverSocket.close();
