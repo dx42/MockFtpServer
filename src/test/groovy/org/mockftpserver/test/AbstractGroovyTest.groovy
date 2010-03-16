@@ -31,6 +31,20 @@ abstract class AbstractGroovyTest extends GroovyTestCase {
     private LoggingUtil testLogger
 
     /**
+     * Write out the specified log message, prefixing with the current class name.
+     * @param message - the message to log; toString() is applied first
+     */
+    protected void log(message) {
+        println "[${classNameNoPackage()}] ${message.toString()}"
+    }
+
+    private String classNameNoPackage() {
+        def className = getClass().name
+        def index = className.lastIndexOf('.')
+        return index > -1 ? className.substring(index+1) : className
+    }
+    
+    /**
      * Assert that the specified code throws an exception of the specified type.
      * @param expectedExceptionClass - the Class of exception that is expected
      * @param code - the Closure containing the code to be executed, which is expected to throw an exception of the specified type
