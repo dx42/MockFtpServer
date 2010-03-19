@@ -276,7 +276,7 @@ public class DefaultSession implements Session {
      */
     Command readCommand() {
 
-        final long socketReadIntervalMilliseconds = 100L;
+        final long socketReadIntervalMilliseconds = 20L;
 
         try {
             while (true) {
