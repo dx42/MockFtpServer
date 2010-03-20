@@ -25,12 +25,29 @@ import org.mockftpserver.core.session.Session;
  * connection, along with two replies on the control connection: a reply code of 150 and
  * another of 226. By default, return an empty directory listing. You can customize the
  * returned directory listing by setting the <code>directoryListing</code> property.
- * <p>
+ * <p/>
  * The interpretation of the value returned from this command is dependent upon the value returned
  * by the SYST command. The format of the directory listing should match the format associated with
  * the system named by the SYST command. For example, if the SYST command returns "WINDOWS", then
- * the directory listing value from this command should match the Windows-specific format.
- * <p>
+ * the directory listing value from this command should match the Windows-specific format. See the
+ * <code>SystCommandHandler</code> to control the value returned for the SYST command.
+ * <p/>
+ * Here is an example value for <code>directoryListing</code> when the <code>SystCommandHandler</code>
+ * returns "WINDOWS". Note that multiple entries are separated by "\n":
+ * <code><pre>
+ *      CommandHandler listCommandHandler = new ListCommandHandler();
+ *      listCommandHandler.setDirectoryListing("11-09-01 12:30PM 406348 File2350.log\n" +
+ *          "11-01-01 1:30PM &lt;DIR&gt; 0 archive");
+ * </pre></code>
+ * <p/>
+ * And here is an example value for <code>directoryListing</code> when the <code>SystCommandHandler</code>
+ * returns "UNIX". Note that multiple entries are separated by "\n":
+ * <code><pre>
+ *      CommandHandler listCommandHandler = new ListCommandHandler();
+ *      listCommandHandler.setDirectoryListing("drwxrwxrwx  1 none     none                   0 Mar 20  2010 archive\n" +
+ *          "-rwxrwxrwx  1 none     none                  19 Mar 20  2010 abc.txt");
+ * </pre></code>
+ * <p/>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
  * <li>{@link #PATHNAME_KEY} ("pathname") - the pathname of the directory (or file) submitted on the
