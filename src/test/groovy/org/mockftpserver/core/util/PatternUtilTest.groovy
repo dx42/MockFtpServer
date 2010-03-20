@@ -30,7 +30,7 @@ public class PatternUtilTest extends AbstractGroovyTest {
         assert PatternUtil.convertStringWithWildcardsToRegex('abc') == /abc/
         assert PatternUtil.convertStringWithWildcardsToRegex('abc.def') == /abc\.def/
         assert PatternUtil.convertStringWithWildcardsToRegex('(abc):{def}') == /\(abc\)\:\{def\}/
-        assert PatternUtil.convertStringWithWildcardsToRegex('|[23]^a$b') == /\|\[23\]\^a/ + '\\$b'
+        assert PatternUtil.convertStringWithWildcardsToRegex('|[23]^a+$b') == /\|\[23\]\^a\+/ + '\\$b'
 
         assert PatternUtil.convertStringWithWildcardsToRegex('*.txt') == /.*\.txt/
         assert PatternUtil.convertStringWithWildcardsToRegex('abc*') == /abc.*/

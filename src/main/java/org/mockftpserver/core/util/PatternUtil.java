@@ -65,6 +65,7 @@ public class PatternUtil {
                 case '}':
                 case '\\':
                 case '^':
+                case '+':
                     result.append('\\');
                     result.append(ch);
                     break;
