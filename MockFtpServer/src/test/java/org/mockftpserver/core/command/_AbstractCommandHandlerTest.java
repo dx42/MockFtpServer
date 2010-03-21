@@ -20,7 +20,7 @@ import org.easymock.MockControl;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.stub.command.AbstractStubCommandHandler;
-import org.mockftpserver.test.AbstractTest;
+import org.mockftpserver.test.AbstractTestCase;
 
 import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
@@ -32,7 +32,7 @@ import java.util.ResourceBundle;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class _AbstractCommandHandlerTest extends AbstractTest {
+public final class _AbstractCommandHandlerTest extends AbstractTestCase {
 
     private static final Logger LOG = Logger.getLogger(_AbstractTrackingCommandHandlerTest.class);
     private static final int REPLY_CODE1 = 777;
@@ -100,7 +100,7 @@ public final class _AbstractCommandHandlerTest extends AbstractTest {
     /**
      * Perform initialization before each test
      *
-     * @see org.mockftpserver.test.AbstractTest#setUp()
+     * @see org.mockftpserver.test.AbstractTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();

@@ -17,7 +17,7 @@ package org.mockftpserver.core.command;
 
 import org.apache.log4j.Logger;
 import org.mockftpserver.core.util.AssertFailedException;
-import org.mockftpserver.test.AbstractTest;
+import org.mockftpserver.test.AbstractTestCase;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -30,7 +30,7 @@ import java.util.Set;
  * 
  * @author Chris Mair
  */
-public final class InvocationRecordTest extends AbstractTest {
+public final class InvocationRecordTest extends AbstractTestCase {
 
     private static final Logger LOG = Logger.getLogger(InvocationRecordTest.class);
     private static final Command COMMAND = new Command("command", EMPTY);
@@ -216,7 +216,7 @@ public final class InvocationRecordTest extends AbstractTest {
     /**
      * Perform initialization before each test
      * 
-     * @see org.mockftpserver.test.AbstractTest#setUp()
+     * @see org.mockftpserver.test.AbstractTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();

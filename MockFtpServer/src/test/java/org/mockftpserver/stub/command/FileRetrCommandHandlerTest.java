@@ -17,10 +17,8 @@ package org.mockftpserver.stub.command;
 
 import org.apache.log4j.Logger;
 import org.easymock.ArgumentsMatcher;
-import org.mockftpserver.core.command.AbstractCommandHandlerTest;
-import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.CommandNames;
-import org.mockftpserver.core.command.ReplyCodes;
+import org.mockftpserver.core.command.*;
+import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.util.AssertFailedException;
 
 import java.util.Arrays;
@@ -31,7 +29,7 @@ import java.util.Arrays;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest {
+public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final Logger LOG = Logger.getLogger(FileRetrCommandHandlerTest.class);
     private static final byte BYTE1 = (byte) 7;
@@ -150,7 +148,7 @@ public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest
     /**
      * Perform initialization before each test
      *
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTest#setUp()
+     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();

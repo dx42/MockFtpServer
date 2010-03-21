@@ -20,7 +20,7 @@ import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
-import org.mockftpserver.test.AbstractTest;
+import org.mockftpserver.test.AbstractTestCase;
 
 import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
@@ -33,7 +33,7 @@ import java.util.ResourceBundle;
  * 
  * @author Chris Mair
  */
-public final class _AbstractStubDataCommandHandlerTest extends AbstractTest {
+public final class _AbstractStubDataCommandHandlerTest extends AbstractTestCase {
 
     private static final Logger LOG = Logger.getLogger(_AbstractStubDataCommandHandlerTest.class);
     private static final Command COMMAND = new Command("command", EMPTY);
@@ -151,7 +151,7 @@ public final class _AbstractStubDataCommandHandlerTest extends AbstractTest {
     /**
      * Perform initialization before each test
      * 
-     * @see org.mockftpserver.test.AbstractTest#setUp()
+     * @see org.mockftpserver.test.AbstractTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();

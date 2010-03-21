@@ -16,8 +16,8 @@
 package org.mockftpserver.core.server;
 
 import org.apache.commons.net.ftp.FTPClient;
-import org.mockftpserver.test.AbstractTest;
-import org.mockftpserver.test.PortTestUtil;
+import org.mockftpserver.test.*;
+import org.mockftpserver.test.AbstractTestCase;
 
 /**
  * Abstract superclass for tests of AbstractFtpServer subclasses that require the server thread to be started.
@@ -25,7 +25,7 @@ import org.mockftpserver.test.PortTestUtil;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public abstract class AbstractFtpServer_StartTest extends AbstractTest {
+public abstract class AbstractFtpServer_StartTestCase extends AbstractTestCase {
 
     private static final String SERVER = "localhost";
 
@@ -71,7 +71,7 @@ public abstract class AbstractFtpServer_StartTest extends AbstractTest {
     //-------------------------------------------------------------------------
 
     /**
-     * @see org.mockftpserver.test.AbstractTest#setUp()
+     * @see org.mockftpserver.test.AbstractTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();

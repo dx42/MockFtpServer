@@ -20,8 +20,7 @@ import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.net.ftp.FTPFile
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.StaticReplyCommandHandler
-import org.mockftpserver.fake.FakeFtpServer
-import org.mockftpserver.fake.UserAccount
+
 import org.mockftpserver.fake.filesystem.DirectoryEntry
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystem
@@ -425,7 +424,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
 
     /**
      * Perform initialization before each test
-     * @see org.mockftpserver.test.AbstractTest#setUp()
+     * @see org.mockftpserver.test.AbstractTestCase#setUp()
      */
     void setUp() {
         super.setUp()
@@ -452,7 +451,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
 
     /**
      * Perform cleanup after each test
-     * @see org.mockftpserver.test.AbstractTest#tearDown()
+     * @see org.mockftpserver.test.AbstractTestCase#tearDown()
      */
     void tearDown() {
         super.tearDown()

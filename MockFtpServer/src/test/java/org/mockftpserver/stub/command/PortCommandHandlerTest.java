@@ -15,7 +15,7 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.mockftpserver.core.command.AbstractCommandHandlerTest;
+import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
@@ -28,7 +28,7 @@ import java.net.InetAddress;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class PortCommandHandlerTest extends AbstractCommandHandlerTest {
+public final class PortCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final String[] PARAMETERS = new String[]{"11", "22", "33", "44", "1", "206"};
     private static final String[] PARAMETERS_INSUFFICIENT = new String[]{"7", "29", "99", "11", "77"};
@@ -67,7 +67,7 @@ public final class PortCommandHandlerTest extends AbstractCommandHandlerTest {
     /**
      * Perform initialization before each test
      *
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTest#setUp()
+     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();

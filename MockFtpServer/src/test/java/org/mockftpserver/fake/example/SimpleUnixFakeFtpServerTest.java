@@ -21,14 +21,14 @@ import org.mockftpserver.fake.filesystem.DirectoryEntry;
 import org.mockftpserver.fake.filesystem.FileEntry;
 import org.mockftpserver.fake.filesystem.FileSystem;
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem;
-import org.mockftpserver.test.AbstractTest;
+import org.mockftpserver.test.AbstractTestCase;
 import org.mockftpserver.test.IntegrationTest;
 
 /**
  * Example code illustrating how to programmatically configure a FakeFtpServer with a (simulated) Unix
  * filesystem.
  */
-public class SimpleUnixFakeFtpServerTest extends AbstractTest implements IntegrationTest {
+public class SimpleUnixFakeFtpServerTest extends AbstractTestCase implements IntegrationTest {
 
     public void testConfigureAndStart() throws Exception {
         FakeFtpServer fakeFtpServer = new FakeFtpServer();

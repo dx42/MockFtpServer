@@ -20,7 +20,7 @@ import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.session.DefaultSession;
 import org.mockftpserver.core.util.AssertFailedException;
-import org.mockftpserver.test.AbstractTest;
+import org.mockftpserver.test.AbstractTestCase;
 
 import java.net.Socket;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ import java.util.Map;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public abstract class AbstractFtpServerTest extends AbstractTest {
+public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
 
     protected Logger LOG = Logger.getLogger(getClass());
 
@@ -150,7 +150,7 @@ public abstract class AbstractFtpServerTest extends AbstractTest {
     //-------------------------------------------------------------------------
 
     /**
-     * @see org.mockftpserver.test.AbstractTest#setUp()
+     * @see org.mockftpserver.test.AbstractTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();

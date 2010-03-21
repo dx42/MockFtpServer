@@ -16,7 +16,7 @@
 package org.mockftpserver.core.util;
 
 import org.apache.log4j.Logger;
-import org.mockftpserver.test.AbstractTest;
+import org.mockftpserver.test.AbstractTestCase;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,7 +30,7 @@ import java.util.Map;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public class AssertTest extends AbstractTest {
+public class AssertTest extends AbstractTestCase {
 
     private static final Logger LOG = Logger.getLogger(AssertTest.class);
 

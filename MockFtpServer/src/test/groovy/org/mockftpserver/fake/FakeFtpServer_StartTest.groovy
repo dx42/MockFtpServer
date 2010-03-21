@@ -16,8 +16,7 @@
 package org.mockftpserver.fake
 
 import org.mockftpserver.core.server.AbstractFtpServer
-import org.mockftpserver.core.server.AbstractFtpServer_StartTest
-import org.mockftpserver.fake.FakeFtpServer
+import org.mockftpserver.core.server.AbstractFtpServer_StartTestCase
 
 /**
  * Tests for FakeFtpServer that require the server thread to be started.
@@ -26,7 +25,7 @@ import org.mockftpserver.fake.FakeFtpServer
  *
  * @author Chris Mair
  */
-class FakeFtpServer_StartTest extends AbstractFtpServer_StartTest {
+class FakeFtpServer_StartTest extends AbstractFtpServer_StartTestCase {
 
     protected AbstractFtpServer createFtpServer() {
         return new FakeFtpServer();

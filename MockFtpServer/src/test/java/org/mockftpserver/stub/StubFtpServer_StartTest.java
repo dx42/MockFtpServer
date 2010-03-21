@@ -16,7 +16,7 @@
 package org.mockftpserver.stub;
 
 import org.mockftpserver.core.server.AbstractFtpServer;
-import org.mockftpserver.core.server.AbstractFtpServer_StartTest;
+import org.mockftpserver.core.server.AbstractFtpServer_StartTestCase;
 
 /**
  * Tests for StubFtpServer that require the StubFtpServer thread to be started.
@@ -24,7 +24,7 @@ import org.mockftpserver.core.server.AbstractFtpServer_StartTest;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class StubFtpServer_StartTest extends AbstractFtpServer_StartTest {
+public final class StubFtpServer_StartTest extends AbstractFtpServer_StartTestCase {
 
     //-------------------------------------------------------------------------
     // Abstract method implementations

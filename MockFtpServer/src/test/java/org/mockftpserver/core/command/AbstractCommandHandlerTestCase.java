@@ -18,7 +18,7 @@ package org.mockftpserver.core.command;
 import org.apache.log4j.Logger;
 import org.easymock.MockControl;
 import org.mockftpserver.core.session.Session;
-import org.mockftpserver.test.AbstractTest;
+import org.mockftpserver.test.AbstractTestCase;
 
 import java.text.MessageFormat;
 import java.util.ListResourceBundle;
@@ -30,9 +30,9 @@ import java.util.ResourceBundle;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public abstract class AbstractCommandHandlerTest extends AbstractTest {
+public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
 
-    private static final Logger LOG = Logger.getLogger(AbstractCommandHandlerTest.class);
+    private static final Logger LOG = Logger.getLogger(AbstractCommandHandlerTestCase.class);
 
     // Some common test constants
     protected static final String DIR1 = "dir1";
@@ -138,7 +138,7 @@ public abstract class AbstractCommandHandlerTest extends AbstractTest {
     /**
      * Perform setup before each test
      *
-     * @see org.mockftpserver.test.AbstractTest#setUp()
+     * @see org.mockftpserver.test.AbstractTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();

@@ -16,10 +16,8 @@
 package org.mockftpserver.stub.command;
 
 import org.easymock.MockControl;
-import org.mockftpserver.core.command.AbstractCommandHandlerTest;
-import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.CommandNames;
-import org.mockftpserver.core.command.ReplyCodes;
+import org.mockftpserver.core.command.*;
+import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 
 /**
  * Tests for the ListCommandHandler class
@@ -27,7 +25,7 @@ import org.mockftpserver.core.command.ReplyCodes;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class ListCommandHandlerTest extends AbstractCommandHandlerTest {
+public final class ListCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private ListCommandHandler commandHandler;
 
@@ -66,7 +64,7 @@ public final class ListCommandHandlerTest extends AbstractCommandHandlerTest {
     /**
      * Perform initialization before each test
      *
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTest#setUp()
+     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
