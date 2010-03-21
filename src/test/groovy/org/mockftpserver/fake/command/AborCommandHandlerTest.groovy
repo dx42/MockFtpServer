@@ -27,7 +27,7 @@ import org.mockftpserver.core.command.ReplyCodes
  *
  * @author Chris Mair
  */
-class AborCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class AborCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     void testHandleCommand() {
         handleCommand([])

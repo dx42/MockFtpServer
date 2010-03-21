@@ -29,7 +29,7 @@ import org.mockftpserver.fake.filesystem.Permissions
  *
  * @author Chris Mair
  */
-class RnfrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class RnfrCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     def FILE = "/file.txt"
 

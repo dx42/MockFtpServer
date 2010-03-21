@@ -27,7 +27,7 @@ import org.mockftpserver.core.command.ReplyCodes
  *
  * @author Chris Mair
  */
-class PasvCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class PasvCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     static final PORT = (23 << 8) + 77
     static final InetAddress SERVER = inetAddress("192.168.0.2")

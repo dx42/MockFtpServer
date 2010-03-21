@@ -27,7 +27,7 @@ import org.mockftpserver.core.command.ReplyCodes
  *
  * @author Chris Mair
  */
-class EpsvCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class EpsvCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     static final SERVER = InetAddress.getByName("1080::8:800:200C:417A")
     static final PORT = 6275

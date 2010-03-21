@@ -27,7 +27,7 @@ import org.mockftpserver.core.command.ReplyCodes
  *
  * @author Chris Mair
  */
-class PortCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class PortCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     static final PARAMETERS = ["11", "22", "33", "44", "1", "206"]
     static final PARAMETERS_INSUFFICIENT = ["7", "29", "99", "11", "77"]

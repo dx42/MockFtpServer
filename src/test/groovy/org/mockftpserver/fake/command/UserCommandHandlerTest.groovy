@@ -29,7 +29,7 @@ import org.mockftpserver.fake.UserAccount
  *
  * @author Chris Mair
  */
-class UserCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class UserCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     static final USERNAME = "user123"
     static final HOME_DIRECTORY = "/"

@@ -31,7 +31,7 @@ import org.mockftpserver.fake.filesystem.Permissions
  *
  * @author Chris Mair
  */
-class MkdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class MkdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     static final PARENT = '/'
     static final DIRNAME = "usr"

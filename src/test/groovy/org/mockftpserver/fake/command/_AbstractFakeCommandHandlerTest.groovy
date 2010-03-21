@@ -28,7 +28,7 @@ import org.mockftpserver.fake.UserAccount
 import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.InvalidFilenameException
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem
-import org.mockftpserver.test.AbstractGroovyTest
+import org.mockftpserver.test.AbstractGroovyTestCase
 import org.mockftpserver.test.StubResourceBundle
 
 /**
@@ -38,7 +38,7 @@ import org.mockftpserver.test.StubResourceBundle
  *
  * @author Chris Mair
  */
-class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTest {
+class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTestCase {
 
     static PATH = "some/path"
     static REPLY_CODE = 99

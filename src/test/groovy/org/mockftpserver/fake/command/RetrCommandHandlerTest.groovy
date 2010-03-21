@@ -31,7 +31,7 @@ import org.mockftpserver.fake.filesystem.Permissions
  *
  * @author Chris Mair
  */
-class RetrCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class RetrCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     def DIR = "/"
     def FILENAME = "file.txt"
@@ -130,6 +130,6 @@ class BadFileEntry extends FileEntry {
     }
 
     InputStream createInputStream() {
-        throw new FileSystemException("BAD", AbstractFakeCommandHandlerTest.ERROR_MESSAGE_KEY)
+        throw new FileSystemException("BAD", AbstractFakeCommandHandlerTestCase.ERROR_MESSAGE_KEY)
     }
 }

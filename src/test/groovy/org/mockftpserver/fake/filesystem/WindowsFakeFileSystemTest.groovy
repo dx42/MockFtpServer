@@ -15,8 +15,6 @@
  */
 package org.mockftpserver.fake.filesystem
 
-import org.mockftpserver.fake.filesystem.AbstractFakeFileSystemTest
-
 /**
  * Tests for WindowsFakeFileSystem.
  *
@@ -24,7 +22,7 @@ import org.mockftpserver.fake.filesystem.AbstractFakeFileSystemTest
  *
  * @author Chris Mair
  */
-class WindowsFakeFileSystemTest extends AbstractFakeFileSystemTest {
+class WindowsFakeFileSystemTest extends AbstractFakeFileSystemTestCase {
 
     private static final String SEP = "\\"
 

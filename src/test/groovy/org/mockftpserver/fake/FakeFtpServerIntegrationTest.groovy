@@ -27,7 +27,7 @@ import org.mockftpserver.fake.filesystem.FileSystem
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem
 import org.mockftpserver.fake.filesystem.WindowsFakeFileSystem
 import org.mockftpserver.stub.command.CwdCommandHandler
-import org.mockftpserver.test.AbstractGroovyTest
+import org.mockftpserver.test.AbstractGroovyTestCase
 import org.mockftpserver.test.PortTestUtil
 
 /**
@@ -37,7 +37,7 @@ import org.mockftpserver.test.PortTestUtil
  *
  * @author Chris Mair
  */
-class FakeFtpServerIntegrationTest extends AbstractGroovyTest {
+class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
 
     static final SERVER = "localhost"
     static final USERNAME = "user123"

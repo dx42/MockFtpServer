@@ -30,7 +30,7 @@ import org.mockftpserver.fake.filesystem.Permissions
  *
  * @author Chris Mair
  */
-class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     static final DIR = '/'
     static final FROM_FILE = "/from.txt"

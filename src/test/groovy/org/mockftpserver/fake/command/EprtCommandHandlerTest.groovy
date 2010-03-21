@@ -27,7 +27,7 @@ import org.mockftpserver.core.command.ReplyCodes
  *
  * @author Chris Mair
  */
-class EprtCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class EprtCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     static final PARAMETERS_IPV4 = ["|1|132.235.1.2|6275|"]
     static final HOST_IPV4 = InetAddress.getByName("132.235.1.2")

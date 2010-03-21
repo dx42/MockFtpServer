@@ -29,7 +29,7 @@ import org.mockftpserver.fake.filesystem.Permissions
  *
  * @author Chris Mair
  */
-class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     def DIR = "/usr"
 

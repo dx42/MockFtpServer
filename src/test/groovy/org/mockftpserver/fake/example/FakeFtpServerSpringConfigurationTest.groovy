@@ -3,7 +3,7 @@ package org.mockftpserver.fake.example
 import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.net.ftp.FTPFile
 import org.mockftpserver.fake.FakeFtpServer
-import org.mockftpserver.test.AbstractGroovyTest
+import org.mockftpserver.test.AbstractGroovyTestCase
 import org.springframework.context.ApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext
 
@@ -22,7 +22,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-class FakeFtpServerSpringConfigurationTest extends AbstractGroovyTest {
+class FakeFtpServerSpringConfigurationTest extends AbstractGroovyTestCase {
 
     static final SERVER = "localhost"
     static final PORT = 9981

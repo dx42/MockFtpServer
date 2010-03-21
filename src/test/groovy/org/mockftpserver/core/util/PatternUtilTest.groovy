@@ -15,7 +15,7 @@
  */
 package org.mockftpserver.core.util
 
-import org.mockftpserver.test.AbstractGroovyTest
+import org.mockftpserver.test.AbstractGroovyTestCase
 
 /**
  * Tests for the PatternUtil class
@@ -24,7 +24,7 @@ import org.mockftpserver.test.AbstractGroovyTest
  *
  * @author Chris Mair
  */
-public class PatternUtilTest extends AbstractGroovyTest {
+public class PatternUtilTest extends AbstractGroovyTestCase {
 
     void testConvertStringWithWildcardsToRegex() {
         assert PatternUtil.convertStringWithWildcardsToRegex('abc') == /abc/

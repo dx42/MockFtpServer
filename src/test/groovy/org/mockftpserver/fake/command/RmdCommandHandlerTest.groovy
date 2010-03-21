@@ -30,7 +30,7 @@ import org.mockftpserver.fake.filesystem.Permissions
  *
  * @author Chris Mair
  */
-class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     static final PARENT = '/'
     static final DIR = p(PARENT, "usr")

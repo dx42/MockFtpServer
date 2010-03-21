@@ -16,7 +16,7 @@
 package org.mockftpserver.fake.filesystem
 
 import java.lang.reflect.Constructor
-import org.mockftpserver.test.AbstractGroovyTest
+import org.mockftpserver.test.AbstractGroovyTestCase
 
 /**
  * Abstract test superclass for subclasses of AbstractFileSystemEntry
@@ -25,7 +25,7 @@ import org.mockftpserver.test.AbstractGroovyTest
  *
  * @author Chris Mair
  */
-public abstract class AbstractFileSystemEntryTest extends AbstractGroovyTest {
+public abstract class AbstractFileSystemEntryTestCase extends AbstractGroovyTestCase {
 
     protected static final PATH = "c:/test/dir"
     protected static final NEW_PATH = "d:/other/dir"

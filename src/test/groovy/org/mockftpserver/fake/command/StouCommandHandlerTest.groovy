@@ -26,7 +26,7 @@ import org.mockftpserver.core.command.CommandNames
  *
  * @author Chris Mair
  */
-class StouCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
+class StouCommandHandlerTest extends AbstractStoreFileCommandHandlerTestCase {
 
     def expectedBaseName
 

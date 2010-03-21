@@ -15,7 +15,7 @@
  */
 package org.mockftpserver.fake.filesystem
 
-import org.mockftpserver.test.AbstractGroovyTest
+import org.mockftpserver.test.AbstractGroovyTestCase
 
 /**
  * Abstract superclass for tests of FileSystem implementation classes. Contains common
@@ -25,7 +25,7 @@ import org.mockftpserver.test.AbstractGroovyTest
  *
  * @author Chris Mair
  */
-abstract class AbstractFileSystemTest extends AbstractGroovyTest {
+abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
 
     public static final FILENAME1 = "File1.txt"
     public static final FILENAME2 = "file2.txt"

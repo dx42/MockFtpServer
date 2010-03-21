@@ -16,7 +16,7 @@
 package org.mockftpserver.fake.filesystem
 
 import java.text.SimpleDateFormat
-import org.mockftpserver.test.AbstractGroovyTest
+import org.mockftpserver.test.AbstractGroovyTestCase
 
 /**
  * Tests for UnixDirectoryListingFormatter
@@ -25,7 +25,7 @@ import org.mockftpserver.test.AbstractGroovyTest
  *
  * @author Chris Mair
  */
-class UnixDirectoryListingFormatterTest extends AbstractGroovyTest {
+class UnixDirectoryListingFormatterTest extends AbstractGroovyTestCase {
 
     static final FILE_NAME = "def.txt"
     static final FILE_PATH = "/dir/$FILE_NAME"

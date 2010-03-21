@@ -15,8 +15,6 @@
  */
 package org.mockftpserver.fake.filesystem
 
-import org.mockftpserver.fake.filesystem.AbstractFakeFileSystemTest
-
 /**
  * Tests for UnixFakeFileSystem.
  *
@@ -24,7 +22,7 @@ import org.mockftpserver.fake.filesystem.AbstractFakeFileSystemTest
  *
  * @author Chris Mair
  */
-class UnixFakeFileSystemTest extends AbstractFakeFileSystemTest {
+class UnixFakeFileSystemTest extends AbstractFakeFileSystemTestCase {
 
     private static final String SEP = "/"
 

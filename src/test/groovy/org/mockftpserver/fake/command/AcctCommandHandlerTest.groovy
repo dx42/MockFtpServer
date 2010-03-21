@@ -28,7 +28,7 @@ import org.mockftpserver.core.session.SessionKeys
  *
  * @author Chris Mair
  */
-class AcctCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class AcctCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     def USERNAME = "user123"
     def ACCOUNT_NAME = "account123"
