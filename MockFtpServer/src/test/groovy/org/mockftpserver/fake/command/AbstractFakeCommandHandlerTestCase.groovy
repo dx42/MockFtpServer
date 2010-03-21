@@ -26,7 +26,7 @@ import org.mockftpserver.fake.filesystem.DirectoryEntry
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystemException
 import org.mockftpserver.fake.filesystem.TestUnixFakeFileSystem
-import org.mockftpserver.test.AbstractGroovyTest
+import org.mockftpserver.test.AbstractGroovyTestCase
 import org.mockftpserver.test.StubResourceBundle
 
 /**
@@ -36,7 +36,7 @@ import org.mockftpserver.test.StubResourceBundle
  *
  * @author Chris Mair
  */
-abstract class AbstractFakeCommandHandlerTest extends AbstractGroovyTest {
+abstract class AbstractFakeCommandHandlerTestCase extends AbstractGroovyTestCase {
 
     protected static final ERROR_MESSAGE_KEY = 'msgkey'
 

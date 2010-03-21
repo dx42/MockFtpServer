@@ -17,7 +17,7 @@ package org.mockftpserver.core.util
 
 import org.apache.log4j.Logger
 import org.mockftpserver.core.CommandSyntaxException
-import org.mockftpserver.test.AbstractGroovyTest
+import org.mockftpserver.test.AbstractGroovyTestCase
 
 /**
  * Tests for the PortParser class
@@ -25,7 +25,7 @@ import org.mockftpserver.test.AbstractGroovyTest
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-class PortParserTest extends AbstractGroovyTest {
+class PortParserTest extends AbstractGroovyTestCase {
 
     static final Logger LOG = Logger.getLogger(PortParserTest.class)
     static final String[] PARAMETERS = ["192", "22", "250", "44", "1", "206"]

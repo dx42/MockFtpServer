@@ -29,7 +29,7 @@ import org.mockftpserver.fake.UserAccount
  *
  * @author Chris Mair
  */
-class ReinCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class ReinCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     boolean testNotLoggedIn = false
 

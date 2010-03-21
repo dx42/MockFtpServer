@@ -15,10 +15,10 @@
  */
 package org.mockftpserver.fake
 
-import org.mockftpserver.test.AbstractGroovyTest
+import org.mockftpserver.test.AbstractGroovyTestCase
 import org.mockftpserver.test.PortTestUtil
 
-class FakeFtpServer_AlreadyStartedTest extends AbstractGroovyTest {
+class FakeFtpServer_AlreadyStartedTest extends AbstractGroovyTestCase {
     private FakeFtpServer ftpServer1 = new FakeFtpServer()
     private FakeFtpServer ftpServer2 = new FakeFtpServer()
 

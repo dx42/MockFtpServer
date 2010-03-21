@@ -22,7 +22,7 @@ package org.mockftpserver.fake.filesystem
  *
  * @author Chris Mair
  */
-public class DirectoryEntryTest extends AbstractFileSystemEntryTest {
+public class DirectoryEntryTest extends AbstractFileSystemEntryTestCase {
 
     private DirectoryEntry entry
 
@@ -44,14 +44,14 @@ public class DirectoryEntryTest extends AbstractFileSystemEntryTest {
     }
 
     /**
-     * @see org.mockftpserver.fake.filesystem.AbstractFileSystemEntryTest#getImplementationClass()
+     * @see org.mockftpserver.fake.filesystem.AbstractFileSystemEntryTestCase#getImplementationClass()
      */
     protected Class getImplementationClass() {
         return DirectoryEntry.class
     }
 
     /**
-     * @see org.mockftpserver.fake.filesystem.AbstractFileSystemEntryTest#isDirectory()
+     * @see org.mockftpserver.fake.filesystem.AbstractFileSystemEntryTestCase#isDirectory()
      */
     protected boolean isDirectory() {
         return true

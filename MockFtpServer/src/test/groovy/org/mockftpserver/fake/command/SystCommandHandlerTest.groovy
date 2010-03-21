@@ -27,7 +27,7 @@ import org.mockftpserver.core.command.ReplyCodes
  *
  * @author Chris Mair
  */
-class SystCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class SystCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     static final SYSTEM_NAME = "UNIX"
 

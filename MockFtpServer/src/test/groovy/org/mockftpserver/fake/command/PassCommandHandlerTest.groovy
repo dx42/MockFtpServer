@@ -29,7 +29,7 @@ import org.mockftpserver.fake.UserAccount
  *
  * @author Chris Mair
  */
-class PassCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class PassCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     def USERNAME = "user123"
     def PASSWORD = "password123"

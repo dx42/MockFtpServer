@@ -30,7 +30,7 @@ import org.mockftpserver.fake.filesystem.Permissions
  *
  * @author Chris Mair
  */
-class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     def DIR = "/usr"
 

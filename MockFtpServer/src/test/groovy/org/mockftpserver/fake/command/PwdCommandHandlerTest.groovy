@@ -28,7 +28,7 @@ import org.mockftpserver.core.session.SessionKeys
  *
  * @author Chris Mair
  */
-class PwdCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class PwdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     static final DIR = "/usr/abc"
 

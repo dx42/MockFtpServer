@@ -29,7 +29,7 @@ import org.mockftpserver.fake.filesystem.Permissions
  *
  * @author Chris Mair
  */
-class AppeCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
+class AppeCommandHandlerTest extends AbstractStoreFileCommandHandlerTestCase {
 
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])

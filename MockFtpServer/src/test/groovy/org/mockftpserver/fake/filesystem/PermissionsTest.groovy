@@ -15,7 +15,7 @@
  */
 package org.mockftpserver.fake.filesystem
 
-import org.mockftpserver.test.AbstractGroovyTest
+import org.mockftpserver.test.AbstractGroovyTestCase
 
 /**
  * Tests for the Permissions class
@@ -24,7 +24,7 @@ import org.mockftpserver.test.AbstractGroovyTest
  *
  * @author Chris Mair
  */
-class PermissionsTest extends AbstractGroovyTest {
+class PermissionsTest extends AbstractGroovyTestCase {
 
     void testConstructor() {
         testConstructorWithValidString('rwxrwxrwx')

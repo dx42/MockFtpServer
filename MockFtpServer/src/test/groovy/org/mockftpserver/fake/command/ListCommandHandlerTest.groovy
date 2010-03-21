@@ -34,7 +34,7 @@ import org.mockftpserver.fake.filesystem.Permissions
  *
  * @author Chris Mair
  */
-class ListCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class ListCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     private static final DIR = "/usr"
     private static final NAME = "abc.txt"

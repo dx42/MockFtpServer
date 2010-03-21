@@ -25,7 +25,7 @@ import org.mockftpserver.test.LoggingUtil
  *
  * @author Chris Mair
  */
-abstract class AbstractGroovyTest extends GroovyTestCase {
+abstract class AbstractGroovyTestCase extends GroovyTestCase {
 
     protected final Logger LOG = Logger.getLogger(this.class)
     private LoggingUtil testLogger

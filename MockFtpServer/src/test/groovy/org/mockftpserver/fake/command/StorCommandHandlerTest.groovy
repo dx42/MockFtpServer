@@ -27,7 +27,7 @@ import org.mockftpserver.core.command.ReplyCodes
  *
  * @author Chris Mair
  */
-class StorCommandHandlerTest extends AbstractStoreFileCommandHandlerTest {
+class StorCommandHandlerTest extends AbstractStoreFileCommandHandlerTestCase {
 
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])

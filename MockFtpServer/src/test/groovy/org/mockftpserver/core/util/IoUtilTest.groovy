@@ -15,7 +15,7 @@
  */
 package org.mockftpserver.core.util
 
-import org.mockftpserver.test.AbstractGroovyTest
+import org.mockftpserver.test.AbstractGroovyTestCase
 
 /**
  * Tests for the IoUtil class
@@ -24,7 +24,7 @@ import org.mockftpserver.test.AbstractGroovyTest
  *
  * @author Chris Mair
  */
-public class IoUtilTest extends AbstractGroovyTest {
+public class IoUtilTest extends AbstractGroovyTestCase {
 
     /**
      * Test the readBytes() method 

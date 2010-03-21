@@ -28,7 +28,7 @@ import org.mockftpserver.core.session.SessionKeys
  *
  * @author Chris Mair
  */
-class TypeCommandHandlerTest extends AbstractFakeCommandHandlerTest {
+class TypeCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     void testHandleCommand_Ascii() {
         handleCommand(['A'])

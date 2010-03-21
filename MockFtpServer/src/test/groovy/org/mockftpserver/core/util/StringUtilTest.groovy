@@ -15,7 +15,7 @@
  */
 package org.mockftpserver.core.util
 
-import org.mockftpserver.test.AbstractGroovyTest
+import org.mockftpserver.test.AbstractGroovyTestCase
 
 /**
  * Tests for the IoUtil class
@@ -24,7 +24,7 @@ import org.mockftpserver.test.AbstractGroovyTest
  *
  * @author Chris Mair
  */
-class StringUtilTest extends AbstractGroovyTest {
+class StringUtilTest extends AbstractGroovyTestCase {
 
     void testPadRight() {
         assert StringUtil.padRight('', 0) == ''

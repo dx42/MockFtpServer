@@ -24,7 +24,7 @@ import org.mockftpserver.core.util.IoUtil
  *
  * @author Chris Mair
  */
-abstract class AbstractFakeFileSystemTest extends AbstractFileSystemTest {
+abstract class AbstractFakeFileSystemTestCase extends AbstractFileSystemTestCase {
 
     // -------------------------------------------------------------------------
     // Tests
@@ -158,7 +158,7 @@ abstract class AbstractFakeFileSystemTest extends AbstractFileSystemTest {
      * @param fileSystem - the FileSystem instance
      * @param expectedContents - the expected contents
      * @throws IOException
-     * @see org.mockftpserver.fake.filesystem.AbstractFileSystemTest#verifyFileContents(FileSystem,
+     * @see org.mockftpserver.fake.filesystem.AbstractFileSystemTestCase#verifyFileContents(FileSystem,
      * String , String )
      */
     protected void verifyFileContents(FileSystem fileSystem, String path, String expectedContents) throws IOException {

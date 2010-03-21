@@ -15,12 +15,10 @@
  */
 package org.mockftpserver.fake
 
-import org.mockftpserver.fake.CustomUserAccount
-import org.mockftpserver.fake.UserAccount
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystemEntry
 import org.mockftpserver.fake.filesystem.Permissions
-import org.mockftpserver.test.AbstractGroovyTest
+import org.mockftpserver.test.AbstractGroovyTestCase
 
 /**
  * Tests for UserAccount
@@ -29,7 +27,7 @@ import org.mockftpserver.test.AbstractGroovyTest
  *
  * @author Chris Mair
  */
-class UserAccountTest extends AbstractGroovyTest {
+class UserAccountTest extends AbstractGroovyTestCase {
 
     private static final USERNAME = "user123"
     private static final PASSWORD = "password123"
