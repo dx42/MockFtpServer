@@ -18,13 +18,13 @@ package org.mockftpserver.stub.example;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.stub.StubFtpServer;
 import org.mockftpserver.stub.command.PwdCommandHandler;
-import org.mockftpserver.test.AbstractTest;
+import org.mockftpserver.test.AbstractTestCase;
 import org.mockftpserver.test.IntegrationTest;
 
 /**
  * Example test using StubFtpServer, with programmatic configuration.
  */
-public class FtpWorkingDirectoryTest extends AbstractTest implements IntegrationTest {
+public class FtpWorkingDirectoryTest extends AbstractTestCase implements IntegrationTest {
 
     private static final int PORT = 9981;
     private FtpWorkingDirectory ftpWorkingDirectory;
@@ -49,7 +49,7 @@ public class FtpWorkingDirectoryTest extends AbstractTest implements Integration
     }
 
     /**
-     * @see org.mockftpserver.test.AbstractTest#setUp()
+     * @see org.mockftpserver.test.AbstractTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -60,7 +60,7 @@ public class FtpWorkingDirectoryTest extends AbstractTest implements Integration
     }
 
     /**
-     * @see org.mockftpserver.test.AbstractTest#tearDown()
+     * @see org.mockftpserver.test.AbstractTestCase#tearDown()
      */
     protected void tearDown() throws Exception {
         super.tearDown();

@@ -41,9 +41,9 @@ import java.util.Set;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public abstract class AbstractTest extends TestCase {
+public abstract class AbstractTestCase extends TestCase {
 
-    private static final Logger LOG = Logger.getLogger(AbstractTest.class);
+    private static final Logger LOG = Logger.getLogger(AbstractTestCase.class);
     protected static final List EMPTY_LIST = Collections.EMPTY_LIST;
     protected static final String[] EMPTY = new String[0];
     protected static final InetAddress DEFAULT_HOST = inetAddress(null);
@@ -51,7 +51,7 @@ public abstract class AbstractTest extends TestCase {
     /**
      * Constructor
      */
-    public AbstractTest() {
+    public AbstractTestCase() {
         super();
     }
 

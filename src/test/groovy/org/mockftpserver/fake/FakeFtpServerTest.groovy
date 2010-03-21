@@ -19,12 +19,8 @@ import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.ReplyTextBundleAware
 import org.mockftpserver.core.server.AbstractFtpServer
-import org.mockftpserver.core.server.AbstractFtpServerTest
+import org.mockftpserver.core.server.AbstractFtpServerTestCase
 import org.mockftpserver.core.session.Session
-import org.mockftpserver.fake.FakeFtpServer
-import org.mockftpserver.fake.TestCommandHandler
-import org.mockftpserver.fake.TestCommandHandlerNotServerConfigurationAware
-import org.mockftpserver.fake.UserAccount
 
 /**
  * Tests for FakeFtpServer.
@@ -33,7 +29,7 @@ import org.mockftpserver.fake.UserAccount
  *
  * @author Chris Mair
  */
-class FakeFtpServerTest extends AbstractFtpServerTest {
+class FakeFtpServerTest extends AbstractFtpServerTestCase {
 
     def commandHandler
     def commandHandler_NotServerConfigurationAware

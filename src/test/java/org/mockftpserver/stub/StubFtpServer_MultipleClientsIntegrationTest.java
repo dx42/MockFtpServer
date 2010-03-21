@@ -22,7 +22,7 @@ import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.stub.command.AbstractStubCommandHandler;
-import org.mockftpserver.test.AbstractTest;
+import org.mockftpserver.test.AbstractTestCase;
 import org.mockftpserver.test.IntegrationTest;
 import org.mockftpserver.test.PortTestUtil;
 
@@ -33,7 +33,7 @@ import org.mockftpserver.test.PortTestUtil;
  * 
  * @author Chris Mair
  */
-public final class StubFtpServer_MultipleClientsIntegrationTest extends AbstractTest implements
+public final class StubFtpServer_MultipleClientsIntegrationTest extends AbstractTestCase implements
         IntegrationTest {
 
     private static final Logger LOG = Logger.getLogger(StubFtpServer_MultipleClientsIntegrationTest.class);
@@ -93,7 +93,7 @@ public final class StubFtpServer_MultipleClientsIntegrationTest extends Abstract
 
     /**
      * Perform initialization before each test
-     * @see org.mockftpserver.test.AbstractTest#setUp()
+     * @see org.mockftpserver.test.AbstractTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -114,7 +114,7 @@ public final class StubFtpServer_MultipleClientsIntegrationTest extends Abstract
 
     /**
      * Perform cleanup after each test
-     * @see org.mockftpserver.test.AbstractTest#tearDown()
+     * @see org.mockftpserver.test.AbstractTestCase#tearDown()
      */
     protected void tearDown() throws Exception {
         super.tearDown();

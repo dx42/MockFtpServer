@@ -241,6 +241,8 @@
     <dictionary name="Chris">
       <words>
         <w>inet</w>
+        <w>rnfr</w>
+        <w>rnto</w>
       </words>
     </dictionary>
   </component>

@@ -18,7 +18,7 @@ package org.mockftpserver.core.command;
 import org.apache.log4j.Logger;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
-import org.mockftpserver.test.AbstractTest;
+import org.mockftpserver.test.AbstractTestCase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ import java.util.ResourceBundle;
  * 
  * @author Chris Mair
  */
-public class SimpleCompositeCommandHandlerTest extends AbstractTest {
+public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
 
     private static final Logger LOG = Logger.getLogger(SimpleCompositeCommandHandlerTest.class);
     
@@ -253,7 +253,7 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTest {
     
     /**
      * Perform initialization before each test
-     * @see org.mockftpserver.test.AbstractTest#setUp()
+     * @see org.mockftpserver.test.AbstractTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();

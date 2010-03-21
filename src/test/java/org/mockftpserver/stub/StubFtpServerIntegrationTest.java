@@ -25,9 +25,8 @@ import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.core.command.SimpleCompositeCommandHandler;
 import org.mockftpserver.core.command.StaticReplyCommandHandler;
 import org.mockftpserver.stub.command.*;
-import org.mockftpserver.test.AbstractTest;
-import org.mockftpserver.test.IntegrationTest;
-import org.mockftpserver.test.PortTestUtil;
+import org.mockftpserver.test.*;
+import org.mockftpserver.test.AbstractTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -39,7 +38,7 @@ import java.io.IOException;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class StubFtpServerIntegrationTest extends AbstractTest implements IntegrationTest {
+public final class StubFtpServerIntegrationTest extends AbstractTestCase implements IntegrationTest {
 
     private static final Logger LOG = Logger.getLogger(StubFtpServerIntegrationTest.class);
     private static final String SERVER = "localhost";
@@ -522,7 +521,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
     /**
      * Perform initialization before each test
      *
-     * @see org.mockftpserver.test.AbstractTest#setUp()
+     * @see org.mockftpserver.test.AbstractTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -542,7 +541,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTest implements 
     /**
      * Perform cleanup after each test
      *
-     * @see org.mockftpserver.test.AbstractTest#tearDown()
+     * @see org.mockftpserver.test.AbstractTestCase#tearDown()
      */
     protected void tearDown() throws Exception {
         super.tearDown();

@@ -18,8 +18,8 @@ package org.mockftpserver.stub;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.InvocationRecord;
-import org.mockftpserver.core.server.AbstractFtpServer;
-import org.mockftpserver.core.server.AbstractFtpServerTest;
+import org.mockftpserver.core.server.*;
+import org.mockftpserver.core.server.AbstractFtpServerTestCase;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.stub.command.AbstractStubCommandHandler;
 import org.mockftpserver.stub.command.CwdCommandHandler;
@@ -33,7 +33,7 @@ import java.util.ResourceBundle;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class StubFtpServerTest extends AbstractFtpServerTest {
+public final class StubFtpServerTest extends AbstractFtpServerTestCase {
 
     private StubFtpServer stubFtpServer;
     private AbstractStubCommandHandler commandHandler;
@@ -79,7 +79,7 @@ public final class StubFtpServerTest extends AbstractFtpServerTest {
     //-------------------------------------------------------------------------
 
     /**
-     * @see org.mockftpserver.test.AbstractTest#setUp()
+     * @see org.mockftpserver.test.AbstractTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();

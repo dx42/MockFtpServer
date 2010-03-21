@@ -22,14 +22,14 @@ import org.mockftpserver.fake.filesystem.FileEntry;
 import org.mockftpserver.fake.filesystem.FileSystem;
 import org.mockftpserver.fake.filesystem.Permissions;
 import org.mockftpserver.fake.filesystem.WindowsFakeFileSystem;
-import org.mockftpserver.test.AbstractTest;
-import org.mockftpserver.test.IntegrationTest;
+import org.mockftpserver.test.*;
+import org.mockftpserver.test.AbstractTestCase;
 
 /**
  * Example code illustrating how to programmatically configure a FakeFtpServer with a (simulated) Windows
  * filesystem, and including file/directory permissions.
  */
-public class WindowsFakeFileSystemPermissionsTest extends AbstractTest implements IntegrationTest {
+public class WindowsFakeFileSystemPermissionsTest extends AbstractTestCase implements IntegrationTest {
 
     private static final Logger LOG = Logger.getLogger(WindowsFakeFileSystemPermissionsTest.class);
 

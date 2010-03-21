@@ -15,7 +15,7 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.mockftpserver.core.command.AbstractCommandHandlerTest;
+import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
@@ -27,7 +27,7 @@ import org.mockftpserver.core.command.ReplyCodes;
  * 
  * @author Chris Mair
  */
-public final class PwdCommandHandlerTest extends AbstractCommandHandlerTest {
+public final class PwdCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private PwdCommandHandler commandHandler;
 
@@ -54,7 +54,7 @@ public final class PwdCommandHandlerTest extends AbstractCommandHandlerTest {
     /**
      * Perform initialization before each test
      * 
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTest#setUp()
+     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();

@@ -21,15 +21,15 @@ import org.mockftpserver.fake.filesystem.FileEntry;
 import org.mockftpserver.fake.filesystem.FileSystem;
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem;
 import org.mockftpserver.stub.example.RemoteFile;
-import org.mockftpserver.test.AbstractTest;
-import org.mockftpserver.test.IntegrationTest;
+import org.mockftpserver.test.*;
+import org.mockftpserver.test.AbstractTestCase;
 
 import java.io.IOException;
 
 /**
  * Example test using FakeFtpServer, with programmatic configuration.
  */
-public class RemoteFileTest extends AbstractTest implements IntegrationTest {
+public class RemoteFileTest extends AbstractTestCase implements IntegrationTest {
 
     private static final int PORT = 9981;
     private static final String HOME_DIR = "/";
@@ -73,7 +73,7 @@ public class RemoteFileTest extends AbstractTest implements IntegrationTest {
     }
 
     /**
-     * @see org.mockftpserver.test.AbstractTest#tearDown()
+     * @see org.mockftpserver.test.AbstractTestCase#tearDown()
      */
     protected void tearDown() throws Exception {
         super.tearDown();

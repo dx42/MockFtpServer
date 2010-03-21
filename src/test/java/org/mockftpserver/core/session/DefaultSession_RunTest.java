@@ -23,7 +23,7 @@ import org.mockftpserver.core.command.ConnectCommandHandler;
 import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.core.socket.StubSocket;
 import org.mockftpserver.stub.command.AbstractStubCommandHandler;
-import org.mockftpserver.test.AbstractTest;
+import org.mockftpserver.test.AbstractTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -39,7 +39,7 @@ import java.util.ResourceBundle;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class DefaultSession_RunTest extends AbstractTest {
+public final class DefaultSession_RunTest extends AbstractTestCase {
 
     private static final Logger LOG = Logger.getLogger(DefaultSession_RunTest.class);
     private static final Command COMMAND = new Command("USER", EMPTY);

@@ -23,7 +23,7 @@ import org.mockftpserver.core.socket.StubServerSocketFactory;
 import org.mockftpserver.core.socket.StubSocket;
 import org.mockftpserver.core.socket.StubSocketFactory;
 import org.mockftpserver.core.util.AssertFailedException;
-import org.mockftpserver.test.AbstractTest;
+import org.mockftpserver.test.AbstractTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -42,7 +42,7 @@ import java.util.Map;
  * 
  * @author Chris Mair
  */
-public final class DefaultSessionTest extends AbstractTest {
+public final class DefaultSessionTest extends AbstractTestCase {
 
     private static final Logger LOG = Logger.getLogger(DefaultSessionTest.class);
     private static final String DATA = "sample data 123";
@@ -60,7 +60,7 @@ public final class DefaultSessionTest extends AbstractTest {
     /**
      * Perform initialization before each test
      * 
-     * @see org.mockftpserver.test.AbstractTest#setUp()
+     * @see org.mockftpserver.test.AbstractTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -72,7 +72,7 @@ public final class DefaultSessionTest extends AbstractTest {
     }
 
     /**
-     * @see org.mockftpserver.test.AbstractTest#tearDown()
+     * @see org.mockftpserver.test.AbstractTestCase#tearDown()
      */
     protected void tearDown() throws Exception {
         super.tearDown();

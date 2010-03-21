@@ -15,10 +15,8 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.mockftpserver.core.command.AbstractCommandHandlerTest;
-import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.CommandNames;
-import org.mockftpserver.core.command.ReplyCodes;
+import org.mockftpserver.core.command.*;
+import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 
 /**
  * Tests for the ModeCommandHandler class
@@ -27,7 +25,7 @@ import org.mockftpserver.core.command.ReplyCodes;
  * 
  * @author Chris Mair
  */
-public final class ModeCommandHandlerTest extends AbstractCommandHandlerTest {
+public final class ModeCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final String CODE1 = "S";
     private static final String CODE2 = "B";
@@ -64,7 +62,7 @@ public final class ModeCommandHandlerTest extends AbstractCommandHandlerTest {
     /**
      * Perform initialization before each test
      * 
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTest#setUp()
+     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();

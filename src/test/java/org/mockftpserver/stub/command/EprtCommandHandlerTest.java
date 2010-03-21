@@ -15,10 +15,8 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.mockftpserver.core.command.AbstractCommandHandlerTest;
-import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.CommandNames;
-import org.mockftpserver.core.command.ReplyCodes;
+import org.mockftpserver.core.command.*;
+import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 
 import java.net.InetAddress;
 
@@ -28,7 +26,7 @@ import java.net.InetAddress;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class EprtCommandHandlerTest extends AbstractCommandHandlerTest {
+public final class EprtCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final String[] PARAMETERS_INSUFFICIENT = EMPTY;
     private static final String[] PARAMETERS_IPV4 = {"|1|132.235.1.2|6275|"};
@@ -80,7 +78,7 @@ public final class EprtCommandHandlerTest extends AbstractCommandHandlerTest {
     /**
      * Perform initialization before each test
      *
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTest#setUp()
+     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();

@@ -25,7 +25,7 @@ import org.mockftpserver.core.util.AssertFailedException;
  * 
  * @author Chris Mair
  */
-public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerTest {
+public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final Logger LOG = Logger.getLogger(StaticReplyCommandHandlerTest.class);
     private static final int REPLY_CODE = 999;
@@ -128,7 +128,7 @@ public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerT
     }
     
     /**
-     * @see AbstractCommandHandlerTest#setUp()
+     * @see AbstractCommandHandlerTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();

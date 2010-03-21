@@ -17,7 +17,7 @@ package org.mockftpserver.core.command;
 
 import org.apache.log4j.Logger;
 import org.mockftpserver.core.util.AssertFailedException;
-import org.mockftpserver.test.AbstractTest;
+import org.mockftpserver.test.AbstractTestCase;
 
 import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
@@ -29,7 +29,7 @@ import java.util.ResourceBundle;
  *
  * @author Chris Mair
  */
-public final class ReplyTextBundleUtilTest extends AbstractTest {
+public final class ReplyTextBundleUtilTest extends AbstractTestCase {
 
     private static final Logger LOG = Logger.getLogger(ReplyTextBundleUtilTest.class);
     
@@ -82,7 +82,7 @@ public final class ReplyTextBundleUtilTest extends AbstractTest {
     }
     
     /**
-     * @see org.mockftpserver.test.AbstractTest#setUp()
+     * @see org.mockftpserver.test.AbstractTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();

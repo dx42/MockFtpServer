@@ -19,7 +19,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.log4j.Logger;
 import org.mockftpserver.stub.StubFtpServer;
-import org.mockftpserver.test.AbstractTest;
+import org.mockftpserver.test.AbstractTestCase;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -29,7 +29,7 @@ import java.io.ByteArrayOutputStream;
  * Example test for StubFtpServer, using the Spring Framework ({@link http://www.springframework.org/}) 
  * for configuration.
  */
-public class SpringConfigurationTest extends AbstractTest {
+public class SpringConfigurationTest extends AbstractTestCase {
 
     private static final Logger LOG = Logger.getLogger(SpringConfigurationTest.class);
     private static final String SERVER = "localhost";
@@ -66,7 +66,7 @@ public class SpringConfigurationTest extends AbstractTest {
     }
 
     /**
-     * @see org.mockftpserver.test.AbstractTest#setUp()
+     * @see org.mockftpserver.test.AbstractTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -78,7 +78,7 @@ public class SpringConfigurationTest extends AbstractTest {
     }
 
     /**
-     * @see org.mockftpserver.test.AbstractTest#tearDown()
+     * @see org.mockftpserver.test.AbstractTestCase#tearDown()
      */
     protected void tearDown() throws Exception {
         super.tearDown();

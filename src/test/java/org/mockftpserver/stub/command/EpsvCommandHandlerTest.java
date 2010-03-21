@@ -15,10 +15,8 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.mockftpserver.core.command.AbstractCommandHandlerTest;
-import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.CommandNames;
-import org.mockftpserver.core.command.ReplyCodes;
+import org.mockftpserver.core.command.*;
+import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 
 import java.net.InetAddress;
 
@@ -28,7 +26,7 @@ import java.net.InetAddress;
  * @author Chris Mair
  * @version $Revision$ - $Date$
  */
-public final class EpsvCommandHandlerTest extends AbstractCommandHandlerTest {
+public final class EpsvCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final InetAddress SERVER = inetAddress("1080::8:800:200C:417A");
     private static final int PORT = 6275;
@@ -58,7 +56,7 @@ public final class EpsvCommandHandlerTest extends AbstractCommandHandlerTest {
     /**
      * Perform initialization before each test
      *
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTest#setUp()
+     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
