@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 the original author or authors.
+ * Copyright 2010 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,10 +85,14 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         assert fileSystem.exists(NEW_DIR), "After createDirectory"
 
         // Duplicate directory
-        shouldFail(FileSystemException) { fileSystem.add(new DirectoryEntry(NEW_DIR)) }
+        shouldThrowFileSystemExceptionWithMessageKey('filesystem.pathAlreadyExists') {
+            fileSystem.add(new DirectoryEntry(NEW_DIR))
+        }
 
         // The parent of the path does not exist
-        shouldFail(FileSystemException) { fileSystem.add(new DirectoryEntry(NEW_DIR + "/abc/def")) }
+        shouldThrowFileSystemExceptionWithMessageKey('filesystem.parentDirectoryDoesNotExist') {
+            fileSystem.add(new DirectoryEntry(NEW_DIR + "/abc/def"))
+        }
 
         shouldFail(InvalidFilenameException) { fileSystem.add(new DirectoryEntry(ILLEGAL_FILE)) }
         shouldFailWithMessageContaining("path") { fileSystem.add(new DirectoryEntry(null)) }
@@ -100,12 +104,19 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         assert fileSystem.exists(NEW_FILE), "After createFile"
 
         // File already exists
-        shouldFail(FileSystemException) { fileSystem.add(new FileEntry(NEW_FILE)) }
+        shouldThrowFileSystemExceptionWithMessageKey('filesystem.pathAlreadyExists') {
+            fileSystem.add(new FileEntry(NEW_FILE))
+        }
 
         // The parent of the path does not exist
-        shouldFail(FileSystemException) { fileSystem.add(new FileEntry(NEW_DIR + "/abc/def")) }
+        shouldThrowFileSystemExceptionWithMessageKey('filesystem.parentDirectoryDoesNotExist') {
+            fileSystem.add(new FileEntry(NEW_DIR + "/abc/def"))
+        }
 
-        shouldFail(FileSystemException) { fileSystem.add(new FileEntry(NO_SUCH_DIR)) }
+        shouldThrowFileSystemExceptionWithMessageKey('filesystem.parentDirectoryDoesNotExist') {
+            fileSystem.add(new FileEntry(NO_SUCH_DIR))
+        }
+
         shouldFail(InvalidFilenameException) { fileSystem.add(new FileEntry(ILLEGAL_FILE)) }
 
         shouldFailWithMessageContaining("path") { fileSystem.add(new FileEntry(null)) }
@@ -225,7 +236,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
     }
 
     void testRename() {
-        final String FROM_FILE = NEW_FILE + "2"
+        final FROM_FILE = NEW_FILE + "2"
         fileSystem.add(new FileEntry(FROM_FILE))
 
         fileSystem.rename(FROM_FILE, NEW_FILE)
@@ -240,10 +251,40 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         assert fileSystem.exists(TO_DIR)
     }
 
+    void testRename_ToPathFileAlreadyExists() {
+        final FROM_FILE = EXISTING_FILE
+        final String TO_FILE = NEW_FILE
+        fileSystem.add(new FileEntry(TO_FILE))
+         shouldThrowFileSystemExceptionWithMessageKey('filesystem.alreadyExists') {
+             fileSystem.rename(FROM_FILE, TO_FILE) 
+         }
+    }
+
     void testRename_FromPathDoesNotExist() {
-        final String TO_FILE2 = NEW_FILE + "2"
-        shouldFail(FileSystemException) { fileSystem.rename(NO_SUCH_FILE, TO_FILE2) }
+        final TO_FILE2 = NEW_FILE + "2"
+        shouldThrowFileSystemExceptionWithMessageKey('filesystem.doesNotExist') {
+            fileSystem.rename(NO_SUCH_FILE, TO_FILE2)
+        }
         assert !fileSystem.exists(TO_FILE2), "After failed rename"
+    }
+
+    void testRename_ToPathIsChildOfFromPath() {
+        final FROM_DIR = NEW_DIR
+        final TO_DIR = FROM_DIR + "/child"
+        fileSystem.add(new DirectoryEntry(FROM_DIR))
+        shouldThrowFileSystemExceptionWithMessageKey('filesystem.renameFailed') {
+            fileSystem.rename(FROM_DIR, TO_DIR)
+        }
+        assert !fileSystem.exists(TO_DIR), "After failed rename"
+    }
+
+    void testRename_EmptyDirectory() {
+        final FROM_DIR = NEW_DIR
+        final TO_DIR = FROM_DIR + "2"
+        fileSystem.add(new DirectoryEntry(FROM_DIR))
+        fileSystem.rename(FROM_DIR, TO_DIR)
+        assert !fileSystem.exists(FROM_DIR)
+        assert fileSystem.exists(TO_DIR)
     }
 
     void testRename_DirectoryContainsFiles() {
@@ -265,12 +306,14 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         assert fileSystem.exists(TO_DIR + "/subdir")
     }
 
-    void testRename_ParentOfToPathDoesNotExist() throws Exception {
+    void testRename_ParentOfToPathDoesNotExist() {
         final String FROM_FILE = NEW_FILE
         final String TO_FILE = fileSystem.path(NO_SUCH_DIR, "abc")
         fileSystem.add(new FileEntry(FROM_FILE))
 
-        shouldFail(FileSystemException) { fileSystem.rename(FROM_FILE, TO_FILE) }
+        shouldThrowFileSystemExceptionWithMessageKey('filesystem.parentDirectoryDoesNotExist') {
+            fileSystem.rename(FROM_FILE, TO_FILE)
+        }
         assert fileSystem.exists(FROM_FILE)
         assert !fileSystem.exists(TO_FILE)
     }
@@ -292,6 +335,11 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
     // Helper Methods
     //-------------------------------------------------------------------------
 
+    protected void shouldThrowFileSystemExceptionWithMessageKey(String messageKey, Closure closure) {
+        def e = shouldThrow(FileSystemException, closure)
+        assert e.messageKey == messageKey, "Expected message key [$messageKey], but was [${e.messageKey}]"
+    }
+    
     private verifyEntries(List expected, List actual) {
         expected.eachWithIndex {entry, index ->
             def entryStr = entry.toString()
