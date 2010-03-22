@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 the original author or authors.
+ * Copyright 2010 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,11 +32,11 @@ import org.mockftpserver.fake.filesystem.Permissions
  */
 class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
-    static final DIR = '/'
-    static final FROM_FILE = "/from.txt"
-    static final TO_FILE = "/file.txt"
+    private static final DIR = '/'
+    private static final FROM_FILE = "/from.txt"
+    private static final TO_FILE = "/file.txt"
 
-    void testHandleCommand() {
+    void testHandleCommand_SingleFile() {
         createFile(FROM_FILE)
         handleCommand([TO_FILE])
         assertSessionReply(ReplyCodes.RNTO_OK, ['rnto', FROM_FILE, TO_FILE])
@@ -45,7 +45,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertRenameFromSessionProperty(null)
     }
 
-    void testHandleCommand_PathIsRelative() {
+    void testHandleCommand_SingleFile_PathIsRelative() {
         createFile(FROM_FILE)
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, "/")
         handleCommand(["file.txt"])
@@ -67,6 +67,11 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertRenameFromSessionProperty(FROM_FILE)
     }
 
+    // TODO Empty Directory
+    // TODO Directory with files/subdir
+    // TODO TO path is a child of FROM path
+
+    // TODO Fix this
     void testHandleCommand_ToFilenameSpecifiesADirectory() {
         createDirectory(TO_FILE)
         handleCommand([TO_FILE])

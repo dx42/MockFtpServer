@@ -258,12 +258,20 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
 
         FileSystemEntry entry = getRequiredEntry(fromPath);
 
+        if (exists(toPath)) {
+            throw new FileSystemException(toPath, "filesystem.alreadyExists");
+        }
+
         String normalizedFromPath = normalize(fromPath);
         String normalizedToPath = normalize(toPath);
 
         if (!entry.isDirectory()) {
             renamePath(entry, normalizedToPath);
             return;
+        }
+
+        if (normalizedToPath.startsWith(normalizedFromPath + this.getSeparator())) {
+            throw new FileSystemException(toPath, "filesystem.renameFailed");
         }
 
         // Create the TO directory entry first so that the destination path exists when you
