@@ -38,8 +38,10 @@ class RunFakeFtpServer {
         fileSystem.createParentDirectoriesAutomatically = true
         fileSystem.add(new DirectoryEntry(HOME_DIR))
         fileSystem.add(new DirectoryEntry("$HOME_DIR/subdir"))
+        fileSystem.add(new DirectoryEntry("$HOME_DIR/subdir2"))
         fileSystem.add(new FileEntry(path: "$HOME_DIR/abc.txt", contents: '1234567890'))
         fileSystem.add(new FileEntry(path: "$HOME_DIR/def.txt", contents: '1234567890'))
+        fileSystem.add(new FileEntry(path: "$HOME_DIR/subdir/xyz.txt", contents: '1234567890'))
 
         def userAccount = new UserAccount(username: ANONYMOUS, passwordRequiredForLogin: false, homeDirectory: HOME_DIR)
 
