@@ -37,7 +37,7 @@ import org.mockftpserver.core.session.Session;
  * <code><pre>
  *      CommandHandler listCommandHandler = new ListCommandHandler();
  *      listCommandHandler.setDirectoryListing("11-09-01 12:30PM 406348 File2350.log\n" +
- *          "11-01-01 1:30PM &lt;DIR&gt; 0 archive");
+ *          "11-01-01 1:30PM &lt;DIR&gt;  archive");
  * </pre></code>
  * <p/>
  * And here is an example value for <code>directoryListing</code> when the <code>SystCommandHandler</code>
