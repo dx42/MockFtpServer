@@ -117,7 +117,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         // Set directory listing
         ListCommandHandler listCommandHandler = (ListCommandHandler) stubFtpServer.getCommandHandler(CommandNames.LIST);
         listCommandHandler.setDirectoryListing("11-09-01 12:30PM  406348 File2350.log\n"
-                + "11-01-01 1:30PM <DIR> 0 archive");
+                + "11-01-01 1:30PM <DIR>  archive");
 
         // LIST
         FTPFile[] files = ftpClient.listFiles();
