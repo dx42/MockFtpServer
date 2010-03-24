@@ -35,6 +35,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     private static final DIR = '/'
     private static final FROM_FILE = "/from.txt"
     private static final TO_FILE = "/file.txt"
+    private static final FROM_DIR = "/subdir"
 
     void testHandleCommand_SingleFile() {
         createFile(FROM_FILE)
@@ -47,7 +48,6 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     void testHandleCommand_SingleFile_PathIsRelative() {
         createFile(FROM_FILE)
-        session.setAttribute(SessionKeys.CURRENT_DIRECTORY, "/")
         handleCommand(["file.txt"])
         assertSessionReply(ReplyCodes.RNTO_OK, ['rnto', FROM_FILE, 'file.txt'])
         assert !fileSystem.exists(FROM_FILE), FROM_FILE
@@ -67,16 +67,42 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertRenameFromSessionProperty(FROM_FILE)
     }
 
-    // TODO Empty Directory
-    // TODO Directory with files/subdir
-    // TODO TO path is a child of FROM path
+    void testHandleCommand_EmptyDirectory() {
+        final TO_DIR = "/newdir"
+        createDirectory(FROM_DIR)
+        setRenameFromSessionProperty(FROM_DIR)
+        handleCommand([TO_DIR])
+        assertSessionReply(ReplyCodes.RNTO_OK, ['rnto', FROM_DIR, TO_DIR])
+        assert !fileSystem.exists(FROM_DIR), FROM_DIR
+        assert fileSystem.exists(TO_DIR), TO_DIR
+        assertRenameFromSessionProperty(null)
+    }
 
-    // TODO Fix this
-    void testHandleCommand_ToFilenameSpecifiesADirectory() {
-        createDirectory(TO_FILE)
-        handleCommand([TO_FILE])
-        assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ['filesystem.isDirectory', TO_FILE])
-        assertRenameFromSessionProperty(FROM_FILE)
+    void testHandleCommand_DirectoryContainingFilesAndSubdirectory() {
+        final TO_DIR = "/newdir"
+        createDirectory(FROM_DIR)
+        createFile(FROM_DIR + "/a.txt")
+        createFile(FROM_DIR + "/b.txt")
+        createDirectory(FROM_DIR + "/child/grandchild")
+        setRenameFromSessionProperty(FROM_DIR)
+        handleCommand([TO_DIR])
+        assertSessionReply(ReplyCodes.RNTO_OK, ['rnto', FROM_DIR, TO_DIR])
+        assert !fileSystem.exists(FROM_DIR), FROM_DIR
+        assert fileSystem.exists(TO_DIR), TO_DIR
+        assert fileSystem.isFile(TO_DIR + "/a.txt")
+        assert fileSystem.isFile(TO_DIR + "/b.txt")
+        assert fileSystem.isDirectory(TO_DIR + "/child")
+        assert fileSystem.isDirectory(TO_DIR + "/child/grandchild")
+        assertRenameFromSessionProperty(null)
+    }
+
+    void testHandleCommand_ToDirectoryIsChildOfFromDirectory() {
+        final TO_DIR = FROM_DIR + "/child"
+        createDirectory(FROM_DIR)
+        setRenameFromSessionProperty(FROM_DIR)
+        handleCommand([TO_DIR])
+        assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ['filesystem.renameFailed', TO_DIR])
+        assertRenameFromSessionProperty(FROM_DIR)
     }
 
     void testHandleCommand_NoWriteAccessToDirectory() {
@@ -106,7 +132,6 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     void testHandleCommand_RenameThrowsException() {
         createDirectory(DIR)
         fileSystem.renameMethodException = new FileSystemException("bad", ERROR_MESSAGE_KEY)
-
         handleCommand([TO_FILE])
         assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ERROR_MESSAGE_KEY)
         assertRenameFromSessionProperty(FROM_FILE)
@@ -130,7 +155,12 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     void setUp() {
         super.setUp()
-        session.setAttribute(SessionKeys.RENAME_FROM, FROM_FILE)
+        setCurrentDirectory(DIR)
+        setRenameFromSessionProperty(FROM_FILE)
+    }
+
+    private void setRenameFromSessionProperty(String renameFrom) {
+        session.setAttribute(SessionKeys.RENAME_FROM, renameFrom)
     }
 
     private void assertRenameFromSessionProperty(String value) {

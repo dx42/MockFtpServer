@@ -31,7 +31,8 @@ import org.mockftpserver.fake.filesystem.Permissions
  */
 class RnfrCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
-    def FILE = "/file.txt"
+    private static final FILE = "/file.txt"
+    private static final DIR = "/subdir"
 
     void testHandleCommand() {
         createFile(FILE)
@@ -55,10 +56,10 @@ class RnfrCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     }
 
     void testHandleCommand_PathSpecifiesADirectory() {
-        createDirectory(FILE)
-        handleCommand([FILE])
-        assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.isNotAFile', FILE])
-        assert session.getAttribute(SessionKeys.RENAME_FROM) == null
+        createDirectory(DIR)
+        handleCommand([DIR])
+        assertSessionReply(ReplyCodes.RNFR_OK, 'rnfr')
+        assert session.getAttribute(SessionKeys.RENAME_FROM) == DIR
     }
 
     void testHandleCommand_NoReadAccessToFile() {
