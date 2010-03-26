@@ -207,6 +207,24 @@ FakeFtpServer Filesystems
     "permissionsFromString" shortcut method. Either way is fine -- use whichever method you prefer on
     both files and directories.
 
+  []
+
+  When you want to retrieve and/or verify the contents of the <<<FakeFtpServer>>> filesystem, you can use
+  the <<<FileSystem#getEntry(String path)>>> method, as shown in the following code.
+
++------------------------------------------------------------------------------
+  DirectoryEntry dirEntry = (DirectoryEntry)fileSystem.getEntry("c:/data");
+
+  FileEntry fileEntry = (FileEntry)fileSystem.getEntry("c:/data/file1.txt");
+
+  FileEntry newFileEntry = (FileEntry)fileSystem.getEntry("c:/data/new.txt");
+  InputStream inputStream = newFileEntry.createInputStream();
+  // read the file contents using inputStream
++------------------------------------------------------------------------------
+
+  See the javadoc for <<<FileSystem>>>, <<<FileEntry>>> and <<<DirectoryEntry>>> for more information
+  on the methods available.
+
 
 ** Example Using Spring Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
