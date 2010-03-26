@@ -370,7 +370,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
 
         LOG.info("Put File for local path [$FILE1]")
         def inputStream = new ByteArrayInputStream(ASCII_DATA.getBytes())
-        assert ftpClient.storeFile(FILE1, inputStream)
+        assert ftpClient.storeFile(FILENAME1, inputStream)      // relative to homeDirectory
         def contents = fileSystem.getEntry(FILE1).createInputStream().text
         LOG.info("File contents=[" + contents + "]")
         assert contents == ASCII_DATA
