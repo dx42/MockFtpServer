@@ -26,9 +26,7 @@ import org.mockftpserver.core.socket.ServerSocketFactory;
 import org.mockftpserver.core.util.Assert;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
+import java.net.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -143,7 +141,6 @@ public abstract class AbstractFtpServer implements Runnable {
                 startLock.notify();
             }
 
-            serverSocket.setSoTimeout(500);
             while (!terminate) {
                 try {
                     Socket clientSocket = serverSocket.accept();
@@ -158,8 +155,8 @@ public abstract class AbstractFtpServer implements Runnable {
                     sessionInfo.thread = sessionThread;
                     sessions.put(session, sessionInfo);
                 }
-                catch (SocketTimeoutException socketTimeoutException) {
-                    LOG.trace("Socket accept() timeout");
+                catch (SocketException e) {
+                    LOG.trace("Socket exception: " + e.toString());
                 }
             }
         }
@@ -199,6 +196,14 @@ public abstract class AbstractFtpServer implements Runnable {
 
         LOG.trace("Stopping the server...");
         terminate = true;
+
+        if (serverSocket != null) {
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                throw new MockFtpServerException(e);
+            }
+        }
 
         try {
             if (serverThread != null) {
