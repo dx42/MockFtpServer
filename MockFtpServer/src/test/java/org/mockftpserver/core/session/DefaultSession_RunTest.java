@@ -25,9 +25,7 @@ import org.mockftpserver.core.socket.StubSocket;
 import org.mockftpserver.stub.command.AbstractStubCommandHandler;
 import org.mockftpserver.test.AbstractTestCase;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.ListResourceBundle;
 import java.util.Map;
@@ -81,6 +79,22 @@ public final class DefaultSession_RunTest extends AbstractTestCase {
         };
         runCommandAndVerifyOutput(commandHandler, "");
         assertFalse("socket should not be closed", stubSocket.isClosed());
+    }
+
+    public void testClose_WithoutCommand() throws Exception {
+        PipedOutputStream pipedOutputStream = new PipedOutputStream();
+        PipedInputStream inputStream = new PipedInputStream(pipedOutputStream);
+        stubSocket = new StubSocket(DEFAULT_HOST, inputStream, outputStream);
+        session = new DefaultSession(stubSocket, commandHandlerMap);
+
+        initializeConnectCommandHandler();
+
+        Thread thread = new Thread(session);
+        thread.start();
+        Thread.sleep(1000L);
+
+        session.close();
+        thread.join();
     }
 
     public void testGetClientHost() throws Exception {
@@ -165,7 +179,11 @@ public final class DefaultSession_RunTest extends AbstractTestCase {
     private DefaultSession createDefaultSession(CommandHandler commandHandler) {
         stubSocket = createTestSocket(COMMAND.getName());
         commandHandlerMap.put(commandToRegister, commandHandler);
+        initializeConnectCommandHandler();
+        return new DefaultSession(stubSocket, commandHandlerMap);
+    }
 
+    private void initializeConnectCommandHandler() {
         ConnectCommandHandler connectCommandHandler = new ConnectCommandHandler();
 
         ResourceBundle replyTextBundle = new ListResourceBundle() {
@@ -177,8 +195,6 @@ public final class DefaultSession_RunTest extends AbstractTestCase {
         };
         connectCommandHandler.setReplyTextBundle(replyTextBundle);
         commandHandlerMap.put(CommandNames.CONNECT, connectCommandHandler);
-
-        return new DefaultSession(stubSocket, commandHandlerMap);
     }
 
     /**
