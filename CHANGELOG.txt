@@ -1,6 +1,11 @@
 MockFtpServer Change Log
 -------------------------------------------------------------------------------
 
+Changes in version 2.3 (?? Mar 2011)
+------------------------------------------
+- BUG #3103132: shutting down takes too long.
+ 
+
 Changes in version 2.2 (23 Mar 2010)
 ------------------------------------------
 - FakeFtpServer: Support renaming of directories.
