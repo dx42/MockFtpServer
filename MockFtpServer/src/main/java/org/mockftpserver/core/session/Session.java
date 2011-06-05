@@ -72,6 +72,13 @@ public interface Session extends Runnable {
     public byte[] readData();
 
     /**
+     * Read and return (up to) numBytes of data from the client across the data connection
+     *
+     * @return the data that was read; the byte[] will be up to numBytes bytes long
+     */
+    public byte[] readData(int numBytes);
+
+    /**
      * Return the InetAddress representing the client host for this session
      * @return the client host
      */

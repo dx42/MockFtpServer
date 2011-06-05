@@ -95,6 +95,14 @@ class StubSession implements Session {
     }
 
     /**
+     * @see org.mockftpserver.core.session.Session#readData()
+     */
+    public byte[] readData(int numBytes) {
+        assert dataConnectionOpen, "The data connection must be OPEN"
+        return dataToRead
+    }
+
+    /**
      * @see org.mockftpserver.core.session.Session#removeAttribute(java.lang.String)
      */
     public void removeAttribute(String name) {

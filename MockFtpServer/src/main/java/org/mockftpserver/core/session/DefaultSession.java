@@ -249,16 +249,23 @@ public class DefaultSession implements Session {
      * @see org.mockftpserver.core.session.Session#readData()
      */
     public byte[] readData() {
+        return readData(Integer.MAX_VALUE);
+    }
 
+    /**
+     * @see org.mockftpserver.core.session.Session#readData()
+     */
+    public byte[] readData(int numBytes) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-
+        int numBytesRead = 0;
         try {
-            while (true) {
+            while (numBytesRead < numBytes) {
                 int b = dataInputStream.read();
                 if (b == -1) {
                     break;
                 }
                 bytes.write(b);
+                numBytesRead++;
             }
             return bytes.toByteArray();
         }
