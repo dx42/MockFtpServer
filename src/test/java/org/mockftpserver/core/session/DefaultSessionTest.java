@@ -235,6 +235,33 @@ public final class DefaultSessionTest extends AbstractTestCase {
     }
 
     /**
+     * Test the readData(int) method
+     */
+    public void testReadData_NumBytes() {
+        final int NUM_BYTES = 5;
+        final String EXPECTED_DATA = DATA.substring(0, NUM_BYTES);
+        StubSocket stubSocket = createTestSocket(DATA);
+        session.socketFactory = new StubSocketFactory(stubSocket);
+        session.setClientDataHost(clientHost);
+
+        session.openDataConnection();
+        byte[] data = session.readData(NUM_BYTES);
+        LOG.info("data=[" + new String(data) + "]");
+        assertEquals("data", EXPECTED_DATA.getBytes(), data);
+    }
+
+    public void testReadData_NumBytes_AskForMoreBytesThanThereAre() {
+        StubSocket stubSocket = createTestSocket(DATA);
+        session.socketFactory = new StubSocketFactory(stubSocket);
+        session.setClientDataHost(clientHost);
+
+        session.openDataConnection();
+        byte[] data = session.readData(10000);
+        LOG.info("data=[" + new String(data) + "]");
+        assertEquals("data", DATA.getBytes(), data);
+    }
+
+    /**
      * Test the closeDataConnection() method
      */
     public void testCloseDataConnection() {
