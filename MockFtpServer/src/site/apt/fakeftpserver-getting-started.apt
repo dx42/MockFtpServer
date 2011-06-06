@@ -21,7 +21,8 @@ FakeFtpServer - Getting Started
 
   In general the steps for setting up and starting the <<<FakeFtpServer>>> are:
 
-  * Create a new <<<FakeFtpServer>>> instance, and optionally set the server control port.
+  * Create a new <<<FakeFtpServer>>> instance, and optionally set the server control port (use a value of 0
+    to automatically choose a free port number).
 
   * Create and configure a <<<FileSystem>>>, and attach to the <<<FakeFtpServer>>> instance.
 
@@ -47,8 +48,10 @@ fakeFtpServer.start();
 
   If you are running on a system where the default port (21) is already in use or cannot be bound
   from a user process (such as Unix), you probably need to use a different server control port. Use the
-  <<<FakeFtpServer.setServerControlPort(int serverControlPort)>>> method to set a different port
-  number, such as 9187.
+  <<<FakeFtpServer.setServerControlPort(int serverControlPort)>>> method to use a different port
+  number. If you specify a value of <<<0>>>, then the server will use a free port number. Then call
+  <<<getServerControlPort()>>> AFTER calling <<<start()>>> has been called to determine the actual port
+  number being used. Or, you can pass in a specific port number, such as 9187.
 
   <<FakeFtpServer>>  can be fully configured programmatically or within the
   {{{http://www.springframework.org/}Spring Framework}} or other dependency-injection container.
@@ -125,7 +128,6 @@ import java.util.List;
 
 public class RemoteFileTest extends AbstractTest {
 
-    private static final int PORT = 9981;
     private static final String HOME_DIR = "/";
     private static final String FILE = "/dir/sample.txt";
     private static final String CONTENTS = "abcdef 1234567890";
@@ -150,21 +152,22 @@ public class RemoteFileTest extends AbstractTest {
 
     protected void setUp() throws Exception {
         super.setUp();
-        remoteFile = new RemoteFile();
-        remoteFile.setServer("localhost");
-        remoteFile.setPort(PORT);
         fakeFtpServer = new FakeFtpServer();
-        fakeFtpServer.setServerControlPort(PORT);
+        fakeFtpServer.setServerControlPort(0);  // use any free port
 
         FileSystem fileSystem = new UnixFakeFileSystem();
         fileSystem.add(new FileEntry(FILE, CONTENTS));
         fakeFtpServer.setFileSystem(fileSystem);
 
-        UserAccount userAccount = new UserAccount(
-            RemoteFile.USERNAME, RemoteFile.PASSWORD, HOME_DIR);
+        UserAccount userAccount = new UserAccount(RemoteFile.USERNAME, RemoteFile.PASSWORD, HOME_DIR);
         fakeFtpServer.addUserAccount(userAccount);
 
         fakeFtpServer.start();
+        int port = fakeFtpServer.getServerControlPort();
+
+        remoteFile = new RemoteFile();
+        remoteFile.setServer("localhost");
+        remoteFile.setPort(port);
     }
 
     protected void tearDown() throws Exception {
@@ -179,9 +182,9 @@ public class RemoteFileTest extends AbstractTest {
   * The <<<FakeFtpServer>>> instance is created and started in the <<<setUp()>>> method and
     stopped in the <<<tearDown()>>> method, to ensure that it is stopped, even if the test fails.
 
-  * The server control port is explicitly set using <<<fakeFtpServer.setServerControlPort(PORT)>>>.
-    This is optional, but is necessary if you are running on a system where the default port (21) is already
-    in use or cannot be bound from a user process (such as Unix).
+  * The server control port is set to 0 using <<<fakeFtpServer.setServerControlPort(PORT)>>>.
+    This means it will dynamically choose a free port. This is necessary if you are running on a
+    system where the default port (21) is already in use or cannot be bound from a user process (such as Unix).
 
   * The <<<UnixFakeFileSystem>>> filesystem is configured and attached to the <<<FakeFtpServer>>> instance
     in the <<<setUp()>>> method. That includes creating a predefined <<<"/dir/sample.txt">>> file with the

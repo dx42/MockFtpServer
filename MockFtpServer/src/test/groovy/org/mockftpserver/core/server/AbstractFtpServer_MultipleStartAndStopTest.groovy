@@ -34,9 +34,11 @@ class AbstractFtpServer_MultipleStartAndStopTest extends AbstractGroovyTestCase 
 
     void testStartAndStop() {
         10.times {
-            ftpServer.setServerControlPort(PortTestUtil.getFtpServerControlPort());
+            final def port = PortTestUtil.getFtpServerControlPort()
+            ftpServer.setServerControlPort(port);
 
             ftpServer.start();
+            assert ftpServer.getServerControlPort() == port
             Thread.sleep(100L);     // give it some time to get started
             assertEquals("started - after start()", true, ftpServer.isStarted());
             assertEquals("shutdown - after start()", false, ftpServer.isShutdown());
@@ -44,6 +46,19 @@ class AbstractFtpServer_MultipleStartAndStopTest extends AbstractGroovyTestCase 
             ftpServer.stop();
 
             assertEquals("shutdown - after stop()", true, ftpServer.isShutdown());
+        }
+    }
+
+    void testStartAndStop_UseDynamicFreePort() {
+        5.times {
+            ftpServer.setServerControlPort(0);
+            assert ftpServer.getServerControlPort() == 0
+
+            ftpServer.start();
+            log("Using port ${ftpServer.getServerControlPort()}")
+            assert ftpServer.getServerControlPort() != 0
+
+            ftpServer.stop();
         }
     }
 

@@ -39,10 +39,12 @@ import java.util.ResourceBundle;
  * server commands (e.g. RETR, DELE, LIST). These handlers implement the {@link org.mockftpserver.core.command.CommandHandler}
  * interface.
  * <p/>
- * By default, mock FTP Servers bind to the server control port of 21. You can use a different server
- * control port by setting the the <code>serverControlPort</code> property. This is usually necessary
- * when running on Unix or some other system where that port number is already in use or cannot be bound
- * from a user process.
+ * By default, mock FTP Servers bind to the server control port of 21. You can use a different server control
+ * port by setting the <code>serverControlPort</code> property. If you specify a value of <code>0</code>, 
+ * then a free port number will be chosen automatically; call <code>getServerControlPort()</code> AFTER
+ * <code>start()</code> has been called to determine the actual port number being used. Using a non-default
+ * port number is usually necessary when running on Unix or some other system where that port number is
+ * already in use or cannot be bound from a user process.
  * <p/>
  * <h4>Command Handlers</h4>
  * You can set the existing {@link CommandHandler} defined for an FTP server command
@@ -135,6 +137,10 @@ public abstract class AbstractFtpServer implements Runnable {
         try {
             LOG.info("Starting the server on port " + serverControlPort);
             serverSocket = serverSocketFactory.createServerSocket(serverControlPort);
+            if (serverControlPort == 0) {
+                this.serverControlPort = serverSocket.getLocalPort();
+                LOG.info("Actual server port is " + this.serverControlPort);
+            }
 
             // Notify to allow the start() method to finish and return
             synchronized (startLock) {
