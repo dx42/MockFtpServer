@@ -110,10 +110,12 @@ import java.util.Map;
  * </code></pre>
  *
  * <h4>FTP Server Control Port</h4>
- * By default, <b>MockFtpServer</b> binds to the server control port of 21. You can use a different server
- * control port by setting the the <code>serverControlPort</code> property. This is usually necessary
- * when running on Unix or some other system where that port number is already in use or cannot be bound
- * from a user process.
+ * By default, <b>FakeFtpServer</b> binds to the server control port of 21. You can use a different server control
+ * port by setting the <code>serverControlPort</code> property. If you specify a value of <code>0</code>,
+ * then a free port number will be chosen automatically; call <code>getServerControlPort()</code> AFTER
+ * <code>start()</code> has been called to determine the actual port number being used. Using a non-default
+ * port number is usually necessary when running on Unix or some other system where that port number is
+ * already in use or cannot be bound from a user process.
  *
  * <h4>Other Configuration</h4>
  * The <code>systemName</code> property specifies the value returned by the <code>SYST</code>

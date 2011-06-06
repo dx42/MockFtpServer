@@ -24,6 +24,9 @@ FakeFtpServer Features
 
   * Supports active and passive mode data transfers.
 
+  * Use a dynamically chosen free port number for the server control port instead of using the default (21)
+    or hard-coding some other value (set the serverControlPort property of the server to 0).
+
   * Supports extended address (IPv6) data transfers (RFC2428)
 
   * Fully supports configuration within the <<Spring Framework>> or other dependency-injection container.

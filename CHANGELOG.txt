@@ -3,8 +3,13 @@ MockFtpServer Change Log
 
 Changes in version 2.3 (?? Jun 2011)
 ------------------------------------------
-- BUG #3103132: shutting down takes too long.
+- FEATURE #2996739: Use a dynamically chosen free port number ("ephemeral")for the server control port
+  if you specify 0 for the serverControlPort property of FakeFtpServer or StubFtpServer. Then call
+  getServerControlPort() AFTER start() has been called to determine the actual port number being used.
+  This is useful if you are running on a system where the default port (21) is already in use or cannot
+  be bound from a user process (such as Unix).
 - FEATURE #3304849: Add a new readData(int numBytes) to Session
+- BUG #3103132: shutting down takes too long.
  
 
 Changes in version 2.2 (23 Mar 2010)

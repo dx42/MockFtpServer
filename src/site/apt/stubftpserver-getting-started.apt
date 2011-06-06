@@ -22,10 +22,12 @@ StubFtpServer stubFtpServer = new StubFtpServer();
 stubFtpServer.start();
 +------------------------------------------------------------------------------  
 
-  If you are running on a Unix system, you probably need to use a different server control port, since
-  the default port (21) is likely already in use or cannot be bound from a user process. Use the
-  <<<StubFtpServer.setServerControlPort(int serverControlPort)>>> method to set a different port
-  number, such as 9187.
+  If you are running on a system where the default port (21) is already in use or cannot be bound
+  from a user process (such as Unix), you will need to use a different server control port. Use the
+  <<<StubFtpServer.setServerControlPort(int serverControlPort)>>> method to use a different port
+  number. If you specify a value of <<<0>>>, then the server will use a free port number. Then call
+  <<<getServerControlPort()>>> AFTER calling <<<start()>>> has been called to determine the actual port
+  number being used. Or, you can pass in a specific port number, such as 9187.
 
 * CommandHandlers
 ~~~~~~~~~~~~~~~~~

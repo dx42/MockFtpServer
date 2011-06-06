@@ -49,10 +49,13 @@ import org.mockftpserver.stub.command.*;
  * </code></pre>
  * <p/>
  * <h4>FTP Server Control Port</h4>
- * By default, <b>StubFtpServer</b> binds to the server control port of 21. You can use a different server
- * control port by setting the the <code>serverControlPort</code> property. This is usually necessary
- * when running on Unix or some other system where that port number is already in use or cannot be bound
- * from a user process.
+ * By default, <b>StubFtpServer</b> binds to the server control port of 21. You can use a different server control
+ * port by setting the <code>serverControlPort</code> property. If you specify a value of <code>0</code>,
+ * then a free port number will be chosen automatically; call <code>getServerControlPort()</code> AFTER
+ * <code>start()</code> has been called to determine the actual port number being used. Using a non-default
+ * port number is usually necessary when running on Unix or some other system where that port number is
+ * already in use or cannot be bound from a user process.
+ * <p/>
  * <h4>Retrieving Command Handlers</h4>
  * You can retrieve the existing {@link CommandHandler} defined for an FTP server command
  * by calling the {@link #getCommandHandler(String)} method, passing in the FTP server

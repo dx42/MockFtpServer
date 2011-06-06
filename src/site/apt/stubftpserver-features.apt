@@ -18,6 +18,9 @@ StubFtpServer Features
   
   * Easy to implement command handlers for other commands or replace existing command handlers.
 
+  * Use a dynamically chosen free port number for the server control port instead of using the default (21)
+    or hard-coding some other value (set the serverControlPort property of the server to 0).
+
   * Fully supports configuration within the <<Spring Framework>>.
   
   * Can be used to test FTP client code written in any language

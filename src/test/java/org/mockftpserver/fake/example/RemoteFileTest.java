@@ -31,7 +31,6 @@ import java.io.IOException;
  */
 public class RemoteFileTest extends AbstractTestCase implements IntegrationTest {
 
-    private static final int PORT = 9981;
     private static final String HOME_DIR = "/";
     private static final String FILE = "/dir/sample.txt";
     private static final String CONTENTS = "abcdef 1234567890";
@@ -56,11 +55,8 @@ public class RemoteFileTest extends AbstractTestCase implements IntegrationTest 
 
     protected void setUp() throws Exception {
         super.setUp();
-        remoteFile = new RemoteFile();
-        remoteFile.setServer("localhost");
-        remoteFile.setPort(PORT);
         fakeFtpServer = new FakeFtpServer();
-        fakeFtpServer.setServerControlPort(PORT);
+        fakeFtpServer.setServerControlPort(0);  // use any free port
 
         FileSystem fileSystem = new UnixFakeFileSystem();
         fileSystem.add(new FileEntry(FILE, CONTENTS));
@@ -70,11 +66,13 @@ public class RemoteFileTest extends AbstractTestCase implements IntegrationTest 
         fakeFtpServer.addUserAccount(userAccount);
 
         fakeFtpServer.start();
+        int port = fakeFtpServer.getServerControlPort();
+
+        remoteFile = new RemoteFile();
+        remoteFile.setServer("localhost");
+        remoteFile.setPort(port);
     }
 
-    /**
-     * @see org.mockftpserver.test.AbstractTestCase#tearDown()
-     */
     protected void tearDown() throws Exception {
         super.tearDown();
         fakeFtpServer.stop();
