@@ -15,7 +15,7 @@
         either success or failure scenarios. You can also verify expected command invocations.
     </description>
     <packaging>jar</packaging>
-    <version>2.3-SNAPSHOT</version>
+    <version>2.3</version>
     <url>http://mockftpserver.sourceforge.net/</url>
 
     <scm>

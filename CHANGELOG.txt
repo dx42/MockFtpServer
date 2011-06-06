@@ -1,7 +1,7 @@
 MockFtpServer Change Log
 -------------------------------------------------------------------------------
 
-Changes in version 2.3 (?? Jun 2011)
+Changes in version 2.3 (05 Jun 2011)
 ------------------------------------------
 - FEATURE #2996739: Use a dynamically chosen free port number ("ephemeral")for the server control port
   if you specify 0 for the serverControlPort property of FakeFtpServer or StubFtpServer. Then call
