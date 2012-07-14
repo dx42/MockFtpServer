@@ -206,8 +206,13 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
 
         FTPFile[] files = ftpClient.listFiles(SUBDIR)
         assert files.length == 2
-        verifyFTPFile(files[0], FTPFile.FILE_TYPE, FILENAME1, ASCII_DATA.size())
-        verifyFTPFile(files[1], FTPFile.DIRECTORY_TYPE, SUBDIR_NAME2, 0)
+
+        // Can't be sure of order
+        FTPFile fileEntry = (files[0].getType() == FTPFile.FILE_TYPE) ? files[0] : files[1]
+        FTPFile dirEntry = (files[0].getType() == FTPFile.FILE_TYPE) ? files[1] : files[0]
+        verifyFTPFile(fileEntry, FTPFile.FILE_TYPE, FILENAME1, ASCII_DATA.size())
+        verifyFTPFile(dirEntry, FTPFile.DIRECTORY_TYPE, SUBDIR_NAME2, 0)
+
         verifyReplyCode("list", 226)
     }
 
@@ -228,8 +233,13 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
 
         FTPFile[] files = ftpClient.listFiles('/')
         assert files.length == 2
-        verifyFTPFile(files[0], FTPFile.DIRECTORY_TYPE, SUBDIR_NAME2, 0)
-        verifyFTPFile(files[1], FTPFile.FILE_TYPE, FILENAME1, ASCII_DATA.size())
+
+        // Can't be sure of order
+        FTPFile fileEntry = (files[0].getType() == FTPFile.FILE_TYPE) ? files[0] : files[1]
+        FTPFile dirEntry = (files[0].getType() == FTPFile.FILE_TYPE) ? files[1] : files[0]
+
+        verifyFTPFile(dirEntry, FTPFile.DIRECTORY_TYPE, SUBDIR_NAME2, 0)
+        verifyFTPFile(fileEntry, FTPFile.FILE_TYPE, FILENAME1, ASCII_DATA.size())
         verifyReplyCode("list", 226)
     }
 
@@ -273,7 +283,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         ftpClientConnectAndLogin()
 
         String[] filenames = ftpClient.listNames(SUBDIR)
-        assert filenames == [FILENAME1, SUBDIR_NAME2]
+        assert filenames as Set == [FILENAME1, SUBDIR_NAME2] as Set
         verifyReplyCode("listNames", 226)
     }
 

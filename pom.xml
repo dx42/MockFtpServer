@@ -36,11 +36,12 @@
         <!-- TESTING ONLY -->
 
         <dependency>
-            <groupId>org.codehaus.groovy.maven.runtime</groupId>
-            <artifactId>gmaven-runtime-default</artifactId>
-            <version>1.0-rc-3</version>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-all</artifactId>
+          <version>1.7.5</version>
             <scope>test</scope>
         </dependency>
+
 
         <dependency>
             <groupId>commons-net</groupId>
@@ -93,19 +94,41 @@
         <plugins>
 
             <plugin>
-                <groupId>org.codehaus.groovy.maven</groupId>
-                <artifactId>gmaven-plugin</artifactId>
-                <version>1.0-rc-3</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <!-- <goal>generateStubs</goal> -->
-                            <!-- <goal>compile</goal> -->
-                            <goal>generateTestStubs</goal>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
+               <groupId>org.codehaus.gmaven</groupId>
+               <artifactId>gmaven-plugin</artifactId>
+               <version>1.3</version>
+               <configuration>
+                 <providerSelection>1.7</providerSelection>
+               </configuration>
+               <executions>
+                 <execution>
+                   <goals>
+                       <goal>generateStubs</goal>
+                       <goal>compile</goal>
+                       <goal>generateTestStubs</goal>
+                       <goal>testCompile</goal>
+                      <!--if you want joint compilation, add stub generation goals here-->
+                   </goals>
+                 </execution>
+               </executions>
+               <dependencies>
+                 <dependency>
+                   <groupId>org.codehaus.gmaven.runtime</groupId>
+                   <artifactId>gmaven-runtime-1.7</artifactId>
+                   <version>1.3</version>
+                   <exclusions>
+                     <exclusion>
+                       <groupId>org.codehaus.groovy</groupId>
+                       <artifactId>groovy-all</artifactId>
+                     </exclusion>
+                   </exclusions>
+                 </dependency>
+                 <dependency>
+                   <groupId>org.codehaus.groovy</groupId>
+                   <artifactId>groovy-all</artifactId>
+                   <version>1.7.5</version>
+                 </dependency>
+               </dependencies>
             </plugin>
 
             <plugin>
