@@ -69,7 +69,7 @@ class EprtCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     }
 
     void testHandleCommand_IllegalHostName() {
-        handleCommand(['|1|132.xxx.rrr|6275|'])
+        handleCommand(['|1|132.@|6275|'])
         assertSessionReply(ReplyCodes.COMMAND_SYNTAX_ERROR)
     }
 
