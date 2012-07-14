@@ -68,7 +68,7 @@ class PortParserTest extends AbstractGroovyTestCase {
     }
 
     void testParseExtendedAddressHostAndPort_IllegalHostName() {
-        final PARM = '|1|132.xxx.rrr|6275|'
+        final PARM = '|1|132.@|6275|'
         shouldFail(CommandSyntaxException) { PortParser.parseExtendedAddressHostAndPort(PARM) }
     }
 
