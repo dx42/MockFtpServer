@@ -319,5 +319,14 @@
     <mapping directory="" vcs="svn" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
+  <component name="libraryTable">
+    <library name="Groovy 1.7.10">
+      <CLASSES>
+        <root url="jar://$M2_REPO$/org/codehaus/groovy/groovy-all/1.7.10/groovy-all-1.7.10.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+  </component>
 </project>
 
