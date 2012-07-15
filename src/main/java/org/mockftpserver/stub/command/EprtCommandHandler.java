@@ -23,7 +23,6 @@ import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.PortParser;
 import org.mockftpserver.core.util.HostAndPort;
 
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
