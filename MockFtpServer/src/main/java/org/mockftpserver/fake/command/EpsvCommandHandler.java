@@ -18,7 +18,6 @@ package org.mockftpserver.fake.command;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.ReplyCodes;
 import org.mockftpserver.core.session.Session;
-import org.mockftpserver.core.util.PortParser;
 
 import java.net.InetAddress;
 
