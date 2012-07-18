@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.core.server;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.MockFtpServerException;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandHandler;
@@ -77,7 +78,7 @@ public abstract class AbstractFtpServer implements Runnable {
     public static final String REPLY_TEXT_BASENAME = "ReplyText";
     private static final int DEFAULT_SERVER_CONTROL_PORT = 21;
 
-    protected Logger LOG = Logger.getLogger(getClass());
+    protected Logger LOG = LoggerFactory.getLogger(getClass());
 
     // Simple value object that holds the socket and thread for a single session
     private static class SessionInfo {

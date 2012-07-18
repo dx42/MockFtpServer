@@ -96,7 +96,7 @@ class PermissionsTest extends AbstractGroovyTestCase {
     private testConstructorWithValidString(String string) {
         LOG.info("Verifying valid: [$string]")
         def permissions = new Permissions(string)
-        LOG.info(permissions)
+        LOG.info(permissions.toString())
         assert permissions.asRwxString() == string
     }
 }

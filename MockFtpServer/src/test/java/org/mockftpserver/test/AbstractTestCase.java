@@ -16,7 +16,8 @@
 package org.mockftpserver.test;
 
 import junit.framework.TestCase;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.easymock.MockControl;
 import org.mockftpserver.core.MockFtpServerException;
 import org.mockftpserver.core.util.Assert;
@@ -43,7 +44,7 @@ import java.util.Set;
  */
 public abstract class AbstractTestCase extends TestCase {
 
-    private static final Logger LOG = Logger.getLogger(AbstractTestCase.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractTestCase.class);
     protected static final List EMPTY_LIST = Collections.EMPTY_LIST;
     protected static final String[] EMPTY = new String[0];
     protected static final InetAddress DEFAULT_HOST = inetAddress(null);

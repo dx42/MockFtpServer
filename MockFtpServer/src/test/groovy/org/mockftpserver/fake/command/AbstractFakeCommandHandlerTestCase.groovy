@@ -170,7 +170,7 @@ abstract class AbstractFakeCommandHandlerTestCase extends AbstractGroovyTestCase
      * @param text - the text expected within the reply message; defaults to the reply code as a String
      */
     protected assertSessionReply(int replyIndex, int expectedReplyCode, text = expectedReplyCode as String) {
-        LOG.info(session)
+        LOG.info(session.toString())
         String actualMessage = session.getReplyMessage(replyIndex)
         def actualReplyCode = session.getReplyCode(replyIndex)
         assert actualReplyCode == expectedReplyCode
@@ -187,7 +187,7 @@ abstract class AbstractFakeCommandHandlerTestCase extends AbstractGroovyTestCase
      * @param replyCodes - the List of expected sent reply codes
      */
     protected assertSessionReplies(List replyCodes) {
-        LOG.info(session)
+        LOG.info(session.toString())
         replyCodes.eachWithIndex {replyCode, replyIndex ->
             assertSessionReply(replyIndex, replyCode)
         }

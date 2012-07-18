@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.core.server;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.session.DefaultSession;
@@ -34,7 +35,7 @@ import java.util.Map;
  */
 public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
 
-    protected Logger LOG = Logger.getLogger(getClass());
+    protected Logger LOG = LoggerFactory.getLogger(getClass());
 
     protected AbstractFtpServer ftpServer;
     private CommandHandler commandHandler;

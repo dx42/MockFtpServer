@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.core.session;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.MockFtpServerException;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandHandler;
@@ -54,7 +55,7 @@ import java.util.StringTokenizer;
  */
 public class DefaultSession implements Session {
 
-    private static final Logger LOG = Logger.getLogger(DefaultSession.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultSession.class);
     private static final String END_OF_LINE = "\r\n";
     protected static final int DEFAULT_CLIENT_DATA_PORT = 21;
 
@@ -384,7 +385,7 @@ public class DefaultSession implements Session {
             }
         }
         catch (Exception e) {
-            LOG.error(e);
+            LOG.error("Error:", e);
             throw new MockFtpServerException(e);
         }
         finally {
@@ -394,7 +395,7 @@ public class DefaultSession implements Session {
                 controlConnectionWriter.close();
             }
             catch (IOException e) {
-                LOG.error(e);
+                LOG.error("Error:", e);
             }
             LOG.debug("Session stopped.");
         }

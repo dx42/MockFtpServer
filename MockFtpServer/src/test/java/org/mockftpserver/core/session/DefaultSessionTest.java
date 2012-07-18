@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.core.session;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.MockFtpServerException;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.socket.StubServerSocket;
@@ -44,7 +45,7 @@ import java.util.Map;
  */
 public final class DefaultSessionTest extends AbstractTestCase {
 
-    private static final Logger LOG = Logger.getLogger(DefaultSessionTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultSessionTest.class);
     private static final String DATA = "sample data 123";
     private static final int PORT = 197;
     private static final String NAME1 = "name1";

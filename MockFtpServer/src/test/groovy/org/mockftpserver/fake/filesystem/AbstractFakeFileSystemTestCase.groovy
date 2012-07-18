@@ -125,7 +125,7 @@ abstract class AbstractFakeFileSystemTestCase extends AbstractFileSystemTestCase
                 group: 'group', permissions: permissions)
         fileSystem.add(fileEntry)
         def entry = fileSystem.getEntry(NEW_FILE)
-        LOG.info(entry)
+        LOG.info(entry.toString())
         assert entry.path == NEW_FILE
         assert !entry.directory
         assert entry.size == 3
@@ -158,8 +158,7 @@ abstract class AbstractFakeFileSystemTestCase extends AbstractFileSystemTestCase
      * @param fileSystem - the FileSystem instance
      * @param expectedContents - the expected contents
      * @throws IOException
-     * @see org.mockftpserver.fake.filesystem.AbstractFileSystemTestCase#verifyFileContents(FileSystem,
-     * String , String )
+     * @see org.mockftpserver.fake.filesystem.AbstractFileSystemTestCase#verifyFileContents(FileSystem,String,String )
      */
     protected void verifyFileContents(FileSystem fileSystem, String path, String expectedContents) throws IOException {
         def fileEntry = fileSystem.getEntry(path)

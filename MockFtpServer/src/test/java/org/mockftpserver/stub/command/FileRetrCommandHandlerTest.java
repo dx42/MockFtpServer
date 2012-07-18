@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.easymock.ArgumentsMatcher;
 import org.mockftpserver.core.command.*;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
@@ -31,7 +32,7 @@ import java.util.Arrays;
  */
 public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
-    private static final Logger LOG = Logger.getLogger(FileRetrCommandHandlerTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FileRetrCommandHandlerTest.class);
     private static final byte BYTE1 = (byte) 7;
     private static final byte BYTE2 = (byte) 21;
 

@@ -51,27 +51,27 @@ class UnixDirectoryListingFormatterTest extends AbstractGroovyTestCase {
     void testFormat_File() {
         def fileSystemEntry = new FileEntry(path: FILE_PATH, contents: '12345678901', lastModified: LAST_MODIFIED,
                 owner: OWNER, group: GROUP, permissions: FILE_PERMISSIONS)
-        LOG.info(fileSystemEntry)
+        LOG.info(fileSystemEntry.toString())
         verifyFormat(fileSystemEntry, "-rw-r--r--  1 owner123 group456              11 $lastModifiedFormatted def.txt")
     }
 
     void testFormat_File_Defaults() {
         def fileSystemEntry = new FileEntry(path: FILE_PATH, contents: '12345678901', lastModified: LAST_MODIFIED)
-        LOG.info(fileSystemEntry)
+        LOG.info(fileSystemEntry.toString())
         verifyFormat(fileSystemEntry, "-rwxrwxrwx  1 none     none                  11 $lastModifiedFormatted def.txt")
     }
 
     void testFormat_File_NonEnglishDefaultLocale() {
         Locale.setDefault(Locale.GERMAN)
         def fileSystemEntry = new FileEntry(path: FILE_PATH, contents: '12345678901', lastModified: LAST_MODIFIED)
-        LOG.info(fileSystemEntry)
+        LOG.info(fileSystemEntry.toString())
         verifyFormat(fileSystemEntry, "-rwxrwxrwx  1 none     none                  11 $lastModifiedFormatted def.txt")
     }
 
     void testFormat_File_NonEnglishLocale() {
         formatter.setLocale(Locale.FRENCH)
         def fileSystemEntry = new FileEntry(path: FILE_PATH, contents: '12345678901', lastModified: LAST_MODIFIED)
-        LOG.info(fileSystemEntry)
+        LOG.info(fileSystemEntry.toString())
         def dateFormat = new SimpleDateFormat(UnixDirectoryListingFormatter.DATE_FORMAT, Locale.FRENCH)
         def formattedDate = dateFormat.format(LAST_MODIFIED)
         def result = formatter.format(fileSystemEntry)
@@ -81,13 +81,13 @@ class UnixDirectoryListingFormatterTest extends AbstractGroovyTestCase {
     void testFormat_Directory() {
         def fileSystemEntry = new DirectoryEntry(path: DIR_PATH, lastModified: LAST_MODIFIED,
                 owner: OWNER, group: GROUP, permissions: DIR_PERMISSIONS)
-        LOG.info(fileSystemEntry)
+        LOG.info(fileSystemEntry.toString())
         verifyFormat(fileSystemEntry, "drwxr-xr-x  1 owner123 group456               0 $lastModifiedFormatted etc")
     }
 
     void testFormat_Directory_Defaults() {
         def fileSystemEntry = new DirectoryEntry(path: DIR_PATH, lastModified: LAST_MODIFIED)
-        LOG.info(fileSystemEntry)
+        LOG.info(fileSystemEntry.toString())
         verifyFormat(fileSystemEntry, "drwxrwxrwx  1 none     none                   0 $lastModifiedFormatted etc")
     }
 

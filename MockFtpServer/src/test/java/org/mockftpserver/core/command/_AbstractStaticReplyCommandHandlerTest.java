@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.core.command;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.easymock.MockControl;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
@@ -34,7 +35,7 @@ import java.util.ResourceBundle;
  */
 public final class _AbstractStaticReplyCommandHandlerTest extends AbstractTestCase {
 
-    private static final Logger LOG = Logger.getLogger(_AbstractStaticReplyCommandHandlerTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(_AbstractStaticReplyCommandHandlerTest.class);
     private static final int REPLY_CODE1 = 777;
     private static final int REPLY_CODE2 = 888;
     private static final String REPLY_TEXT1 = "reply1 ... abcdef";

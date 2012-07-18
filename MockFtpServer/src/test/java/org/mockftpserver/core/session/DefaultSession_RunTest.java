@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.core.session;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.CommandNames;
@@ -39,7 +40,7 @@ import java.util.ResourceBundle;
  */
 public final class DefaultSession_RunTest extends AbstractTestCase {
 
-    private static final Logger LOG = Logger.getLogger(DefaultSession_RunTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultSession_RunTest.class);
     private static final Command COMMAND = new Command("USER", EMPTY);
     private static final int REPLY_CODE = 100;
     private static final String REPLY_TEXT = "sample text description";
