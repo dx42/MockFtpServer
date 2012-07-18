@@ -501,7 +501,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
     }
 
     private void verifyFTPFile(FTPFile ftpFile, int type, String name, long size) {
-        LOG.info(ftpFile)
+        LOG.info(ftpFile.toString())
         assertEquals("type: " + ftpFile, type, ftpFile.getType())
         assertEquals("name: " + ftpFile, name, ftpFile.getName())
         assertEquals("size: " + ftpFile, size, ftpFile.getSize())

@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.core.command;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.CommandSyntaxException;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
@@ -30,7 +31,7 @@ import java.util.List;
  */
 public final class CommandTest extends AbstractTestCase {
 
-    private static final Logger LOG = Logger.getLogger(CommandTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CommandTest.class);
 
     /**
      * Test the Command(String,String[]) constructor

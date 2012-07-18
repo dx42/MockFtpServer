@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -31,7 +32,7 @@ import java.net.InetAddress;
  */
 public final class PasvCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
-    private static final Logger LOG = Logger.getLogger(PasvCommandHandlerTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PasvCommandHandlerTest.class);
     private static final int PORT = (23 << 8) + 77;
 
     private PasvCommandHandler commandHandler;

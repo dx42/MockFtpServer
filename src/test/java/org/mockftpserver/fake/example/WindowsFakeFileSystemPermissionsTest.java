@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.fake.example;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.fake.FakeFtpServer;
 import org.mockftpserver.fake.filesystem.DirectoryEntry;
 import org.mockftpserver.fake.filesystem.FileEntry;
@@ -31,7 +32,7 @@ import org.mockftpserver.test.AbstractTestCase;
  */
 public class WindowsFakeFileSystemPermissionsTest extends AbstractTestCase implements IntegrationTest {
 
-    private static final Logger LOG = Logger.getLogger(WindowsFakeFileSystemPermissionsTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(WindowsFakeFileSystemPermissionsTest.class);
 
     public void testFilesystemWithPermissions() throws Exception {
 
@@ -69,7 +70,7 @@ public class WindowsFakeFileSystemPermissionsTest extends AbstractTestCase imple
         FakeFtpServer fakeFtpServer = new FakeFtpServer();
         fakeFtpServer.setFileSystem(fileSystem);
 
-        LOG.info(fileSystem);
+        LOG.info(fileSystem.toString());
     }
 
 }

@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.core.command;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
 
@@ -32,7 +33,7 @@ import java.util.Set;
  */
 public final class InvocationRecordTest extends AbstractTestCase {
 
-    private static final Logger LOG = Logger.getLogger(InvocationRecordTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(InvocationRecordTest.class);
     private static final Command COMMAND = new Command("command", EMPTY);
     private static final String KEY1 = "key1";
     private static final String KEY2 = "key2";
@@ -49,7 +50,7 @@ public final class InvocationRecordTest extends AbstractTestCase {
         long beforeTime = System.currentTimeMillis();
         InvocationRecord commandInvocation = new InvocationRecord(COMMAND, DEFAULT_HOST);
         long afterTime = System.currentTimeMillis();
-        LOG.info(commandInvocation);
+        LOG.info(commandInvocation.toString());
         assertEquals("Command", COMMAND, commandInvocation.getCommand());
         assertTrue("time", commandInvocation.getTime().getTime() >= beforeTime
                 && commandInvocation.getTime().getTime() <= afterTime);

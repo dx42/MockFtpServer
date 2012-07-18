@@ -18,7 +18,8 @@ package org.mockftpserver.stub;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.InvocationRecord;
@@ -40,7 +41,7 @@ import java.io.IOException;
  */
 public final class StubFtpServerIntegrationTest extends AbstractTestCase implements IntegrationTest {
 
-    private static final Logger LOG = Logger.getLogger(StubFtpServerIntegrationTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StubFtpServerIntegrationTest.class);
     private static final String SERVER = "localhost";
     private static final String USERNAME = "user123";
     private static final String PASSWORD = "password";
@@ -581,7 +582,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
      * @param size    - the expected file size (will be zero for a directory)
      */
     private void verifyFTPFile(FTPFile ftpFile, int type, String name, long size) {
-        LOG.info(ftpFile);
+        LOG.info(ftpFile.toString());
         assertEquals("type: " + ftpFile, type, ftpFile.getType());
         assertEquals("name: " + ftpFile, name, ftpFile.getName());
         assertEquals("size: " + ftpFile, size, ftpFile.getSize());

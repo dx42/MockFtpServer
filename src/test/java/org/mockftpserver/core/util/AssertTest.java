@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.core.util;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.test.AbstractTestCase;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import java.util.Map;
  */
 public class AssertTest extends AbstractTestCase {
 
-    private static final Logger LOG = Logger.getLogger(AssertTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AssertTest.class);
 
     /**
      * This interface defines a generic closure (a generic wrapper for a block of code).

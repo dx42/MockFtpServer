@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.fake.filesystem;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.util.Assert;
 import org.mockftpserver.core.util.PatternUtil;
 import org.mockftpserver.core.util.StringUtil;
@@ -46,7 +47,7 @@ import java.util.Map;
  */
 public abstract class AbstractFakeFileSystem implements FileSystem {
 
-    private static final Logger LOG = Logger.getLogger(AbstractFakeFileSystem.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractFakeFileSystem.class);
 
     /**
      * If <code>true</code>, creating a directory or file will automatically create

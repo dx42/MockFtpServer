@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.fake.filesystem;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.util.StringUtil;
 
 import java.text.DateFormat;
@@ -30,7 +31,7 @@ import java.util.Locale;
  */
 public class UnixDirectoryListingFormatter implements DirectoryListingFormatter {
 
-    private static final Logger LOG = Logger.getLogger(UnixDirectoryListingFormatter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UnixDirectoryListingFormatter.class);
 
     private static final String DATE_FORMAT = "MMM dd  yyyy";
     private static final int SIZE_WIDTH = 15;

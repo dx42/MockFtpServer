@@ -16,7 +16,8 @@
 package org.mockftpserver.stub;
 
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.InvocationRecord;
@@ -36,7 +37,7 @@ import org.mockftpserver.test.PortTestUtil;
 public final class StubFtpServer_MultipleClientsIntegrationTest extends AbstractTestCase implements
         IntegrationTest {
 
-    private static final Logger LOG = Logger.getLogger(StubFtpServer_MultipleClientsIntegrationTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StubFtpServer_MultipleClientsIntegrationTest.class);
     private static final String SERVER = "localhost";
 
     // Custom CommandHandler for PWD so that we can verify unique session-specific responses.

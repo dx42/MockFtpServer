@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.core.command;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.easymock.MockControl;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.test.AbstractTestCase;
@@ -32,7 +33,7 @@ import java.util.ResourceBundle;
  */
 public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
 
-    private static final Logger LOG = Logger.getLogger(AbstractCommandHandlerTestCase.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractCommandHandlerTestCase.class);
 
     // Some common test constants
     protected static final String DIR1 = "dir1";

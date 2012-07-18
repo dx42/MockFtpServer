@@ -30,6 +30,8 @@ MockFtpServer
   communication with the FTP server is across the network using sockets, it can be used to test FTP client 
   code written in any language.
 
+  NOTE: Starting with <<MockFtpServer>> 2.4, the <<Log4J>> dependency has been replaced with {{{http://www.slf4j.org/}SLF4J}}.
+
 
 * Requirements
 ~~~~~~~~~~~~~~
@@ -38,7 +40,8 @@ MockFtpServer
 
   *  Java (JDK) version 1.4 or later
 
-  * The {{{http://logging.apache.org/log4j/index.html}Log4J}} jar, version 1.2.13 or later, accessible on the CLASSPATH.
+  * The {{{http://www.slf4j.org/}SLF4J}} API jar, accessible on the CLASSPATH. An SLF4J binding (logging
+    framework-specific jar) is optional.
 
 
 * Maven Support
@@ -51,7 +54,7 @@ MockFtpServer
   <dependency>
     <groupId>org.mockftpserver</groupId>
     <artifactId>MockFtpServer</artifactId>
-    <version>2.3</version>
+    <version>2.4</version>
     <scope>test</scope>
   </dependency>
 --------------------

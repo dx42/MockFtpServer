@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.easymock.MockControl;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
@@ -31,7 +32,7 @@ import org.mockftpserver.core.util.AssertFailedException;
  */
 public final class RetrCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
-    private static final Logger LOG = Logger.getLogger(RetrCommandHandlerTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RetrCommandHandlerTest.class);
 
     private RetrCommandHandler commandHandler;
 

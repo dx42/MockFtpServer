@@ -1,6 +1,14 @@
 MockFtpServer Change Log
 -------------------------------------------------------------------------------
 
+Changes in version 2.4 (15 Jul 2012)
+------------------------------------------
+- FEATURE #2466395: Remove log4j dependency. Switch to using SLF4J (http://www.slf4j.org/).
+- FEATURE #3544349: Return MockFtpServer information as part of connect 220 response.
+- Upgrade to Groovy 1.7.10; fix Maven site plugin incompatibility.
+- Change ‚Äúpom.xml‚Äù to use SFTP to deploy to Maven repo.
+
+
 Changes in version 2.3 (05 Jun 2011)
 ------------------------------------------
 - FEATURE #2996739: Use a dynamically chosen free port number ("ephemeral")for the server control port
@@ -29,8 +37,8 @@ Changes in version 2.2 (23 Mar 2010)
 Changes in version 2.1 (16 Jun 2009)
 ------------------------------------------
 - Added support for IPv6 (EPRT and EPSV commands) to FakeFtpServer and StubFtpServer. Thanks to Fernando Martinez for testing.
-- BUG FIX: #2696898: ìWindowsFakeFilesystem DirectoryEntry case sensitivityî (https://sourceforge.net/tracker/?func=detail&atid=1006533&aid=2696898&group_id=208647).
-- BUG FIX: #2797980: ìUnixFakeFileSystem IsValidName Regex incorrectî (https://sourceforge.net/tracker/?func=detail&atid=1006533&aid=2797980&group_id=208647).
+- BUG FIX: #2696898: ÔøΩWindowsFakeFilesystem DirectoryEntry case sensitivityÔøΩ (https://sourceforge.net/tracker/?func=detail&atid=1006533&aid=2696898&group_id=208647).
+- BUG FIX: #2797980: ÔøΩUnixFakeFileSystem IsValidName Regex incorrectÔøΩ (https://sourceforge.net/tracker/?func=detail&atid=1006533&aid=2797980&group_id=208647).
 - Add getServerControlPort() to AbstractFtpServer.
 - Create HostAndPort class. Refactor both PortCommandHandler(s) and the PortParser classes to use HostAndPort.
 - TESTS: Convert PortParserTest to Groovy.
@@ -44,9 +52,9 @@ Changes in version 2.0.2 (09 Mar 2009)
 
 Changes in version 2.0.1 (09 Feb 2009)
 ------------------------------------------
-- BUG FIX: #2543193 ì"cd .." and "pwd" don't work properly togetherî (https://sourceforge.net/tracker2/?func=detail&aid=2543193&group_id=208647&atid=1006533).
-- BUG FIX: #2540548 ìMissing new line on directory listingî (https://sourceforge.net/tracker2/?func=detail&aid=2540548&group_id=208647&atid=1006533).
-- BUG FIX: #2540366 ìFileEntry.setContents( byte [] contents ) change the contentî (https://sourceforge.net/tracker2/?func=detail&aid=2540366&group_id=208647&atid=1006533).
+- BUG FIX: #2543193 ÔøΩ"cd .." and "pwd" don't work properly togetherÔøΩ (https://sourceforge.net/tracker2/?func=detail&aid=2543193&group_id=208647&atid=1006533).
+- BUG FIX: #2540548 ÔøΩMissing new line on directory listingÔøΩ (https://sourceforge.net/tracker2/?func=detail&aid=2540548&group_id=208647&atid=1006533).
+- BUG FIX: #2540366 ÔøΩFileEntry.setContents( byte [] contents ) change the contentÔøΩ (https://sourceforge.net/tracker2/?func=detail&aid=2540366&group_id=208647&atid=1006533).
  - AbstractFtpServer: Use entrySet() to iterate through sessions (From Rijk van Haaften).
 
 
@@ -76,8 +84,8 @@ Changes in version 2.0-rc2 (12 Dec 2008)
 - AbstractFtpServer: Add createSession() method. Make some attributes protected.
 - StubFtpServer: Introduce AbstractStorCommandHandler. Remove final from stub CommandHandler classes.
 - Cleanup code and javadoc
-- DOCS:	Add ìRequirementsî section to main (index) page. Also ìMavenî section.
-- DOCS: Add "Configuring CommandHandler for New (Unsupported) Command" and ìCreating Your Own Custom CommandHandler Classî sections to StubFtpServer Getting Started Guide.
+- DOCS:	Add ÔøΩRequirementsÔøΩ section to main (index) page. Also ÔøΩMavenÔøΩ section.
+- DOCS: Add "Configuring CommandHandler for New (Unsupported) Command" and ÔøΩCreating Your Own Custom CommandHandler ClassÔøΩ sections to StubFtpServer Getting Started Guide.
 - DOCS: Add "Configuring Custom CommandHandlers" section to Getting Started Guide (FakeFtpServer).
 - TESTS: Move AbstractCommandHandlerTest into core package.
 - TESTS: Create sample test of FakeFtpServer with StaticReplyCommandHandler command handler(s).

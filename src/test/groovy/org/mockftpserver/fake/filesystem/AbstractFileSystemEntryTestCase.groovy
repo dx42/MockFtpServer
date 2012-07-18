@@ -45,7 +45,7 @@ public abstract class AbstractFileSystemEntryTestCase extends AbstractGroovyTest
     void testConstructor_Path() {
         Constructor constructor = getImplementationClass().getConstructor([String.class] as Class[])
         AbstractFileSystemEntry entry = (AbstractFileSystemEntry) constructor.newInstance([PATH] as Object[])
-        LOG.info(entry)
+        LOG.info(entry.toString())
         assertEquals("path", PATH, entry.getPath())
         entry.setPath("")
         assert entry.getPath() == ""

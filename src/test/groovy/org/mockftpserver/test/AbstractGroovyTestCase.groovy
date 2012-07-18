@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.test
 
-import org.apache.log4j.Logger
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.test.LoggingUtil
 
 /**
@@ -27,7 +28,7 @@ import org.mockftpserver.test.LoggingUtil
  */
 abstract class AbstractGroovyTestCase extends GroovyTestCase {
 
-    protected final Logger LOG = Logger.getLogger(this.class)
+    protected final Logger LOG = LoggerFactory.getLogger(this.class)
     private LoggingUtil testLogger
 
     /**

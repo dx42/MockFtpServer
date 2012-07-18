@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.core.command;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.util.Assert;
 
 import java.util.ResourceBundle;
@@ -28,7 +29,7 @@ import java.util.ResourceBundle;
  */
 public abstract class AbstractCommandHandler implements CommandHandler, ReplyTextBundleAware {
 
-    protected final Logger LOG = Logger.getLogger(getClass());
+    protected final Logger LOG = LoggerFactory.getLogger(getClass());
 
     private ResourceBundle replyTextBundle;
 

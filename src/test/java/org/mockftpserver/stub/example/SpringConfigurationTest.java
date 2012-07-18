@@ -17,7 +17,8 @@ package org.mockftpserver.stub.example;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.stub.StubFtpServer;
 import org.mockftpserver.test.AbstractTestCase;
 import org.springframework.context.ApplicationContext;
@@ -31,7 +32,7 @@ import java.io.ByteArrayOutputStream;
  */
 public class SpringConfigurationTest extends AbstractTestCase {
 
-    private static final Logger LOG = Logger.getLogger(SpringConfigurationTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SpringConfigurationTest.class);
     private static final String SERVER = "localhost";
     private static final int PORT = 9981;
 

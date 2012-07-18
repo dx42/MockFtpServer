@@ -15,7 +15,8 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.core.session.Session;
@@ -35,7 +36,7 @@ import java.util.ResourceBundle;
  */
 public final class _AbstractStubDataCommandHandlerTest extends AbstractTestCase {
 
-    private static final Logger LOG = Logger.getLogger(_AbstractStubDataCommandHandlerTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(_AbstractStubDataCommandHandlerTest.class);
     private static final Command COMMAND = new Command("command", EMPTY);
     private static final InvocationRecord INVOCATION_RECORD = new InvocationRecord(COMMAND, DEFAULT_HOST);
 
