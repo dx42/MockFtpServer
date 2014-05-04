@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component LANGUAGE_LEVEL="JDK_1_4" jdk="$project_jdk_name$" jdk_type="JavaSDK">
+<component LANGUAGE_LEVEL="JDK_1_4" inheritJdk="true">
 	<output-test url="file://$MODULE_DIR$/target/test-classes"/>
 	<contentEntry url="file://$MODULE_DIR$">
-		<testFolder url="file://$MODULE_DIR$/src/test/groovy"/>
 		<testFolder url="file://$MODULE_DIR$/src/test/java"/>
+		<testFolder url="file://$MODULE_DIR$/src/test/groovy"/>
 		<testFolder url="file://$MODULE_DIR$/src/test/resources"/>
 		<excludeFolder url="file://$MODULE_DIR$/target"/>
 	</contentEntry>
