@@ -1,6 +1,13 @@
 MockFtpServer Change Log
 -------------------------------------------------------------------------------
 
+Changes in version 2.5 (?? ??? 2014)
+------------------------------------------
+- Fix #23 PWD response should have commentary: "{0}" is current directory.
+  Also adjusted reply text for MKD to adhere to RFC959: "{0}" created.
+- Removed deprecation of assertSessionReply(int,Object)
+
+
 Changes in version 2.4 (15 Jul 2012)
 ------------------------------------------
 - FEATURE #2466395: Remove log4j dependency. Switch to using SLF4J (http://www.slf4j.org/).

@@ -49,10 +49,6 @@ class PwdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     // Helper Methods
     //-------------------------------------------------------------------------
 
-    void setUp() {
-        super.setUp()
-    }
-
     CommandHandler createCommandHandler() {
         new PwdCommandHandler()
     }
