@@ -6,7 +6,9 @@ Changes in version 2.5 (May 2014)
 - Fix #23 PWD response should have commentary: "{0}" is current directory.
   Also adjusted reply text for MKD to adhere to RFC959: "{0}" created.
 - Removed deprecation of assertSessionReply(int,Object)
+- Fix broken internal links on the web site pages.
 - Update “Log4J Configuration Required to See Log Output” section on “FakeFtpServer – Getting Started” with info for SLF4J.
+- Added MockFtpServer logo image. Thanks to cooltext.com.
 
 
 Changes in version 2.4 (15 Jul 2012)
