@@ -2,10 +2,10 @@
 								Home
 		--------------------------------------------------
 
-MockFtpServer
-~~~~~~~~~~~~~
+MockFtpServer - Providing a Fake/Stub FTP Server
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  The <<MockFtpServer>> project provides a mock/dummy FTP server implementations that can be very 
+  The <<MockFtpServer>> project provides mock/dummy FTP server implementations that can be very
   useful for testing of FTP client code. Two FTP Server implementations are provided, each at a different
   level of abstraction.
 
@@ -14,16 +14,16 @@ MockFtpServer
   files and directories. These files and directories can (optionally) have associated access permissions.
   You also configure a set of one or more user accounts that control which users can login to the FTP server,
   and their home (default) directories. The user account is also used when assigning file and directory
-  ownership for new files. See {{{fakeftpserver-features.html}FakeFtpServer Features and Limitations}}.
+  ownership for new files. See {{{./fakeftpserver-features.html}FakeFtpServer Features and Limitations}}.
 
   <<StubFtpServer>> is a "stub" implementation of an FTP server. It supports the main FTP commands by
   implementing command handlers for each of the corresponding low-level FTP server commands (e.g. RETR,
   DELE, LIST). These <CommandHandler>s can be individually configured to return custom data or reply codes,
   allowing simulation of a complete range of both success and failure scenarios. The <CommandHandler>s can
   also be interrogated to verify command invocation data such as command parameters and timestamps.
-  See {{{stubftpserver-features.html}StubFtpServer Features and Limitations}}.
+  See {{{./stubftpserver-features.html}StubFtpServer Features and Limitations}}.
 
-  See the {{{fakeftpserver-versus-stubftpserver.html}FakeFtpServer or StubFtpServer?}} page for more
+  See the {{{./fakeftpserver-versus-stubftpserver.html}FakeFtpServer or StubFtpServer?}} page for more
   information on deciding whether to use <<FakeFtpServer>> or <<StubFtpServer>>.
 
   The <<MockFtpServer>> project is written in Java, and is ideally suited to testing Java code. But because
