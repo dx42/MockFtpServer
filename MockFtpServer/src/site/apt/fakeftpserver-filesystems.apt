@@ -229,7 +229,7 @@ FakeFtpServer Filesystems
 ** Example Using Spring Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  See the {{{fakeftpserver-getting-started.html#Spring}FakeFtpServer Getting Started - Spring Configuration}}
+  See the {{{./fakeftpserver-getting-started.html#Spring}FakeFtpServer Getting Started - Spring Configuration}}
   for an example of how to configure a <<<FakeFtpServer>>> instance and associated filesystem in the
   {{{http://www.springframework.org/}Spring Framework}}.
   
