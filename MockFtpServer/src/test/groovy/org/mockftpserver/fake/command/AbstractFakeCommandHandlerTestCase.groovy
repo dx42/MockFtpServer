@@ -157,7 +157,6 @@ abstract class AbstractFakeCommandHandlerTestCase extends AbstractGroovyTestCase
      * Assert that the specified reply code and message containing text was sent through the session.
      * @param expectedReplyCode - the expected reply code
      * @param text - the text expected within the reply message; defaults to the reply code as a String
-     * @deprecated
      */
     protected assertSessionReply(int expectedReplyCode, text = expectedReplyCode as String) {
         assertSessionReply(0, expectedReplyCode, text)
