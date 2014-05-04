@@ -26,7 +26,7 @@ FakeFtpServer or StubFtpServer?
   <<FakeFtpServer>>  can be fully configured programmatically or within a
   {{{http://www.springframework.org/}Spring Framework}} or other dependency-injection container.
 
-  See the {{{fakeftpserver-features.html}FakeFtpServer Features and Limitations}} page for more information on
+  See the {{{./fakeftpserver-features.html}FakeFtpServer Features and Limitations}} page for more information on
   which features and scenarios are supported.
 
 * StubFtpServer
@@ -41,14 +41,14 @@ FakeFtpServer or StubFtpServer?
   <<StubFtpServer>> works out of the box with reasonable defaults, but can be fully configured programmatically
   or within a {{{http://www.springframework.org/}Spring Framework}} or other dependency-injection container.
 
-  See the {{{stubftpserver-features.html}StubFtpServer Features and Limitations}} page for more information on
+  See the {{{./stubftpserver-features.html}StubFtpServer Features and Limitations}} page for more information on
   which features and scenarios are supported.
 
 * So, Which One Should I Use?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   In general, if your testing and simulation needs are pretty straightforward, then using <<FakeFtpServer>> is
-  probably the best choice. See the {{{fakeftpserver-features.html}FakeFtpServer Features and Limitations}} page
+  probably the best choice. See the {{{./fakeftpserver-features.html}FakeFtpServer Features and Limitations}} page
   for more information on which features and scenarios are supported.
 
   Some reasons to use <<StubFtpServer>> include:

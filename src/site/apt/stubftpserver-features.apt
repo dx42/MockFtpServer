@@ -6,7 +6,7 @@ StubFtpServer Features
 
   * Standalone dummy FTP server. Run either within the same JVM as test code or in a different JVM.
 
-  * Implements common FTP server commands. See {{{stubftpserver-commandhandlers.html}FTP Commands and CommandHandlers}}.
+  * Implements common FTP server commands. See {{{./stubftpserver-commandhandlers.html}FTP Commands and CommandHandlers}}.
   
   * Supports active and passive mode data transfers.
 

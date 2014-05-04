@@ -16,7 +16,7 @@ FakeFtpServer - Getting Started
   consistent with its configured file system and user accounts, including file and directory permissions,
   if they have been configured.
 
-  See the {{{fakeftpserver-features.html}FakeFtpServer Features and Limitations}} page for more information on
+  See the {{{./fakeftpserver-features.html}FakeFtpServer Features and Limitations}} page for more information on
   which features and scenarios are supported.
 
   In general the steps for setting up and starting the <<<FakeFtpServer>>> are:

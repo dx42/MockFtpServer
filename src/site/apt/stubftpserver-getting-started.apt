@@ -36,7 +36,7 @@ stubFtpServer.start();
 
   <<StubFtpServer>> creates an appropriate default <CommandHandler> for each (supported) FTP server 
   command. See the list of <CommandHandler> classes associated with FTP server commands in 
-  {{{stubftpserver-commandhandlers.html}FTP Commands and CommandHandlers}}.
+  {{{./stubftpserver-commandhandlers.html}FTP Commands and CommandHandlers}}.
 
   You can retrieve the existing <CommandHandler> defined for an FTP server command by calling the
   <<<StubFtpServer.getCommandHandler(String name)>>> method, passing in the FTP server command
