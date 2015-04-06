@@ -233,6 +233,10 @@ public class DefaultSession implements Session {
         terminate = true;
     }
 
+    public boolean isClosed() {
+        return terminate;
+    }
+
     /**
      * @see org.mockftpserver.core.session.Session#sendData(byte[], int)
      */

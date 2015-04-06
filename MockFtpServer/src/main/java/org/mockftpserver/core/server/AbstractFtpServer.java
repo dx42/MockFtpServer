@@ -150,6 +150,7 @@ public abstract class AbstractFtpServer implements Runnable {
 
             while (!terminate) {
                 try {
+                    cleanupClosedSessions();
                     Socket clientSocket = serverSocket.accept();
                     LOG.info("Connection accepted from host " + clientSocket.getInetAddress());
 
@@ -344,6 +345,21 @@ public abstract class AbstractFtpServer implements Runnable {
      */
     protected Session createSession(Socket clientSocket) {
         return new DefaultSession(clientSocket, commandHandlers);
+    }
+
+    private void cleanupClosedSessions() {
+        Iterator iter = sessions.keySet().iterator();
+        while(iter.hasNext()) {
+            Session session = (Session) iter.next();
+            if (session.isClosed()) {
+                iter.remove();
+            }
+        }
+    }
+
+    // For testing
+    public int numberOfSessions() {
+        return sessions.size();
     }
 
     private void closeSessions() throws InterruptedException, IOException {

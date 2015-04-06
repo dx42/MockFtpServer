@@ -32,6 +32,8 @@ public interface Session extends Runnable {
      */
     public void close();
 
+    public boolean isClosed();
+
     /**
      * Send the specified reply code and text across the control connection.
      * 

@@ -80,6 +80,7 @@ public final class DefaultSession_RunTest extends AbstractTestCase {
         };
         runCommandAndVerifyOutput(commandHandler, "");
         assertFalse("socket should not be closed", stubSocket.isClosed());
+        assertTrue("Session should be closed", session.isClosed());
     }
 
     public void testClose_WithoutCommand() throws Exception {
@@ -96,6 +97,7 @@ public final class DefaultSession_RunTest extends AbstractTestCase {
 
         session.close();
         thread.join();
+        assertTrue("Session should be closed", session.isClosed());
     }
 
     public void testGetClientHost() throws Exception {
