@@ -4,6 +4,7 @@ MockFtpServer Change Log
 Changes in version 2.6 (Apr 2015)
 ------------------------------------------
 - BUG #25: OutOfMemoryError; clean up closed sessions. Session: Added boolean Session.isClosed(). AbstractFtpServer: Clean up closed sessions.
+- BUG #24: Close passiveModeDataSocket if in passive mode.
 
 
 Changes in version 2.5 (May 2014)
