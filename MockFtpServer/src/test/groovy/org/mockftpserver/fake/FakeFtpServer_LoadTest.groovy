@@ -55,6 +55,16 @@ class FakeFtpServer_LoadTest extends AbstractGroovyTestCase {
         }
     }
 
+    void testLotsOfClientConnections_NoQuit() {
+        startFtpServer('fakeftpserver-beans.xml')
+
+        final long NUM_CLIENTS = 50L
+        //final long NUM_CLIENTS = 500000L
+        NUM_CLIENTS.times {
+            startClientSession_NoQuit()
+        }
+    }
+
     //--------------------------------------------------------------------------
     // Setup and tear-down and helper methods
     //--------------------------------------------------------------------------
@@ -75,6 +85,35 @@ class FakeFtpServer_LoadTest extends AbstractGroovyTestCase {
     }
 
     private void startClientSession() {
+        doClientSession { ftpClient ->
+            String dir = ftpClient.printWorkingDirectory()
+            assert dir == '/'
+            ftpClient.quit()
+        }
+        assert fakeFtpServer.numberOfSessions() < 5
+    }
+
+    private void startClientSession_LocalPassiveMode() {
+        doClientSession { ftpClient ->
+            ftpClient.enterLocalPassiveMode()
+            ftpClient.listFiles();
+            ftpClient.quit();
+            ftpClient.disconnect();
+        }
+        assert fakeFtpServer.numberOfSessions() < 5
+    }
+
+    private void startClientSession_NoQuit() {
+        doClientSession { ftpClient ->
+            ftpClient.setSoTimeout(100)
+            ftpClient.enterLocalPassiveMode()
+            ftpClient.printWorkingDirectory()
+            //ftpClient.quit()
+            ftpClient.disconnect();
+        }
+    }
+
+    private void doClientSession(Closure closure) {
         long index = clientIndex++
         log("Starting client #$index")
 
@@ -82,32 +121,9 @@ class FakeFtpServer_LoadTest extends AbstractGroovyTestCase {
         ftpClient.connect(SERVER, PORT)
         assert ftpClient.login(USERNAME, PASSWORD)
 
-        String dir = ftpClient.printWorkingDirectory()
-        assert dir == '/'
-
-        ftpClient.quit()
+        closure(ftpClient)
 
         log("Finished client #$index")
-
-        assert fakeFtpServer.numberOfSessions() < 5
-    }
-
-    private void startClientSession_LocalPassiveMode() {
-        long index = clientIndex++
-        log("Starting LOCAL PASSIVE client #$index")
-
-        FTPClient ftpClient = new FTPClient()
-        ftpClient.connect(SERVER, PORT)
-        assert ftpClient.login(USERNAME, PASSWORD)
-
-        ftpClient.enterLocalPassiveMode()
-
-        ftpClient.listFiles();
-        ftpClient.quit();
-        ftpClient.disconnect();
-        log("Finished client #$index")
-
-        assert fakeFtpServer.numberOfSessions() < 5
     }
 
 }
