@@ -15,7 +15,7 @@
         either success or failure scenarios. You can also verify expected command invocations.
     </description>
     <packaging>jar</packaging>
-    <version>2.5</version>
+    <version>2.6</version>
     <url>http://mockftpserver.sourceforge.net/</url>
 
     <scm>
@@ -144,6 +144,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
                 <configuration>
                     <verbose>true</verbose>
                     <source>1.4</source>
@@ -169,10 +170,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <version>2.6</version>
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <MockFtpServer-Version>${pom.version}</MockFtpServer-Version>
+                            <MockFtpServer-Version>${project.version}</MockFtpServer-Version>
                         </manifestEntries>
                     </archive>
                 </configuration>
