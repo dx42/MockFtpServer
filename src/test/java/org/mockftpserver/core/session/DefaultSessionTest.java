@@ -262,9 +262,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertEquals("data", DATA.getBytes(), data);
     }
 
-    /**
-     * Test the closeDataConnection() method
-     */
     public void testCloseDataConnection() {
         StubSocket stubSocket = createTestSocket(DATA);
         session.socketFactory = new StubSocketFactory(stubSocket);
@@ -273,6 +270,19 @@ public final class DefaultSessionTest extends AbstractTestCase {
         session.openDataConnection();
         session.closeDataConnection();
         assertTrue("client data socket should be closed", stubSocket.isClosed());
+    }
+
+    public void testCloseDataConnection_PassiveMode() throws IOException {
+        StubSocket stubSocket = createTestSocket(DATA);
+        StubServerSocket stubServerSocket = new StubServerSocket(1, stubSocket);
+        session.serverSocketFactory = new StubServerSocketFactory(stubServerSocket);
+
+        session.switchToPassiveMode();
+        session.setClientDataHost(clientHost);
+        session.openDataConnection();
+        session.closeDataConnection();
+        assertTrue("client data socket should be closed", stubSocket.isClosed());
+        assertTrue("passive mode data socket should be closed", stubServerSocket.isClosed());
     }
 
     /**

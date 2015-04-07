@@ -203,6 +203,10 @@ public class DefaultSession implements Session {
             dataOutputStream.close();
             dataInputStream.close();
             dataSocket.close();
+
+            if (passiveModeDataSocket != null) {
+                passiveModeDataSocket.close();
+            }
         }
         catch (IOException e) {
             LOG.error("Error closing client data socket", e);
