@@ -302,6 +302,9 @@ public class DefaultSession implements Session {
                 if (controlConnectionReader.ready()) {
                     String command = controlConnectionReader.readLine();
                     LOG.info("Received command: [" + command + "]");
+                    if (command == null) {
+                        return null;
+                    }
                     return parseCommand(command);
                 }
                 try {
