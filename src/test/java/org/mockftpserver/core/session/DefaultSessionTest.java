@@ -258,14 +258,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
             public String readLine() { return null; }
         };
         assertNull(session.readCommand());
-
-//        try {
-//            session.readCommand();
-//            fail("Expected AssertFailedException");
-//        }
-//        catch(AssertFailedException expected) {
-//            // do nothing; expected
-//        }
     }
 
     public void testReadCommand_Closed_ReturnsNull() {
