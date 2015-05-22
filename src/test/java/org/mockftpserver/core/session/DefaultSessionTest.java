@@ -26,10 +26,7 @@ import org.mockftpserver.core.socket.StubSocketFactory;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.util.Collections;
@@ -51,6 +48,7 @@ public final class DefaultSessionTest extends AbstractTestCase {
     private static final String NAME1 = "name1";
     private static final String NAME2 = "name2";
     private static final Object VALUE = "value";
+    private static final String COMMAND = "LIST";
 
     private DefaultSession session;
     private ByteArrayOutputStream outputStream;
@@ -58,30 +56,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
     private StubSocket stubSocket;
     private InetAddress clientHost;
 
-    /**
-     * Perform initialization before each test
-     * 
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        commandHandlerMap = new HashMap();
-        outputStream = new ByteArrayOutputStream();
-        session = createDefaultSession("");
-        clientHost = InetAddress.getLocalHost();
-    }
-
-    /**
-     * @see org.mockftpserver.test.AbstractTestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    /**
-     * Test the Constructor when the control socket is null
-     */
     public void testConstructor_NullControlSocket() {
         try {
             new DefaultSession(null, commandHandlerMap);
@@ -92,9 +66,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the Constructor when the command handler Map is null
-     */
     public void testConstructor_NullCommandHandlerMap() {
         try {
             new DefaultSession(stubSocket, null);
@@ -105,9 +76,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the setClientDataPort() method
-     */
     public void testSetClientDataPort() {
         StubSocket stubSocket = createTestSocket("");
         StubSocketFactory stubSocketFactory = new StubSocketFactory(stubSocket);
@@ -118,9 +86,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertEquals("data port", PORT, stubSocketFactory.requestedDataPort);
     }
 
-    /**
-     * Test the setClientDataPort() method after the session was in passive data mode
-     */
     public void testSetClientDataPort_AfterPassiveConnectionMode() throws IOException {
         StubServerSocket stubServerSocket = new StubServerSocket(PORT);
         StubServerSocketFactory stubServerSocketFactory = new StubServerSocketFactory(stubServerSocket);
@@ -136,9 +101,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertNull("passiveModeDataSocket should be null", session.passiveModeDataSocket);
     }
 
-    /**
-     * Test the setClientHost() method
-     */
     public void testSetClientHost() throws Exception {
         StubSocket stubSocket = createTestSocket("");
         StubSocketFactory stubSocketFactory = new StubSocketFactory(stubSocket);
@@ -148,9 +110,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertEquals("client host", clientHost, stubSocketFactory.requestedHost);
     }
 
-    /**
-     * Test the openDataConnection(), setClientDataPort() and setClientDataHost() methods
-     */
     public void testOpenDataConnection() {
         StubSocket stubSocket = createTestSocket("");
         StubSocketFactory stubSocketFactory = new StubSocketFactory(stubSocket);
@@ -170,12 +129,7 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertEquals("client host", clientHost, stubSocketFactory.requestedHost);
     }
 
-    /**
-     * Test the OpenDataConnection method, when in passive mode and no incoming connection is
-     * initiated
-     */
     public void testOpenDataConnection_PassiveMode_NoConnection() throws IOException {
-
         StubServerSocket stubServerSocket = new StubServerSocket(PORT);
         StubServerSocketFactory stubServerSocketFactory = new StubServerSocketFactory(stubServerSocket);
         session.serverSocketFactory = stubServerSocketFactory;
@@ -192,9 +146,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the OpenDataConnection method, when the clientHost has not been set
-     */
     public void testOpenDataConnection_NullClientHost() {
         try {
             session.openDataConnection();
@@ -205,9 +156,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the readData() method
-     */
     public void testReadData() {
         StubSocket stubSocket = createTestSocket(DATA);
         session.socketFactory = new StubSocketFactory(stubSocket);
@@ -219,9 +167,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertEquals("data", DATA.getBytes(), data);
     }
 
-    /**
-     * Test the readData() method after switching to passive mode
-     */
     public void testReadData_PassiveMode() throws IOException {
         StubSocket stubSocket = createTestSocket(DATA);
         StubServerSocket stubServerSocket = new StubServerSocket(PORT, stubSocket);
@@ -235,9 +180,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertEquals("data", DATA.getBytes(), data);
     }
 
-    /**
-     * Test the readData(int) method
-     */
     public void testReadData_NumBytes() {
         final int NUM_BYTES = 5;
         final String EXPECTED_DATA = DATA.substring(0, NUM_BYTES);
@@ -285,9 +227,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertTrue("passive mode data socket should be closed", stubServerSocket.isClosed());
     }
 
-    /**
-     * Test the switchToPassiveMode() method
-     */
     public void testSwitchToPassiveMode() throws IOException {
         StubServerSocket stubServerSocket = new StubServerSocket(PORT);
         StubServerSocketFactory stubServerSocketFactory = new StubServerSocketFactory(stubServerSocket);
@@ -299,23 +238,39 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertEquals("port", PORT, port);
     }
 
-    /**
-     * Test the getServerHost() method
-     */
     public void testGetServerHost() {
         assertEquals("host", DEFAULT_HOST, session.getServerHost());
     }
 
-    /**
-     * Test the getClientHost() method when the session is not yet started
-     */
     public void testGetClientHost_NotRunning() {
         assertNull("null", session.getClientHost());
     }
 
-    /**
-     * Test the parseCommand() method
-     */
+    public void testReadCommand() {
+        StringReader stringReader = new StringReader(COMMAND);
+        session.controlConnectionReader = new BufferedReader(stringReader);
+        assertEquals(new Command(COMMAND, EMPTY), session.readCommand());
+    }
+
+    public void testReadCommand_ReadLineReturnsNull() {
+        session.controlConnectionReader = new BufferedReader(new StringReader(COMMAND)) {
+            public boolean ready() { return true; }
+            public String readLine() { return null; }
+        };
+        try {
+            session.readCommand();
+            fail("Expected AssertFailedException");
+        }
+        catch(AssertFailedException expected) {
+            // do nothing; expected
+        }
+    }
+
+    public void testReadCommand_Closed_ReturnsNull() {
+        session.close();
+        assertNull(session.readCommand());
+    }
+
     public void testParseCommand() {
         Command command = session.parseCommand("LIST");
         assertEquals("command name", "LIST", command.getName());
@@ -331,9 +286,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
                 .getParameters());
     }
 
-    /**
-     * Test the parseCommand() method, passing in an empty command String
-     */
     public void testParseCommand_EmptyCommandString() {
         try {
             session.parseCommand("");
@@ -344,9 +296,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         }
     }
     
-    /**
-     * Test the sendData() method, as well as the openDataConnection() and closeDataConnection()
-     */
     public void testSendData() {
         StubSocket stubSocket = createTestSocket("1234567890 abcdef");
         session.socketFactory = new StubSocketFactory(stubSocket);
@@ -358,11 +307,7 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertEquals("output", DATA, outputStream.toString());
     }
 
-    /**
-     * Test the SendData() method, passing in a null byte[]
-     */
     public void testSendData_Null() {
-
         try {
             session.sendData(null, 1);
             fail("Expected AssertFailedException");
@@ -372,11 +317,7 @@ public final class DefaultSessionTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the SendReply(int,String) method, passing in an invalid reply code
-     */
     public void testSendReply_InvalidReplyCode() {
-
         try {
             session.sendReply(-66, "text");
             fail("Expected AssertFailedException");
@@ -386,9 +327,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the getAttribute() and setAttribute() methods 
-     */
     public void testGetAndSetAttribute() {
         assertNull("name does not exist yet", session.getAttribute(NAME1));
         session.setAttribute(NAME1, VALUE);
@@ -398,9 +336,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertNull("no such name", session.getAttribute("noSuchName"));
     }
     
-    /**
-     * Test the getAttribute() method, passing in a null name
-     */
     public void testGetAttribute_Null() {
         try {
             session.getAttribute(null);
@@ -411,9 +346,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         }
     }
     
-    /**
-     * Test the setAttribute() method, passing in a null name
-     */
     public void testSetAttribute_NullName() {
         try {
             session.setAttribute(null, VALUE);
@@ -424,9 +356,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         }
     }
     
-    /**
-     * Test the removeAttribute() 
-     */
     public void testRemoveAttribute() {
         session.removeAttribute("noSuchName");      // do nothing
         session.setAttribute(NAME1, VALUE);
@@ -434,9 +363,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertNull("NAME1", session.getAttribute(NAME1));
     }
     
-    /**
-     * Test the removeAttribute() method, passing in a null name
-     */
     public void testRemoveAttribute_Null() {
         try {
             session.removeAttribute(null);
@@ -447,9 +373,6 @@ public final class DefaultSessionTest extends AbstractTestCase {
         }
     }
     
-    /**
-     * Test the getAttributeNames() 
-     */
     public void testGetAttributeNames() {
         assertEquals("No names yet", Collections.EMPTY_SET, session.getAttributeNames());
         session.setAttribute(NAME1, VALUE);
@@ -459,8 +382,17 @@ public final class DefaultSessionTest extends AbstractTestCase {
     }
     
     // -------------------------------------------------------------------------
-    // Internal Helper Methods
+    // Setup and Internal Helper Methods
     // -------------------------------------------------------------------------
+
+    protected void setUp() throws Exception {
+        super.setUp();
+
+        commandHandlerMap = new HashMap();
+        outputStream = new ByteArrayOutputStream();
+        session = createDefaultSession("");
+        clientHost = InetAddress.getLocalHost();
+    }
 
     /**
      * Create and return a DefaultSession object that reads from an InputStream with the specified
