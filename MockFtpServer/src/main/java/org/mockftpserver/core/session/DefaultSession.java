@@ -62,7 +62,7 @@ public class DefaultSession implements Session {
     protected SocketFactory socketFactory = new DefaultSocketFactory();
     protected ServerSocketFactory serverSocketFactory = new DefaultServerSocketFactory();
 
-    private BufferedReader controlConnectionReader;
+    BufferedReader controlConnectionReader; // non-private for testing
     private Writer controlConnectionWriter;
     private Socket controlSocket;
     private Socket dataSocket;
@@ -291,7 +291,6 @@ public class DefaultSession implements Session {
      *         Package-private to enable testing
      */
     Command readCommand() {
-
         final long socketReadIntervalMilliseconds = 20L;
 
         try {
