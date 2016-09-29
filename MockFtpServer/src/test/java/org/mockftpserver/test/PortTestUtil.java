@@ -25,7 +25,7 @@ package org.mockftpserver.test;
  */
 public final class PortTestUtil {
 
-    private static final int DEFAULT_SERVER_CONTROL_PORT = 21;
+    private static final int DEFAULT_SERVER_CONTROL_PORT = 62999; // If this ends up causing collisions, then determine dynamically
     private static final String FTP_SERVER_PORT_PROPERTY = "ftp.server.port";
     
     /**
