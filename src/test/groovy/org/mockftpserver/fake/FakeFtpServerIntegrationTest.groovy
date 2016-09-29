@@ -301,7 +301,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         ftpClient.enterLocalPassiveMode();
 
         String[] filenames = ftpClient.listNames(SUBDIR)
-        assert filenames == [FILENAME1, FILENAME2]
+        assert filenames as Set == [FILENAME1, FILENAME2] as Set
         verifyReplyCode("listNames", 226)
     }
 
