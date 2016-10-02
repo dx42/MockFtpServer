@@ -81,9 +81,11 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     void testHandleCommand_DirectoryContainingFilesAndSubdirectory() {
         final TO_DIR = "/newdir"
         createDirectory(FROM_DIR)
+        createDirectory(FROM_DIR + "/child/grandchild")
         createFile(FROM_DIR + "/a.txt")
         createFile(FROM_DIR + "/b.txt")
-        createDirectory(FROM_DIR + "/child/grandchild")
+        createDirectory(FROM_DIR + "/child/other/leaf")
+        createFile(FROM_DIR + "/child/other/a.txt")
         setRenameFromSessionProperty(FROM_DIR)
         handleCommand([TO_DIR])
         assertSessionReply(ReplyCodes.RNTO_OK, ['rnto', FROM_DIR, TO_DIR])
@@ -91,8 +93,11 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert fileSystem.exists(TO_DIR), TO_DIR
         assert fileSystem.isFile(TO_DIR + "/a.txt")
         assert fileSystem.isFile(TO_DIR + "/b.txt")
+        assert fileSystem.isFile(TO_DIR + "/child/other/a.txt")
         assert fileSystem.isDirectory(TO_DIR + "/child")
         assert fileSystem.isDirectory(TO_DIR + "/child/grandchild")
+        assert fileSystem.isDirectory(TO_DIR + "/child/other")
+        assert fileSystem.isDirectory(TO_DIR + "/child/other/leaf")
         assertRenameFromSessionProperty(null)
     }
 
