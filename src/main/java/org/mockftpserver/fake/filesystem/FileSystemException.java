@@ -74,4 +74,7 @@ public class FileSystemException extends MockFtpServerException {
         this.messageKey = messageKey;
     }
 
+    public String getMessage() {
+        return "FileSystemException[message=" + super.getMessage() + "; messageKey=" + getMessageKey() + "]";
+    }
 }

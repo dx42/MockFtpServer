@@ -1,6 +1,12 @@
 MockFtpServer Change Log
 -------------------------------------------------------------------------------
 
+Changes in version 2.7 (Oct 2016)
+------------------------------------------
+- BUG #28: Error on FakeFtpServer rename. Renaming a directory fails due to descendants returning out of order.
+
+
+
 Changes in version 2.6 (Apr 2015)
 ------------------------------------------
 - BUG #25: OutOfMemoryError: Java heap space; clean up closed sessions. Session: Added boolean Session.isClosed(). AbstractFtpServer: Clean up closed sessions.

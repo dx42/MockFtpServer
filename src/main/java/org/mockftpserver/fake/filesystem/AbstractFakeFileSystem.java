@@ -279,7 +279,8 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
         // move the children. Remove the FROM path after all children have been moved
         add(new DirectoryEntry(normalizedToPath));
 
-        List children = descendents(fromPath);
+        List children = descendants(fromPath);
+        Collections.sort(children);     // ensure that parents are listed before children
         Iterator iter = children.iterator();
         while (iter.hasNext()) {
             String childPath = (String) iter.next();
@@ -592,27 +593,27 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
     }
 
     /**
-     * Return the List of files or subdirectory paths that are descendents of the specified path
+     * Return the List of files or subdirectory paths that are descendants of the specified path
      *
      * @param path - the path
      * @return the List of the paths for the files and subdirectories that are children, grandchildren, etc.
      */
-    private List descendents(String path) {
+    private List descendants(String path) {
         if (isDirectory(path)) {
             String normalizedPath = getFileSystemEntryKey(path);
             String separator = (normalizedPath.endsWith(getSeparator())) ? "" : getSeparator();
             String normalizedDirPrefix = normalizedPath + separator;
-            List descendents = new ArrayList();
+            List descendants = new ArrayList();
             Iterator iter = entries.entrySet().iterator();
             while (iter.hasNext()) {
                 Map.Entry mapEntry = (Map.Entry) iter.next();
                 String p = (String) mapEntry.getKey();
                 if (p.startsWith(normalizedDirPrefix) && !normalizedPath.equals(p)) {
                     FileSystemEntry fileSystemEntry = (FileSystemEntry) mapEntry.getValue();
-                    descendents.add(fileSystemEntry.getPath());
+                    descendants.add(fileSystemEntry.getPath());
                 }
             }
-            return descendents;
+            return descendants;
         }
         return Collections.EMPTY_LIST;
     }
@@ -630,7 +631,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
         String pattern = containsWildcards ? PatternUtil.convertStringWithWildcardsToRegex(getName(path)) : null;
         LOG.debug("path=" + path + " lastComponent=" + lastComponent + " containsWildcards=" + containsWildcards + " dir=" + dir + " pattern=" + pattern);
 
-        List descendents = descendents(dir);
+        List descendents = descendants(dir);
         List children = new ArrayList();
         String normalizedDir = normalize(dir);
         Iterator iter = descendents.iterator();
