@@ -4,7 +4,7 @@ MockFtpServer Change Log
 Changes in version 2.7 (Oct 2016)
 ------------------------------------------
 - BUG #28: Error on FakeFtpServer rename. Renaming a directory fails due to descendants returning out of order.
-
+- FEATURE #6: Allow specifying charset (encoding) when creating a FileEntry. Added setContents(String contents, String charset).
 
 
 Changes in version 2.6 (Apr 2015)

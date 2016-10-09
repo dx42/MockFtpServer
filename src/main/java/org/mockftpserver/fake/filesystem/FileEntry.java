@@ -15,11 +15,7 @@
  */
 package org.mockftpserver.fake.filesystem;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * File system entry representing a file
@@ -85,6 +81,19 @@ public class FileEntry extends AbstractFileSystemEntry {
      */
     public void setContents(String contents) {
         byte[] newBytes = (contents != null) ? contents.getBytes() : EMPTY;
+        setContentsInternal(newBytes);
+    }
+
+    /**
+     * Set the contents of the file represented by this entry, using the specified charset.
+     *
+     * @param contents - the String whose bytes are used as the contents
+     * @param charset - the charset used to convert the string to a byte[]
+     *
+     * @throws UnsupportedEncodingException - if an error occurs converting the String to a byte[] using the specified charset
+     */
+    public void setContents(String contents, String charset) throws UnsupportedEncodingException {
+        byte[] newBytes = (contents != null) ? contents.getBytes(charset) : EMPTY;
         setContentsInternal(newBytes);
     }
 

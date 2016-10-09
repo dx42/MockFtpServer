@@ -43,6 +43,18 @@ public class FileEntryTest extends AbstractFileSystemEntryTestCase {
         verifyContents(CONTENTS)
     }
 
+    void testSettingContentsFromString_WithCharset() {
+        final String CHARSET = "ISO-8859-1"
+        final byte[] EXPECTED = CONTENTS.getBytes(CHARSET)
+        entry.setContents(CONTENTS, CHARSET)
+        verifyContents(EXPECTED)
+    }
+
+    void testSettingContentsFromString_WithCharset_UnsupportedEncodingException() {
+        final String CHARSET = "invalid"
+        shouldFail(UnsupportedEncodingException) { entry.setContents(CONTENTS, CHARSET) }
+    }
+
     void testSettingContentsFromBytes() {
         byte[] contents = CONTENTS.getBytes()
         entry.setContents(contents)
