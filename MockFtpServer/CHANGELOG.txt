@@ -5,6 +5,9 @@ Changes in version 2.7 (Oct 2016)
 ------------------------------------------
 - BUG #28: Error on FakeFtpServer rename. Renaming a directory fails due to descendants returning out of order.
 - FEATURE #6: Allow specifying charset (encoding) when creating a FileEntry. Added setContents(String contents, String charset).
+INTERNAL CHANGES
+- PortTestUtil: Fix Linux incompatibility; Change default port number from 21 to 62999.
+- FakeFtpServerIntegrationTest: Fix Linux incompatibility; Ignore order of returned filenames.
 
 
 Changes in version 2.6 (Apr 2015)
