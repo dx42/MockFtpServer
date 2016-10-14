@@ -33,7 +33,7 @@ import java.net.InetAddress;
  * bytes of the 32-bit internet host address of the server, and <i>p1..p2</i> are the 2
  * bytes of the 16-bit TCP port address of the data connection on the server to which
  * the client must connect. See RFC959 for more information.
- * <p/>
+ * <p>
  * Each invocation record stored by this CommandHandler contains no data elements.
  *
  * @author Chris Mair
@@ -49,7 +49,7 @@ public class PasvCommandHandler extends AbstractStubCommandHandler implements Co
     }
 
     /**
-     * @throws IOException
+     * @throws IOException - if an error occurs
      * @see org.mockftpserver.core.command.CommandHandler#handleCommand(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session)
      */
     public void handleCommand(Command command, Session session, InvocationRecord invocationRecord)

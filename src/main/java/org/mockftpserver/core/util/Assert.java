@@ -55,6 +55,7 @@ public final class Assert {
 	/**
 	 * Verify that condition is true. Throw an AssertFailedException if it is false.
 	 * @param condition - the condition that should be true
+	 * @param message - the error message if the condition is false
 	 * @throws AssertFailedException - if condition is false
 	 */
 	public static void isTrue(boolean condition, String message) {
@@ -66,6 +67,7 @@ public final class Assert {
 	/**
 	 * Verify that condition is false. Throw an AssertFailedException if it is true.
 	 * @param condition - the condition that should be false
+	 * @param message - the error message if the condition is true
 	 * @throws AssertFailedException - if condition is true
 	 */
 	public static void isFalse(boolean condition, String message) {

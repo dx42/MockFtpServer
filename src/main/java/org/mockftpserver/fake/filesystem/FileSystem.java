@@ -149,8 +149,8 @@ public interface FileSystem {
      * then this method returns the path of the directory containing that file. If <code>path</code>
      * specifies a directory, the this method returns its parent directory. If <code>path</code> is
      * empty or does not have a parent component, then return an empty string.
-     * <p/>
-     * All path separators in the returned path are converted to the system-dependent separator character.
+     *
+     * <p>All path separators in the returned path are converted to the system-dependent separator character.
      *
      * @param path - the path
      * @return the parent of the specified path, or null if <code>path</code> has no parent

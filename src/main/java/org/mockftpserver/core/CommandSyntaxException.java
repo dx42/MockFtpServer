@@ -25,22 +25,22 @@ package org.mockftpserver.core;
 public class CommandSyntaxException extends MockFtpServerException {
 
     /**
-     * @param message
+     * @param message - the exception message
      */
     public CommandSyntaxException(String message) {
         super(message);
     }
 
     /**
-     * @param cause
+     * @param cause - the cause exception
      */
     public CommandSyntaxException(Throwable cause) {
         super(cause);
     }
 
     /**
-     * @param message
-     * @param cause
+     * @param message - the exception message
+     * @param cause - the cause exception
      */
     public CommandSyntaxException(String message, Throwable cause) {
         super(message, cause);

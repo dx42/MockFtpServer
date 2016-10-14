@@ -42,7 +42,7 @@ public class AssertTest extends AbstractTestCase {
         /**
          * Execute arbitrary logic that can throw any type of Exception
          *
-         * @throws Exception
+         * @throws Exception - if an error occurs
          */
         public void execute() throws Exception;
     }

@@ -30,15 +30,15 @@ import java.io.InputStream;
  * CommandHandler for the RETR command. Returns the contents of the specified file on the
  * data connection, along with two replies on the control connection: a reply code of 150 and
  * another of 226.
- * <p/>
- * The <code>file</code> property specifies the pathname for the file whose contents should
+ *
+ * <p>The <code>file</code> property specifies the pathname for the file whose contents should
  * be returned from this command. The file path is relative to the CLASSPATH (using the
  * ClassLoader for this class).
- * <p/>
- * An exception is thrown if the <code>file</code> property has not been set or if the specified
+ *
+ * <p>An exception is thrown if the <code>file</code> property has not been set or if the specified
  * file does not exist or cannot be read.
- * <p/>
- * Each invocation record stored by this CommandHandler includes the following data element key/values:
+ *
+ * <p>Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
  * <li>{@link #PATHNAME_KEY} ("pathname") - the pathname of the file submitted on the invocation (the first command parameter)
  * </ul>

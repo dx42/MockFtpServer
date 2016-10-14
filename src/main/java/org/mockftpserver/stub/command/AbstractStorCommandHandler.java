@@ -22,8 +22,8 @@ import org.mockftpserver.core.session.Session;
 /**
  * Abstract superclass for CommandHandler for commands that store a file. Send back two replies on the
  * control connection: a reply code of 150 and another of 226.
- * <p/>
- * Each invocation record stored by this CommandHandler includes the following data element key/values:
+ *
+ * <p>Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
  * <li>{@link #FILE_CONTENTS_KEY} ("fileContents") - the file contents (<code>byte[]</code>) sent on the data connection
  * </ul>

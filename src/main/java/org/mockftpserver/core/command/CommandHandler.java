@@ -35,7 +35,7 @@ public interface CommandHandler {
      * @param command - the Command to be handled
      * @param session - the session on which the Command was submitted
      * 
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     public void handleCommand(Command command, Session session) throws Exception;
 

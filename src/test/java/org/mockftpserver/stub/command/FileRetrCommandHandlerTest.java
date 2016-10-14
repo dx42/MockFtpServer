@@ -68,7 +68,7 @@ public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest
      * Test the handleCommand(Command,Session) method. Create a temporary (binary) file, and
      * make sure its contents are written back
      *
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     public void testHandleCommand() throws Exception {
 

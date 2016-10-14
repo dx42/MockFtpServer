@@ -116,8 +116,8 @@ public abstract class AbstractFakeCommandHandler extends AbstractCommandHandler 
 
     /**
      * Send a reply for this command on the control connection.
-     * <p/>
-     * The reply code is designated by the <code>replyCode</code> property, and the reply text
+     *
+     * <p>The reply code is designated by the <code>replyCode</code> property, and the reply text
      * is retrieved from the <code>replyText</code> ResourceBundle, using the specified messageKey.
      *
      * @param session    - the Session
@@ -132,8 +132,8 @@ public abstract class AbstractFakeCommandHandler extends AbstractCommandHandler 
 
     /**
      * Send a reply for this command on the control connection.
-     * <p/>
-     * The reply code is designated by the <code>replyCode</code> property, and the reply text
+     *
+     * <p>The reply code is designated by the <code>replyCode</code> property, and the reply text
      * is retrieved from the <code>replyText</code> ResourceBundle, using the specified messageKey.
      *
      * @param session    - the Session
@@ -158,8 +158,8 @@ public abstract class AbstractFakeCommandHandler extends AbstractCommandHandler 
 
     /**
      * Send a reply for this command on the control connection.
-     * <p/>
-     * The reply code is designated by the <code>replyCode</code> property, and the reply text
+     *
+     * <p>The reply code is designated by the <code>replyCode</code> property, and the reply text
      * is retrieved from the <code>replyText</code> ResourceBundle, using the reply code as the key.
      *
      * @param session   - the Session
@@ -173,8 +173,8 @@ public abstract class AbstractFakeCommandHandler extends AbstractCommandHandler 
 
     /**
      * Send a reply for this command on the control connection.
-     * <p/>
-     * The reply code is designated by the <code>replyCode</code> property, and the reply text
+     *
+     * <p>The reply code is designated by the <code>replyCode</code> property, and the reply text
      * is retrieved from the <code>replyText</code> ResourceBundle, using the reply code as the key.
      *
      * @param session   - the Session

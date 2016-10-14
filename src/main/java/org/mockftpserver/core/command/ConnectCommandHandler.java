@@ -20,11 +20,11 @@ import org.mockftpserver.core.session.Session;
 /**
  * CommandHandler that encapsulates the sending of the reply for the initial connection from
  * the FTP client to the server. Send back a reply code of 220, indicating a successful connection.
- * <p>
- * Note that this is a "special" CommandHandler, in that it handles the initial connection from the
+ *
+ * <p>Note that this is a "special" CommandHandler, in that it handles the initial connection from the
  * client, rather than an explicit FTP command.
- * <p>
- * Each invocation record stored by this CommandHandler contains no data elements.
+ *
+ * <p>Each invocation record stored by this CommandHandler contains no data elements.
  *
  * @author Chris Mair
  * @version $Revision$ - $Date$

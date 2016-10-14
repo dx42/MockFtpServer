@@ -35,8 +35,8 @@ public class FtpWorkingDirectory {
     /**
      * Return the current working directory for the FTP account on the server
      * @return the current working directory
-     * @throws SocketException
-     * @throws IOException
+     * @throws SocketException - if a socket error occurs
+     * @throws IOException - if an error occurs
      */
     public String getWorkingDirectory() throws SocketException, IOException {
         FTPClient ftpClient = new FTPClient();

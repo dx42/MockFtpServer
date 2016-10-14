@@ -25,22 +25,22 @@ package org.mockftpserver.core;
 public class IllegalStateException extends MockFtpServerException {
 
     /**
-     * @param message
+     * @param message - the exception message
      */
     public IllegalStateException(String message) {
         super(message);
     }
 
     /**
-     * @param cause
+     * @param cause - the cause exception
      */
     public IllegalStateException(Throwable cause) {
         super(cause);
     }
 
     /**
-     * @param message
-     * @param cause
+     * @param message - the exception message
+     * @param cause - the cause exception
      */
     public IllegalStateException(String message, Throwable cause) {
         super(message, cause);

@@ -23,7 +23,7 @@ import org.mockftpserver.core.session.Session;
 
 /**
  * CommandHandler for the STRU (File Structure) command. Send back a reply code of 200.
- * <p/>
+ * <p>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
  * <li>{@link #FILE_STRUCTURE_KEY} ("fileStructure") - the file structure code submitted on the invocation (the first command parameter)

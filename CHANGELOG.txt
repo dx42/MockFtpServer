@@ -8,6 +8,7 @@ Changes in version 2.7 (Oct 2016)
 INTERNAL CHANGES
 - PortTestUtil: Fix Linux incompatibility; Change default port number from 21 to 62999.
 - FakeFtpServerIntegrationTest: Fix Linux incompatibility; Ignore order of returned filenames.
+- Clean up javadoc.
 
 
 Changes in version 2.6 (Apr 2015)

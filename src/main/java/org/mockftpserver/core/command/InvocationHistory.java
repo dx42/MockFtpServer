@@ -28,7 +28,7 @@ public interface InvocationHistory {
     /**
      * @return the number of invocation records stored for this command handler instance
      */
-    public int numberOfInvocations();
+    int numberOfInvocations();
 
     /**
      * Return the InvocationRecord representing the command invoction data for the nth invocation
@@ -38,13 +38,13 @@ public interface InvocationHistory {
      * @param index - the index of the invocation record to return. The first record is at index zero.
      * @return the InvocationRecord for the specified index
      * 
-     * @throws AssertFailedException - if there is no invocation record corresponding to the specified index     */
-    public InvocationRecord getInvocation(int index);
+     * @throws org.mockftpserver.core.util.AssertFailedException - if there is no invocation record corresponding to the specified index     */
+    InvocationRecord getInvocation(int index);
 
     /**
      * Clear out the invocation history for this CommandHandler. After invoking this method, the
      * <code>numberOfInvocations()</code> method will return zero.
      */
-    public void clearInvocations();
+    void clearInvocations();
 
 }

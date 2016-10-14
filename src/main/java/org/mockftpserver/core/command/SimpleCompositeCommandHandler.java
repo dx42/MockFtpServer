@@ -29,8 +29,8 @@ import java.util.ResourceBundle;
  * The internal CommandHandlers are maintained in an ordered list. Starting with the first 
  * CommandHandler in the list, each invocation of this composite handler will invoke (delegate to) 
  * the current internal CommandHander. Then it moves on the next CommandHandler in the internal list.  
- * <p>
- * The following example replaces the CWD CommandHandler with a <code>SimpleCompositeCommandHandler</code>. 
+ *
+ * <p>The following example replaces the CWD CommandHandler with a <code>SimpleCompositeCommandHandler</code>.
  * The first invocation of the CWD command will fail (reply code 500). The seconds will succeed.
  * <pre><code>
  * 

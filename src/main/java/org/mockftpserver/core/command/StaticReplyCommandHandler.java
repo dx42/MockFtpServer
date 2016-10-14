@@ -24,8 +24,8 @@ import org.mockftpserver.core.util.AssertFailedException;
  * <code>replyCode</code> property is set, then the default reply text corresponding to that
  * reply code is used in the response. You can optionally configure the reply text by setting
  * the <code>replyMessageKey</code> or <code>replyText</code> property.
- * <p>
- * Each invocation record stored by this CommandHandler contains no data elements.
+ *
+ * <p>Each invocation record stored by this CommandHandler contains no data elements.
  * 
  * @version $Revision$ - $Date$
  * 

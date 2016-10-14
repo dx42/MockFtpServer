@@ -31,28 +31,29 @@ import java.util.Map;
 /**
  * <b>FakeFtpServer</b> is the top-level class for a "fake" implementation of an FTP Server,
  * suitable for testing FTP client code or standing in for a live FTP server.
- * <p/>
- * <b>FakeFtpServer</b> provides a high-level abstraction for an FTP Server and is suitable
+ *
+ * <p><b>FakeFtpServer</b> provides a high-level abstraction for an FTP Server and is suitable
  * for most testing and simulation scenarios. You define a filesystem (internal, in-memory) containing
  * an arbitrary set of files and directories. These files and directories can (optionally) have
  * associated access permissions. You also configure a set of one or more user accounts that
  * control which users can login to the FTP server, and their home (default) directories. The
  * user account is also used when assigning file and directory ownership for new files.
- * <p> <b>FakeFtpServer</b> processes FTP client requests and responds with reply codes and
+ *
+ * <p><b>FakeFtpServer</b> processes FTP client requests and responds with reply codes and
  * reply messages consistent with its configuration and the contents of its internal filesystem,
  * including file and directory permissions, if they have been configured.
- * <p/>
- * <b>FakeFtpServer</b> can be fully configured programmatically or within the
+ *
+ * <p><b>FakeFtpServer</b> can be fully configured programmatically or within the
  * <a href="http://www.springframework.org/">Spring Framework</a> or other dependency-injection container.
- * <p/>
- * In general the steps for setting up and starting the <b>FakeFtpServer</b> are:
+ *
+ * <p>In general the steps for setting up and starting the <b>FakeFtpServer</b> are:
  * <ol>
  * <li>Create a new <b>FakeFtpServer</b> instance, and optionally set the server control port.</li>
  * <li>Create and configure a <b>FileSystem</b>, and attach to the <b>FakeFtpServer</b> instance.</li>
  * <li>Create and configure one or more <b>UserAccount</b> objects and attach to the <b>FakeFtpServer</b> instance.</li>
  * <li>Start the <b>FakeFtpServer</b> instance.</li>
  * </ol>
- * <h4>Example Code</h4>
+ * <p><b>Example Code</b></p>
  * <pre><code>
  * FakeFtpServer fakeFtpServer = new FakeFtpServer();
  *
@@ -70,7 +71,7 @@ import java.util.Map;
  * fakeFtpServer.start();
  * </code></pre>
  *
- * <h4>Example Code with Permissions</h4>
+ * <p><b>Example Code with Permissions</b></p>
  * You can optionally set the permissions and owner/group for each file and directory, as in the following example.
  * <pre><code>
  * FileSystem fileSystem = new UnixFakeFileSystem();
@@ -109,7 +110,7 @@ import java.util.Map;
  * fakeFtpServer.start();
  * </code></pre>
  *
- * <h4>FTP Server Control Port</h4>
+ * <p><b>FTP Server Control Port</b></p>
  * By default, <b>FakeFtpServer</b> binds to the server control port of 21. You can use a different server control
  * port by setting the <code>serverControlPort</code> property. If you specify a value of <code>0</code>,
  * then a free port number will be chosen automatically; call <code>getServerControlPort()</code> AFTER
@@ -117,17 +118,17 @@ import java.util.Map;
  * port number is usually necessary when running on Unix or some other system where that port number is
  * already in use or cannot be bound from a user process.
  *
- * <h4>Other Configuration</h4>
+ * <p><b>Other Configuration</b></p>
  * The <code>systemName</code> property specifies the value returned by the <code>SYST</code>
  * command. Note that this is typically used by an FTP client to determine how to parse
  * system-dependent reply text, such as directory listings. This value defaults to <code>"WINDOWS"</code>.
- * <p/>
- * The <code>helpText</code> property specifies a <i>Map</i> of help text replies sent by the
+ *
+ * <p>The <code>helpText</code> property specifies a <i>Map</i> of help text replies sent by the
  * <code>HELP</code> command. The keys in that <i>Map</i> correspond to the command names passed as
  * parameters to the <code>HELP</code> command. An entry with the key of an empty string ("") indicates the
  * text used as the default help text when no command name parameter is specified for the <code>HELP</code> command.
  *
- * <h4>FTP Command Reply Text ResourceBundle</h4>
+ * <p><b>FTP Command Reply Text ResourceBundle</b></p>
  * The default text asociated with each FTP command reply code is contained within the
  * "ReplyText.properties" ResourceBundle file. You can customize these messages by providing a
  * locale-specific ResourceBundle file on the CLASSPATH, according to the normal lookup rules of

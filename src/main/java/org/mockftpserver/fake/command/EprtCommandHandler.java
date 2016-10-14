@@ -25,7 +25,7 @@ import org.mockftpserver.core.util.PortParser;
  * CommandHandler for the EPRT command. Handler logic:
  * <ol>
  * <li>Parse the client network address (InetAddress) and port number from the (single)
- *     parameter string of the form: "EPRT<space><d><net-prt><d><net-addr><d><tcp-port><d>".
+ *     parameter string of the form: "EPRT \net-prt\net-addr\tcp-port\".
  *     The client network address can be in IPv4 format (e.g., "132.235.1.2") or
  *     IPv6 format (e.g., "1080::8:800:200C:417A")     
  * <li>Send back a reply of 200</li>

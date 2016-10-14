@@ -25,31 +25,31 @@ import java.util.List;
  * Represents a single user account on the server, including the username, password, home
  * directory, list of groups to which this user belongs, and default permissions applied to
  * newly-created files and directories.
- * <p/>
- * The <code>username</code> and <code>homeDirectory</code> property must be non-null
+ *
+ * <p>The <code>username</code> and <code>homeDirectory</code> property must be non-null
  * and non-empty. The <code>homeDirectory</code> property must also match the name of an existing
  * directory within the file system configured for the <code>FakeFtpServer</code>.
- * <p/>
- * The group name applied to newly created files/directories is determined by the <code>groups</code> property.
+ *
+ * <p>The group name applied to newly created files/directories is determined by the <code>groups</code> property.
  * If null or empty, then the default group name ("users") is used. Otherwise, the first value in the
  * <code>groups</code> List is used. The <code>groups</code> property defaults to an empty List.
- * <p/>
- * The default value for <code>defaultPermissionsForNewFile</code> is read and write permissions for
+ *
+ * <p>The default value for <code>defaultPermissionsForNewFile</code> is read and write permissions for
  * all (user/group/world). The default value for <code>defaultPermissionsForNewDirectory</code> is read,
  * write and execute permissions for all (user/group/world).
- * <p/>
- * The <code>isValidPassword()</code> method returns true if the specified password matches
+ *
+ * <p>The <code>isValidPassword()</code> method returns true if the specified password matches
  * the password value configured for this user account. This implementation uses the
  * <code>isEquals()</code> method to compare passwords.
- * <p/>
- * If you want to provide a custom comparison, for instance using encrypted passwords, you can
+ *
+ * <p>If you want to provide a custom comparison, for instance using encrypted passwords, you can
  * subclass this class and override the <code>comparePassword()</code> method to provide your own
  * custom implementation.
- * <p/>
- * If the <code>passwordCheckedDuringValidation</code> property is set to false, then the password
- * value is ignored, and the <code>isValidPassword()</code> method just returns <code<true</code>.
- * <p/>
- * The <code>accountRequiredForLogin</code> property defaults to false. If it is set to true, then
+ *
+ * <p>If the <code>passwordCheckedDuringValidation</code> property is set to false, then the password
+ * value is ignored, and the <code>isValidPassword()</code> method just returns <code>true</code>.
+ *
+ * <p>The <code>accountRequiredForLogin</code> property defaults to false. If it is set to true, then
  * it is expected that the login for this account will require an ACCOUNT (ACCT) command after the
  * PASSWORD (PASS) command is completed.
  */

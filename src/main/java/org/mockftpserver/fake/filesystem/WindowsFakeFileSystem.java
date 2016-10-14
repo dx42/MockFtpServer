@@ -26,8 +26,8 @@ import org.mockftpserver.core.util.Assert;
  * <li>An absolute path starts with a drive specifier (e.g. 'a:' or 'c:') followed
  * by '\' or '/', or else if it starts with "\\"</li>
  * </ul>
- * <p/>
- * The <code>directoryListingFormatter</code> property is automatically initialized to an instance
+ *
+ * <p>The <code>directoryListingFormatter</code> property is automatically initialized to an instance
  * of {@link WindowsDirectoryListingFormatter}.
  *
  * @author Chris Mair

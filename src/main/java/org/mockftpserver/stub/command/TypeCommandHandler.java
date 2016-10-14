@@ -23,7 +23,7 @@ import org.mockftpserver.core.session.Session;
 
 /**
  * CommandHandler for the TYPE command. Send back a reply code of 200.
- * <p/>
+ * <p>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
  * <li>{@link #TYPE_INFO_KEY} ("typeInfo") - the type information submitted on the

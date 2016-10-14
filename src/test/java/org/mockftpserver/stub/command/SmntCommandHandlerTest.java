@@ -33,7 +33,7 @@ public final class SmntCommandHandlerTest extends AbstractCommandHandlerTestCase
     
     /**
      * Test the handleCommand(Command,Session) method
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     public void testHandleCommand() throws Exception {
         session.sendReply(ReplyCodes.SMNT_OK, replyTextFor(ReplyCodes.SMNT_OK));

@@ -318,7 +318,7 @@ public abstract class AbstractTestCase extends TestCase {
      * Handle an exception
      *
      * @param e the Exception
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     private void handleException(Exception e) throws Exception {
 
@@ -330,7 +330,7 @@ public abstract class AbstractTestCase extends TestCase {
      * Handle an Error
      *
      * @param e the Error
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     private void handleError(Error e) throws Exception {
         LOG.error("ERROR: ", e);

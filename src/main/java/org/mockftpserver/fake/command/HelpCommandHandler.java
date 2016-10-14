@@ -31,8 +31,8 @@ import java.util.List;
  * <li>Otherwise, reply with 214 along with the configured default help text that has been configured
  * (or empty if none)</li>
  * </ol>
- * <p/>
- * The help text is configured within the {@link org.mockftpserver.fake.FakeFtpServer}.
+ *
+ * <p>The help text is configured within the {@link org.mockftpserver.fake.FakeFtpServer}.
  *
  * @author Chris Mair
  * @version $Revision$ - $Date$

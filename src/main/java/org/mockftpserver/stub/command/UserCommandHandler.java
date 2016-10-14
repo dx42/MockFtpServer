@@ -25,7 +25,7 @@ import org.mockftpserver.core.session.Session;
  * CommandHandler for the USER command. The <code>passwordRequired</code> property defaults to true,
  * indicating that a password is required following the user name. If true, this command handler
  * returns a reply of 331. If false, return a reply of 230.
- * <p/>
+ * <p>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
  * <li>{@link #USERNAME_KEY} ("username") - the user name submitted on the invocation (the first command parameter)

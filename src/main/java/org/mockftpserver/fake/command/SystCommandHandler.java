@@ -26,8 +26,8 @@ import org.mockftpserver.core.session.Session;
  * </ol>
  * The default system name is "WINDOWS", but it can be customized on the
  * {@link org.mockftpserver.fake.FakeFtpServer}  .
- * <p/>
- * See the available system names listed in the Assigned Numbers document (RFC 943).
+ *
+ * <p>See the available system names listed in the Assigned Numbers document (RFC 943).
  *
  * @author Chris Mair
  * @version $Revision$ - $Date$

@@ -23,7 +23,7 @@ import org.mockftpserver.core.session.Session;
 
 /**
  * CommandHandler for the RNFR (Rename From) command. Send back a reply code of 350.
- * <p/>
+ * <p>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
  * <li>{@link #PATHNAME_KEY} ("pathname") - the pathname of the file submitted on the invocation (the first command parameter)

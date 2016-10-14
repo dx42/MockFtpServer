@@ -30,7 +30,7 @@ import java.net.InetAddress;
  * along with response text of the form: "<i>(h1,h2,h3,h4,p1,p2)</i>", where <i>h1..h4</i> are the
  * 4 bytes of the 32-bit internet host address of the server, and <i>p1..p2</i> are the 2
  * bytes of the 16-bit TCP port address of the data connection on the server to which
- * the client must connect. See RFC959 for more information.</i>
+ * the client must connect. See RFC959 for more information.</li>
  * </ol>
  *
  * @author Chris Mair

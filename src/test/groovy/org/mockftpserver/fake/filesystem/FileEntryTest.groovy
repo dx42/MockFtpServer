@@ -205,7 +205,7 @@ public class FileEntryTest extends AbstractFileSystemEntryTestCase {
     /**
      * Verify the expected contents of the file entry, read from its InputSteam
      * @param expectedContents - the expected contents, as a String
-     * @throws IOException
+     * @throws IOException - if an error occurs
      */
     private void verifyContents(String expectedContents) {
         LOG.info("expectedContents=$expectedContents")
@@ -215,7 +215,7 @@ public class FileEntryTest extends AbstractFileSystemEntryTestCase {
     /**
      * Verify the expected contents of the file entry, read from its InputSteam
      * @param expectedContents - the expected contents, as a byte[]
-     * @throws IOException
+     * @throws IOException - if an error occurs
      */
     private void verifyContents(byte[] expectedContents) {
         byte[] bytes = IoUtil.readBytes(entry.createInputStream())

@@ -27,7 +27,7 @@ import org.mockftpserver.core.util.Assert;
  * another of 226. By default, return an empty file (i.e., a zero-length byte[]). You can
  * customize the returned file contents by setting the <code>fileContents</code> property,
  * specified either as a String or as a byte array.
- * <p/>
+ * <p>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
  * <li>{@link #PATHNAME_KEY} ("pathname") - the pathname of the file submitted on the invocation (the first command parameter)

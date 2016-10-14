@@ -23,7 +23,7 @@ import org.mockftpserver.core.session.Session;
  * reply code of 150 and another of 226. The text accompanying the final reply (226) is the
  * unique filename, which is "" by default. You can customize the returned filename by setting
  * the <code>filename</code> property.
- * <p/>
+ * <p>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
  * <li>{@link #FILE_CONTENTS_KEY} ("fileContents") - the file contents (<code>byte[]</code>) sent on the data connection
