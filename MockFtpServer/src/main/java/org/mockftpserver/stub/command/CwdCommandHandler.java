@@ -23,8 +23,8 @@ import org.mockftpserver.core.session.Session;
 
 /**
  * CommandHandler for the CWD (Change Working Directory) command. Send back a reply code of 250.
- * <p/>
- * Each invocation record stored by this CommandHandler includes the following data element key/values:
+ *
+ * <p>Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
  * <li>{@link #PATHNAME_KEY} ("pathname") - the pathname of the directory submitted on the invocation (the first command parameter)
  * </ul>

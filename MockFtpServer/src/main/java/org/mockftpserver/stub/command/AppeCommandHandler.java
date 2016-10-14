@@ -22,7 +22,7 @@ import org.mockftpserver.core.session.Session;
 /**
  * CommandHandler for the APPE (Append) command. Send back two replies on the control connection: a
  * reply code of 150 and another of 226.
- * <p/>
+ * <p>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
  * <li>{@link #PATHNAME_KEY} ("pathname") - the pathname of the directory submitted on the invocation (the first command parameter)

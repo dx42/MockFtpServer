@@ -80,7 +80,7 @@ public class DefaultSession implements Session {
      * Create a new initialized instance
      *
      * @param controlSocket   - the control connection socket
-     * @param commandHandlers - the Map of command name -> CommandHandler. It is assumed that the
+     * @param commandHandlers - the Map of command name : CommandHandler. It is assumed that the
      *                        command names are all normalized to upper case. See {@link Command#normalizeName(String)}.
      */
     public DefaultSession(Socket controlSocket, Map commandHandlers) {

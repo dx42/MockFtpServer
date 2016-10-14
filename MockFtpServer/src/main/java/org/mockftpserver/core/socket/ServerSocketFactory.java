@@ -32,7 +32,7 @@ public interface ServerSocketFactory {
      * Create a new ServerSocket for the specified port
      * @param port - the port
      * @return a new ServerSocket
-     * @throws IOException
+     * @throws IOException - if an error occurs
      */
     public ServerSocket createServerSocket(int port) throws IOException;
 }

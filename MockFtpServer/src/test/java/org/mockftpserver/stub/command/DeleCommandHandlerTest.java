@@ -35,7 +35,7 @@ public final class DeleCommandHandlerTest extends AbstractCommandHandlerTestCase
     
     /**
      * Test the handleCommand(Command,Session) method
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     public void testHandleCommand() throws Exception {
         session.sendReply(ReplyCodes.DELE_OK, replyTextFor(ReplyCodes.DELE_OK));

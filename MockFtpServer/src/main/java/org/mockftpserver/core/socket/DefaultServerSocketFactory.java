@@ -31,7 +31,7 @@ public class DefaultServerSocketFactory implements ServerSocketFactory {
      * Create a new ServerSocket for the specified port.
      * @param port - the port
      * @return a new ServerSocket
-     * @throws IOException
+     * @throws IOException - if an error occurs
 
      * @see org.mockftpserver.core.socket.ServerSocketFactory#createServerSocket(int)
      */

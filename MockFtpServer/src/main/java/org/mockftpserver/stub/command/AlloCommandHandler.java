@@ -26,7 +26,7 @@ import java.util.StringTokenizer;
 
 /**
  * CommandHandler for the ALLO (Allocate) command. Send back a reply code of 200.
- * <p/>
+ * <p>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
  * <li>{@link #NUMBER_OF_BYTES_KEY} ("numberOfBytes") - the number of bytes submitted

@@ -23,7 +23,7 @@ import org.mockftpserver.core.session.Session;
 
 /**
  * CommandHandler for the MKD (Make Directory) command. Send back a reply code of 257.
- * <p/>
+ * <p>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
  * <li>{@link #PATHNAME_KEY} ("pathname") - the pathname of the directory submitted on the invocation (the first command parameter)

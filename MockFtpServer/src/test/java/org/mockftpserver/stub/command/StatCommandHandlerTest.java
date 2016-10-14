@@ -51,7 +51,7 @@ public final class StatCommandHandlerTest extends AbstractCommandHandlerTestCase
 
     /**
      * Test the handleCommand() method, specifying a pathname parameter
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     public void testHandleCommand_Pathname() throws Exception {
 

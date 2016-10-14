@@ -156,7 +156,7 @@ public final class CommandTest extends AbstractTestCase {
     /**
      * Test the equals() method, and tests the hasCode() method implicitly
      *
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     public void testEquals() throws Exception {
         final Command COMMAND1 = new Command("a", EMPTY);

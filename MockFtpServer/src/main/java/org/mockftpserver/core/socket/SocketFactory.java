@@ -34,7 +34,7 @@ public interface SocketFactory {
      * @param host - the IP address of the host endpoint to which the socket is connect
      * @param port - the port number of the enpoint to which the socket is connected
      * @return a new Socket
-     * @throws IOException
+     * @throws IOException - if an error occurs
      */
     public Socket createSocket(InetAddress host, int port) throws IOException;
 }

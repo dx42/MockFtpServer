@@ -26,10 +26,10 @@ import org.mockftpserver.core.util.Assert;
  * CommandHandler for the SYST (System) command. Send back a reply code of 215. By default,
  * return "WINDOWS" as the system name. You can customize the returned name by
  * setting the <code>systemName</code> property.
- * <p/>
+ * <p>
  * See the available system names listed in the Assigned Numbers document
  * (<a href="http://www.ietf.org/rfc/rfc943">RFC 943</a>).
- * <p/>
+ * <p>
  * Each invocation record stored by this CommandHandler contains no data elements.
  *
  * @author Chris Mair

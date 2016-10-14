@@ -47,7 +47,7 @@ public abstract class AbstractTrackingCommandHandler extends AbstractCommandHand
      *
      * @param command - the Command to be handled
      * @param session - the session on which the Command was submitted
-     * @throws Exception
+     * @throws Exception - if an error occurs
      * @throws AssertFailedException - if the command or session is null
      * @see org.mockftpserver.core.command.CommandHandler#handleCommand(org.mockftpserver.core.command.Command,
      *      org.mockftpserver.core.session.Session)
@@ -75,7 +75,7 @@ public abstract class AbstractTrackingCommandHandler extends AbstractCommandHand
      * @param session          - the session on which the Command was submitted
      * @param invocationRecord - the InvocationRecord; CommandHandlers are expected to add
      *                         handler-specific data to the InvocationRecord, as appropriate
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     protected abstract void handleCommand(Command command, Session session, InvocationRecord invocationRecord)
             throws Exception;
@@ -86,8 +86,8 @@ public abstract class AbstractTrackingCommandHandler extends AbstractCommandHand
 
     /**
      * Send a reply for this command on the control connection.
-     * <p/>
-     * The reply code is designated by the <code>replyCode</code> property, and the reply text
+     *
+     * <p>The reply code is designated by the <code>replyCode</code> property, and the reply text
      * is determined by the following rules:
      * <ol>
      * <li>If the <code>replyText</code> property is non-null, then use that.</li>
@@ -167,8 +167,8 @@ public abstract class AbstractTrackingCommandHandler extends AbstractCommandHand
      * supplied. If overrideText is not null, then return that. Otherwise, return the text mapped to
      * the code from the replyText ResourceBundle. If the ResourceBundle contains no mapping, then
      * return null.
-     * <p/>
-     * If arguments is not null, then the returned reply text if formatted using the
+     *
+     * <p>If arguments is not null, then the returned reply text if formatted using the
      * {@link MessageFormat} class.
      *
      * @param code         - the reply code

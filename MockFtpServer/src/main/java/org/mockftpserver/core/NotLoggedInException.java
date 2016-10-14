@@ -25,22 +25,22 @@ package org.mockftpserver.core;
 public class NotLoggedInException extends MockFtpServerException {
 
     /**
-     * @param message
+     * @param message - the exception message
      */
     public NotLoggedInException(String message) {
         super(message);
     }
 
     /**
-     * @param cause
+     * @param cause - the cause exception
      */
     public NotLoggedInException(Throwable cause) {
         super(cause);
     }
 
     /**
-     * @param message
-     * @param cause
+     * @param message - the exception message
+     * @param cause - the cause exception
      */
     public NotLoggedInException(String message, Throwable cause) {
         super(message, cause);

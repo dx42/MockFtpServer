@@ -32,13 +32,13 @@ import java.util.Map;
 /**
  * Abstract superclass for implementation of the FileSystem interface that manage the files
  * and directories in memory, simulating a real file system.
- * <p/>
- * If the <code>createParentDirectoriesAutomatically</code> property is set to <code>true</code>,
+ *
+ * <p>If the <code>createParentDirectoriesAutomatically</code> property is set to <code>true</code>,
  * then creating a directory or file will automatically create any parent directories (recursively)
  * that do not already exist. If <code>false</code>, then creating a directory or file throws an
  * exception if its parent directory does not exist. This value defaults to <code>true</code>.
- * <p/>
- * The <code>directoryListingFormatter</code> property holds an instance of            {@link DirectoryListingFormatter}                          ,
+ *
+ * <p>The <code>directoryListingFormatter</code> property holds an instance of            {@link DirectoryListingFormatter}                          ,
  * used by the <code>formatDirectoryListing</code> method to format directory listings in a
  * filesystem-specific manner. This property must be initialized by concrete subclasses.
  *
@@ -343,8 +343,8 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
      * then this method returns the path of the directory containing that file. If <code>path</code>
      * specifies a directory, the this method returns its parent directory. If <code>path</code> is
      * empty or does not have a parent component, then return an empty string.
-     * <p/>
-     * All path separators in the returned path are converted to the system-dependent separator character.
+     *
+     * <p>All path separators in the returned path are converted to the system-dependent separator character.
      *
      * @param path - the path
      * @return the parent of the specified path, or null if <code>path</code> has no parent

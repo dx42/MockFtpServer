@@ -25,24 +25,24 @@ import org.mockftpserver.core.util.AssertFailedException;
 
 /**
  * Abstract superclass for CommandHandlers that read from or write to the data connection.
- * <p/>
- * Return two replies on the control connection: by default a reply code of 150 before the
+ *
+ * <p>Return two replies on the control connection: by default a reply code of 150 before the
  * data transfer across the data connection and another reply of 226 after the data transfer
  * is complete.
- * <p/>
- * This class implements the <i>Template Method</i> pattern. Subclasses must implement the abstract
+ *
+ * <p>This class implements the <i>Template Method</i> pattern. Subclasses must implement the abstract
  * <code>processData</code> method to perform read or writes across the data connection.
- * <p/>
- * Subclasses can optionally override the {@link #beforeProcessData(Command, Session, InvocationRecord)}
+ *
+ * <p>Subclasses can optionally override the {@link #beforeProcessData(Command, Session, InvocationRecord)}
  * method for logic before the data transfer or the {@link #afterProcessData(Command, Session, InvocationRecord)}
  * method for logic after the data transfer.
- * <p/>
- * Subclasses can optionally override the reply code and/or text for the initial reply (before
+ *
+ * <p>Subclasses can optionally override the reply code and/or text for the initial reply (before
  * the data transfer across the data connection) by calling {@link #setPreliminaryReplyCode(int)},
  * {@link #setPreliminaryReplyMessageKey(String)} and/or {@link #setPreliminaryReplyText(String)}
  * methods.
- * <p/>
- * Subclasses can optionally override the reply code and/or text for the final reply (after the
+ *
+ * <p>Subclasses can optionally override the reply code and/or text for the final reply (after the
  * the data transfer is complete) by calling {@link #setFinalReplyCode(int)},
  * {@link #setFinalReplyMessageKey(String)} and/or {@link #setFinalReplyText(String)} methods.
  *
@@ -128,7 +128,7 @@ public abstract class AbstractStubDataCommandHandler extends AbstractTrackingCom
      * @param session          - the session on which the Command was submitted
      * @param invocationRecord - the InvocationRecord; CommandHandlers are expected to add
      *                         handler-specific data to the InvocationRecord, as appropriate
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     protected void beforeProcessData(Command command, Session session, InvocationRecord invocationRecord) throws Exception {
         // Do nothing by default
@@ -143,7 +143,7 @@ public abstract class AbstractStubDataCommandHandler extends AbstractTrackingCom
      * @param session          - the session on which the Command was submitted
      * @param invocationRecord - the InvocationRecord; CommandHandlers are expected to add
      *                         handler-specific data to the InvocationRecord, as appropriate
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     protected abstract void processData(Command command, Session session, InvocationRecord invocationRecord) throws Exception;
 
@@ -155,7 +155,7 @@ public abstract class AbstractStubDataCommandHandler extends AbstractTrackingCom
      * @param session          - the session on which the Command was submitted
      * @param invocationRecord - the InvocationRecord; CommandHandlers are expected to add
      *                         handler-specific data to the InvocationRecord, as appropriate
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     protected void afterProcessData(Command command, Session session, InvocationRecord invocationRecord) throws Exception {
         // Do nothing by default

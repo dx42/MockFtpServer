@@ -30,7 +30,7 @@ import java.net.InetAddress;
  * "<i>Entering Extended Passive Mode (|||PORT|)</i>", where <i>PORT</i> is the 16-bit TCP port
  * address of the data connection on the server to which the client must connect.
  * See RFC2428 for more information.
- * <p/>
+ * <p>
  * Each invocation record stored by this CommandHandler contains no data elements.
  *
  * @author Chris Mair
@@ -46,7 +46,7 @@ public class EpsvCommandHandler extends AbstractStubCommandHandler implements Co
     }
 
     /**
-     * @throws java.io.IOException
+     * @throws java.io.IOException - if an error occurs
      * @see org.mockftpserver.core.command.CommandHandler#handleCommand(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session)
      */
     public void handleCommand(Command command, Session session, InvocationRecord invocationRecord)

@@ -23,7 +23,7 @@ import org.mockftpserver.core.session.Session;
 
 /**
  * CommandHandler for the ACCT command. Send back a reply code of 230.
- * <p/>
+ * <p>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
  * <li>"acount" - the account submitted on the invocation (the first command parameter)

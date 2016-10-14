@@ -23,8 +23,8 @@ import org.mockftpserver.core.session.Session;
 
 /**
  * CommandHandler for the ABOR command. Return a reply code of 226.
- * <p>
- * Each invocation record stored by this CommandHandler contains no data elements.
+ *
+ * <p>Each invocation record stored by this CommandHandler contains no data elements.
  *
  * @author Chris Mair
  * @version $Revision$ - $Date$

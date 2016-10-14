@@ -32,7 +32,7 @@ public final class ListCommandHandlerTest extends AbstractCommandHandlerTestCase
     /**
      * Test the handleCommand() method
      *
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     public void testHandleCommand() throws Exception {
         final String DIR_LISTING = " directory listing\nabc.txt\ndef.log\n";

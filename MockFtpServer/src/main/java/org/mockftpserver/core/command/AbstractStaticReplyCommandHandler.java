@@ -24,8 +24,8 @@ import org.mockftpserver.core.session.Session;
  * <code>replyCode</code> property is set, then the default reply text corresponding to that
  * reply code is used in the response. You can optionally configure the reply text by setting
  * the <code>replyMessageKey</code> or <code>replyText</code> property.
- * <p>
- * Subclasses can optionally override the reply code and/or text for the reply by calling
+ *
+ * <p>Subclasses can optionally override the reply code and/or text for the reply by calling
  * {@link #setReplyCode(int)}, {@link #setReplyMessageKey(String)} and {@link #setReplyText(String)}.
  *
  * @version $Revision$ - $Date$

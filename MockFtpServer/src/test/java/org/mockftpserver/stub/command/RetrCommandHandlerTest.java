@@ -91,7 +91,7 @@ public final class RetrCommandHandlerTest extends AbstractCommandHandlerTestCase
     /**
      * Test the handleCommand() method
      *
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     public void testHandleCommand() throws Exception {
         final String FILE_CONTENTS = "abc_123 456";

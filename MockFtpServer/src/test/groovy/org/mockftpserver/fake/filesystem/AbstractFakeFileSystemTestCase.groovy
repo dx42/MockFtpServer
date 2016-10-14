@@ -157,7 +157,7 @@ abstract class AbstractFakeFileSystemTestCase extends AbstractFileSystemTestCase
      *
      * @param fileSystem - the FileSystem instance
      * @param expectedContents - the expected contents
-     * @throws IOException
+     * @throws IOException - if an error occurs
      * @see org.mockftpserver.fake.filesystem.AbstractFileSystemTestCase#verifyFileContents(FileSystem,String,String )
      */
     protected void verifyFileContents(FileSystem fileSystem, String path, String expectedContents) throws IOException {

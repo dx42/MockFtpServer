@@ -35,7 +35,7 @@ public class StubServerSocket extends ServerSocket {
     /**
      * Construct a new instance with the specified local port.
      * @param localPort - the local port to be returned from getLocalPort()
-     * @throws IOException
+     * @throws IOException - if an error occurs
      */
     public StubServerSocket(int localPort) throws IOException {
         this(localPort, null);
@@ -45,7 +45,7 @@ public class StubServerSocket extends ServerSocket {
      * Construct a new instance with specified local port and accept() socket. 
      * @param localPort - the local port to be returned from getLocalPort()
      * @param socket - the socket to be returned from accept(); if null, then accept() throws SocketTimeoutException. 
-     * @throws IOException
+     * @throws IOException - if an error occurs
      */
     public StubServerSocket(int localPort, Socket socket) throws IOException {
         super(0);

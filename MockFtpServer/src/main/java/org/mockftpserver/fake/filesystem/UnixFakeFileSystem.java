@@ -24,8 +24,8 @@ import org.mockftpserver.core.util.Assert;
  * <li>Filenames are case-sensitive</li>
  * <li>Forward slashes (/) are the only valid path separators</li>
  * </ul>
- * <p/>
- * The <code>directoryListingFormatter</code> property is automatically initialized to an instance
+ *
+ * <p>The <code>directoryListingFormatter</code> property is automatically initialized to an instance
  * of {@link UnixDirectoryListingFormatter}.
  *
  * @author Chris Mair

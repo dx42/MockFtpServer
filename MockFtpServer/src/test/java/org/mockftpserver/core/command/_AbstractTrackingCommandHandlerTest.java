@@ -108,7 +108,7 @@ public final class _AbstractTrackingCommandHandlerTest extends AbstractTestCase 
     /**
      * Test the getInvocation() method
      *
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     public void testGetInvocation() throws Exception {
         control(session).expectAndDefaultReturn(session.getClientHost(), DEFAULT_HOST);

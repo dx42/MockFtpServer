@@ -29,12 +29,12 @@ import java.util.Set;
  * Represents information about a single FTP Command invocation. Manages and provides access to
  * the Command, the host address (<code>InetAddress</code>) of the client that submitted the
  * Command and the timestamp of the Command submission.
- * <p>
- * This class also supports storing zero or more arbitrary mappings of <i>key</i> to value, where <i>key</i> is
+ *
+ * <p>This class also supports storing zero or more arbitrary mappings of <i>key</i> to value, where <i>key</i> is
  * a String and <i>value</i> is any Object. Convenience methods are provided that enable retrieving
  * type-specific data by its <i>key</i>. The data stored in an {@link InvocationRecord} is CommandHandler-specific.
- * <p>
- * The {@link #lock()} method makes an instance of this class immutable. After an instance is locked,
+ *
+ * <p>The {@link #lock()} method makes an instance of this class immutable. After an instance is locked,
  * calling the {@link #set(String, Object)} method will throw an <code>AssertFailedException</code>.
  *
  * @author Chris Mair

@@ -75,7 +75,7 @@ public interface Session extends Runnable {
 
     /**
      * Read and return (up to) numBytes of data from the client across the data connection
-     *
+     * @param numBytes - the maximum number of bytes to read
      * @return the data that was read; the byte[] will be up to numBytes bytes long
      */
     public byte[] readData(int numBytes);
@@ -107,7 +107,7 @@ public interface Session extends Runnable {
      * exists for that name or if the attribute value is null.
      * @param name - the attribute name; may not be null
      * @return the value of the attribute stored under name; may be null
-     * @throws AssertFailedException - if name is null
+     * @throws org.mockftpserver.core.util.AssertFailedException - if name is null
      */
     public Object getAttribute(String name);
     
@@ -115,7 +115,7 @@ public interface Session extends Runnable {
      * Store the value under the specified attribute name.
      * @param name - the attribute name; may not be null
      * @param value - the attribute value; may be null
-     * @throws AssertFailedException - if name is null
+     * @throws org.mockftpserver.core.util.AssertFailedException - if name is null
      */
     public void setAttribute(String name, Object value);
     
@@ -123,7 +123,7 @@ public interface Session extends Runnable {
      * Remove the attribute value for the specified name. Do nothing if no attribute
      * value is stored for the specified name.
      * @param name - the attribute name; may not be null
-     * @throws AssertFailedException - if name is null
+     * @throws org.mockftpserver.core.util.AssertFailedException - if name is null
      */
     public void removeAttribute(String name);
 

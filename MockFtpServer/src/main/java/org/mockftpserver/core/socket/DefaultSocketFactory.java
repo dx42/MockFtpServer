@@ -33,7 +33,7 @@ public class DefaultSocketFactory implements SocketFactory {
      * @param host - the IP address of the host endpoint to which the socket is connect
      * @param port - the port number of the enpoint to which the socket is connected
      * @return a new Socket
-     * @throws IOException
+     * @throws IOException - if an error occurs
      * 
      * @see org.mockftpserver.core.socket.SocketFactory#createSocket(java.net.InetAddress, int)
      */

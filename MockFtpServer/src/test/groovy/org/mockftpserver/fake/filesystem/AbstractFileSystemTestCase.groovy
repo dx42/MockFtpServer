@@ -356,7 +356,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
     /**
      * Return a new instance of the FileSystem implementation class under test
      * @return a new FileSystem instance
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     protected abstract FileSystem createFileSystem()
 
@@ -365,7 +365,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
      *
      * @param fileSystem - the FileSystem instance
      * @param expectedContents - the expected contents
-     * @throws IOException
+     * @throws IOException - if an error occurs
      */
     protected abstract void verifyFileContents(FileSystem fileSystem, String path, String contents) throws Exception
 

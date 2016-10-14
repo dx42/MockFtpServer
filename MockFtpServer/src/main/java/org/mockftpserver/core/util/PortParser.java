@@ -34,8 +34,8 @@ public final class PortParser {
     /**
      * Parse the host address and port number of an extended address. This encoded format is used by
      * the EPRT FTP command, and supports IPv6.
-     * <p/>
-     * The client network address can be in IPv4 format (e.g., "132.235.1.2") or
+     *
+     * <p>The client network address can be in IPv4 format (e.g., "132.235.1.2") or
      * IPv6 format (e.g., "1080::8:800:200C:417A"). See RFC2428 for more information.
      *
      * @param parameter - the single parameter String containing the encoded host and port number

@@ -27,7 +27,7 @@ import java.net.UnknownHostException;
 
 /**
  * CommandHandler for the PORT command. Send back a reply code of 200.
- * <p/>
+ * <p>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
  * <li>{@link #HOST_KEY} ("host") - the client data host (InetAddress) submitted on the invocation (from parameters 1-4)
@@ -52,7 +52,7 @@ public class PortCommandHandler extends AbstractStubCommandHandler implements Co
     /**
      * Handle the command
      *
-     * @throws UnknownHostException
+     * @throws UnknownHostException - if  the remote host is not known
      * @see org.mockftpserver.core.command.CommandHandler#handleCommand(org.mockftpserver.core.command.Command, org.mockftpserver.core.session.Session)
      */
     public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) throws UnknownHostException {

@@ -136,7 +136,7 @@ public final class Command {
 
     /**
      * Return the name, normalized to a common format - convert to upper case.
-     *
+     * @param name - the command name
      * @return the name converted to upper case
      */
     public static String normalizeName(String name) {

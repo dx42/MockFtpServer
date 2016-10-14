@@ -39,25 +39,25 @@ import java.util.ResourceBundle;
  * the main FTP commands by defining handlers for each of the corresponding low-level FTP
  * server commands (e.g. RETR, DELE, LIST). These handlers implement the {@link org.mockftpserver.core.command.CommandHandler}
  * interface.
- * <p/>
- * By default, mock FTP Servers bind to the server control port of 21. You can use a different server control
+ *
+ * <p>By default, mock FTP Servers bind to the server control port of 21. You can use a different server control
  * port by setting the <code>serverControlPort</code> property. If you specify a value of <code>0</code>, 
  * then a free port number will be chosen automatically; call <code>getServerControlPort()</code> AFTER
  * <code>start()</code> has been called to determine the actual port number being used. Using a non-default
  * port number is usually necessary when running on Unix or some other system where that port number is
  * already in use or cannot be bound from a user process.
- * <p/>
- * <h4>Command Handlers</h4>
+ *
+ * <p><b>Command Handlers</b></p>
  * You can set the existing {@link CommandHandler} defined for an FTP server command
  * by calling the {@link #setCommandHandler(String, CommandHandler)} method, passing
  * in the FTP server command name and {@link CommandHandler} instance.
  * You can also replace multiple command handlers at once by using the {@link #setCommandHandlers(Map)}
  * method. That is especially useful when configuring the server through the <b>Spring Framework</b>.
- * <p/>
- * You can retrieve the existing {@link CommandHandler} defined for an FTP server command by
+ *
+ * <p>You can retrieve the existing {@link CommandHandler} defined for an FTP server command by
  * calling the {@link #getCommandHandler(String)} method, passing in the FTP server command name.
- * <p/>
- * <h4>FTP Command Reply Text ResourceBundle</h4>
+ *
+ * <p><b>FTP Command Reply Text ResourceBundle</b></p>
  * The default text asociated with each FTP command reply code is contained within the
  * "ReplyText.properties" ResourceBundle file. You can customize these messages by providing a
  * locale-specific ResourceBundle file on the CLASSPATH, according to the normal lookup rules of
@@ -236,11 +236,11 @@ public abstract class AbstractFtpServer implements Runnable {
 
     /**
      * Override the default CommandHandlers with those in the specified Map of
-     * commandName>>CommandHandler. This will only override the default CommandHandlers
+     * commandName:CommandHandler. This will only override the default CommandHandlers
      * for the keys in <code>commandHandlerMapping</code>. All other default CommandHandler
      * mappings remain unchanged.
      *
-     * @param commandHandlerMapping - the Map of commandName->CommandHandler; these override the defaults
+     * @param commandHandlerMapping - the Map of commandName:CommandHandler; these override the defaults
      * @throws org.mockftpserver.core.util.AssertFailedException
      *          - if the commandHandlerMapping is null
      */

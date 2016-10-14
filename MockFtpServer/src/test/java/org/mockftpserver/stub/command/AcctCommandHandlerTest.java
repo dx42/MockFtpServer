@@ -36,7 +36,7 @@ public final class AcctCommandHandlerTest extends AbstractCommandHandlerTestCase
 
     /**
      * Test the handleCommand() method
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     public void testHandleCommand() throws Exception {
 

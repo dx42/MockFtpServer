@@ -77,7 +77,7 @@ public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerT
     /**
      * Test the handleCommand() method when the replyText attribute has not been set.
      * So, use whatever replyText has been configured in the replyCodeMapping
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     public void testHandleCommand_ReplyTextNotSet() throws Exception {
         commandHandler.setReplyCode(250);
@@ -94,7 +94,7 @@ public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerT
     
     /**
      * Test the handleCommand() method, when the replyCode and replyText are both set
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     public void testHandleCommand_SetReplyText() throws Exception {
         commandHandler.setReplyCode(REPLY_CODE);
@@ -112,7 +112,7 @@ public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerT
     
     /**
      * Test the handleCommand() method when the replyCode attribute has not been set
-     * @throws Exception
+     * @throws Exception - if an error occurs
      */
     public void testHandleCommand_ReplyCodeNotSet() throws Exception {
 

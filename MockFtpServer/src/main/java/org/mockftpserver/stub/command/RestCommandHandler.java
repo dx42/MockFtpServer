@@ -23,7 +23,7 @@ import org.mockftpserver.core.session.Session;
 
 /**
  * CommandHandler for the REST (Restart of interrupted transfer) command. Send back a reply code of 350.
- * <p/>
+ * <p>
  * Each invocation record stored by this CommandHandler includes the following data element key/values:
  * <ul>
  * <li>{@link #MARKER_KEY} ("marker") - the server marker submitted on the invocation (the first command parameter)
