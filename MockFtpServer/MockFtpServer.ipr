@@ -275,6 +275,7 @@
     <dictionary name="chris">
       <words>
         <w>dele</w>
+        <w>nlst</w>
         <w>retr</w>
         <w>stubftpserver</w>
       </words>
@@ -327,7 +328,7 @@
                   <option value="https://mockftpserver.svn.sourceforge.net/svnroot/mockftpserver/tags/1.2.4" />
                 </list>
               </option>
-              <option name="trunkUrl" value="https://mockftpserver.svn.sourceforge.net/svnroot/mockftpserver/MockFtpServer" />
+              <option name="trunkUrl" value="https://svn.code.sf.net/p/mockftpserver/code/tags" />
             </SvnBranchConfiguration>
           </value>
         </entry>

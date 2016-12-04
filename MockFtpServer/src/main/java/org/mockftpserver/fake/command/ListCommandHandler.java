@@ -29,9 +29,9 @@ import java.util.List;
  * CommandHandler for the LIST command. Handler logic:
  * <ol>
  * <li>If the user has not logged in, then reply with 530 and terminate</li>
- * <li>Send an initial reply of 150</li>
  * <li>If the current user does not have read access to the file or directory to be listed, then reply with 550 and terminate</li>
  * <li>If an error occurs during processing, then send a reply of 451 and terminate</li>
+ * <li>Send an initial reply of 150</li>
  * <li>If the optional pathname parameter is missing, then send a directory listing for
  * the current directory across the data connection</li>
  * <li>Otherwise, if the optional pathname parameter specifies a directory or group of files,
@@ -48,7 +48,6 @@ public class ListCommandHandler extends AbstractFakeCommandHandler {
 
     protected void handle(Command command, Session session) {
         verifyLoggedIn(session);
-        sendReply(session, ReplyCodes.TRANSFER_DATA_INITIAL_OK);
 
         String path = getRealPath(session, command.getParameter(0));
 
@@ -68,6 +67,8 @@ public class ListCommandHandler extends AbstractFakeCommandHandler {
         }
         String result = StringUtil.join(lines, endOfLine());
         result += result.length() > 0 ? endOfLine() : "";
+
+        sendReply(session, ReplyCodes.TRANSFER_DATA_INITIAL_OK);
 
         session.openDataConnection();
         LOG.info("Sending [" + result + "]");
