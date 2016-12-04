@@ -216,6 +216,17 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         verifyReplyCode("list", 226)
     }
 
+    void testList_NoReadPermission() {
+        def subDir = fileSystem.getEntry(SUBDIR)
+        subDir.setOwner("other")
+        subDir.setPermissionsFromString("rwx------")
+
+        ftpClientConnectAndLogin()
+
+        ftpClient.listFiles(SUBDIR)
+        verifyReplyCode("list", 550)
+    }
+
     void testList_Unix() {
         ftpServer.systemName = 'UNIX'
         userAccount.homeDirectory = '/'
@@ -286,6 +297,18 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         assert filenames as Set == [FILENAME1, SUBDIR_NAME2] as Set
         verifyReplyCode("listNames", 226)
     }
+
+    void testNlst_NoReadPermission() {
+        def subDir = fileSystem.getEntry(SUBDIR)
+        subDir.setOwner("other")
+        subDir.setPermissionsFromString("rwx------")
+
+        ftpClientConnectAndLogin()
+
+        ftpClient.listNames(SUBDIR)
+        verifyReplyCode("list", 550)
+    }
+
 
     void testNoop() {
         ftpClientConnectAndLogin()

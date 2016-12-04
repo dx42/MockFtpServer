@@ -80,15 +80,15 @@ class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     void testHandleCommand_NoReadAccessToDirectory() {
         fileSystem.getEntry(DIR).permissions = new Permissions('-wx-wx-wx')
         handleCommand([DIR])
-        assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
-        assertSessionReply(1, ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotRead', DIR])
+//        assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
+        assertSessionReply(0, ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotRead', DIR])
     }
 
     void testHandleCommand_ListNamesThrowsException() {
         fileSystem.listNamesMethodException = new FileSystemException("bad", ERROR_MESSAGE_KEY)
         handleCommand([DIR])
-        assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
-        assertSessionReply(1, ReplyCodes.SYSTEM_ERROR, ERROR_MESSAGE_KEY)
+//        assertSessionReply(0, ReplyCodes.TRANSFER_DATA_INITIAL_OK)
+        assertSessionReply(0, ReplyCodes.SYSTEM_ERROR, ERROR_MESSAGE_KEY)
     }
 
     //-------------------------------------------------------------------------

@@ -1,6 +1,11 @@
 MockFtpServer Change Log
 -------------------------------------------------------------------------------
 
+Changes in version 2.7.1 (Dec 2016)
+------------------------------------------
+- Bug #29: LIST and NLST command handler sends unexpected 150 response for permissions error.
+
+
 Changes in version 2.7 (Oct 2016)
 ------------------------------------------
 - BUG #28: Error on FakeFtpServer rename. Renaming a directory fails due to descendants returning out of order.
