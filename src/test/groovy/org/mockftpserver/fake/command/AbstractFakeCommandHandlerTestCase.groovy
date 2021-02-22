@@ -297,8 +297,8 @@ abstract class AbstractFakeCommandHandlerTestCase extends AbstractGroovyTestCase
      * @param contents - the contents for the file; defaults to null
      * @return the newly created FileEntry
      */
-    protected FileEntry createFile(String path, contents = null) {
-        FileEntry entry = new FileEntry(path: path, contents: contents)
+    protected FileEntry createFile(String path, String contents = null) {
+        FileEntry entry = new FileEntry(path, contents)
         fileSystem.add(entry)
         return entry
     }

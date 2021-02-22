@@ -27,28 +27,28 @@ import org.mockftpserver.test.AbstractGroovyTestCase
 class PermissionsTest extends AbstractGroovyTestCase {
 
     void testConstructor() {
-        testConstructorWithValidString('rwxrwxrwx')
-        testConstructorWithValidString('rwxr--r--')
-        testConstructorWithValidString('---------')
+        doTestConstructorWithValidString('rwxrwxrwx')
+        doTestConstructorWithValidString('rwxr--r--')
+        doTestConstructorWithValidString('---------')
     }
 
     void testConstructor_InvalidString() {
-        testConstructorWithInvalidString('')
-        testConstructorWithInvalidString('------')
-        testConstructorWithInvalidString('-')
-        testConstructorWithInvalidString('r')
-        testConstructorWithInvalidString('rwx')
-        testConstructorWithInvalidString('rwxrwxrw')
-        testConstructorWithInvalidString('123456789')
-        testConstructorWithInvalidString('rwxrZxrwx')
-        testConstructorWithInvalidString('--------Z')
+        doTestConstructorWithInvalidString('')
+        doTestConstructorWithInvalidString('------')
+        doTestConstructorWithInvalidString('-')
+        doTestConstructorWithInvalidString('r')
+        doTestConstructorWithInvalidString('rwx')
+        doTestConstructorWithInvalidString('rwxrwxrw')
+        doTestConstructorWithInvalidString('123456789')
+        doTestConstructorWithInvalidString('rwxrZxrwx')
+        doTestConstructorWithInvalidString('--------Z')
     }
 
     void testCanReadWriteExecute() {
-        testCanReadWriteExecute('rwxrwxrwx', true, true, true, true, true, true, true, true, true)
-        testCanReadWriteExecute('r--r--r--', true, false, false, true, false, false, true, false, false)
-        testCanReadWriteExecute('-w-r----x', false, true, false, true, false, false, false, false, true)
-        testCanReadWriteExecute('---------', false, false, false, false, false, false, false, false, false)
+        doTestCanReadWriteExecute('rwxrwxrwx', true, true, true, true, true, true, true, true, true)
+        doTestCanReadWriteExecute('r--r--r--', true, false, false, true, false, false, true, false, false)
+        doTestCanReadWriteExecute('-w-r----x', false, true, false, true, false, false, false, false, true)
+        doTestCanReadWriteExecute('---------', false, false, false, false, false, false, false, false, false)
     }
 
     void testHashCode() {
@@ -70,10 +70,10 @@ class PermissionsTest extends AbstractGroovyTestCase {
     // Helper Methods
     //--------------------------------------------------------------------------
 
-    private testCanReadWriteExecute(rwxString,
-                                    canUserRead, canUserWrite, canUserExecute,
-                                    canGroupRead, canGroupWrite, canGroupExecute,
-                                    canWorldRead, canWorldWrite, canWorldExecute) {
+    private doTestCanReadWriteExecute(rwxString,
+                                      canUserRead, canUserWrite, canUserExecute,
+                                      canGroupRead, canGroupWrite, canGroupExecute,
+                                      canWorldRead, canWorldWrite, canWorldExecute) {
 
         def permissions = new Permissions(rwxString)
         LOG.info("Testing can read/write/execute for $permissions")
@@ -88,12 +88,12 @@ class PermissionsTest extends AbstractGroovyTestCase {
         assert permissions.canWorldExecute() == canWorldExecute
     }
 
-    private testConstructorWithInvalidString(String string) {
+    private doTestConstructorWithInvalidString(String string) {
         LOG.info("Verifying invalid: [$string]")
         shouldFail { new Permissions(string) }
     }
 
-    private testConstructorWithValidString(String string) {
+    private doTestConstructorWithValidString(String string) {
         LOG.info("Verifying valid: [$string]")
         def permissions = new Permissions(string)
         LOG.info(permissions.toString())

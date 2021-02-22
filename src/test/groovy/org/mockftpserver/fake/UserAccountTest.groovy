@@ -100,74 +100,74 @@ class UserAccountTest extends AbstractGroovyTestCase {
 
     void testCanRead() {
         // No file permissions - readable by all
-        testCanRead(USERNAME, GROUP, null, true)
+        doTestCanRead(USERNAME, GROUP, null, true)
 
         // UserAccount has no username or group; use World permissions
-        testCanRead(USERNAME, GROUP, '------r--', true)
-        testCanRead(USERNAME, GROUP, 'rwxrwx-wx', false)
+        doTestCanRead(USERNAME, GROUP, '------r--', true)
+        doTestCanRead(USERNAME, GROUP, 'rwxrwx-wx', false)
 
         userAccount.username = USERNAME
         userAccount.groups = [GROUP]
 
-        testCanRead(USERNAME, GROUP, 'rwxrwxrwx', true)     // ALL
-        testCanRead(USERNAME, GROUP, '---------', false)    // NONE
+        doTestCanRead(USERNAME, GROUP, 'rwxrwxrwx', true)     // ALL
+        doTestCanRead(USERNAME, GROUP, '---------', false)    // NONE
 
-        testCanRead(USERNAME, null, 'r--------', true)      // User
-        testCanRead(USERNAME, null, '-wxrwxrwx', false)
+        doTestCanRead(USERNAME, null, 'r--------', true)      // User
+        doTestCanRead(USERNAME, null, '-wxrwxrwx', false)
 
-        testCanRead(null, GROUP, '---r-----', true)         // Group
-        testCanRead(null, GROUP, 'rwx-wxrwx', false)
+        doTestCanRead(null, GROUP, '---r-----', true)         // Group
+        doTestCanRead(null, GROUP, 'rwx-wxrwx', false)
 
-        testCanRead(null, null, '------r--', true)          // World
-        testCanRead(null, null, 'rwxrwx-wx', false)
+        doTestCanRead(null, null, '------r--', true)          // World
+        doTestCanRead(null, null, 'rwxrwx-wx', false)
     }
 
     void testCanWrite() {
         // No file permissions - writable by all
-        testCanWrite(USERNAME, GROUP, null, true)
+        doTestCanWrite(USERNAME, GROUP, null, true)
 
         // UserAccount has no username or group; use World permissions
-        testCanWrite(USERNAME, GROUP, '-------w-', true)
-        testCanWrite(USERNAME, GROUP, 'rwxrwxr-x', false)
+        doTestCanWrite(USERNAME, GROUP, '-------w-', true)
+        doTestCanWrite(USERNAME, GROUP, 'rwxrwxr-x', false)
 
         userAccount.username = USERNAME
         userAccount.groups = [GROUP]
 
-        testCanWrite(USERNAME, GROUP, 'rwxrwxrwx', true)     // ALL
-        testCanWrite(USERNAME, GROUP, '---------', false)    // NONE
+        doTestCanWrite(USERNAME, GROUP, 'rwxrwxrwx', true)     // ALL
+        doTestCanWrite(USERNAME, GROUP, '---------', false)    // NONE
 
-        testCanWrite(USERNAME, null, '-w-------', true)      // User
-        testCanWrite(USERNAME, null, 'r-xrwxrwx', false)
+        doTestCanWrite(USERNAME, null, '-w-------', true)      // User
+        doTestCanWrite(USERNAME, null, 'r-xrwxrwx', false)
 
-        testCanWrite(null, GROUP, '----w----', true)         // Group
-        testCanWrite(null, GROUP, 'rwxr-xrwx', false)
+        doTestCanWrite(null, GROUP, '----w----', true)         // Group
+        doTestCanWrite(null, GROUP, 'rwxr-xrwx', false)
 
-        testCanWrite(null, null, '-------w-', true)          // World
-        testCanWrite(null, null, 'rwxrwxr-x', false)
+        doTestCanWrite(null, null, '-------w-', true)          // World
+        doTestCanWrite(null, null, 'rwxrwxr-x', false)
     }
 
     void testCanExecute() {
         // No file permissions - executable by all
-        testCanExecute(USERNAME, GROUP, null, true)
+        doTestCanExecute(USERNAME, GROUP, null, true)
 
         // UserAccount has no username or group; use World permissions
-        testCanExecute(USERNAME, GROUP, '--------x', true)
-        testCanExecute(USERNAME, GROUP, 'rwxrwxrw-', false)
+        doTestCanExecute(USERNAME, GROUP, '--------x', true)
+        doTestCanExecute(USERNAME, GROUP, 'rwxrwxrw-', false)
 
         userAccount.username = USERNAME
         userAccount.groups = [GROUP]
 
-        testCanExecute(USERNAME, GROUP, 'rwxrwxrwx', true)     // ALL
-        testCanExecute(USERNAME, GROUP, '---------', false)    // NONE
+        doTestCanExecute(USERNAME, GROUP, 'rwxrwxrwx', true)     // ALL
+        doTestCanExecute(USERNAME, GROUP, '---------', false)    // NONE
 
-        testCanExecute(USERNAME, null, '--x------', true)      // User
-        testCanExecute(USERNAME, null, 'rw-rwxrwx', false)
+        doTestCanExecute(USERNAME, null, '--x------', true)      // User
+        doTestCanExecute(USERNAME, null, 'rw-rwxrwx', false)
 
-        testCanExecute(null, GROUP, '-----x---', true)         // Group
-        testCanExecute(null, GROUP, 'rwxrw-rwx', false)
+        doTestCanExecute(null, GROUP, '-----x---', true)         // Group
+        doTestCanExecute(null, GROUP, 'rwxrw-rwx', false)
 
-        testCanExecute(null, null, '--------x', true)          // World
-        testCanExecute(null, null, 'rwxrwxrw-', false)
+        doTestCanExecute(null, null, '--------x', true)          // World
+        doTestCanExecute(null, null, 'rwxrwxrw-', false)
     }
 
     void testDefaultPermissions() {
@@ -179,17 +179,17 @@ class UserAccountTest extends AbstractGroovyTestCase {
     // Helper Methods
     //--------------------------------------------------------------------------
 
-    private void testCanRead(owner, group, permissionsString, expectedResult) {
+    private void doTestCanRead(owner, group, permissionsString, expectedResult) {
         def file = createFileEntry(owner, permissionsString, group)
         assert userAccount.canRead(file) == expectedResult, file
     }
 
-    private void testCanWrite(owner, group, permissionsString, expectedResult) {
+    private void doTestCanWrite(owner, group, permissionsString, expectedResult) {
         def file = createFileEntry(owner, permissionsString, group)
         assert userAccount.canWrite(file) == expectedResult, file
     }
 
-    private void testCanExecute(owner, group, permissionsString, expectedResult) {
+    private void doTestCanExecute(owner, group, permissionsString, expectedResult) {
         def file = createFileEntry(owner, permissionsString, group)
         assert userAccount.canExecute(file) == expectedResult, file
     }
