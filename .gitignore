@@ -2,3 +2,9 @@
 /bin/
 /build/
 /gradle/
+
+# IDEA files
+*.eml
+*.iml
+*.iws
+*.ipr
