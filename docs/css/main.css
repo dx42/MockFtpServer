@@ -10,6 +10,7 @@ body {
 }
 #bannerLeft img, #bannerRight img {
     margin: 0px;
+    padding: 4px;
 }
 .xleft, #bannerLeft img {
     float:left;
@@ -20,14 +21,14 @@ body {
 #banner {
     padding: 0px;
     margin-left: 0px;
-    height: 150px;
+    height: 70px;
     width: 100%;
     /*position: fixed;*/ /* Fixed (stay in place on scroll) */
     z-index: 1; /* Stay on top */
     top: 0;
     left: 0;
     border-bottom: 1px solid #d5d5d5;
-    background-image: linear-gradient(to right, #000000 , #A9A9A9);
+    background-image: linear-gradient(to left, #e6f2ff , #99ccff);
 
 }
 #banner img {
@@ -37,8 +38,8 @@ body {
 /* Sidebar Menu ------------------------- */
 
 .sidebar {
-  width: 190px; /* 200 - padding */
-  top: 150px; /* Stay under the banner */
+  width: 210px; /* 220 - padding */
+  top: 70px; /* Stay under the banner */
   margin-left: 0px;
   left: 0px;
   float: left;
