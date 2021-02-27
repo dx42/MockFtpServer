@@ -335,8 +335,8 @@ Things to note about the above example:
    directory containing two files. Permissions and owner/group are specified for that directory, as well
    as the two predefined files contained within it.
 
- * The permissions for "File1.txt" ("rwxrwxrwx") are specified using the "permissionsFromString" shortcut
-   method, while the permissions for "File2.txt" ("rwx------") are specified using the "permissions" setter,
+ * The permissions for "File1.txt" (`"rwxrwxrwx"`) are specified using the "permissionsFromString" shortcut
+   method, while the permissions for "File2.txt" (`"rwx------"`) are specified using the "permissions" setter,
    which takes an instance of the `Permissions` class. Either method is fine.
 
 

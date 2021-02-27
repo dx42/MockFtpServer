@@ -6,21 +6,31 @@ title: FakeFtpServer Features and Limitations
 # FakeFtpServer Features
 
  * Standalone dummy FTP server. Run either within the same JVM as test code or in a different JVM.
+ 
  * Implements common FTP server commands.
+ 
  * Works out of the box with reasonable and expected behavior. Can simulate most mainline success and error scenarios.
- * In most cases, requires little or no knowledge or understanding of FTP server commands and reply codes. 
+ 
+ * In most cases, requires little or no knowledge or understanding of FTP server commands and reply codes.
+  
  * Provides a simulated server file system, including support for file and directory permissions and owner and
    group authorization based on Unix. This file system can be populated at startup (or thereafter) with
    directories and files (including arbitrary content) to be retrieved by an FTP client. Any files sent to the server
    by an FTP client exist within that file system as well, and can be accessed through the file system API, or
    can even be subsequently retrieved by an FTP client.
+ 
  * Allows defining the set of user accounts that control which users can login to the FTP server, and their home
     (default) directories.
+ 
  * Supports active and passive mode data transfers.
+ 
  * Use a dynamically chosen free port number for the server control port instead of using the default (21)
    or hard-coding some other value (set the serverControlPort property of the server to 0).
+ 
  * Supports extended address (IPv6) data transfers (RFC2428)
+ 
  * Fully supports configuration within the **Spring Framework** or other dependency-injection container.
+ 
  * Can be used to test FTP client code written in any language
   
 # FTP Scenarios Supported by FakeFtpServer

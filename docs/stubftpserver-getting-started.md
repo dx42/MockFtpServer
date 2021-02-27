@@ -314,9 +314,8 @@ configured **StubFtpServer**.
 
 ## FTP Command Reply Text ResourceBundle
 
-The default text asociated with each FTP command reply code is contained within the
+The default text associated with each FTP command reply code is contained within the
 "ReplyText.properties" ResourceBundle file. You can customize these messages by providing a
 locale-specific ResourceBundle file on the CLASSPATH, according to the normal lookup rules of 
-the ResourceBundle class (e.g., "ReplyText_de.properties"). Alternatively, you can 
-completely replace the ResourceBundle file by calling the calling the 
-`StubFtpServer.setReplyTextBaseName(String)` method. 
+the ResourceBundle class (e.g., "ReplyText_de.properties"). Alternatively, you can completely
+ replace the ResourceBundle file by calling the `StubFtpServer.setReplyTextBaseName(String)` method. 

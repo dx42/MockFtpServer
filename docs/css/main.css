@@ -21,7 +21,7 @@ body {
 #banner {
     padding: 16px;
     margin-left: 0px;
-    height: 80px;
+    height: 70px;
     width: 100%;
     /*position: fixed;*/ /* Fixed (stay in place on scroll) */
     z-index: 1; /* Stay on top */
@@ -38,8 +38,8 @@ body {
 /* Sidebar Menu ------------------------- */
 
 .sidebar {
-  width: 240px; /* 250 - padding */
-  top: 80px; /* Stay under the banner */
+  width: 230px; /* 240 - padding */
+  top: 70px; /* Stay under the banner */
   margin-left: 0px;
   left: 0px;
   float: left;
@@ -109,8 +109,8 @@ a:hover {
   /*padding-top: 150px;*/ /* Same as the height of the banner */
   padding-left: 10px;
   padding-right: 10px;
-  margin-left: 250px;   /* Same as the width of the sidebar */
-  top: 80px;            /* Stay under the banner */
+  margin-left: 240px;   /* Same as the width of the sidebar */
+  top: 70px;            /* Stay under the banner */
 }
 
 .container h1, .container h2, .container h3, .container h4 {

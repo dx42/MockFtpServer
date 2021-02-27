@@ -73,7 +73,7 @@ don't expect a comprehensive implementation fully matching Unix's capabilities.
 ### Permissions
 
 The permissions for a file or directory entry in the filesystem are represented by a 9-character string of
-the form "rwxrwxrwx", consisting of three "rwx" triples. Each triple indicates the READ ("r"), WRITE ("w") and
+the form `"rwxrwxrwx"`, consisting of three "rwx" triples. Each triple indicates the READ ("r"), WRITE ("w") and
 EXECUTE ("x") permissions for a specific set of users. Each position can alternatively contain a "-" to
 indicate no READ/WRITE/EXECUTE access, depending on its position.
 
@@ -81,7 +81,7 @@ The first "rwx" triple indicates the READ, WRITE and EXECUTE permissions for the
 second triple indicates the permissions for the group associated with the file. The third triple
 indicates the permissions for the rest of the world.
 
-For example, the permissions string "rwx--xrw-" is interpreted to mean that users have READ/WRITE/EXECUTE access,
+For example, the permissions string `"rwx--xrw-"` is interpreted to mean that users have READ/WRITE/EXECUTE access,
 the group has only EXECUTE, and the world has only READ and WRITE.
 
 There are plenty of good tutorials and references for understanding Unix file permissions, including
