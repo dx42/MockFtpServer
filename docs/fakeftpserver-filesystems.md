@@ -103,27 +103,17 @@ If the *permissions* are configured for a file or directory within the `FileSyst
 those permissions affect whether and how that file/directory can be accessed.
 Here are the rules for applying permissions for file access:
 
-|------------------------|-------------------------------------------------------------------|
 | **Operation**          | **Required Permissions**                                          |
 |------------------------|-------------------------------------------------------------------|
 | Create a new file      | EXECUTE access to the directory and WRITE access to the directory |
-|------------------------|-------------------------------------------------------------------|
 | Read a file            | EXECUTE access to the directory and READ access to the file       |
-|------------------------|-------------------------------------------------------------------|
 | Write a file           | EXECUTE access to the directory and WRITE access to the file      |
-|------------------------|-------------------------------------------------------------------|
 | Delete a file          | WRITE access to the directory                                     |
-|------------------------|-------------------------------------------------------------------|
 | Rename a file          | READ access to the FROM file and WRITE access to the directory    |
-|------------------------|-------------------------------------------------------------------|
 | Create a directory     | WRITE and EXECUTE acccess to the parent directory                 |
-|------------------------|-------------------------------------------------------------------|
 | List a directory       | READ acccess to the directory/file                                |
-|------------------------|-------------------------------------------------------------------|
 | CD to a directory      | EXECUTE acccess to the directory                                  |
-|------------------------|-------------------------------------------------------------------|
 | Delete a directory     | WRITE acccess to the parent directory                             |
-|------------------------|-------------------------------------------------------------------|
 
 #### How Do Owner and Group Affect Access?
 
