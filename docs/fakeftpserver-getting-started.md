@@ -32,16 +32,16 @@ Here is an example showing configuration and starting of an **FakeFtpServer** wi
 account and a (simulated) Windows file system, defining a directory containing two files.
 
 ```
-FakeFtpServer fakeFtpServer = new FakeFtpServer();
-fakeFtpServer.addUserAccount(new UserAccount("user", "password", "c:\\data"));
-
-FileSystem fileSystem = new WindowsFakeFileSystem();
-fileSystem.add(new DirectoryEntry("c:\\data"));
-fileSystem.add(new FileEntry("c:\\data\\file1.txt", "abcdef 1234567890"));
-fileSystem.add(new FileEntry("c:\\data\\run.exe"));
-fakeFtpServer.setFileSystem(fileSystem);
-
-fakeFtpServer.start();
+    FakeFtpServer fakeFtpServer = new FakeFtpServer();
+    fakeFtpServer.addUserAccount(new UserAccount("user", "password", "c:\\data"));
+    
+    FileSystem fileSystem = new WindowsFakeFileSystem();
+    fileSystem.add(new DirectoryEntry("c:\\data"));
+    fileSystem.add(new FileEntry("c:\\data\\file1.txt", "abcdef 1234567890"));
+    fileSystem.add(new FileEntry("c:\\data\\run.exe"));
+    fakeFtpServer.setFileSystem(fileSystem);
+    
+    fakeFtpServer.start();
 ```
 
 If you are running on a system where the default port (21) is already in use or cannot be bound
@@ -69,40 +69,40 @@ ASCII file and returns its contents as a String. This class uses the `FTPClient`
 [Apache Commons Net](http://commons.apache.org/net/) framework.
 
 ```  
-public class RemoteFile {
-
-    public static final String USERNAME = "user";
-    public static final String PASSWORD = "password";
-
-    private String server;
-    private int port;
-
-    public String readFile(String filename) throws IOException {
-
-        FTPClient ftpClient = new FTPClient();
-        ftpClient.connect(server, port);
-        ftpClient.login(USERNAME, PASSWORD);
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        boolean success = ftpClient.retrieveFile(filename, outputStream);
-        ftpClient.disconnect();
-
-        if (!success) {
-            throw new IOException("Retrieve file failed: " + filename);
+    public class RemoteFile {
+    
+        public static final String USERNAME = "user";
+        public static final String PASSWORD = "password";
+    
+        private String server;
+        private int port;
+    
+        public String readFile(String filename) throws IOException {
+    
+            FTPClient ftpClient = new FTPClient();
+            ftpClient.connect(server, port);
+            ftpClient.login(USERNAME, PASSWORD);
+    
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            boolean success = ftpClient.retrieveFile(filename, outputStream);
+            ftpClient.disconnect();
+    
+            if (!success) {
+                throw new IOException("Retrieve file failed: " + filename);
+            }
+            return outputStream.toString();
         }
-        return outputStream.toString();
+    
+        public void setServer(String server) {
+            this.server = server;
+        }
+    
+        public void setPort(int port) {
+            this.port = port;
+        }
+    
+        // Other methods ...
     }
-
-    public void setServer(String server) {
-        this.server = server;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    // Other methods ...
-}
 ```
 
 ### JUnit Test For FTP Client Code Using FakeFtpServer
@@ -111,65 +111,65 @@ The following `RemoteFileTest` class includes a couple of JUnit tests that use
 **FakeFtpServer**.
 
 ```  
-import org.mockftpserver.fake.filesystem.FileEntry;
-import org.mockftpserver.fake.filesystem.FileSystem;
-import org.mockftpserver.fake.filesystem.UnixFakeFileSystem;
-import org.mockftpserver.fake.FakeFtpServer;
-import org.mockftpserver.fake.UserAccount;
-import org.mockftpserver.stub.example.RemoteFile;
-import org.mockftpserver.test.AbstractTest;
-import java.io.IOException;
-import java.util.List;
-
-public class RemoteFileTest extends AbstractTest {
-
-    private static final String HOME_DIR = "/";
-    private static final String FILE = "/dir/sample.txt";
-    private static final String CONTENTS = "abcdef 1234567890";
-
-    private RemoteFile remoteFile;
-    private FakeFtpServer fakeFtpServer;
-
-    public void testReadFile() throws Exception {
-        String contents = remoteFile.readFile(FILE);
-        assertEquals("contents", CONTENTS, contents);
-    }
-
-    public void testReadFileThrowsException() {
-        try {
-            remoteFile.readFile("NoSuchFile.txt");
-            fail("Expected IOException");
+    import org.mockftpserver.fake.filesystem.FileEntry;
+    import org.mockftpserver.fake.filesystem.FileSystem;
+    import org.mockftpserver.fake.filesystem.UnixFakeFileSystem;
+    import org.mockftpserver.fake.FakeFtpServer;
+    import org.mockftpserver.fake.UserAccount;
+    import org.mockftpserver.stub.example.RemoteFile;
+    import org.mockftpserver.test.AbstractTest;
+    import java.io.IOException;
+    import java.util.List;
+    
+    public class RemoteFileTest extends AbstractTest {
+    
+        private static final String HOME_DIR = "/";
+        private static final String FILE = "/dir/sample.txt";
+        private static final String CONTENTS = "abcdef 1234567890";
+    
+        private RemoteFile remoteFile;
+        private FakeFtpServer fakeFtpServer;
+    
+        public void testReadFile() throws Exception {
+            String contents = remoteFile.readFile(FILE);
+            assertEquals("contents", CONTENTS, contents);
         }
-        catch (IOException expected) {
-            // Expected this
+    
+        public void testReadFileThrowsException() {
+            try {
+                remoteFile.readFile("NoSuchFile.txt");
+                fail("Expected IOException");
+            }
+            catch (IOException expected) {
+                // Expected this
+            }
+        }
+    
+        protected void setUp() throws Exception {
+            super.setUp();
+            fakeFtpServer = new FakeFtpServer();
+            fakeFtpServer.setServerControlPort(0);  // use any free port
+    
+            FileSystem fileSystem = new UnixFakeFileSystem();
+            fileSystem.add(new FileEntry(FILE, CONTENTS));
+            fakeFtpServer.setFileSystem(fileSystem);
+    
+            UserAccount userAccount = new UserAccount(RemoteFile.USERNAME, RemoteFile.PASSWORD, HOME_DIR);
+            fakeFtpServer.addUserAccount(userAccount);
+    
+            fakeFtpServer.start();
+            int port = fakeFtpServer.getServerControlPort();
+    
+            remoteFile = new RemoteFile();
+            remoteFile.setServer("localhost");
+            remoteFile.setPort(port);
+        }
+    
+        protected void tearDown() throws Exception {
+            super.tearDown();
+            fakeFtpServer.stop();
         }
     }
-
-    protected void setUp() throws Exception {
-        super.setUp();
-        fakeFtpServer = new FakeFtpServer();
-        fakeFtpServer.setServerControlPort(0);  // use any free port
-
-        FileSystem fileSystem = new UnixFakeFileSystem();
-        fileSystem.add(new FileEntry(FILE, CONTENTS));
-        fakeFtpServer.setFileSystem(fileSystem);
-
-        UserAccount userAccount = new UserAccount(RemoteFile.USERNAME, RemoteFile.PASSWORD, HOME_DIR);
-        fakeFtpServer.addUserAccount(userAccount);
-
-        fakeFtpServer.start();
-        int port = fakeFtpServer.getServerControlPort();
-
-        remoteFile = new RemoteFile();
-        remoteFile.setServer("localhost");
-        remoteFile.setPort(port);
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        fakeFtpServer.stop();
-    }
-}
 ```
 
 Things to note about the above test:
@@ -193,7 +193,7 @@ Things to note about the above test:
    is the only one that will be able to sucessfully log in to the `FakeFtpServer`. 
 
 
-## {Spring} Configuration
+## Spring Configuration
 
 You can easily configure a `FakeFtpServer` instance in the
 [Spring Framework](http://www.springframework.org/) or another, similar dependency-injection container.
@@ -203,46 +203,46 @@ You can easily configure a `FakeFtpServer` instance in the
 The following example shows a *Spring* configuration file for a simple `FakeFtpServer` instance.
 
 ```
-*?xml version="1.0" encoding="UTF-8"?*
-
-*beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-       		http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"*
-
-    *bean id="fakeFtpServer" class="org.mockftpserver.fake.FakeFtpServer"*
-        *property name="serverControlPort" value="9981"/*
-        *property name="systemName" value="UNIX"/*
-        *property name="userAccounts"*
-            *list*
-                *bean class="org.mockftpserver.fake.UserAccount"*
-                    *property name="username" value="joe"/*
-                    *property name="password" value="password"/*
-                    *property name="homeDirectory" value="/"/*
-                */bean*
-            */list*
-        */property*
-
-        *property name="fileSystem"*
-            *bean class="org.mockftpserver.fake.filesystem.UnixFakeFileSystem"*
-                *property name="createParentDirectoriesAutomatically" value="false"/*
-                *property name="entries"*
-                    *list*
-                        *bean class="org.mockftpserver.fake.filesystem.DirectoryEntry"*
-                            *property name="path" value="/"/*
-                        */bean*
-                        *bean class="org.mockftpserver.fake.filesystem.FileEntry"*
-                            *property name="path" value="/File.txt"/*
-                            *property name="contents" value="abcdefghijklmnopqrstuvwxyz"/*
-                        */bean*
-                    */list*
-                */property*
-            */bean*
-        */property*
-
-    */bean*
-
-*/beans*
+    <?xml version="1.0" encoding="UTF-8"?>
+    
+    <beans xmlns="http://www.springframework.org/schema/beans
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+    
+        <bean id="fakeFtpServer" class="org.mockftpserver.fake.FakeFtpServer">
+            <property name="serverControlPort" value="9981"/>
+            <property name="systemName" value="UNIX"/>
+            <property name="userAccounts">
+                <list>
+                    <bean class="org.mockftpserver.fake.UserAccount">
+                        <property name="username" value="joe"/>
+                        <property name="password" value="password"/>
+                        <property name="homeDirectory" value="/"/*
+                    </bean>
+                </list>
+            </property>
+    
+            <property name="fileSystem">
+                <bean class="org.mockftpserver.fake.filesystem.UnixFakeFileSystem">
+                    <property name="createParentDirectoriesAutomatically" value="false"/>
+                    <property name="entries">
+                        <list>
+                            <bean class="org.mockftpserver.fake.filesystem.DirectoryEntry">
+                                <property name="path" value="/"/>
+                            </bean>
+                            <bean class="org.mockftpserver.fake.filesystem.FileEntry">
+                                <property name="path" value="/File.txt"/>
+                                <property name="contents" value="abcdefghijklmnopqrstuvwxyz"/>
+                            </bean>
+                        </list>
+                    </property>
+                </bean>
+            </property>
+    
+        </bean>
+    
+    </beans>
 ```
 
 Things to note about the above example:
@@ -257,9 +257,9 @@ And here is the Java code to load the above *Spring* configuration file and star
 configured **FakeFtpServer**.
 
 ```
-ApplicationContext context = new ClassPathXmlApplicationContext("fakeftpserver-beans.xml");
-FakeFtpServer = (FakeFtpServer) context.getBean("FakeFtpServer");
-FakeFtpServer.start();
+    ApplicationContext context = new ClassPathXmlApplicationContext("fakeftpserver-beans.xml");
+    FakeFtpServer = (FakeFtpServer) context.getBean("FakeFtpServer");
+    FakeFtpServer.start();
 ```
 
 
@@ -271,61 +271,61 @@ with proper error codes when the logged in user does not have the required permi
 directories or files.
 
 ```
-*?xml version="1.0" encoding="UTF-8"?*
-
-beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-       		http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"*
-
-    *bean id="fakeFtpServer" class="org.mockftpserver.fake.FakeFtpServer"*
-        *property name="serverControlPort" value="9981"/*
-        *property name="userAccounts"*
-            *list*
-                *bean class="org.mockftpserver.fake.UserAccount"*
-                    *property name="username" value="joe"/*
-                    *property name="password" value="password"/*
-                    *property name="homeDirectory" value="c:\"/*
-                */bean*
-            */list*
-        */property*
-
-        *property name="fileSystem"*
-            *bean class="org.mockftpserver.fake.filesystem.WindowsFakeFileSystem"*
-                *property name="createParentDirectoriesAutomatically" value="false"/*
-                *property name="entries"*
-                    *list*
-                        *bean class="org.mockftpserver.fake.filesystem.DirectoryEntry"*
-                            *property name="path" value="c:\"/*
-                            *property name="permissionsFromString" value="rwxrwxrwx"/*
-                            *property name="owner" value="joe"/*
-                            *property name="group" value="users"/*
-                        */bean*
-                        *bean class="org.mockftpserver.fake.filesystem.FileEntry"*
-                            *property name="path" value="c:\File1.txt"/*
-                            *property name="contents" value="1234567890"/*
-                            *property name="permissionsFromString" value="rwxrwxrwx"/*
-                            *property name="owner" value="peter"/*
-                            *property name="group" value="users"/*
-                        */bean*
-                        *bean class="org.mockftpserver.fake.filesystem.FileEntry"*
-                            *property name="path" value="c:\File2.txt"/*
-                            *property name="contents" value="abcdefghijklmnopqrstuvwxyz"/*
-                            *property name="permissions"*
-                                *bean class="org.mockftpserver.fake.filesystem.Permissions"*
-                                    *constructor-arg value="rwx------"/*
-                                */bean*
-                            */property*
-                            *property name="owner" value="peter"/*
-                            *property name="group" value="users"/*
-                        */bean*
-                    */list*
-                */property*
-            */bean*
-        */property*
-
-    */bean*
-*/beans*
+    <?xml version="1.0" encoding="UTF-8"?>
+    
+    <beans xmlns="http://www.springframework.org/schema/beans"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+    
+        <bean id="fakeFtpServer" class="org.mockftpserver.fake.FakeFtpServer">
+            <property name="serverControlPort" value="9981"/>
+            <property name="userAccounts">
+                <list>
+                    <bean class="org.mockftpserver.fake.UserAccount">
+                        <property name="username" value="joe"/>
+                        <property name="password" value="password"/>
+                        <property name="homeDirectory" value="c:\"/>
+                    </bean>
+                </list>
+            </property>
+    
+            <property name="fileSystem">
+                <bean class="org.mockftpserver.fake.filesystem.WindowsFakeFileSystem">
+                    <property name="createParentDirectoriesAutomatically" value="false"/>
+                    <property name="entries">
+                        <list>
+                            <bean class="org.mockftpserver.fake.filesystem.DirectoryEntry">
+                                <property name="path" value="c:\"/>
+                                <property name="permissionsFromString" value="rwxrwxrwx"/>
+                                <property name="owner" value="joe"/>
+                                <property name="group" value="users"/>
+                            </bean>
+                            <bean class="org.mockftpserver.fake.filesystem.FileEntry">
+                                <property name="path" value="c:\File1.txt"/>
+                                <property name="contents" value="1234567890"/>
+                                <property name="permissionsFromString" value="rwxrwxrwx"/>
+                                <property name="owner" value="peter"/>
+                                <property name="group" value="users"/>
+                            </bean>
+                            <bean class="org.mockftpserver.fake.filesystem.FileEntry">
+                                <property name="path" value="c:\File2.txt"/>
+                                <property name="contents" value="abcdefghijklmnopqrstuvwxyz"/>
+                                <property name="permissions">
+                                    <bean class="org.mockftpserver.fake.filesystem.Permissions">
+                                        <constructor-arg value="rwx------"/>
+                                    </bean>
+                                </property>
+                                <property name="owner" value="peter"/>
+                                <property name="group" value="users"/>
+                            </bean>
+                        </list>
+                    </property>
+                </bean>
+            </property>
+    
+        </bean>
+    </beans>
 ```
 
 
@@ -367,16 +367,16 @@ from that package to add support for the FEAT command. Note that in this case, w
 We could just as easily set the *CommandHandler* for an existing command, overriding the default *CommandHandler*.
 
 ```
-import org.mockftpserver.core.command.StaticReplyCommandHandler
-
-FakeFtpServer ftpServer = new FakeFtpServer()
-// ... set up files, directories and user accounts as usual
-
-StaticReplyCommandHandler featCommandHandler = new StaticReplyCommandHandler(211, "No Features");
-ftpServer.setCommandHandler("FEAT", featCommandHandler);
-
-// ...
-ftpServer.start()
+    import org.mockftpserver.core.command.StaticReplyCommandHandler
+    
+    FakeFtpServer ftpServer = new FakeFtpServer()
+    // ... set up files, directories and user accounts as usual
+    
+    StaticReplyCommandHandler featCommandHandler = new StaticReplyCommandHandler(211, "No Features");
+    ftpServer.setCommandHandler("FEAT", featCommandHandler);
+    
+    // ...
+    ftpServer.start()
 ```
 
 
@@ -387,18 +387,18 @@ You can also use a **StubFtpServer** *CommandHandler* -- i.e., one defined withi
 `CwdCommandHandler` from that package.
 
 ```
-import org.mockftpserver.stub.command.CwdCommandHandler
-
-FakeFtpServer ftpServer = new FakeFtpServer()
-// ... set up files, directories and user accounts as usual
-
-final int REPLY_CODE = 502;
-CwdCommandHandler cwdCommandHandler = new CwdCommandHandler();
-cwdCommandHandler.setReplyCode(REPLY_CODE);
-ftpServer.setCommandHandler(CommandNames.CWD, cwdCommandHandler);
-
-// ...
-ftpServer.start()
+    import org.mockftpserver.stub.command.CwdCommandHandler
+    
+    FakeFtpServer ftpServer = new FakeFtpServer()
+    // ... set up files, directories and user accounts as usual
+    
+    final int REPLY_CODE = 502;
+    CwdCommandHandler cwdCommandHandler = new CwdCommandHandler();
+    cwdCommandHandler.setReplyCode(REPLY_CODE);
+    ftpServer.setCommandHandler(CommandNames.CWD, cwdCommandHandler);
+    
+    // ...
+    ftpServer.start()
 ```
 
 
