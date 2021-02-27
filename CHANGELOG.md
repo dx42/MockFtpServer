@@ -1,22 +1,23 @@
 # MockFtpServer Change Log
 
-Version 2.8.0 (??? 2021)
+TODO Version 2.8.0 (??? 2021)
 ------------------------------------------
  - #1: Move project source code to GitHub.
  - #2: Migrate project to Gradle.
  - #3: Change CHANGELOG to markdown.
+ - #4: Migrate website files from APT to Google Pages and Markdown.
 
 
 Version 2.7.1 (Dec 2016)
 ------------------------------------------
-- Bug #29: LIST and NLST command handler sends unexpected 150 response for permissions error.
+ - Bug #29: LIST and NLST command handler sends unexpected 150 response for permissions error.
 
 
 Version 2.7 (Oct 2016)
 ------------------------------------------
 - BUG #28: Error on FakeFtpServer rename. Renaming a directory fails due to descendants returning out of order.
 - FEATURE #6: Allow specifying charset (encoding) when creating a FileEntry. Added setContents(String contents, String charset).
-INTERNAL CHANGES
+INTERNAL CHANGES:
 - PortTestUtil: Fix Linux incompatibility; Change default port number from 21 to 62999.
 - FakeFtpServerIntegrationTest: Fix Linux incompatibility; Ignore order of returned filenames.
 - Clean up javadoc.
@@ -25,7 +26,7 @@ INTERNAL CHANGES
 Version 2.6 (Apr 2015)
 ------------------------------------------
 - BUG #25: OutOfMemoryError: Java heap space; clean up closed sessions. Session: Added boolean Session.isClosed(). AbstractFtpServer: Clean up closed sessions.
-- BUG #24: Close passiveModeDataSocket if in passive mode.
+- BUG #24: Close passiveModeDataSocket if in *passive* mode.
 - BUG/FEATURE #27: Treat null incoming command as terminating the session.
 
 
