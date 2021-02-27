@@ -19,16 +19,16 @@ body {
     float:right;
 }
 #banner {
-    padding: 0px;
+    padding: 10px;
     margin-left: 0px;
-    height: 70px;
+    height: 100px;
     width: 100%;
     /*position: fixed;*/ /* Fixed (stay in place on scroll) */
     z-index: 1; /* Stay on top */
     top: 0;
     left: 0;
     border-bottom: 1px solid #d5d5d5;
-    background-image: linear-gradient(to left, #e6f2ff , #99ccff);
+    background-image: linear-gradient(to right, #e6f2ff , #99ccff);
 
 }
 #banner img {
@@ -38,12 +38,12 @@ body {
 /* Sidebar Menu ------------------------- */
 
 .sidebar {
-  width: 210px; /* 220 - padding */
+  width: 240px; /* 250 - padding */
   top: 70px; /* Stay under the banner */
   margin-left: 0px;
   left: 0px;
   float: left;
-  background-color: #A9A9A9; /* Dark Gray */
+  background-color: #99ccff;
   padding-top: 5px;
   padding-bottom: 10px;
   padding-left: 5px;
@@ -52,12 +52,12 @@ body {
 }
 
 .sidebar h2 {
-  padding-top: 4px;
-  padding-bottom: 1px;
-  padding-left: 2px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 8px;
   margin-top: 0px;
   margin-bottom: 0px;
-  font-size: 16px;
+  font-size: 24px;
 }
 
 .sidebar ul {
@@ -70,7 +70,7 @@ body {
 }
 
 .sidebar li {
-  font-size: 12px;
+  font-size: 16px;
   padding-left: 0px;
 }
 
@@ -109,8 +109,8 @@ a:hover {
   /*padding-top: 150px;*/ /* Same as the height of the banner */
   padding-left: 10px;
   padding-right: 10px;
-  margin-left: 200px; /* Same as the width of the sidebar */
-  top: 150px;       /* Stay under the banner */
+  margin-left: 250px;   /* Same as the width of the sidebar */
+  top: 70px;            /* Stay under the banner */
 }
 
 .container h1, .container h2, .container h3, .container h4 {
