@@ -1,7 +1,7 @@
 # MockFtpServer
 
-Home Page:  <http://mockftpserver.sourceforge.net/>
-GitHub:     <https://github.com/dx42/MockFtpServer>
+ - Home Page:  <https://mockftpserver.org/>
+ - GitHub:     <https://github.com/dx42/MockFtpServer>
 
 ## Description
 

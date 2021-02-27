@@ -34,8 +34,8 @@ through configuration, as well as what command invocation data is available.
 | QUIT                   | QUIT / BYE             | QuitCommandHandler              |
 | REIN                   | --                     | ReinCommandHandler              |
 | REST                   | --                     | RestCommandHandler              |
-| RETR                   | GET / RECV             | RetrCommandHandler              |
-|                        |                        | FileRetrCommandHandler (1)      |
+| RETR                   | GET / RECV             | RetrCommandHandler, 
+                                                    FileRetrCommandHandler (1)      |
 | RMD                    | RMDIR                  | RmdCommandHandler               |
 | RNFR                   | RENAME                 | RnfrCommandHandler              |
 | RNTO                   | RENAME                 | RntoCommandHandler              |
