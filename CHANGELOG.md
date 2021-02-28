@@ -1,6 +1,6 @@
 # MockFtpServer Change Log
 
-TODO Version 2.8.0 (??? 2021)
+Version 2.8.0 (Feb 2021)
 ------------------------------------------
  - #1: Move project source code to GitHub.
  - #2: Migrate project to Gradle.

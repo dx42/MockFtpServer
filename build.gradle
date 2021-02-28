@@ -1,4 +1,4 @@
-// Gradle build file
+// MockFtpServer - Gradle build file
 
 plugins {
     id 'groovy'
@@ -42,10 +42,15 @@ dependencies {
     testCompile 'junit:junit:4.13.2'
 }
 
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
+
+//task sourcesJar(type: Jar) {
+//    classifier = 'sources'
+//    from sourceSets.main.allSource
+//}
 
 //------------------------------------------------------------------------------
 // Bintray
@@ -83,7 +88,7 @@ publishing {
             artifactId 'MockFtpServer'
             version project.version
 
-            artifact sourcesJar
+//            artifact sourcesJar
         }
     }
 }
