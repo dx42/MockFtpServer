@@ -6,7 +6,9 @@ TODO Version 2.8.0 (??? 2021)
  - #2: Migrate project to Gradle.
  - #3: Change CHANGELOG to markdown.
  - #4: Migrate website files from APT to Google Pages and Markdown.
- - #5: Update dependencies. Main - slf4j-api: 1.7.30. Test - spring: 2.5.6.SEC03; groovy-all: 2.4.13; junit: 4.13.2.
+ - #5: Update dependencies
+     - Main - slf4j-api: 1.7.30. 
+     - Test - spring: 2.5.6.SEC03; groovy-all: 1.8.9; junit: 4.13.2.
 
 
 Version 2.7.1 (Dec 2016)
