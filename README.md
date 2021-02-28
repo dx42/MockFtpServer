@@ -29,5 +29,5 @@ FTP, commands, reply codes, etc..
 
 MockFtpServer requires 
  - Java (JDK) version 1.4 or later
- - The Log4J jar, version 1.2.13 or later, accessible on the CLASSPATH
-   (http://logging.apache.org/log4j/index.html).
+ - The [SLF4J](http://www.slf4j.org/) API jar, accessible on the CLASSPATH. An SLF4J binding (logging
+    framework-specific jar) is optional.
