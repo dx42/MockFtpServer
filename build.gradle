@@ -2,24 +2,18 @@
 
 plugins {
     id 'groovy'
-    id "com.jfrog.bintray" version "1.7.3"
+    id 'maven-publish'
+    id 'signing'
 }
 
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
-
-
 version = "2.8.0"
-group = 'org.dx42'
+group = 'org.mockftpserver'
+archivesBaseName = 'MockFtpServer'
 
 sourceCompatibility = 1.4
 targetCompatibility = 1.4
 
 sourceSets {
-//    main {
-//        java { srcDirs = [] }
-//        groovy { srcDirs = ['src/main/java'] }
-//    }
     test {
         java { srcDirs = [] }
         groovy { srcDirs = ['src/test/java', 'src/test/groovy'] }
@@ -47,48 +41,60 @@ java {
     withSourcesJar()
 }
 
-//task sourcesJar(type: Jar) {
-//    classifier = 'sources'
-//    from sourceSets.main.allSource
-//}
-
 //------------------------------------------------------------------------------
-// Bintray
+// Publish to Maven Central
 //------------------------------------------------------------------------------
 
-bintray {
-    user = bintrayUser
-    key = bintrayApiKey
-    publications = ['MyPublication']
-    configurations = ['archives']
-    publish = true
-    override = false
-
-    pkg {
-        repo = 'dx42'
-        name = 'MockFtpServer'
-        licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/dx42/MockFtpServer.git'
-
-        version {
-            name = project.version
-            desc = 'MockFtpServer jar ' + project.version
-            released  = new Date()
-            //vcsTag = project.version
-            //attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
-        }
-    }
+signing {
+    required { gradle.taskGraph.hasTask(publish) }
+    sign publishing.publications
 }
 
+// Publish to Sonatype (OSSRH) Maven Repository
+// See http://central.sonatype.org/pages/gradle.html
 publishing {
     publications {
-        MyPublication(MavenPublication) {
+        maven(MavenPublication) {
             from components.java
-            groupId project.group
-            artifactId 'MockFtpServer'
-            version project.version
 
-//            artifact sourcesJar
+            pom {
+                name = 'MockFtpServer'
+                description = 'The MockFtpServer project provides mock/dummy FTP server implementations for testing FTP client code.'
+                url = 'https://mockftpserver.org'
+
+                scm {
+                    connection = 'scm:git:git@github.com:CodeNarc/CodeNarc.git'
+                    developerConnection = 'scm:git:git@github.com:dx42/MockFtpServer.git'
+                    url = 'scm:git:git@github.com:dx42/MockFtpServer.git'
+                }
+
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'chrismair'
+                        name = 'Chris Mair'
+                        email = 'chrismair@users.sourceforge.net'
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            def releasesUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+            def snapshotsUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
+            url = version.endsWith('SNAPSHOT') ? snapshotsUrl : releasesUrl
+            credentials {
+                username = ossrhUsername
+                password = ossrhPassword
+            }
         }
     }
 }
