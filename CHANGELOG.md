@@ -5,6 +5,8 @@ TODO Version 3.0.0 (??? 2021)
 ------------------------------------------
  - #7: Upgrade to Java 1.8.
  - #11: Upgrade to commons-net 3.8.0.
+ - #8: Upgrade to Groovy 3.0.7.
+
 
 Version 2.8.0 (Feb 2021)
 ------------------------------------------

@@ -28,7 +28,7 @@ repositories {
 dependencies {
     compile "org.slf4j:slf4j-api:1.7.30"
 
-    testCompile "org.codehaus.groovy:groovy-all:1.8.9"
+    testCompile "org.codehaus.groovy:groovy-all:3.0.7"
     testCompile 'ch.qos.logback:logback-classic:1.2.3'
     testCompile 'commons-net:commons-net:3.8.0'
     testCompile 'org.springframework:spring:2.5.6.SEC03'
