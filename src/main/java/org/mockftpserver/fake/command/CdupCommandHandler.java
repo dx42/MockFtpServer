@@ -30,7 +30,6 @@ import org.mockftpserver.core.session.SessionKeys;
  * </ol>
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class CdupCommandHandler extends AbstractFakeCommandHandler {
 

@@ -18,8 +18,6 @@ package org.mockftpserver.fake.filesystem
 /**
  * Tests for UnixFakeFileSystem.
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class UnixFakeFileSystemTest extends AbstractFakeFileSystemTestCase {

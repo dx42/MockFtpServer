@@ -40,7 +40,6 @@ import java.util.Set;
  * Abstract superclass for all project test classes
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public abstract class AbstractTestCase extends TestCase {
 

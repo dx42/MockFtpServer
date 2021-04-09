@@ -24,8 +24,6 @@ import java.net.Socket;
  * StubSocket instance specified on the constructor. It allows direct access to the
  * requested host address and port number.
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public class StubSocketFactory implements SocketFactory {

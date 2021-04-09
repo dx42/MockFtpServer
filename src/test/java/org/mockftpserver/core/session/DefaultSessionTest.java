@@ -36,8 +36,6 @@ import java.util.Map;
 /**
  * Tests for the DefaultSession class
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public final class DefaultSessionTest extends AbstractTestCase {

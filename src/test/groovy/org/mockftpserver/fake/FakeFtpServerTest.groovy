@@ -25,8 +25,6 @@ import org.mockftpserver.core.session.Session
 /**
  * Tests for FakeFtpServer.
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class FakeFtpServerTest extends AbstractFtpServerTestCase {

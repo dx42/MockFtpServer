@@ -21,8 +21,6 @@ import org.mockftpserver.core.server.AbstractFtpServer_StartTestCase
 /**
  * Tests for FakeFtpServer that require the server thread to be started.
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class FakeFtpServer_StartTest extends AbstractFtpServer_StartTestCase {

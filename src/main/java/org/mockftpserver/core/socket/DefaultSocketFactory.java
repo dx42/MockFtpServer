@@ -22,8 +22,6 @@ import java.net.Socket;
 /**
  * Default implementation of the {@link SocketFactory}; creates standard {@link Socket} instances.
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public class DefaultSocketFactory implements SocketFactory {

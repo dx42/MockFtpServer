@@ -28,7 +28,6 @@ import org.mockftpserver.core.util.AssertFailedException;
  * Tests for the RetrCommandHandler class
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class RetrCommandHandlerTest extends AbstractCommandHandlerTestCase {
 

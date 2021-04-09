@@ -21,8 +21,6 @@ import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 /**
  * Tests for the SmntCommandHandler class
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public final class SmntCommandHandlerTest extends AbstractCommandHandlerTestCase {

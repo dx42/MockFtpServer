@@ -22,8 +22,6 @@ import org.mockftpserver.core.util.AssertFailedException;
 /**
  * Tests for the StaticReplyCommandHandler class
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerTestCase {

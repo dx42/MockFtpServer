@@ -25,7 +25,6 @@ import java.util.ResourceBundle;
  * The abstract superclass for CommandHandler classes.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public abstract class AbstractCommandHandler implements CommandHandler, ReplyTextBundleAware {
 

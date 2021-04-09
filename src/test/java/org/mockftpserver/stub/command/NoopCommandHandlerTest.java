@@ -23,8 +23,6 @@ import org.mockftpserver.core.command.ReplyCodes;
 /**
  * Tests for the NoopCommandHandler class
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public final class NoopCommandHandlerTest extends AbstractCommandHandlerTestCase {

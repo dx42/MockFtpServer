@@ -23,8 +23,6 @@ import org.mockftpserver.core.command.ReplyCodes
 /**
  * Tests for AborCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class AborCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {

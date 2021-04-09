@@ -29,7 +29,6 @@ import java.util.ResourceBundle;
  * Abstract superclass for CommandHandler tests
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
 

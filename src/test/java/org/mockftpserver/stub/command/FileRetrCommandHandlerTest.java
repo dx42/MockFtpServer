@@ -28,7 +28,6 @@ import java.util.Arrays;
  * Tests for the FileRetrCommandHandler class
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTestCase {
 

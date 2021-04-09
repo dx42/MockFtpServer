@@ -23,8 +23,6 @@ import org.mockftpserver.core.command.ReplyCodes
 /**
  * Tests for PasvCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class PasvCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {

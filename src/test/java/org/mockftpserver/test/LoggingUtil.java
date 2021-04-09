@@ -24,8 +24,6 @@ import junit.framework.TestSuite;
  * May want to refactor this and create two subclasses: TestCaseLogger
  * and TestSuiteLogger.
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public final class LoggingUtil {

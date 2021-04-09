@@ -23,8 +23,6 @@ import java.net.Socket;
  * Interface for factory that create new {@link Socket} instances.
  * Using this abstraction enables unit testing.
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public interface SocketFactory {

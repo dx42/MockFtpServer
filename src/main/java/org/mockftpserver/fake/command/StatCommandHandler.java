@@ -27,7 +27,6 @@ import org.mockftpserver.core.session.Session;
  * </ol>
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  * @see org.mockftpserver.fake.ServerConfiguration
  * @see org.mockftpserver.fake.FakeFtpServer
  */

@@ -37,7 +37,6 @@ import java.net.InetAddress;
  * Each invocation record stored by this CommandHandler contains no data elements.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class PasvCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 

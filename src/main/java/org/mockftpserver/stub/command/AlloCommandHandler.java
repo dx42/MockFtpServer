@@ -36,7 +36,6 @@ import java.util.StringTokenizer;
  * </ul>
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class AlloCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 

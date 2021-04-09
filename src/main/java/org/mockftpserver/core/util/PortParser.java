@@ -27,7 +27,6 @@ import java.util.List;
  * Utility class for parsing host and port values from command arguments.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class PortParser {
 

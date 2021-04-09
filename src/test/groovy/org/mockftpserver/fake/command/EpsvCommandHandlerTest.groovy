@@ -23,8 +23,6 @@ import org.mockftpserver.core.command.ReplyCodes
 /**
  * Tests for EpsvCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class EpsvCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {

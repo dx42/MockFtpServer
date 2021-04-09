@@ -19,8 +19,6 @@ package org.mockftpserver.core.command;
  * Interface for an object that can retrieve and clear the history of InvocationRecords 
  * for a command handler.
  * 
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 public interface InvocationHistory {

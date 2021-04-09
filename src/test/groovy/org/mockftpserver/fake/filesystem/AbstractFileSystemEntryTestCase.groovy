@@ -21,8 +21,6 @@ import org.mockftpserver.test.AbstractGroovyTestCase
 /**
  * Abstract test superclass for subclasses of AbstractFileSystemEntry
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 public abstract class AbstractFileSystemEntryTestCase extends AbstractGroovyTestCase {

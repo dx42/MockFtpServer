@@ -24,8 +24,6 @@ import org.mockftpserver.core.command.ReplyCodes
 /**
  * Tests for SmntCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class SmntCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {

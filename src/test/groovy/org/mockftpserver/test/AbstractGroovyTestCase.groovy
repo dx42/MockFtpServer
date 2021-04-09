@@ -22,8 +22,6 @@ import org.mockftpserver.test.LoggingUtil
 /**
  * Abstract superclass for Groovy tests
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 abstract class AbstractGroovyTestCase extends GroovyTestCase {

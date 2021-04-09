@@ -40,7 +40,6 @@ import java.io.OutputStream;
  * </ol>
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public abstract class AbstractStoreFileCommandHandler extends AbstractFakeCommandHandler {
 

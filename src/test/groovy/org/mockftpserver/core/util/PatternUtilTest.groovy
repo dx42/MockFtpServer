@@ -20,8 +20,6 @@ import org.mockftpserver.test.AbstractGroovyTestCase
 /**
  * Tests for the PatternUtil class
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 public class PatternUtilTest extends AbstractGroovyTestCase {

@@ -30,7 +30,6 @@ import org.mockftpserver.core.util.PortParser;
  * </ol>
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  * @see org.mockftpserver.core.util.PortParser
  */
 public class PortCommandHandler extends AbstractFakeCommandHandler {

@@ -26,7 +26,6 @@ import java.net.InetAddress;
  * Tests for the PortCommandHandler class
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class PortCommandHandlerTest extends AbstractCommandHandlerTestCase {
 

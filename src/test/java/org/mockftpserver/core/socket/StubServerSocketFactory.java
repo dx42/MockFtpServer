@@ -22,8 +22,6 @@ import java.net.ServerSocket;
  * Test-only implementation of ServerSocketFactory. It always returns the predefined
  * ServerSocket instance specified on the constructor.
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public class StubServerSocketFactory implements ServerSocketFactory {

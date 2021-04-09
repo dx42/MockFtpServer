@@ -18,8 +18,6 @@ package org.mockftpserver.test;
 /**
  * Marker interface for integration test
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public interface IntegrationTest {

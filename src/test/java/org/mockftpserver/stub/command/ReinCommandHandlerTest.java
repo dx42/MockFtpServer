@@ -23,8 +23,6 @@ import org.mockftpserver.core.command.ReplyCodes;
 /**
  * Tests for the ReinCommandHandler class
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public final class ReinCommandHandlerTest extends AbstractCommandHandlerTestCase {

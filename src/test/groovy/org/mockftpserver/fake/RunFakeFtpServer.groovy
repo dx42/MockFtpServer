@@ -24,8 +24,6 @@ import org.mockftpserver.fake.filesystem.UnixFakeFileSystem
 /**
  * Run the FakeFtpServer with a minimal configuration for interactive testing and exploration.
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class RunFakeFtpServer {

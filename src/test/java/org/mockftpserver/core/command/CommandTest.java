@@ -27,7 +27,6 @@ import java.util.List;
  * Tests for the Command class
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class CommandTest extends AbstractTestCase {
 

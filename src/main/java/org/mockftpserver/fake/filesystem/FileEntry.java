@@ -21,7 +21,6 @@ import java.io.*;
  * File system entry representing a file
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class FileEntry extends AbstractFileSystemEntry {
 

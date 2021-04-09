@@ -20,8 +20,6 @@ import org.mockftpserver.test.AbstractGroovyTestCase
 /**
  * Tests for the Permissions class
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class PermissionsTest extends AbstractGroovyTestCase {

@@ -24,8 +24,6 @@ import org.mockftpserver.core.session.SessionKeys
 /**
  * Tests for PwdCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class PwdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {

@@ -25,8 +25,6 @@ import org.mockftpserver.fake.UserAccount
 /**
  * Tests for ReinCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class ReinCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {

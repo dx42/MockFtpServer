@@ -20,8 +20,6 @@ import org.mockftpserver.test.AbstractGroovyTestCase
 /**
  * Tests for the IoUtil class
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class StringUtilTest extends AbstractGroovyTestCase {

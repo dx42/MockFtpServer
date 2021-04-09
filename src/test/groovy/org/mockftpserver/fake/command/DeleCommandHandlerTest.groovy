@@ -25,8 +25,6 @@ import org.mockftpserver.fake.filesystem.Permissions
 /**
  * Tests for DeleCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {

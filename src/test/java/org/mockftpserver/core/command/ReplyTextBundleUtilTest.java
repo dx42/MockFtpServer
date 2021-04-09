@@ -26,8 +26,6 @@ import java.util.ResourceBundle;
 /**
  * Tests for the ReplyTextBundleUtil class.
  * 
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 public final class ReplyTextBundleUtilTest extends AbstractTestCase {

@@ -22,8 +22,6 @@ import org.mockftpserver.test.PortTestUtil
 /**
  * Test starting and stopping Abstract(Fake)FtpServer multiple times. 
  *
- * @version $Revision: 242 $ - $Date: 2010-03-21 07:41:01 -0400 (Sun, 21 Mar 2010) $
- *
  * @author Chris Mair
  */
 class AbstractFtpServer_MultipleStartAndStopTest extends AbstractGroovyTestCase {

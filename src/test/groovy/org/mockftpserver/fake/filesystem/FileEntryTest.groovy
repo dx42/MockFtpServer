@@ -22,8 +22,6 @@ import org.mockftpserver.core.util.IoUtil
 /**
  * Tests for FileEntry
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 public class FileEntryTest extends AbstractFileSystemEntryTestCase {

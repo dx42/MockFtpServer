@@ -30,7 +30,6 @@ import java.util.MissingResourceException;
  * objects corresponding to each invocation of the command handler, and provide helper methods for subclasses.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public abstract class AbstractTrackingCommandHandler extends AbstractCommandHandler implements InvocationHistory {
 

@@ -23,8 +23,6 @@ import org.mockftpserver.core.command.ReplyCodes
 /**
  * Tests for ModeCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class ModeCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {

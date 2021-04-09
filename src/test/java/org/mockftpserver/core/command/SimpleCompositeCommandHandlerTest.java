@@ -29,8 +29,6 @@ import java.util.ResourceBundle;
 /**
  * Tests for SimpleCompositeCommandHandler
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {

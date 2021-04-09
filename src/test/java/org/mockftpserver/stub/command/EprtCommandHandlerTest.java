@@ -24,7 +24,6 @@ import java.net.InetAddress;
  * Tests for the EprtCommandHandler class
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class EprtCommandHandlerTest extends AbstractCommandHandlerTestCase {
 

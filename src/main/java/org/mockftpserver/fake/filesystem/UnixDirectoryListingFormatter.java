@@ -27,7 +27,6 @@ import java.util.Locale;
  * Unix-specific implementation of the DirectoryListingFormatter interface.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class UnixDirectoryListingFormatter implements DirectoryListingFormatter {
 

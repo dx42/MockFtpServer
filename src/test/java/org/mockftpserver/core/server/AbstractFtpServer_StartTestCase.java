@@ -23,7 +23,6 @@ import org.mockftpserver.test.AbstractTestCase;
  * Abstract superclass for tests of AbstractFtpServer subclasses that require the server thread to be started.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public abstract class AbstractFtpServer_StartTestCase extends AbstractTestCase {
 

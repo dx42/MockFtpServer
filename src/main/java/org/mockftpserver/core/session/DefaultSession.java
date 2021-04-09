@@ -51,7 +51,6 @@ import java.util.StringTokenizer;
  * Default implementation of the {@link Session} interface.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class DefaultSession implements Session {
 

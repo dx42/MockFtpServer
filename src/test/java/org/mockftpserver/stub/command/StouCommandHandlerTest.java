@@ -24,7 +24,6 @@ import org.mockftpserver.core.command.ReplyCodes;
  * Tests for the StouCommandHandler class
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class StouCommandHandlerTest extends AbstractCommandHandlerTestCase {
 

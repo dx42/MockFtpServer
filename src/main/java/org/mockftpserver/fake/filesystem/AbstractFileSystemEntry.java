@@ -23,7 +23,6 @@ import java.util.Date;
  * The abstract superclass for concrete file system entry classes representing files and directories.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public abstract class AbstractFileSystemEntry implements FileSystemEntry {
 

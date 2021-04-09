@@ -19,7 +19,6 @@ package org.mockftpserver.core.command;
  * Tests for the ConnectCommandHandler class
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class ConnectCommandHandlerTest extends AbstractCommandHandlerTestCase {
 

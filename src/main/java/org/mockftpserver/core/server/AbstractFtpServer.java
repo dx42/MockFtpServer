@@ -66,7 +66,6 @@ import java.util.ResourceBundle;
  * {@link #setReplyTextBaseName(String)} method.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  * @see org.mockftpserver.fake.FakeFtpServer
  * @see org.mockftpserver.stub.StubFtpServer
  */

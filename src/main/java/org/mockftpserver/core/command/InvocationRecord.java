@@ -38,7 +38,6 @@ import java.util.Set;
  * calling the {@link #set(String, Object)} method will throw an <code>AssertFailedException</code>.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class InvocationRecord {
 

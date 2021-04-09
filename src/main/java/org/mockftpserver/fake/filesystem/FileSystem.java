@@ -21,7 +21,6 @@ import java.util.List;
  * Interface for a file system for managing files and directories.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public interface FileSystem {
 

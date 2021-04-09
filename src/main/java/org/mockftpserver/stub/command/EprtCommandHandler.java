@@ -36,7 +36,6 @@ import java.net.UnknownHostException;
  * See RFC2428 for more information.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class EprtCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 

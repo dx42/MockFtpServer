@@ -26,8 +26,6 @@ import org.mockftpserver.fake.filesystem.Permissions
 /**
  * Abstract superclass for tests of Fake CommandHandlers that store a file (STOR, STOU, APPE)
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 abstract class AbstractStoreFileCommandHandlerTestCase extends AbstractFakeCommandHandlerTestCase {

@@ -33,7 +33,6 @@ import org.mockftpserver.core.util.PortParser;
  * See RFC2428 for more information.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class EprtCommandHandler extends AbstractFakeCommandHandler {
 

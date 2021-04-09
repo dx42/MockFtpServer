@@ -27,8 +27,6 @@ import java.util.Set;
 /**
  * Tests for InvocationRecord
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public final class InvocationRecordTest extends AbstractTestCase {

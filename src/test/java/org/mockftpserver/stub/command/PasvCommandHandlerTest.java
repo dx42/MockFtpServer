@@ -28,7 +28,6 @@ import java.net.InetAddress;
  * Tests for the PasvCommandHandler class
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class PasvCommandHandlerTest extends AbstractCommandHandlerTestCase {
 

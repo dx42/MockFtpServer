@@ -30,7 +30,6 @@ import org.mockftpserver.core.session.Session;
  * <p>See the available system names listed in the Assigned Numbers document (RFC 943).
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  * @see <a href="http://www.ietf.org/rfc/rfc943">RFC943</a>
  */
 public class SystCommandHandler extends AbstractFakeCommandHandler {

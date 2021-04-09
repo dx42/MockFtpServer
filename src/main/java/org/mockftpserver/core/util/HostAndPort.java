@@ -24,7 +24,6 @@ import java.net.InetAddress;
  * This class contains two public properties: host (java.net.InetAddress) and port (int).
  *
  * @author Chris Mair
- * @version : $ - :  $
  */
 public class HostAndPort {
     public InetAddress host;

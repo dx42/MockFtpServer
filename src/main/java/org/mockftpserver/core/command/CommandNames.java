@@ -19,7 +19,6 @@ package org.mockftpserver.core.command;
  * FTP command name constants.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class CommandNames {
 

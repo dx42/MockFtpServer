@@ -30,8 +30,6 @@ import java.util.ResourceBundle;
  * Tests for AbstractStubDataCommandHandler. The class name is prefixed with an underscore
  * so that it is not filtered out by Maven's Surefire test plugin.
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public final class _AbstractStubDataCommandHandlerTest extends AbstractTestCase {

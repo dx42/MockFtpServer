@@ -86,7 +86,6 @@ import org.mockftpserver.stub.command.*;
  * {@link #setReplyTextBaseName(String)} method.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class StubFtpServer extends AbstractFtpServer {
 

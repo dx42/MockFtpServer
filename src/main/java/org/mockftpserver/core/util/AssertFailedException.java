@@ -19,8 +19,6 @@ package org.mockftpserver.core.util;
  * Exception that indicates that a runtime assertion from the 
  * {@link org.mockftpserver.core.util.Assert} has failed. 
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public final class AssertFailedException extends RuntimeException {

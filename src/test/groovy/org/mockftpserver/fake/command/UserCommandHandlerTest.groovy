@@ -25,8 +25,6 @@ import org.mockftpserver.fake.UserAccount
 /**
  * Tests for UserCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class UserCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {

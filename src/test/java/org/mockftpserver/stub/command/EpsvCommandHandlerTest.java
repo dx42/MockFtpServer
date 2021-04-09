@@ -24,7 +24,6 @@ import java.net.InetAddress;
  * Tests for the EpsvCommandHandler class
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class EpsvCommandHandlerTest extends AbstractCommandHandlerTestCase {
 

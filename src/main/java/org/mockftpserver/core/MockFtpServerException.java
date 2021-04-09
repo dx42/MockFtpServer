@@ -18,8 +18,6 @@ package org.mockftpserver.core;
 /**
  * Represents an error specific to the MockFtpServer project.
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public class MockFtpServerException extends RuntimeException {

@@ -23,8 +23,6 @@ import org.mockftpserver.test.AbstractGroovyTestCase
 /**
  * Tests for UserAccount
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class UserAccountTest extends AbstractGroovyTestCase {

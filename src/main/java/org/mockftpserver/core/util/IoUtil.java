@@ -23,7 +23,6 @@ import java.io.InputStream;
  * Contains static I/O-related utility methods.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class IoUtil {
 

@@ -21,8 +21,6 @@ import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 /**
  * Tests for the QuitCommandHandler class
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public final class QuitCommandHandlerTest extends AbstractCommandHandlerTestCase {

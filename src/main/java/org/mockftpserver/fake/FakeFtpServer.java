@@ -137,7 +137,6 @@ import java.util.Map;
  * {@link #setReplyTextBaseName(String)} method.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
 

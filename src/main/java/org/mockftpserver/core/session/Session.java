@@ -21,8 +21,6 @@ import java.util.Set;
 /**
  * Represents an FTP session state and behavior
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public interface Session extends Runnable {

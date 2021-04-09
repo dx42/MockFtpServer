@@ -20,7 +20,6 @@ package org.mockftpserver.core;
  * has invalid syntax. For instance, the command may be missing a required parameter.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class CommandSyntaxException extends MockFtpServerException {
 

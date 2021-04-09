@@ -24,7 +24,6 @@ import org.mockftpserver.test.AbstractGroovyTestCase
  * Tests for the PortParser class
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 class PortParserTest extends AbstractGroovyTestCase {
 

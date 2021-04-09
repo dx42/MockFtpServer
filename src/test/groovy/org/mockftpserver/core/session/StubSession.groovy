@@ -18,8 +18,6 @@ package org.mockftpserver.core.session
 /**
  * Stub implementation of the         {@link Session}         interface for testing
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class StubSession implements Session {

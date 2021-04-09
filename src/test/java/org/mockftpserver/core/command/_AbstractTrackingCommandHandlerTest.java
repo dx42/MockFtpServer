@@ -30,7 +30,6 @@ import java.util.ResourceBundle;
  * underscore so that it is not filtered out by Maven's Surefire test plugin.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class _AbstractTrackingCommandHandlerTest extends AbstractTestCase {
 

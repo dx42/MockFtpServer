@@ -46,8 +46,6 @@ import java.util.ResourceBundle;
  * stubFtpServer.setCommandHandler("CWD", simpleCompositeCommandHandler);
  * </code></pre>
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public final class SimpleCompositeCommandHandler implements CommandHandler, ReplyTextBundleAware {

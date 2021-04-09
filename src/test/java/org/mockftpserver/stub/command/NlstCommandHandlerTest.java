@@ -25,7 +25,6 @@ import org.mockftpserver.core.command.ReplyCodes;
  * Tests for the NlstCommandHandler class
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class NlstCommandHandlerTest extends AbstractCommandHandlerTestCase {
 

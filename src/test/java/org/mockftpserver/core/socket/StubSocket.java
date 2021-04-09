@@ -25,8 +25,6 @@ import java.net.Socket;
  * Test (fake) subclass of Socket that performs no network access and allows setting the 
  * inputStream and OutputStream for the socket.
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public final class StubSocket extends Socket {

@@ -22,8 +22,6 @@ import org.mockftpserver.fake.command.AbstractFakeCommandHandler
 /**
  * Test CommandHandler - subclass of AbstractFakeCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class TestCommandHandler extends AbstractFakeCommandHandler {

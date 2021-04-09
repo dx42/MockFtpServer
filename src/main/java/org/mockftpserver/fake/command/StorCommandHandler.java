@@ -31,7 +31,6 @@ package org.mockftpserver.fake.command;
  * </ol>
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class StorCommandHandler extends AbstractStoreFileCommandHandler {
 

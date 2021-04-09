@@ -24,8 +24,6 @@ import org.mockftpserver.core.util.AssertFailedException;
 /**
  * Tests for the SystCommandHandler class
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public final class SystCommandHandlerTest extends AbstractCommandHandlerTestCase {

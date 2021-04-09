@@ -19,7 +19,6 @@ package org.mockftpserver.core.command;
  * Reply Code constants.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class ReplyCodes {
 

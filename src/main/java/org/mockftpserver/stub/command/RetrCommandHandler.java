@@ -34,7 +34,6 @@ import org.mockftpserver.core.util.Assert;
  * </ul>
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class RetrCommandHandler extends AbstractStubDataCommandHandler implements CommandHandler {
 

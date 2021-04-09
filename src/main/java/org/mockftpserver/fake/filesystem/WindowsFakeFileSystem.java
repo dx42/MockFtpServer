@@ -31,7 +31,6 @@ import org.mockftpserver.core.util.Assert;
  * of {@link WindowsDirectoryListingFormatter}.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class WindowsFakeFileSystem extends AbstractFakeFileSystem {
 

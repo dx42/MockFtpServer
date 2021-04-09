@@ -31,7 +31,6 @@ import java.util.Map;
  * Abstract superclass for tests of AbstractFtpServer subclasses.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
 

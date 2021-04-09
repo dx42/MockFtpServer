@@ -42,7 +42,6 @@ import java.util.List;
  * </ol>
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class ListCommandHandler extends AbstractFakeCommandHandler {
 

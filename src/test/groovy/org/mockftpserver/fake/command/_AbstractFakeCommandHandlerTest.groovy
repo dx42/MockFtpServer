@@ -34,8 +34,6 @@ import org.mockftpserver.test.StubResourceBundle
 /**
  * Tests for AbstractFakeCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTestCase {

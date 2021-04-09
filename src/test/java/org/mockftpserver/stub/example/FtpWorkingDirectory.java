@@ -23,8 +23,6 @@ import java.net.SocketException;
 /**
  * Simple FTP client code example.
  * 
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 public class FtpWorkingDirectory {

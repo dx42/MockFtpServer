@@ -27,8 +27,6 @@ import org.mockftpserver.core.util.AssertFailedException;
  *
  * <p>Each invocation record stored by this CommandHandler contains no data elements.
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public final class StaticReplyCommandHandler extends AbstractStaticReplyCommandHandler {

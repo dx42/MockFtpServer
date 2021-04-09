@@ -22,8 +22,6 @@ import java.net.ServerSocket;
  * Interface for factory that creates new {@link ServerSocket} instances.
  * Using this abstraction enables unit testing.
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public interface ServerSocketFactory {

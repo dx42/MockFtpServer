@@ -25,8 +25,6 @@ import org.mockftpserver.fake.filesystem.Permissions
 /**
  * Tests for CdupCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class CdupCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {

@@ -36,7 +36,6 @@ import java.util.ResourceBundle;
  * Tests for the DefaultSession class that require the session (thread) to be running/active.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class DefaultSession_RunTest extends AbstractTestCase {
 

@@ -31,7 +31,6 @@ import java.util.ResourceBundle;
  * and {@link StubFtpServerIntegrationTest}.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class StubFtpServerTest extends AbstractFtpServerTestCase {
 

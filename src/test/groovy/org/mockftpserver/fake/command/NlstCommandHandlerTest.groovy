@@ -26,8 +26,6 @@ import org.mockftpserver.fake.filesystem.Permissions
 /**
  * Tests for NlstCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {

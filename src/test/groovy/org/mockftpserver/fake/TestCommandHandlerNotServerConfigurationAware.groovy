@@ -22,8 +22,6 @@ import org.mockftpserver.core.session.Session
 /**
  * Test CommandHandler - does not implement ServerConfigurationAware
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class TestCommandHandlerNotServerConfigurationAware implements CommandHandler {

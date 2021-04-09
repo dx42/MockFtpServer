@@ -22,8 +22,6 @@ import org.mockftpserver.core.command.CommandNames
 /**
  * Tests for StouCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class StouCommandHandlerTest extends AbstractStoreFileCommandHandlerTestCase {

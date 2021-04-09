@@ -43,7 +43,6 @@ import java.util.Map;
  * filesystem-specific manner. This property must be initialized by concrete subclasses.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public abstract class AbstractFakeFileSystem implements FileSystem {
 

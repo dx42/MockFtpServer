@@ -23,8 +23,6 @@ import org.mockftpserver.core.command.CommandNames
 /**
  * Run the StubFtpServer with a minimal configuration for interactive testing and exploration.
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class RunStubFtpServer {

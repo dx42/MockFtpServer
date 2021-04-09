@@ -22,8 +22,6 @@ import java.util.Map;
  * Provides static helper methods to make runtime assertions. Throws an
  * <code>AssertFailedException</code> when the assertion fails. All methods are static.
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public final class Assert {

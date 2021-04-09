@@ -33,8 +33,6 @@ import org.mockftpserver.test.PortTestUtil
 /**
  * Integration tests for FakeFtpServer.
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {

@@ -44,7 +44,6 @@ import java.io.InputStream;
  * </ul>
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class FileRetrCommandHandler extends AbstractStubDataCommandHandler implements CommandHandler {
 

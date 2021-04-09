@@ -29,7 +29,6 @@ import org.mockftpserver.core.session.Session;
  * </ul>
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public abstract class AbstractStorCommandHandler extends AbstractStubDataCommandHandler {
 

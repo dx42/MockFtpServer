@@ -22,8 +22,6 @@ import org.mockftpserver.fake.filesystem.FileSystem
 /**
  * Stub implementation of the   {@link org.mockftpserver.fake.ServerConfiguration}   interface for testing
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class StubServerConfiguration implements ServerConfiguration {

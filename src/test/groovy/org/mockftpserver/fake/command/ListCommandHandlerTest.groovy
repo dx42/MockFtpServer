@@ -30,8 +30,6 @@ import org.mockftpserver.fake.filesystem.Permissions
 /**
  * Tests for ListCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class ListCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {

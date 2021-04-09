@@ -22,7 +22,6 @@ import org.mockftpserver.core.server.AbstractFtpServer_StartTestCase;
  * Tests for StubFtpServer that require the StubFtpServer thread to be started.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class StubFtpServer_StartTest extends AbstractFtpServer_StartTestCase {
 

@@ -25,7 +25,6 @@ import java.util.Locale;
  * Windows-specific implementation of the DirectoryListingFormatter interface.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class WindowsDirectoryListingFormatter implements DirectoryListingFormatter {
 

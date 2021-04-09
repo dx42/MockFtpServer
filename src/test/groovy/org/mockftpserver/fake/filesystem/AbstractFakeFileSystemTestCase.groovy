@@ -20,8 +20,6 @@ import org.mockftpserver.core.util.IoUtil
 /**
  * Tests for subclasses of AbstractFakeFileSystem. Subclasses must define
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 abstract class AbstractFakeFileSystemTestCase extends AbstractFileSystemTestCase {

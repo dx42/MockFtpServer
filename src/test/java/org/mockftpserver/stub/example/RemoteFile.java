@@ -24,7 +24,6 @@ import java.io.IOException;
  * Simple FTP client code example.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class RemoteFile {
 

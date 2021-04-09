@@ -21,7 +21,6 @@ import org.mockftpserver.core.MockFtpServerException;
  * Represents an error that occurs while performing a FileSystem operation.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class FileSystemException extends MockFtpServerException {
 

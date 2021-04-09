@@ -20,7 +20,6 @@ package org.mockftpserver.core;
  * is required to in order to invoke the requested command.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class NotLoggedInException extends MockFtpServerException {
 

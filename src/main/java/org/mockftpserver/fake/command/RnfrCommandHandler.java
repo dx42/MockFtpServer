@@ -32,7 +32,6 @@ import org.mockftpserver.core.session.SessionKeys;
  * The supplied pathname may be absolute or relative to the current directory.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class RnfrCommandHandler extends AbstractFakeCommandHandler {
 

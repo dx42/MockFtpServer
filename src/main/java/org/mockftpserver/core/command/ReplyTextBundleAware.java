@@ -22,8 +22,6 @@ import java.util.ResourceBundle;
  * interface is implemented by CommandHandlers so that the StubFtpServer can automatically
  * set the default reply text ResourceBundle for the CommandHandler.
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public interface ReplyTextBundleAware {

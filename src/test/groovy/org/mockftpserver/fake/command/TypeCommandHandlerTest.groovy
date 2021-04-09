@@ -24,8 +24,6 @@ import org.mockftpserver.core.session.SessionKeys
 /**
  * Tests for TestCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class TypeCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {

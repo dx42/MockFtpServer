@@ -40,7 +40,6 @@ import java.util.List;
  * The directory listing sent includes filenames only, separated by end-of-line characters.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class NlstCommandHandler extends AbstractFakeCommandHandler {
 

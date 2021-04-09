@@ -26,8 +26,6 @@ import org.mockftpserver.fake.filesystem.Permissions
 /**
  * Tests for RmdCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {

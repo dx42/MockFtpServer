@@ -29,7 +29,6 @@ import java.util.Map;
  * Tests for the Assert class
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class AssertTest extends AbstractTestCase {
 

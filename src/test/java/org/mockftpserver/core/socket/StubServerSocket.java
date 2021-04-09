@@ -24,8 +24,6 @@ import java.net.SocketTimeoutException;
  * Test (fake) subclass of ServerSocket that performs no network access and allows setting the 
  * Socket returned by accept(), and the local port for the ServerSocket.
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public class StubServerSocket extends ServerSocket {

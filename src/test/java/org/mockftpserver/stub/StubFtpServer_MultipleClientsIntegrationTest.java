@@ -30,8 +30,6 @@ import org.mockftpserver.test.PortTestUtil;
 /**
  * StubFtpServer tests for multiple FTP clients using the Apache Jakarta Commons Net FTP client.
  * 
- * @version $Revision$ - $Date$
- * 
  * @author Chris Mair
  */
 public final class StubFtpServer_MultipleClientsIntegrationTest extends AbstractTestCase implements

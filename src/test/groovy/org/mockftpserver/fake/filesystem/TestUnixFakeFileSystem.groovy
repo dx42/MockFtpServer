@@ -18,8 +18,6 @@ package org.mockftpserver.fake.filesystem
 /**
  * Test-only subclass of UnixFakeFileSystem. Groovy implementation enables access to metaclass.
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class TestUnixFakeFileSystem extends UnixFakeFileSystem {

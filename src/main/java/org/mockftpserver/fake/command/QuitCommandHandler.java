@@ -23,7 +23,6 @@ import org.mockftpserver.core.session.Session;
  * CommandHandler for the QUIT command. Return a reply code of 221 and close the current session.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class QuitCommandHandler extends AbstractFakeCommandHandler {
 

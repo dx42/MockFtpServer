@@ -25,8 +25,6 @@ import org.mockftpserver.fake.filesystem.Permissions
 /**
  * Tests for AppeCommandHandler
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class AppeCommandHandlerTest extends AbstractStoreFileCommandHandlerTestCase {

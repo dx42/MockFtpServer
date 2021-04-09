@@ -28,8 +28,6 @@ import org.mockftpserver.core.session.Session;
  * <p>Subclasses can optionally override the reply code and/or text for the reply by calling
  * {@link #setReplyCode(int)}, {@link #setReplyMessageKey(String)} and {@link #setReplyText(String)}.
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 public abstract class AbstractStaticReplyCommandHandler extends AbstractTrackingCommandHandler {

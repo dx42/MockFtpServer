@@ -23,8 +23,6 @@ import java.util.ResourceBundle;
  * Contains common utility method to conditionally set the reply text ResourceBundle on a
  * CommandHandler instance.
  * 
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 public final class ReplyTextBundleUtil {

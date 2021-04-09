@@ -21,8 +21,6 @@ import org.mockftpserver.test.AbstractGroovyTestCase
 /**
  * Tests for UnixDirectoryListingFormatter
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class UnixDirectoryListingFormatterTest extends AbstractGroovyTestCase {

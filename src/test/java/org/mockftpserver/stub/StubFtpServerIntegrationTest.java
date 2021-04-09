@@ -37,7 +37,6 @@ import java.io.IOException;
  * Tests for StubFtpServer using the Apache Jakarta Commons Net FTP client.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public final class StubFtpServerIntegrationTest extends AbstractTestCase implements IntegrationTest {
 

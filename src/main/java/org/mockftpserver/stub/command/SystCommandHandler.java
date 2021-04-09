@@ -33,7 +33,6 @@ import org.mockftpserver.core.util.Assert;
  * Each invocation record stored by this CommandHandler contains no data elements.
  *
  * @author Chris Mair
- * @version $Revision$ - $Date$
  */
 public class SystCommandHandler extends AbstractStubCommandHandler implements CommandHandler {
 

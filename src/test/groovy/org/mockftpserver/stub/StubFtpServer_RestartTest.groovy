@@ -22,8 +22,6 @@ import org.mockftpserver.test.PortTestUtil
 /**
  * Integration tests for restart of an StubFtpServer.
  *
- * @version $Revision$ - $Date$
- *
  * @author Chris Mair
  */
 class StubFtpServer_RestartTest extends AbstractGroovyTestCase {
