@@ -197,7 +197,7 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
      */
     public void testStat_MultilineReplyText() throws Exception {
         // Modify Stat CommandHandler to return predefined text
-        final String STATUS = "System name: abc.def\nVersion 3.5.7\nNumber of failed logins: 2";
+        final String STATUS = "System name: abc.def\r\nVersion 3.5.7\r\nNumber of failed logins: 2";
         final String FORMATTED_REPLY_STATUS = "211-System name: abc.def\r\nVersion 3.5.7\r\n211 Number of failed logins: 2.";
         StatCommandHandler statCommandHandler = (StatCommandHandler) stubFtpServer.getCommandHandler(CommandNames.STAT);
         statCommandHandler.setStatus(STATUS);
@@ -280,10 +280,10 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
     
     public void testFeat_UseStaticReplyCommandHandler() throws IOException {
         // The FEAT command is not supported out of the box
-        final String FEAT_TEXT = "Extensions supported:\n" +
-                "MLST size*;create;modify*;perm;media-type\n" +
-                "SIZE\n" +
-                "COMPRESSION\n" +
+        final String FEAT_TEXT = "Extensions supported:\r\n" +
+                "MLST size*;create;modify*;perm;media-type\r\n" +
+                "SIZE\r\n" +
+                "COMPRESSION\r\n" +
                 "END";
         StaticReplyCommandHandler featCommandHandler = new StaticReplyCommandHandler(211, FEAT_TEXT);
         stubFtpServer.setCommandHandler("FEAT", featCommandHandler);
