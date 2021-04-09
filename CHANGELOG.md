@@ -1,5 +1,11 @@
 # MockFtpServer Change Log
 
+
+TODO Version 3.0.0 (??? 2021)
+------------------------------------------
+ - #7: Upgrade to Java 1.8.
+
+
 Version 2.8.0 (Feb 2021)
 ------------------------------------------
  - #1: Move project source code to GitHub.
@@ -9,6 +15,7 @@ Version 2.8.0 (Feb 2021)
  - #5: Update dependencies
      - Main - slf4j-api: 1.7.30. 
      - Test - spring: 2.5.6.SEC03; groovy-all: 1.8.9; junit: 4.13.2.
+ - #6: Publish Javadocs to javadoc.io. 
 
 
 Version 2.7.1 (Dec 2016)

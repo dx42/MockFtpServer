@@ -6,12 +6,12 @@ plugins {
     id 'signing'
 }
 
-version = "2.8.0"
+version = "3.0.0-SNAPSHOT"
 group = 'org.mockftpserver'
 archivesBaseName = 'MockFtpServer'
 
-sourceCompatibility = 1.4
-targetCompatibility = 1.4
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 sourceSets {
     test {
