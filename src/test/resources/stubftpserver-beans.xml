@@ -33,8 +33,8 @@
 					<bean class="org.mockftpserver.stub.command.ListCommandHandler">
 						<property name="directoryListing">
 							<value>
-							11-09-01 12:30PM  406348 File2350.log
-                			11-01-01 1:30PM &lt;DIR&gt; 0 archive
+11-09-01 12:30PM  406348 File2350.log
+11-01-01 1:30PM &lt;DIR&gt; 0 archive
                 			</value>
                 		</property>
 					</bean>
