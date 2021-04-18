@@ -15,9 +15,12 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.mockftpserver.core.command.*;
+import static org.mockito.Mockito.*;
+
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
-import org.mockito.Mockito;
+import org.mockftpserver.core.command.Command;
+import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.ReplyCodes;
 
 /**
  * Tests for the StatCommandHandler class
@@ -39,7 +42,7 @@ public final class StatCommandHandlerTest extends AbstractCommandHandlerTestCase
         commandHandler.setStatus(RESPONSE_DATA);
         commandHandler.handleCommand(COMMAND, session);
 
-        Mockito.verify(session).sendReply(ReplyCodes.STAT_SYSTEM_OK, formattedReplyTextFor(ReplyCodes.STAT_SYSTEM_OK, RESPONSE_DATA));
+        verify(session).sendReply(ReplyCodes.STAT_SYSTEM_OK, formattedReplyTextFor(ReplyCodes.STAT_SYSTEM_OK, RESPONSE_DATA));
         
         verifyNumberOfInvocations(commandHandler, 1);
         verifyOneDataElement(commandHandler.getInvocation(0), StatCommandHandler.PATHNAME_KEY, null);
@@ -55,7 +58,7 @@ public final class StatCommandHandlerTest extends AbstractCommandHandlerTestCase
         commandHandler.setStatus(RESPONSE_DATA);
         commandHandler.handleCommand(COMMAND, session);
 
-        Mockito.verify(session).sendReply(ReplyCodes.STAT_FILE_OK, formattedReplyTextFor(ReplyCodes.STAT_FILE_OK, RESPONSE_DATA));
+        verify(session).sendReply(ReplyCodes.STAT_FILE_OK, formattedReplyTextFor(ReplyCodes.STAT_FILE_OK, RESPONSE_DATA));
         
         verifyNumberOfInvocations(commandHandler, 1);
         verifyOneDataElement(commandHandler.getInvocation(0), StatCommandHandler.PATHNAME_KEY, PATHNAME);
@@ -70,7 +73,7 @@ public final class StatCommandHandlerTest extends AbstractCommandHandlerTestCase
         commandHandler.setReplyCode(200);
         commandHandler.handleCommand(COMMAND, session);
 
-        Mockito.verify(session).sendReply(200, replyTextFor(200));
+        verify(session).sendReply(200, replyTextFor(200));
 
         verifyNumberOfInvocations(commandHandler, 1);
         verifyOneDataElement(commandHandler.getInvocation(0), StatCommandHandler.PATHNAME_KEY, null);

@@ -15,11 +15,12 @@
  */
 package org.mockftpserver.stub.command;
 
+import static org.mockito.Mockito.*;
+
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
-import org.mockito.Mockito;
 
 /**
  * Tests for the NoopCommandHandler class
@@ -38,7 +39,7 @@ public final class NoopCommandHandlerTest extends AbstractCommandHandlerTestCase
 
         commandHandler.handleCommand(COMMAND, session);
 
-        Mockito.verify(session).sendReply(ReplyCodes.NOOP_OK, replyTextFor(ReplyCodes.NOOP_OK));
+        verify(session).sendReply(ReplyCodes.NOOP_OK, replyTextFor(ReplyCodes.NOOP_OK));
         
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));

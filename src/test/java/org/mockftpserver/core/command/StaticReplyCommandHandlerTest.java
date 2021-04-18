@@ -15,10 +15,11 @@
  */
 package org.mockftpserver.core.command;
 
-import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
+
+import org.mockftpserver.core.util.AssertFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.mockftpserver.core.util.AssertFailedException;
 
 /**
  * Tests for the StaticReplyCommandHandler class
@@ -83,7 +84,7 @@ public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerT
 
         commandHandler.handleCommand(COMMAND, session);
 
-        Mockito.verify(session).sendReply(250, replyTextFor(250));
+        verify(session).sendReply(250, replyTextFor(250));
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));
     }
@@ -98,7 +99,7 @@ public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerT
 
         commandHandler.handleCommand(COMMAND, session);
 
-        Mockito.verify(session).sendReply(REPLY_CODE, REPLY_TEXT);
+        verify(session).sendReply(REPLY_CODE, REPLY_TEXT);
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));
     }

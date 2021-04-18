@@ -17,9 +17,10 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
-import org.mockftpserver.core.command.*;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
-import org.mockito.Mockito;
+import org.mockftpserver.core.command.Command;
+import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.ReplyCodes;
 
 /**
  * Tests for the SmntCommandHandler class
@@ -40,7 +41,7 @@ public final class SmntCommandHandlerTest extends AbstractCommandHandlerTestCase
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
 
-        Mockito.verify(session, times(2)).sendReply(ReplyCodes.SMNT_OK, replyTextFor(ReplyCodes.SMNT_OK));
+        verify(session, times(2)).sendReply(ReplyCodes.SMNT_OK, replyTextFor(ReplyCodes.SMNT_OK));
 
         verifyNumberOfInvocations(commandHandler, 2);
         verifyOneDataElement(commandHandler.getInvocation(0), SmntCommandHandler.PATHNAME_KEY, DIR1);

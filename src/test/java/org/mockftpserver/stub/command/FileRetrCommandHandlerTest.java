@@ -16,13 +16,15 @@
 package org.mockftpserver.stub.command;
 
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
-import org.mockito.Mockito;
+import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
+import org.mockftpserver.core.command.Command;
+import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.ReplyCodes;
+import org.mockftpserver.core.util.AssertFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.mockftpserver.core.command.*;
-import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
-import org.mockftpserver.core.util.AssertFailedException;
 
 import java.util.Arrays;
 
@@ -83,10 +85,10 @@ public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest
         Command command = new Command(CommandNames.RETR, array(FILENAME1));
         commandHandler.handleCommand(command, session);
 
-        Mockito.verify(session, Mockito.times(5)).sendData(any(), eq(512));
-        Mockito.verify(session).sendData(any(), eq(3));
-        Mockito.verify(session).closeDataConnection();
-        Mockito.verify(session).sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_FINAL_OK));
+        verify(session, times(5)).sendData(any(), eq(512));
+        verify(session).sendData(any(), eq(3));
+        verify(session).closeDataConnection();
+        verify(session).sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_FINAL_OK));
 
         verifyNumberOfInvocations(commandHandler, 1);
         verifyOneDataElement(commandHandler.getInvocation(0), FileRetrCommandHandler.PATHNAME_KEY, FILENAME1);

@@ -20,7 +20,6 @@ import static org.mockito.Mockito.*;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
-import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +54,7 @@ public final class _AbstractStaticReplyCommandHandlerTest extends AbstractTestCa
     public void testSendReply() {
         commandHandler.setReplyCode(REPLY_CODE1);
         commandHandler.sendReply(session);
-        Mockito.verify(session).sendReply(REPLY_CODE1, REPLY_TEXT1);
+        verify(session).sendReply(REPLY_CODE1, REPLY_TEXT1);
     }
 
     /**
@@ -65,7 +64,7 @@ public final class _AbstractStaticReplyCommandHandlerTest extends AbstractTestCa
         commandHandler.setReplyCode(REPLY_CODE1);
         commandHandler.setReplyText(OVERRIDE_REPLY_TEXT);
         commandHandler.sendReply(session);
-        Mockito.verify(session).sendReply(REPLY_CODE1, OVERRIDE_REPLY_TEXT);
+        verify(session).sendReply(REPLY_CODE1, OVERRIDE_REPLY_TEXT);
     }
 
     /**
@@ -76,7 +75,7 @@ public final class _AbstractStaticReplyCommandHandlerTest extends AbstractTestCa
         commandHandler.setReplyMessageKey(Integer.toString(REPLY_CODE2));
         commandHandler.sendReply(session);
 
-        Mockito.verify(session).sendReply(REPLY_CODE1, REPLY_TEXT2);
+        verify(session).sendReply(REPLY_CODE1, REPLY_TEXT2);
     }
 
     /**
@@ -100,8 +99,8 @@ public final class _AbstractStaticReplyCommandHandlerTest extends AbstractTestCa
         commandHandler.sendReply(session);
         commandHandler.sendReply(session, ARG);
 
-        Mockito.verify(session).sendReply(REPLY_CODE2, REPLY_TEXT2);
-        Mockito.verify(session).sendReply(REPLY_CODE2, REPLY_TEXT2_FORMATTED);
+        verify(session).sendReply(REPLY_CODE2, REPLY_TEXT2);
+        verify(session).sendReply(REPLY_CODE2, REPLY_TEXT2_FORMATTED);
     }
 
     /**

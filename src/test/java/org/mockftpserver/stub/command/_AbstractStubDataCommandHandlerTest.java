@@ -22,7 +22,6 @@ import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
-import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,13 +84,13 @@ public final class _AbstractStubDataCommandHandlerTest extends AbstractTestCase 
         commandHandler.setReplyTextBundle(replyTextBundle);
         commandHandler.handleCommand(COMMAND, session, INVOCATION_RECORD);
 
-        Mockito.verify(session).sendReply(150, REPLY_TEXT150);
-        Mockito.verify(session).openDataConnection();
-        Mockito.verify(session).sendReply(222, REPLY_TEXT222);
-        Mockito.verify(session).sendReply(333, REPLY_TEXT333);
-        Mockito.verify(session).sendReply(444, REPLY_TEXT444);
-        Mockito.verify(session).closeDataConnection();
-        Mockito.verify(session).sendReply(226, REPLY_TEXT226);
+        verify(session).sendReply(150, REPLY_TEXT150);
+        verify(session).openDataConnection();
+        verify(session).sendReply(222, REPLY_TEXT222);
+        verify(session).sendReply(333, REPLY_TEXT333);
+        verify(session).sendReply(444, REPLY_TEXT444);
+        verify(session).closeDataConnection();
+        verify(session).sendReply(226, REPLY_TEXT226);
     }
 
     /**
@@ -106,10 +105,10 @@ public final class _AbstractStubDataCommandHandlerTest extends AbstractTestCase 
         commandHandler.setReplyTextBundle(replyTextBundle);
         commandHandler.handleCommand(COMMAND, session, INVOCATION_RECORD);
 
-        Mockito.verify(session).sendReply(OVERRIDE_REPLY_CODE, OVERRIDE_REPLY_TEXT);
-        Mockito.verify(session).openDataConnection();
-        Mockito.verify(session).closeDataConnection();
-        Mockito.verify(session).sendReply(226, REPLY_TEXT226);
+        verify(session).sendReply(OVERRIDE_REPLY_CODE, OVERRIDE_REPLY_TEXT);
+        verify(session).openDataConnection();
+        verify(session).closeDataConnection();
+        verify(session).sendReply(226, REPLY_TEXT226);
     }
 
     /**

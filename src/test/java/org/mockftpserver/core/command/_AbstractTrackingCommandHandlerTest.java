@@ -17,12 +17,11 @@ package org.mockftpserver.core.command;
 
 import static org.mockito.Mockito.*;
 
-import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
@@ -138,10 +137,10 @@ public final class _AbstractTrackingCommandHandlerTest extends AbstractTestCase 
         commandHandler.sendReply(session, REPLY_CODE1, MESSAGE_KEY, OVERRIDE_REPLY_TEXT, null);
         commandHandler.sendReply(session, REPLY_CODE3, null, null, null);
 
-        Mockito.verify(session).sendReply(REPLY_CODE1, REPLY_TEXT1);
-        Mockito.verify(session).sendReply(REPLY_CODE1, MESSAGE_TEXT);
-        Mockito.verify(session).sendReply(REPLY_CODE1, OVERRIDE_REPLY_TEXT);
-        Mockito.verify(session).sendReply(REPLY_CODE3, null);
+        verify(session).sendReply(REPLY_CODE1, REPLY_TEXT1);
+        verify(session).sendReply(REPLY_CODE1, MESSAGE_TEXT);
+        verify(session).sendReply(REPLY_CODE1, OVERRIDE_REPLY_TEXT);
+        verify(session).sendReply(REPLY_CODE3, null);
     }
 
     /**
@@ -150,7 +149,7 @@ public final class _AbstractTrackingCommandHandlerTest extends AbstractTestCase 
     public void testSendReply_WithMessageArguments() {
         commandHandler.sendReply(session, REPLY_CODE1, null, REPLY_TEXT2, ARGS);
 
-        Mockito.verify(session).sendReply(REPLY_CODE1, REPLY_TEXT2_FORMATTED);
+        verify(session).sendReply(REPLY_CODE1, REPLY_TEXT2_FORMATTED);
     }
 
     /**

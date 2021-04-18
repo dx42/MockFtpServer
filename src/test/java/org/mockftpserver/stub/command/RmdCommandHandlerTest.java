@@ -21,7 +21,6 @@ import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
-import org.mockito.Mockito;
 
 /**
  * Tests for the RmdCommandHandler class
@@ -41,7 +40,7 @@ public final class RmdCommandHandlerTest extends AbstractCommandHandlerTestCase 
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
 
-        Mockito.verify(session, times(2)).sendReply(ReplyCodes.RMD_OK, replyTextFor(ReplyCodes.RMD_OK));
+        verify(session, times(2)).sendReply(ReplyCodes.RMD_OK, replyTextFor(ReplyCodes.RMD_OK));
 
         verifyNumberOfInvocations(commandHandler, 2);
         verifyOneDataElement(commandHandler.getInvocation(0), RmdCommandHandler.PATHNAME_KEY, DIR1);

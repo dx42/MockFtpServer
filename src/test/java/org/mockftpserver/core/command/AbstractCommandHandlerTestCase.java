@@ -17,11 +17,10 @@ package org.mockftpserver.core.command;
 
 import static org.mockito.Mockito.*;
 
-import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.test.AbstractTestCase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 import java.util.ListResourceBundle;
@@ -57,7 +56,7 @@ public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
         Command command = new Command(commandName, parameters);
 
         commandHandler.handleCommand(command, session);
-        Mockito.verify(session).sendReply(ReplyCodes.COMMAND_SYNTAX_ERROR, replyTextFor(ReplyCodes.COMMAND_SYNTAX_ERROR));
+        verify(session).sendReply(ReplyCodes.COMMAND_SYNTAX_ERROR, replyTextFor(ReplyCodes.COMMAND_SYNTAX_ERROR));
 
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));

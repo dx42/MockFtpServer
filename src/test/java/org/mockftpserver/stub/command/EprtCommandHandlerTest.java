@@ -15,9 +15,12 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.mockftpserver.core.command.*;
+import static org.mockito.Mockito.*;
+
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
-import org.mockito.Mockito;
+import org.mockftpserver.core.command.Command;
+import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.ReplyCodes;
 
 import java.net.InetAddress;
 
@@ -42,9 +45,9 @@ public final class EprtCommandHandlerTest extends AbstractCommandHandlerTestCase
 
         commandHandler.handleCommand(COMMAND, session);
 
-        Mockito.verify(session).setClientDataPort(PORT);
-        Mockito.verify(session).setClientDataHost(HOST_IPV4);
-        Mockito.verify(session).sendReply(ReplyCodes.EPRT_OK, replyTextFor(ReplyCodes.EPRT_OK));
+        verify(session).setClientDataPort(PORT);
+        verify(session).setClientDataHost(HOST_IPV4);
+        verify(session).sendReply(ReplyCodes.EPRT_OK, replyTextFor(ReplyCodes.EPRT_OK));
 
         verifyNumberOfInvocations(commandHandler, 1);
         verifyTwoDataElements(commandHandler.getInvocation(0),
@@ -57,9 +60,9 @@ public final class EprtCommandHandlerTest extends AbstractCommandHandlerTestCase
 
         commandHandler.handleCommand(COMMAND, session);
 
-        Mockito.verify(session).setClientDataPort(PORT);
-        Mockito.verify(session).setClientDataHost(HOST_IPV6);
-        Mockito.verify(session).sendReply(ReplyCodes.EPRT_OK, replyTextFor(ReplyCodes.EPRT_OK));
+        verify(session).setClientDataPort(PORT);
+        verify(session).setClientDataHost(HOST_IPV6);
+        verify(session).sendReply(ReplyCodes.EPRT_OK, replyTextFor(ReplyCodes.EPRT_OK));
 
         verifyNumberOfInvocations(commandHandler, 1);
         verifyTwoDataElements(commandHandler.getInvocation(0),

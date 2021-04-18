@@ -17,9 +17,10 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
-import org.mockftpserver.core.command.*;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
-import org.mockito.Mockito;
+import org.mockftpserver.core.command.Command;
+import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.ReplyCodes;
 
 /**
  * Tests for the AppeCommandHandler class
@@ -52,10 +53,10 @@ public final class AppeCommandHandlerTest extends AbstractCommandHandlerTestCase
         Command command = new Command(CommandNames.APPE, array(FILENAME1));
         commandHandler.handleCommand(command, session);
 
-        Mockito.verify(session).sendReply(ReplyCodes.TRANSFER_DATA_INITIAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_INITIAL_OK));
-        Mockito.verify(session).openDataConnection();
-        Mockito.verify(session).closeDataConnection();
-        Mockito.verify(session).sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_FINAL_OK));
+        verify(session).sendReply(ReplyCodes.TRANSFER_DATA_INITIAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_INITIAL_OK));
+        verify(session).openDataConnection();
+        verify(session).closeDataConnection();
+        verify(session).sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_FINAL_OK));
 
         verifyNumberOfInvocations(commandHandler, 1);
         verifyTwoDataElements(commandHandler.getInvocation(0), AppeCommandHandler.PATHNAME_KEY, FILENAME1,

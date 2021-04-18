@@ -15,9 +15,12 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.mockftpserver.core.command.*;
+import static org.mockito.Mockito.*;
+
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
-import org.mockito.Mockito;
+import org.mockftpserver.core.command.Command;
+import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.ReplyCodes;
 
 /**
  * Tests for the AborCommandHandler class
@@ -36,7 +39,7 @@ public final class AborCommandHandlerTest extends AbstractCommandHandlerTestCase
 
         commandHandler.handleCommand(COMMAND, session);
 
-        Mockito.verify(session).sendReply(ReplyCodes.ABOR_OK, replyTextFor(ReplyCodes.ABOR_OK));
+        verify(session).sendReply(ReplyCodes.ABOR_OK, replyTextFor(ReplyCodes.ABOR_OK));
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));
     }

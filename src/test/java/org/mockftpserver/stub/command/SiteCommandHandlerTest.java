@@ -17,9 +17,10 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
-import org.mockftpserver.core.command.*;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
-import org.mockito.Mockito;
+import org.mockftpserver.core.command.Command;
+import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.ReplyCodes;
 
 /**
  * Tests for the SiteCommandHandler class
@@ -43,7 +44,7 @@ public final class SiteCommandHandlerTest extends AbstractCommandHandlerTestCase
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
 
-        Mockito.verify(session, times(2)).sendReply(ReplyCodes.SITE_OK, replyTextFor(ReplyCodes.SITE_OK));
+        verify(session, times(2)).sendReply(ReplyCodes.SITE_OK, replyTextFor(ReplyCodes.SITE_OK));
 
         verifyNumberOfInvocations(commandHandler, 2);
         verifyOneDataElement(commandHandler.getInvocation(0), SiteCommandHandler.PARAMETERS_KEY, PARAMETERS1);

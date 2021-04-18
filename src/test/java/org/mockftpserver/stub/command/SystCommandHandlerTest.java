@@ -15,12 +15,15 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
+
+import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
+import org.mockftpserver.core.command.Command;
+import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.ReplyCodes;
+import org.mockftpserver.core.util.AssertFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.mockftpserver.core.command.*;
-import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
-import org.mockftpserver.core.util.AssertFailedException;
 
 /**
  * Tests for the SystCommandHandler class
@@ -44,7 +47,7 @@ public final class SystCommandHandlerTest extends AbstractCommandHandlerTestCase
 
         commandHandler.handleCommand(COMMAND, session);
 
-        Mockito.verify(session).sendReply(ReplyCodes.SYST_OK, formattedReplyTextFor(ReplyCodes.SYST_OK, "\"" + SYSTEM_NAME + "\""));
+        verify(session).sendReply(ReplyCodes.SYST_OK, formattedReplyTextFor(ReplyCodes.SYST_OK, "\"" + SYSTEM_NAME + "\""));
         
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));

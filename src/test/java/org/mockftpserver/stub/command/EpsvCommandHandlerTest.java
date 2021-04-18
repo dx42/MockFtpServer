@@ -21,7 +21,6 @@ import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
-import org.mockito.Mockito;
 
 import java.net.InetAddress;
 
@@ -47,7 +46,7 @@ public final class EpsvCommandHandlerTest extends AbstractCommandHandlerTestCase
         final Command COMMAND = new Command(CommandNames.EPSV, EMPTY);
 
         commandHandler.handleCommand(COMMAND, session);
-        Mockito.verify(session).sendReply(ReplyCodes.EPSV_OK, formattedReplyTextFor(ReplyCodes.EPSV_OK, Integer.toString(PORT)));
+        verify(session).sendReply(ReplyCodes.EPSV_OK, formattedReplyTextFor(ReplyCodes.EPSV_OK, Integer.toString(PORT)));
 
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));

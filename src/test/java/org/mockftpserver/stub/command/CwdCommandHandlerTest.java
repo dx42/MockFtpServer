@@ -21,7 +21,6 @@ import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
-import org.mockito.Mockito;
 
 /**
  * Tests for the CwdCommandHandler class
@@ -42,7 +41,7 @@ public final class CwdCommandHandlerTest extends AbstractCommandHandlerTestCase 
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
 
-        Mockito.verify(session, times(2)).sendReply(ReplyCodes.CWD_OK, replyTextFor(ReplyCodes.CWD_OK));
+        verify(session, times(2)).sendReply(ReplyCodes.CWD_OK, replyTextFor(ReplyCodes.CWD_OK));
 
         verifyNumberOfInvocations(commandHandler, 2);
         verifyOneDataElement(commandHandler.getInvocation(0), CwdCommandHandler.PATHNAME_KEY, DIR1);

@@ -17,12 +17,11 @@ package org.mockftpserver.core.command;
 
 import static org.mockito.Mockito.*;
 
-import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +52,7 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
         
         simpleCompositeCommandHandler.handleCommand(command, session);
 
-        Mockito.verify(commandHandler1).handleCommand(command, session);
+        verify(commandHandler1).handleCommand(command, session);
     }
     
     /**
@@ -66,8 +65,8 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
         simpleCompositeCommandHandler.handleCommand(command, session);
         simpleCompositeCommandHandler.handleCommand(command, session);
 
-        Mockito.verify(commandHandler1).handleCommand(command, session);
-        Mockito.verify(commandHandler2).handleCommand(command, session);
+        verify(commandHandler1).handleCommand(command, session);
+        verify(commandHandler2).handleCommand(command, session);
     }
     
     /**
@@ -85,9 +84,9 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
         simpleCompositeCommandHandler.handleCommand(command, session);
         simpleCompositeCommandHandler.handleCommand(command, session);
 
-        Mockito.verify(commandHandler1).handleCommand(command, session);
-        Mockito.verify(commandHandler2).handleCommand(command, session);
-        Mockito.verify(commandHandler3).handleCommand(command, session);
+        verify(commandHandler1).handleCommand(command, session);
+        verify(commandHandler2).handleCommand(command, session);
+        verify(commandHandler3).handleCommand(command, session);
     }
     
     /**
@@ -98,7 +97,7 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
 
         simpleCompositeCommandHandler.handleCommand(command, session);
 
-        Mockito.verify(commandHandler1).handleCommand(command, session);
+        verify(commandHandler1).handleCommand(command, session);
 
         // Second invocation throws an exception
         try {

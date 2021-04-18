@@ -21,7 +21,6 @@ import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
-import org.mockito.Mockito;
 
 /**
  * Tests for the ReinCommandHandler class
@@ -42,7 +41,7 @@ public final class ReinCommandHandlerTest extends AbstractCommandHandlerTestCase
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
 
-        Mockito.verify(session, times(2)).sendReply(ReplyCodes.REIN_OK, replyTextFor(ReplyCodes.REIN_OK));
+        verify(session, times(2)).sendReply(ReplyCodes.REIN_OK, replyTextFor(ReplyCodes.REIN_OK));
 
         verifyNumberOfInvocations(commandHandler, 2);
         verifyNoDataElements(commandHandler.getInvocation(0));

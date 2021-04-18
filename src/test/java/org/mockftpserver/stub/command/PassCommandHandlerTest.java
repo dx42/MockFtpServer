@@ -21,7 +21,6 @@ import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
-import org.mockito.Mockito;
 
 /**
  * Tests for the PassCommandHandler class
@@ -44,7 +43,7 @@ public final class PassCommandHandlerTest extends AbstractCommandHandlerTestCase
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
 
-        Mockito.verify(session, times(2)).sendReply(ReplyCodes.PASS_OK, replyTextFor(ReplyCodes.PASS_OK));
+        verify(session, times(2)).sendReply(ReplyCodes.PASS_OK, replyTextFor(ReplyCodes.PASS_OK));
         
         verifyNumberOfInvocations(commandHandler, 2);
         verifyOneDataElement(commandHandler.getInvocation(0), PassCommandHandler.PASSWORD_KEY, PASSWORD1);

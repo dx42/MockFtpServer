@@ -15,11 +15,12 @@
  */
 package org.mockftpserver.stub.command;
 
+import static org.mockito.Mockito.*;
+
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
-import org.mockito.Mockito;
 
 /**
  * Tests for the PwdCommandHandler class
@@ -42,7 +43,7 @@ public final class PwdCommandHandlerTest extends AbstractCommandHandlerTestCase 
 
         commandHandler.handleCommand(COMMAND, session);
 
-        Mockito.verify(session).sendReply(ReplyCodes.PWD_OK, formattedReplyTextFor(ReplyCodes.PWD_OK, "\"" + RESPONSE_DATA + "\""));
+        verify(session).sendReply(ReplyCodes.PWD_OK, formattedReplyTextFor(ReplyCodes.PWD_OK, "\"" + RESPONSE_DATA + "\""));
         
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));

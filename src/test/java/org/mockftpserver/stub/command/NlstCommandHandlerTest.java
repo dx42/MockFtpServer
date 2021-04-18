@@ -21,7 +21,6 @@ import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
-import org.mockito.Mockito;
 
 /**
  * Tests for the NlstCommandHandler class
@@ -45,12 +44,12 @@ public final class NlstCommandHandlerTest extends AbstractCommandHandlerTestCase
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
 
-        Mockito.verify(session, times(2)).sendReply(ReplyCodes.TRANSFER_DATA_INITIAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_INITIAL_OK));
-        Mockito.verify(session, times(2)).openDataConnection();
+        verify(session, times(2)).sendReply(ReplyCodes.TRANSFER_DATA_INITIAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_INITIAL_OK));
+        verify(session, times(2)).openDataConnection();
         byte[] bytes = DIR_LISTING_TRIMMED.getBytes();
-        Mockito.verify(session, times(2)).sendData(bytes, bytes.length);
-        Mockito.verify(session, times(2)).closeDataConnection();
-        Mockito.verify(session, times(2)).sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_FINAL_OK));
+        verify(session, times(2)).sendData(bytes, bytes.length);
+        verify(session, times(2)).closeDataConnection();
+        verify(session, times(2)).sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_FINAL_OK));
 
         verifyNumberOfInvocations(commandHandler, 2);
         verifyOneDataElement(commandHandler.getInvocation(0), NlstCommandHandler.PATHNAME_KEY, DIR1);

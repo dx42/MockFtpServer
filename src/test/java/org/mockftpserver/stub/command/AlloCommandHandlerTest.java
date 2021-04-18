@@ -17,12 +17,13 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
-import org.mockito.Mockito;
+import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
+import org.mockftpserver.core.command.Command;
+import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.ReplyCodes;
+import org.mockftpserver.core.util.AssertFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.mockftpserver.core.command.*;
-import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
-import org.mockftpserver.core.util.AssertFailedException;
 
 /**
  * Tests for the AlloCommandHandler class
@@ -47,7 +48,7 @@ public final class AlloCommandHandlerTest extends AbstractCommandHandlerTestCase
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
 
-        Mockito.verify(session, times(2)).sendReply(ReplyCodes.ALLO_OK, replyTextFor(ReplyCodes.ALLO_OK));
+        verify(session, times(2)).sendReply(ReplyCodes.ALLO_OK, replyTextFor(ReplyCodes.ALLO_OK));
 
         verifyNumberOfInvocations(commandHandler, 2);
         verifyOneDataElement(commandHandler.getInvocation(0), AlloCommandHandler.NUMBER_OF_BYTES_KEY, new Integer(

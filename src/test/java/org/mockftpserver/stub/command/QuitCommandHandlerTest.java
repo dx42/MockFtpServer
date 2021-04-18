@@ -15,9 +15,12 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.mockftpserver.core.command.*;
+import static org.mockito.Mockito.*;
+
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
-import org.mockito.Mockito;
+import org.mockftpserver.core.command.Command;
+import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.ReplyCodes;
 
 /**
  * Tests for the QuitCommandHandler class
@@ -36,8 +39,8 @@ public final class QuitCommandHandlerTest extends AbstractCommandHandlerTestCase
 
         commandHandler.handleCommand(COMMAND, session);
 
-        Mockito.verify(session).sendReply(ReplyCodes.QUIT_OK, replyTextFor(ReplyCodes.QUIT_OK));
-        Mockito.verify(session).close();
+        verify(session).sendReply(ReplyCodes.QUIT_OK, replyTextFor(ReplyCodes.QUIT_OK));
+        verify(session).close();
         
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));

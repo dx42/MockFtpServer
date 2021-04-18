@@ -21,7 +21,6 @@ import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
-import org.mockito.Mockito;
 
 /**
  * Tests for the HelpCommandHandler class
@@ -46,7 +45,7 @@ public final class HelpCommandHandlerTest extends AbstractCommandHandlerTestCase
         commandHandler.handleCommand(COMMAND1, session);
         commandHandler.handleCommand(COMMAND2, session);
 
-        Mockito.verify(session, times(2)).sendReply(ReplyCodes.HELP_OK, formattedReplyTextFor(ReplyCodes.HELP_OK, RESPONSE_DATA));
+        verify(session, times(2)).sendReply(ReplyCodes.HELP_OK, formattedReplyTextFor(ReplyCodes.HELP_OK, RESPONSE_DATA));
         
         verifyNumberOfInvocations(commandHandler, 2);
         verifyOneDataElement(commandHandler.getInvocation(0), HelpCommandHandler.COMMAND_NAME_KEY, null);

@@ -15,7 +15,7 @@
  */
 package org.mockftpserver.core.command;
 
-import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for the UnsupportedCommandHandler class
@@ -30,7 +30,7 @@ public final class UnsupportedCommandHandlerTest extends AbstractCommandHandlerT
     public void testHandleCommand() throws Exception {
         commandHandler.handleCommand(command1, session);
 
-        Mockito.verify(session).sendReply(ReplyCodes.COMMAND_NOT_SUPPORTED, replyTextFor(ReplyCodes.COMMAND_NOT_SUPPORTED));
+        verify(session).sendReply(ReplyCodes.COMMAND_NOT_SUPPORTED, replyTextFor(ReplyCodes.COMMAND_NOT_SUPPORTED));
 
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));

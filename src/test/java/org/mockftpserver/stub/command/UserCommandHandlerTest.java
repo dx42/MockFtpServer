@@ -15,9 +15,12 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.mockftpserver.core.command.*;
+import static org.mockito.Mockito.*;
+
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
-import org.mockito.Mockito;
+import org.mockftpserver.core.command.Command;
+import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.ReplyCodes;
 
 /**
  * Tests for the UserCommandHandler class
@@ -41,8 +44,8 @@ public final class UserCommandHandlerTest extends AbstractCommandHandlerTestCase
         commandHandler.setPasswordRequired(false);
         commandHandler.handleCommand(command2, session);
 
-        Mockito.verify(session).sendReply(ReplyCodes.USER_NEED_PASSWORD_OK, replyTextFor(ReplyCodes.USER_NEED_PASSWORD_OK));
-        Mockito.verify(session).sendReply(ReplyCodes.USER_LOGGED_IN_OK, replyTextFor(ReplyCodes.USER_LOGGED_IN_OK));
+        verify(session).sendReply(ReplyCodes.USER_NEED_PASSWORD_OK, replyTextFor(ReplyCodes.USER_NEED_PASSWORD_OK));
+        verify(session).sendReply(ReplyCodes.USER_LOGGED_IN_OK, replyTextFor(ReplyCodes.USER_LOGGED_IN_OK));
 
         verifyNumberOfInvocations(commandHandler, 2);
         verifyOneDataElement(commandHandler.getInvocation(0), UserCommandHandler.USERNAME_KEY, USERNAME1);

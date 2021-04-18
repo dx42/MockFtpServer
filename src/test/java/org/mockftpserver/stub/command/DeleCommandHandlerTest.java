@@ -21,7 +21,6 @@ import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
-import org.mockito.Mockito;
 
 /**
  * Tests for the DeleCommandHandler class
@@ -41,7 +40,7 @@ public final class DeleCommandHandlerTest extends AbstractCommandHandlerTestCase
     public void testHandleCommand() throws Exception {
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
-        Mockito.verify(session, times(2)).sendReply(ReplyCodes.DELE_OK, replyTextFor(ReplyCodes.DELE_OK));
+        verify(session, times(2)).sendReply(ReplyCodes.DELE_OK, replyTextFor(ReplyCodes.DELE_OK));
 
         verifyNumberOfInvocations(commandHandler, 2);
         verifyOneDataElement(commandHandler.getInvocation(0), DeleCommandHandler.PATHNAME_KEY, FILENAME1);
