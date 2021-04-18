@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 the original author or authors.
+ * Copyright 2021 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
  */
 package org.mockftpserver.stub.command;
 
+import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.easymock.MockControl;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -96,17 +96,14 @@ public final class RetrCommandHandlerTest extends AbstractCommandHandlerTestCase
         final String FILE_CONTENTS = "abc_123 456";
         commandHandler.setFileContents(FILE_CONTENTS);
 
-        session.sendReply(ReplyCodes.TRANSFER_DATA_INITIAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_INITIAL_OK));
-        session.openDataConnection();
-        session.sendData(FILE_CONTENTS.getBytes(), FILE_CONTENTS.length());
-        control(session).setMatcher(MockControl.ARRAY_MATCHER);
-        session.closeDataConnection();
-        session.sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_FINAL_OK));
-        replay(session);
-
         Command command = new Command(CommandNames.RETR, array(FILENAME1));
         commandHandler.handleCommand(command, session);
-        verify(session);
+
+        Mockito.verify(session).sendReply(ReplyCodes.TRANSFER_DATA_INITIAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_INITIAL_OK));
+        Mockito.verify(session).openDataConnection();
+        Mockito.verify(session).sendData(FILE_CONTENTS.getBytes(), FILE_CONTENTS.length());
+        Mockito.verify(session).closeDataConnection();
+        Mockito.verify(session).sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_FINAL_OK));
 
         verifyNumberOfInvocations(commandHandler, 1);
         verifyOneDataElement(commandHandler.getInvocation(0), RetrCommandHandler.PATHNAME_KEY, FILENAME1);

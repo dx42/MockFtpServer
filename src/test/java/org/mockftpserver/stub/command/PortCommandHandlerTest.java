@@ -19,6 +19,7 @@ import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
+import org.mockito.Mockito;
 
 import java.net.InetAddress;
 
@@ -42,13 +43,11 @@ public final class PortCommandHandlerTest extends AbstractCommandHandlerTestCase
     public void testHandleCommand() throws Exception {
         final Command COMMAND = new Command(CommandNames.PORT, PARAMETERS);
 
-        session.setClientDataPort(PORT);
-        session.setClientDataHost(HOST);
-        session.sendReply(ReplyCodes.PORT_OK, replyTextFor(ReplyCodes.PORT_OK));
-        replay(session);
-
         commandHandler.handleCommand(COMMAND, session);
-        verify(session);
+
+        Mockito.verify(session).setClientDataPort(PORT);
+        Mockito.verify(session).setClientDataHost(HOST);
+        Mockito.verify(session).sendReply(ReplyCodes.PORT_OK, replyTextFor(ReplyCodes.PORT_OK));
 
         verifyNumberOfInvocations(commandHandler, 1);
         verifyTwoDataElements(commandHandler.getInvocation(0),

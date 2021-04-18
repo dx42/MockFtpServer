@@ -19,6 +19,7 @@ import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
+import org.mockito.Mockito;
 
 /**
  * Tests for the PwdCommandHandler class
@@ -37,13 +38,11 @@ public final class PwdCommandHandlerTest extends AbstractCommandHandlerTestCase 
         final String RESPONSE_DATA = "current dir 1";
         commandHandler.setDirectory(RESPONSE_DATA);
 
-        session.sendReply(ReplyCodes.PWD_OK, formattedReplyTextFor(ReplyCodes.PWD_OK, "\"" + RESPONSE_DATA + "\""));
-        replay(session);
-
         final Command COMMAND = new Command(CommandNames.PWD, EMPTY);
 
         commandHandler.handleCommand(COMMAND, session);
-        verify(session);
+
+        Mockito.verify(session).sendReply(ReplyCodes.PWD_OK, formattedReplyTextFor(ReplyCodes.PWD_OK, "\"" + RESPONSE_DATA + "\""));
         
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));

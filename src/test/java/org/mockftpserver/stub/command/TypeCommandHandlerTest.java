@@ -15,10 +15,13 @@
  */
 package org.mockftpserver.stub.command;
 
+import static org.mockito.Mockito.*;
+
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
+import org.mockito.Mockito;
 
 /**
  * Tests for the TypeCommandHandler class
@@ -37,15 +40,11 @@ public final class TypeCommandHandlerTest extends AbstractCommandHandlerTestCase
         final Command COMMAND2 = new Command("TYPE", array("B"));
         final Command COMMAND3 = new Command("TYPE", array("L", "8"));
 
-        session.sendReply(ReplyCodes.TYPE_OK, replyTextFor(ReplyCodes.TYPE_OK));
-        session.sendReply(ReplyCodes.TYPE_OK, replyTextFor(ReplyCodes.TYPE_OK));
-        session.sendReply(ReplyCodes.TYPE_OK, replyTextFor(ReplyCodes.TYPE_OK));
-        replay(session);
-        
         commandHandler.handleCommand(COMMAND1, session);
         commandHandler.handleCommand(COMMAND2, session);
         commandHandler.handleCommand(COMMAND3, session);
-        verify(session);
+
+        Mockito.verify(session, times(3)).sendReply(ReplyCodes.TYPE_OK, replyTextFor(ReplyCodes.TYPE_OK));
 
         verifyNumberOfInvocations(commandHandler, 3);
         verifyOneDataElement(commandHandler.getInvocation(0), TypeCommandHandler.TYPE_INFO_KEY, new String[] {"A", null});

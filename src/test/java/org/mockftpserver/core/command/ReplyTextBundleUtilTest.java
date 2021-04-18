@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 the original author or authors.
+ * Copyright 2021 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package org.mockftpserver.core.command;
+
+import static org.mockito.Mockito.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,10 +63,9 @@ public final class ReplyTextBundleUtilTest extends AbstractTestCase {
      * implement the ResourceBundleAware interface. 
      */
     public void testSetReplyTextBundleIfAppropriate_NotReplyTextBundleAware() {
-        CommandHandler commandHandler = (CommandHandler) createMock(CommandHandler.class);
-        replay(commandHandler);
+        CommandHandler commandHandler = mock(CommandHandler.class);
         ReplyTextBundleUtil.setReplyTextBundleIfAppropriate(commandHandler, resourceBundle1);
-        verify(commandHandler);         // expect no method calls
+        verifyNoInteractions(commandHandler);         // expect no method calls
     }
     
     /**

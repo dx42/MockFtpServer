@@ -15,13 +15,16 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.mockito.Mockito.*;
+
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
+import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
@@ -52,16 +55,6 @@ public final class _AbstractStubDataCommandHandlerTest extends AbstractTestCase 
      * Test the handleCommand() method
      */
     public void testHandleCommand() throws Exception {
-
-        session.sendReply(150, REPLY_TEXT150);
-        session.openDataConnection();
-        session.sendReply(222, REPLY_TEXT222);
-        session.sendReply(333, REPLY_TEXT333);
-        session.sendReply(444, REPLY_TEXT444);
-        session.closeDataConnection();
-        session.sendReply(226, REPLY_TEXT226);
-        replay(session);
-        
         // Define CommandHandler test subclass
         commandHandler = new AbstractStubDataCommandHandler() {
             protected void beforeProcessData(Command c, Session s, InvocationRecord ir) {
@@ -91,30 +84,32 @@ public final class _AbstractStubDataCommandHandlerTest extends AbstractTestCase 
 
         commandHandler.setReplyTextBundle(replyTextBundle);
         commandHandler.handleCommand(COMMAND, session, INVOCATION_RECORD);
-        
-        verify(session);
+
+        Mockito.verify(session).sendReply(150, REPLY_TEXT150);
+        Mockito.verify(session).openDataConnection();
+        Mockito.verify(session).sendReply(222, REPLY_TEXT222);
+        Mockito.verify(session).sendReply(333, REPLY_TEXT333);
+        Mockito.verify(session).sendReply(444, REPLY_TEXT444);
+        Mockito.verify(session).closeDataConnection();
+        Mockito.verify(session).sendReply(226, REPLY_TEXT226);
     }
 
     /**
      * Test the handleCommand() method, overriding the initial reply code and text
      */
     public void testHandleCommand_OverrideInitialReplyCodeAndText() throws Exception {
-
         final int OVERRIDE_REPLY_CODE = 333;
         final String OVERRIDE_REPLY_TEXT = "reply text";
-        
-        session.sendReply(OVERRIDE_REPLY_CODE, OVERRIDE_REPLY_TEXT);
-        session.openDataConnection();
-        session.closeDataConnection();
-        session.sendReply(226, REPLY_TEXT226);
-        replay(session);
-        
+
         commandHandler.setPreliminaryReplyCode(OVERRIDE_REPLY_CODE);
         commandHandler.setPreliminaryReplyText(OVERRIDE_REPLY_TEXT);
         commandHandler.setReplyTextBundle(replyTextBundle);
         commandHandler.handleCommand(COMMAND, session, INVOCATION_RECORD);
-        
-        verify(session);
+
+        Mockito.verify(session).sendReply(OVERRIDE_REPLY_CODE, OVERRIDE_REPLY_TEXT);
+        Mockito.verify(session).openDataConnection();
+        Mockito.verify(session).closeDataConnection();
+        Mockito.verify(session).sendReply(226, REPLY_TEXT226);
     }
 
     /**
@@ -154,7 +149,7 @@ public final class _AbstractStubDataCommandHandlerTest extends AbstractTestCase 
      */
     protected void setUp() throws Exception {
         super.setUp();
-        session = (Session) createMock(Session.class);
+        session = (Session) mock(Session.class);
         replyTextBundle = new ListResourceBundle() {
             protected Object[][] getContents() {
                 return new Object[][] { 

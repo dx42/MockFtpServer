@@ -15,8 +15,13 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.mockftpserver.core.command.*;
+import static org.mockito.Mockito.*;
+
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
+import org.mockftpserver.core.command.Command;
+import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.ReplyCodes;
+import org.mockito.Mockito;
 
 import java.net.InetAddress;
 
@@ -36,17 +41,13 @@ public final class EpsvCommandHandlerTest extends AbstractCommandHandlerTestCase
      * Test the handleCommand() method
      */
     public void testHandleCommand() throws Exception {
-        session.switchToPassiveMode();
-        control(session).setReturnValue(PORT);
-        session.getServerHost();
-        control(session).setReturnValue(SERVER);
-        session.sendReply(ReplyCodes.EPSV_OK, formattedReplyTextFor(ReplyCodes.EPSV_OK, Integer.toString(PORT)));
-        replay(session);
+        when(session.switchToPassiveMode()).thenReturn(PORT);
+        when(session.getServerHost()).thenReturn(SERVER);
 
         final Command COMMAND = new Command(CommandNames.EPSV, EMPTY);
 
         commandHandler.handleCommand(COMMAND, session);
-        verify(session);
+        Mockito.verify(session).sendReply(ReplyCodes.EPSV_OK, formattedReplyTextFor(ReplyCodes.EPSV_OK, Integer.toString(PORT)));
 
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));

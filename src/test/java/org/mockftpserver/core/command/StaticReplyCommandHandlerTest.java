@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.core.command;
 
+import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.util.AssertFailedException;
@@ -79,13 +80,10 @@ public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerT
      */
     public void testHandleCommand_ReplyTextNotSet() throws Exception {
         commandHandler.setReplyCode(250);
-        
-        session.sendReply(250, replyTextFor(250));
-        replay(session);
-        
+
         commandHandler.handleCommand(COMMAND, session);
-        verify(session);
-        
+
+        Mockito.verify(session).sendReply(250, replyTextFor(250));
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));
     }
@@ -97,13 +95,10 @@ public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerT
     public void testHandleCommand_SetReplyText() throws Exception {
         commandHandler.setReplyCode(REPLY_CODE);
         commandHandler.setReplyText(REPLY_TEXT);
-        
-        session.sendReply(REPLY_CODE, REPLY_TEXT);
-        replay(session);
-        
+
         commandHandler.handleCommand(COMMAND, session);
-        verify(session);
-        
+
+        Mockito.verify(session).sendReply(REPLY_CODE, REPLY_TEXT);
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));
     }
@@ -113,7 +108,6 @@ public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerT
      * @throws Exception - if an error occurs
      */
     public void testHandleCommand_ReplyCodeNotSet() throws Exception {
-
         try {
             commandHandler.handleCommand(COMMAND, session);
             fail("Expected AssertFailedException");

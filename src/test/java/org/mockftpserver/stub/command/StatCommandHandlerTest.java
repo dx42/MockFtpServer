@@ -17,6 +17,7 @@ package org.mockftpserver.stub.command;
 
 import org.mockftpserver.core.command.*;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
+import org.mockito.Mockito;
 
 /**
  * Tests for the StatCommandHandler class
@@ -34,14 +35,11 @@ public final class StatCommandHandlerTest extends AbstractCommandHandlerTestCase
      * Test the handleCommand() method, when no pathname parameter is specified
      */
     public void testHandleCommand_NoPathname() throws Exception {
-
-        session.sendReply(ReplyCodes.STAT_SYSTEM_OK, formattedReplyTextFor(ReplyCodes.STAT_SYSTEM_OK, RESPONSE_DATA));
-        replay(session);
-
         final Command COMMAND = new Command(CommandNames.STAT, EMPTY);
         commandHandler.setStatus(RESPONSE_DATA);
         commandHandler.handleCommand(COMMAND, session);
-        verify(session);
+
+        Mockito.verify(session).sendReply(ReplyCodes.STAT_SYSTEM_OK, formattedReplyTextFor(ReplyCodes.STAT_SYSTEM_OK, RESPONSE_DATA));
         
         verifyNumberOfInvocations(commandHandler, 1);
         verifyOneDataElement(commandHandler.getInvocation(0), StatCommandHandler.PATHNAME_KEY, null);
@@ -52,15 +50,12 @@ public final class StatCommandHandlerTest extends AbstractCommandHandlerTestCase
      * @throws Exception - if an error occurs
      */
     public void testHandleCommand_Pathname() throws Exception {
-
-        session.sendReply(ReplyCodes.STAT_FILE_OK, formattedReplyTextFor(ReplyCodes.STAT_FILE_OK, RESPONSE_DATA));
-        replay(session);
-
         final Command COMMAND = new Command(CommandNames.STAT, array(PATHNAME));
 
         commandHandler.setStatus(RESPONSE_DATA);
         commandHandler.handleCommand(COMMAND, session);
-        verify(session);
+
+        Mockito.verify(session).sendReply(ReplyCodes.STAT_FILE_OK, formattedReplyTextFor(ReplyCodes.STAT_FILE_OK, RESPONSE_DATA));
         
         verifyNumberOfInvocations(commandHandler, 1);
         verifyOneDataElement(commandHandler.getInvocation(0), StatCommandHandler.PATHNAME_KEY, PATHNAME);
@@ -70,17 +65,13 @@ public final class StatCommandHandlerTest extends AbstractCommandHandlerTestCase
      * Test the handleCommand() method, when the replyCode is explicitly set
      */
     public void testHandleCommand_OverrideReplyCode() throws Exception {
-
-        session.sendReply(200, replyTextFor(200));
-        replay(session);
-
         final Command COMMAND = new Command(CommandNames.STAT, EMPTY);
         commandHandler.setStatus(RESPONSE_DATA);
         commandHandler.setReplyCode(200);
         commandHandler.handleCommand(COMMAND, session);
 
-        verify(session);
-        
+        Mockito.verify(session).sendReply(200, replyTextFor(200));
+
         verifyNumberOfInvocations(commandHandler, 1);
         verifyOneDataElement(commandHandler.getInvocation(0), StatCommandHandler.PATHNAME_KEY, null);
     }

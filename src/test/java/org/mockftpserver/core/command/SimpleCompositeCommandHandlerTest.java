@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 the original author or authors.
+ * Copyright 2021 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,9 @@
  */
 package org.mockftpserver.core.command;
 
+import static org.mockito.Mockito.*;
+
+import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.session.Session;
@@ -48,11 +51,9 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
     public void testHandleCommand_OneHandler_OneInvocation() throws Exception {
         simpleCompositeCommandHandler.addCommandHandler(commandHandler1);
         
-        commandHandler1.handleCommand(command, session);
-        replay(commandHandler1);
-        
         simpleCompositeCommandHandler.handleCommand(command, session);
-        verify(commandHandler1);
+
+        Mockito.verify(commandHandler1).handleCommand(command, session);
     }
     
     /**
@@ -61,14 +62,12 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
     public void testHandleCommand_TwoHandlers() throws Exception {
         simpleCompositeCommandHandler.addCommandHandler(commandHandler1);
         simpleCompositeCommandHandler.addCommandHandler(commandHandler2);
-        
-        commandHandler1.handleCommand(command, session);
-        commandHandler2.handleCommand(command, session);
-        replayAll();
-        
+
         simpleCompositeCommandHandler.handleCommand(command, session);
         simpleCompositeCommandHandler.handleCommand(command, session);
-        verifyAll();
+
+        Mockito.verify(commandHandler1).handleCommand(command, session);
+        Mockito.verify(commandHandler2).handleCommand(command, session);
     }
     
     /**
@@ -81,16 +80,14 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
         list.add(commandHandler2);
         list.add(commandHandler3);
         simpleCompositeCommandHandler.setCommandHandlers(list);
-        
-        commandHandler1.handleCommand(command, session);
-        commandHandler2.handleCommand(command, session);
-        commandHandler3.handleCommand(command, session);
-        replayAll();
-        
+
         simpleCompositeCommandHandler.handleCommand(command, session);
         simpleCompositeCommandHandler.handleCommand(command, session);
         simpleCompositeCommandHandler.handleCommand(command, session);
-        verifyAll();
+
+        Mockito.verify(commandHandler1).handleCommand(command, session);
+        Mockito.verify(commandHandler2).handleCommand(command, session);
+        Mockito.verify(commandHandler3).handleCommand(command, session);
     }
     
     /**
@@ -98,11 +95,10 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
      */
     public void testHandleCommand_OneHandler_TooManyInvocations() throws Exception {
         simpleCompositeCommandHandler.addCommandHandler(commandHandler1);
-        
-        commandHandler1.handleCommand(command, session);
-        replay(commandHandler1);
-        
+
         simpleCompositeCommandHandler.handleCommand(command, session);
+
+        Mockito.verify(commandHandler1).handleCommand(command, session);
 
         // Second invocation throws an exception
         try {
@@ -228,7 +224,6 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
      * Test the setReplyTextBundle() method
      */
     public void testSetReplyTextBundle() {
-        
         AbstractTrackingCommandHandler replyTextBundleAwareCommandHandler1 = new StaticReplyCommandHandler();
         AbstractTrackingCommandHandler replyTextBundleAwareCommandHandler2 = new StaticReplyCommandHandler();
         simpleCompositeCommandHandler.addCommandHandler(replyTextBundleAwareCommandHandler1);
@@ -257,11 +252,11 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         simpleCompositeCommandHandler = new SimpleCompositeCommandHandler();
-        session = (Session) createMock(Session.class);
+        session = mock(Session.class);
         command = new Command("cmd", EMPTY);
-        commandHandler1 = (CommandHandler) createMock(CommandHandler.class);
-        commandHandler2 = (CommandHandler) createMock(CommandHandler.class);
-        commandHandler3 = (CommandHandler) createMock(CommandHandler.class);
+        commandHandler1 = mock(CommandHandler.class);
+        commandHandler2 = mock(CommandHandler.class);
+        commandHandler3 = mock(CommandHandler.class);
     }
     
 }

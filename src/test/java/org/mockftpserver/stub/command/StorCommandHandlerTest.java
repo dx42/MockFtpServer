@@ -15,8 +15,11 @@
  */
 package org.mockftpserver.stub.command;
 
+import static org.mockito.Mockito.*;
+
 import org.mockftpserver.core.command.*;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
+import org.mockito.Mockito;
 
 /**
  * Tests for the StorCommandHandler class
@@ -44,17 +47,15 @@ public final class StorCommandHandlerTest extends AbstractCommandHandlerTestCase
     public void testHandleCommand() throws Exception {
         final String DATA = "ABC";
 
-        session.sendReply(ReplyCodes.TRANSFER_DATA_INITIAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_INITIAL_OK));
-        session.openDataConnection();
-        session.readData();
-        control(session).setReturnValue(DATA.getBytes());
-        session.closeDataConnection();
-        session.sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_FINAL_OK));
-        replay(session);
+        when(session.readData()).thenReturn(DATA.getBytes());
 
         Command command = new Command(CommandNames.STOR, array(FILENAME1));
         commandHandler.handleCommand(command, session);
-        verify(session);
+
+        Mockito.verify(session).sendReply(ReplyCodes.TRANSFER_DATA_INITIAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_INITIAL_OK));
+        Mockito.verify(session).openDataConnection();
+        Mockito.verify(session).closeDataConnection();
+        Mockito.verify(session).sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_FINAL_OK));
 
         verifyNumberOfInvocations(commandHandler, 1);
         verifyTwoDataElements(commandHandler.getInvocation(0), StorCommandHandler.PATHNAME_KEY, FILENAME1,

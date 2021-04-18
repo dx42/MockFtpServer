@@ -15,12 +15,14 @@
  */
 package org.mockftpserver.core.command;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.easymock.MockControl;
+import static org.mockito.Mockito.*;
+
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
+import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
@@ -51,38 +53,30 @@ public final class _AbstractStaticReplyCommandHandlerTest extends AbstractTestCa
      * Test the sendReply(Session) method
      */
     public void testSendReply() {
-        session.sendReply(REPLY_CODE1, REPLY_TEXT1);
-        replay(session);
-
         commandHandler.setReplyCode(REPLY_CODE1);
         commandHandler.sendReply(session);
-        verify(session);
+        Mockito.verify(session).sendReply(REPLY_CODE1, REPLY_TEXT1);
     }
 
     /**
      * Test the sendReply(Session) method, when the replyText has been set
      */
     public void testSendReply_SetReplyText() {
-        session.sendReply(REPLY_CODE1, OVERRIDE_REPLY_TEXT);
-        replay(session);
-
         commandHandler.setReplyCode(REPLY_CODE1);
         commandHandler.setReplyText(OVERRIDE_REPLY_TEXT);
         commandHandler.sendReply(session);
-        verify(session);
+        Mockito.verify(session).sendReply(REPLY_CODE1, OVERRIDE_REPLY_TEXT);
     }
 
     /**
      * Test the sendReply(Session) method, when the replyMessageKey has been set
      */
     public void testSendReply_SetReplyMessageKey() {
-        session.sendReply(REPLY_CODE1, REPLY_TEXT2);
-        replay(session);
-
         commandHandler.setReplyCode(REPLY_CODE1);
         commandHandler.setReplyMessageKey(Integer.toString(REPLY_CODE2));
         commandHandler.sendReply(session);
-        verify(session);
+
+        Mockito.verify(session).sendReply(REPLY_CODE1, REPLY_TEXT2);
     }
 
     /**
@@ -102,14 +96,12 @@ public final class _AbstractStaticReplyCommandHandlerTest extends AbstractTestCa
      * Test the sendReply(Session,Object) method
      */
     public void testSendReply_MessageParameter() {
-        session.sendReply(REPLY_CODE2, REPLY_TEXT2);
-        session.sendReply(REPLY_CODE2, REPLY_TEXT2_FORMATTED);
-        replay(session);
-
         commandHandler.setReplyCode(REPLY_CODE2);
         commandHandler.sendReply(session);
         commandHandler.sendReply(session, ARG);
-        verify(session);
+
+        Mockito.verify(session).sendReply(REPLY_CODE2, REPLY_TEXT2);
+        Mockito.verify(session).sendReply(REPLY_CODE2, REPLY_TEXT2_FORMATTED);
     }
 
     /**
@@ -135,8 +127,7 @@ public final class _AbstractStaticReplyCommandHandlerTest extends AbstractTestCa
      */
     protected void setUp() throws Exception {
         super.setUp();
-        session = (Session) createMock(Session.class);
-        control(session).setDefaultMatcher(MockControl.ARRAY_MATCHER);
+        session = mock(Session.class);
         commandHandler = new AbstractStaticReplyCommandHandler() {
             public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) throws Exception {
             }

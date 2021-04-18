@@ -15,9 +15,10 @@
  */
 package org.mockftpserver.core.command;
 
+import static org.mockito.Mockito.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.easymock.MockControl;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.stub.command.AbstractStubCommandHandler;
@@ -104,8 +105,7 @@ public final class _AbstractCommandHandlerTest extends AbstractTestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        Session session = (Session) createMock(Session.class);
-        control(session).setDefaultMatcher(MockControl.ARRAY_MATCHER);
+        Session session = mock(Session.class);
         commandHandler = new AbstractCommandHandler() {
             public void handleCommand(Command command, Session session) throws Exception {
             }

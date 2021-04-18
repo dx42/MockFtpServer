@@ -15,9 +15,11 @@
  */
 package org.mockftpserver.stub.command;
 
+import static org.mockito.ArgumentMatchers.*;
+
+import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.easymock.ArgumentsMatcher;
 import org.mockftpserver.core.command.*;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.util.AssertFailedException;
@@ -77,48 +79,14 @@ public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest
         session.sendReply(ReplyCodes.TRANSFER_DATA_INITIAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_INITIAL_OK));
         session.openDataConnection();
 
-        ArgumentsMatcher matcher = new ArgumentsMatcher() {
-            int counter = -1;   // will increment for each invocation
-
-            public boolean matches(Object[] expected, Object[] actual) {
-                counter++;
-                byte[] buffer = (byte[]) actual[0];
-                int expectedLength = ((Integer) expected[1]).intValue();
-                int actualLength = ((Integer) actual[1]).intValue();
-                LOG.info("invocation #" + counter + " expected=" + expectedLength + " actualLength=" + actualLength);
-                if (counter < 5) {
-                    assertEquals("buffer for invocation #" + counter, BUFFER, buffer);
-                } else {
-                    // TODO Got two invocations here; only expected one
-                    //assertEquals("length for invocation #" + counter, expectedLength, actualLength);
-                    assertEquals("buffer[0]", BYTE2, buffer[0]);
-                    assertEquals("buffer[1]", BYTE2, buffer[1]);
-                    assertEquals("buffer[2]", BYTE2, buffer[2]);
-                }
-                return true;
-            }
-
-            public String toString(Object[] args) {
-                return args[0].getClass().getName() + " " + args[1].toString();
-            }
-        };
-
-        session.sendData(BUFFER, 512);
-        control(session).setMatcher(matcher);
-        session.sendData(BUFFER, 512);
-        session.sendData(BUFFER, 512);
-        session.sendData(BUFFER, 512);
-        session.sendData(BUFFER, 512);
-        session.sendData(BUFFER, 3);
-
-        session.closeDataConnection();
-        session.sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_FINAL_OK));
-        replay(session);
-
         commandHandler.setFile("Sample.jpg");
         Command command = new Command(CommandNames.RETR, array(FILENAME1));
         commandHandler.handleCommand(command, session);
-        verify(session);
+
+        Mockito.verify(session, Mockito.times(5)).sendData(any(), eq(512));
+        Mockito.verify(session).sendData(any(), eq(3));
+        Mockito.verify(session).closeDataConnection();
+        Mockito.verify(session).sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_FINAL_OK));
 
         verifyNumberOfInvocations(commandHandler, 1);
         verifyOneDataElement(commandHandler.getInvocation(0), FileRetrCommandHandler.PATHNAME_KEY, FILENAME1);

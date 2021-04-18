@@ -15,10 +15,13 @@
  */
 package org.mockftpserver.stub.command;
 
+import static org.mockito.Mockito.*;
+
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
+import org.mockito.Mockito;
 
 /**
  * Tests for the CwdCommandHandler class
@@ -36,13 +39,10 @@ public final class CwdCommandHandlerTest extends AbstractCommandHandlerTestCase 
      * @throws Exception - if an error occurs
      */
     public void testHandleCommand() throws Exception {
-        session.sendReply(ReplyCodes.CWD_OK, replyTextFor(ReplyCodes.CWD_OK));
-        session.sendReply(ReplyCodes.CWD_OK, replyTextFor(ReplyCodes.CWD_OK));
-        replay(session);
-        
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
-        verify(session);
+
+        Mockito.verify(session, times(2)).sendReply(ReplyCodes.CWD_OK, replyTextFor(ReplyCodes.CWD_OK));
 
         verifyNumberOfInvocations(commandHandler, 2);
         verifyOneDataElement(commandHandler.getInvocation(0), CwdCommandHandler.PATHNAME_KEY, DIR1);

@@ -15,11 +15,13 @@
  */
 package org.mockftpserver.stub.command;
 
-import org.easymock.MockControl;
+import static org.mockito.Mockito.*;
+
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
+import org.mockito.Mockito;
 
 /**
  * Tests for the NlstCommandHandler class
@@ -38,22 +40,17 @@ public final class NlstCommandHandlerTest extends AbstractCommandHandlerTestCase
         final String DIR_LISTING_TRIMMED = DIR_LISTING.trim();
         ((NlstCommandHandler) commandHandler).setDirectoryListing(DIR_LISTING);
 
-        for (int i = 0; i < 2; i++) {
-            session.sendReply(ReplyCodes.TRANSFER_DATA_INITIAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_INITIAL_OK));
-            session.openDataConnection();
-            byte[] bytes = DIR_LISTING_TRIMMED.getBytes();
-            session.sendData(bytes, bytes.length);
-            control(session).setMatcher(MockControl.ARRAY_MATCHER);
-            session.closeDataConnection();
-            session.sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_FINAL_OK));
-        }
-        replay(session);
-
         Command command1 = new Command(CommandNames.LIST, array(DIR1));
         Command command2 = new Command(CommandNames.LIST, EMPTY);
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
-        verify(session);
+
+        Mockito.verify(session, times(2)).sendReply(ReplyCodes.TRANSFER_DATA_INITIAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_INITIAL_OK));
+        Mockito.verify(session, times(2)).openDataConnection();
+        byte[] bytes = DIR_LISTING_TRIMMED.getBytes();
+        Mockito.verify(session, times(2)).sendData(bytes, bytes.length);
+        Mockito.verify(session, times(2)).closeDataConnection();
+        Mockito.verify(session, times(2)).sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_FINAL_OK));
 
         verifyNumberOfInvocations(commandHandler, 2);
         verifyOneDataElement(commandHandler.getInvocation(0), NlstCommandHandler.PATHNAME_KEY, DIR1);

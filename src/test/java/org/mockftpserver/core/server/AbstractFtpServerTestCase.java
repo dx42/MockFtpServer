@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.core.server;
 
+import static org.mockito.Mockito.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.command.CommandHandler;
@@ -85,7 +87,7 @@ public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
      * Test the setCommandHandler() method, when the commandName is null
      */
     public void testSetCommandHandler_NullCommandName() {
-        CommandHandler commandHandler = (CommandHandler) createMock(CommandHandler.class);
+        CommandHandler commandHandler = mock(CommandHandler.class);
         try {
             ftpServer.setCommandHandler(null, commandHandler);
             fail("Expected AssertFailedException");

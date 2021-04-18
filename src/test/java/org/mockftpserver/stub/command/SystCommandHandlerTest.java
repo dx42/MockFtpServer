@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.stub.command;
 
+import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.command.*;
@@ -36,17 +37,14 @@ public final class SystCommandHandlerTest extends AbstractCommandHandlerTestCase
      * Test the handleCommand() method
      */
     public void testHandleCommand() throws Exception {
-
         final String SYSTEM_NAME = "UNIX";
         commandHandler.setSystemName(SYSTEM_NAME);
 
-        session.sendReply(ReplyCodes.SYST_OK, formattedReplyTextFor(ReplyCodes.SYST_OK, "\"" + SYSTEM_NAME + "\""));
-        replay(session);
-        
         final Command COMMAND = new Command(CommandNames.SYST, EMPTY);
 
         commandHandler.handleCommand(COMMAND, session);
-        verify(session);
+
+        Mockito.verify(session).sendReply(ReplyCodes.SYST_OK, formattedReplyTextFor(ReplyCodes.SYST_OK, "\"" + SYSTEM_NAME + "\""));
         
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));

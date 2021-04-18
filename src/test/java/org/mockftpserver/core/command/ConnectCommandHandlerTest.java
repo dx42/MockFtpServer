@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.core.command;
 
+import org.mockito.Mockito;
+
 /**
  * Tests for the ConnectCommandHandler class
  *
@@ -26,12 +28,9 @@ public final class ConnectCommandHandlerTest extends AbstractCommandHandlerTestC
     private Command command1;
 
     public void testHandleCommand() throws Exception {
-
-        session.sendReply(ReplyCodes.CONNECT_OK, replyTextFor(ReplyCodes.CONNECT_OK));
-        replay(session);
-
         commandHandler.handleCommand(command1, session);
-        verify(session);
+
+        Mockito.verify(session).sendReply(ReplyCodes.CONNECT_OK, replyTextFor(ReplyCodes.CONNECT_OK));
 
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));

@@ -15,6 +15,9 @@
  */
 package org.mockftpserver.stub.command;
 
+import static org.mockito.Mockito.*;
+
+import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.command.*;
@@ -41,14 +44,10 @@ public final class AlloCommandHandlerTest extends AbstractCommandHandlerTestCase
      * Test the handleCommand() method
      */
     public void testHandleCommand() throws Exception {
-
-        session.sendReply(ReplyCodes.ALLO_OK, replyTextFor(ReplyCodes.ALLO_OK));
-        session.sendReply(ReplyCodes.ALLO_OK, replyTextFor(ReplyCodes.ALLO_OK));
-        replay(session);
-
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
-        verify(session);
+
+        Mockito.verify(session, times(2)).sendReply(ReplyCodes.ALLO_OK, replyTextFor(ReplyCodes.ALLO_OK));
 
         verifyNumberOfInvocations(commandHandler, 2);
         verifyOneDataElement(commandHandler.getInvocation(0), AlloCommandHandler.NUMBER_OF_BYTES_KEY, new Integer(

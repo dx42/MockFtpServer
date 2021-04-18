@@ -32,7 +32,7 @@ dependencies {
     testCompile 'ch.qos.logback:logback-classic:1.2.3'
     testCompile 'commons-net:commons-net:3.8.0'
     testCompile 'org.springframework:spring:2.5.6.SEC03'
-    testCompile 'easymock:easymock:1.2_Java1.3'
+    testCompile 'org.mockito:mockito-core:3.9.0'
     testCompile 'junit:junit:4.13.2'
 }
 

@@ -15,9 +15,11 @@
  */
 package org.mockftpserver.core.command;
 
+import static org.mockito.Mockito.*;
+
+import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.easymock.MockControl;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
@@ -92,9 +94,6 @@ public final class _AbstractTrackingCommandHandlerTest extends AbstractTestCase 
      * Test the numberOfInvocations(), addInvocationRecord() and clearInvocationRecord() methods
      */
     public void testInvocationHistory() throws Exception {
-        control(session).expectAndDefaultReturn(session.getClientHost(), DEFAULT_HOST);
-        replay(session);
-
         assertEquals("none", 0, commandHandler.numberOfInvocations());
         commandHandler.handleCommand(COMMAND, session);
         assertEquals("1", 1, commandHandler.numberOfInvocations());
@@ -110,9 +109,6 @@ public final class _AbstractTrackingCommandHandlerTest extends AbstractTestCase 
      * @throws Exception - if an error occurs
      */
     public void testGetInvocation() throws Exception {
-        control(session).expectAndDefaultReturn(session.getClientHost(), DEFAULT_HOST);
-        replay(session);
-
         commandHandler.handleCommand(COMMAND, session);
         commandHandler.handleCommand(COMMAND_WITH_ARGS, session);
         assertSame("1", COMMAND, commandHandler.getInvocation(0).getCommand());
@@ -137,30 +133,24 @@ public final class _AbstractTrackingCommandHandlerTest extends AbstractTestCase 
      * Test the sendReply() method, when no message arguments are specified
      */
     public void testSendReply() {
-        session.sendReply(REPLY_CODE1, REPLY_TEXT1);
-        session.sendReply(REPLY_CODE1, MESSAGE_TEXT);
-        session.sendReply(REPLY_CODE1, OVERRIDE_REPLY_TEXT);
-        session.sendReply(REPLY_CODE3, null);
-        replay(session);
-
         commandHandler.sendReply(session, REPLY_CODE1, null, null, null);
         commandHandler.sendReply(session, REPLY_CODE1, MESSAGE_KEY, null, null);
         commandHandler.sendReply(session, REPLY_CODE1, MESSAGE_KEY, OVERRIDE_REPLY_TEXT, null);
         commandHandler.sendReply(session, REPLY_CODE3, null, null, null);
 
-        verify(session);
+        Mockito.verify(session).sendReply(REPLY_CODE1, REPLY_TEXT1);
+        Mockito.verify(session).sendReply(REPLY_CODE1, MESSAGE_TEXT);
+        Mockito.verify(session).sendReply(REPLY_CODE1, OVERRIDE_REPLY_TEXT);
+        Mockito.verify(session).sendReply(REPLY_CODE3, null);
     }
 
     /**
      * Test the sendReply() method, passing in message arguments
      */
     public void testSendReply_WithMessageArguments() {
-        session.sendReply(REPLY_CODE1, REPLY_TEXT2_FORMATTED);
-        replay(session);
-
         commandHandler.sendReply(session, REPLY_CODE1, null, REPLY_TEXT2, ARGS);
 
-        verify(session);
+        Mockito.verify(session).sendReply(REPLY_CODE1, REPLY_TEXT2_FORMATTED);
     }
 
     /**
@@ -200,8 +190,7 @@ public final class _AbstractTrackingCommandHandlerTest extends AbstractTestCase 
      */
     protected void setUp() throws Exception {
         super.setUp();
-        session = (Session) createMock(Session.class);
-        control(session).setDefaultMatcher(MockControl.ARRAY_MATCHER);
+        session = mock(Session.class);
         commandHandler = new AbstractTrackingCommandHandler() {
             public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) throws Exception {
             }

@@ -15,9 +15,11 @@
  */
 package org.mockftpserver.core.command;
 
+import static org.mockito.Mockito.*;
+
+import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.easymock.MockControl;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.test.AbstractTestCase;
 
@@ -53,11 +55,9 @@ public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
     protected void testHandleCommand_InvalidParameters(AbstractTrackingCommandHandler commandHandler,
                                                        String commandName, String[] parameters) throws Exception {
         Command command = new Command(commandName, parameters);
-        session.sendReply(ReplyCodes.COMMAND_SYNTAX_ERROR, replyTextFor(ReplyCodes.COMMAND_SYNTAX_ERROR));
-        replay(session);
 
         commandHandler.handleCommand(command, session);
-        verify(session);
+        Mockito.verify(session).sendReply(ReplyCodes.COMMAND_SYNTAX_ERROR, replyTextFor(ReplyCodes.COMMAND_SYNTAX_ERROR));
 
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));
@@ -143,9 +143,8 @@ public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        session = (Session) createMock(Session.class);
-        control(session).setDefaultMatcher(MockControl.ARRAY_MATCHER);
-        control(session).expectAndDefaultReturn(session.getClientHost(), DEFAULT_HOST);
+        session = mock(Session.class);
+        when(session.getClientHost()).thenReturn(DEFAULT_HOST);
 
         replyTextBundle = new ListResourceBundle() {
             protected Object[][] getContents() {

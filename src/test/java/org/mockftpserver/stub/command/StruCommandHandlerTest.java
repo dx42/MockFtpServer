@@ -17,6 +17,7 @@ package org.mockftpserver.stub.command;
 
 import org.mockftpserver.core.command.*;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
+import org.mockito.Mockito;
 
 /**
  * Tests for the StruCommandHandler class
@@ -36,14 +37,10 @@ public final class StruCommandHandlerTest extends AbstractCommandHandlerTestCase
      * Test the handleCommand() method
      */
     public void testHandleCommand() throws Exception {
-
-        session.sendReply(ReplyCodes.STRU_OK, replyTextFor(ReplyCodes.STRU_OK));
-        session.sendReply(ReplyCodes.STRU_OK, replyTextFor(ReplyCodes.STRU_OK));
-        replay(session);
-
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
-        verify(session);
+
+        Mockito.verify(session, Mockito.times(2)).sendReply(ReplyCodes.STRU_OK, replyTextFor(ReplyCodes.STRU_OK));
 
         verifyNumberOfInvocations(commandHandler, 2);
         verifyOneDataElement(commandHandler.getInvocation(0), StruCommandHandler.FILE_STRUCTURE_KEY, CODE1);

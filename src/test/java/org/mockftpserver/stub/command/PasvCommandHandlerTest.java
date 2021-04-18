@@ -15,6 +15,9 @@
  */
 package org.mockftpserver.stub.command;
 
+import static org.mockito.Mockito.*;
+
+import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
@@ -40,19 +43,15 @@ public final class PasvCommandHandlerTest extends AbstractCommandHandlerTestCase
      * Test the handleCommand() method
      */
     public void testHandleCommand() throws Exception {
-
         final InetAddress SERVER = inetAddress("192.168.0.2");
-        session.switchToPassiveMode();
-        control(session).setReturnValue(PORT);
-        session.getServerHost();
-        control(session).setReturnValue(SERVER);
-        session.sendReply(ReplyCodes.PASV_OK, formattedReplyTextFor(227, "(192,168,0,2,23,77)"));
-        replay(session);
+        when(session.switchToPassiveMode()).thenReturn(PORT);
+        when(session.getServerHost()).thenReturn(SERVER);
 
         final Command COMMAND = new Command(CommandNames.PASV, EMPTY);
 
         commandHandler.handleCommand(COMMAND, session);
-        verify(session);
+
+        Mockito.verify(session).sendReply(ReplyCodes.PASV_OK, formattedReplyTextFor(227, "(192,168,0,2,23,77)"));
 
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));

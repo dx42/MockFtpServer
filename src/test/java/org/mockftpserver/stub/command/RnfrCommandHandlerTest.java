@@ -15,8 +15,11 @@
  */
 package org.mockftpserver.stub.command;
 
+import static org.mockito.Mockito.*;
+
 import org.mockftpserver.core.command.*;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
+import org.mockito.Mockito;
 
 /**
  * Tests for the RnfrCommandHandler class
@@ -33,14 +36,10 @@ public final class RnfrCommandHandlerTest extends AbstractCommandHandlerTestCase
      * Test the handleCommand() method
      */
     public void testHandleCommand() throws Exception {
-
-        session.sendReply(ReplyCodes.RNFR_OK, replyTextFor(ReplyCodes.RNFR_OK));
-        session.sendReply(ReplyCodes.RNFR_OK, replyTextFor(ReplyCodes.RNFR_OK));
-        replay(session);
-
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
-        verify(session);
+
+        Mockito.verify(session, times(2)).sendReply(ReplyCodes.RNFR_OK, replyTextFor(ReplyCodes.RNFR_OK));
 
         verifyNumberOfInvocations(commandHandler, 2);
         verifyOneDataElement(commandHandler.getInvocation(0), RnfrCommandHandler.PATHNAME_KEY, FILENAME1);

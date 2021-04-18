@@ -15,10 +15,13 @@
  */
 package org.mockftpserver.stub.command;
 
+import static org.mockito.Mockito.*;
+
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
+import org.mockito.Mockito;
 
 /**
  * Tests for the StouCommandHandler class
@@ -47,18 +50,16 @@ public final class StouCommandHandlerTest extends AbstractCommandHandlerTestCase
         final String DATA = "ABC";
         final String FILENAME = "abc.txt";
 
-        session.sendReply(ReplyCodes.TRANSFER_DATA_INITIAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_INITIAL_OK));
-        session.openDataConnection();
-        session.readData();
-        control(session).setReturnValue(DATA.getBytes());
-        session.closeDataConnection();
-        session.sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, formattedReplyTextFor("226.WithFilename", FILENAME));
-        replay(session);
+        when(session.readData()).thenReturn(DATA.getBytes());
 
         Command command = new Command(CommandNames.STOU, array(FILENAME1));
         commandHandler.setFilename(FILENAME);
         commandHandler.handleCommand(command, session);
-        verify(session);
+
+        Mockito.verify(session).sendReply(ReplyCodes.TRANSFER_DATA_INITIAL_OK, replyTextFor(ReplyCodes.TRANSFER_DATA_INITIAL_OK));
+        Mockito.verify(session).openDataConnection();
+        Mockito.verify(session).closeDataConnection();
+        Mockito.verify(session).sendReply(ReplyCodes.TRANSFER_DATA_FINAL_OK, formattedReplyTextFor("226.WithFilename", FILENAME));
 
         verifyNumberOfInvocations(commandHandler, 1);
         verifyOneDataElement(commandHandler.getInvocation(0), StouCommandHandler.FILE_CONTENTS_KEY, DATA.getBytes());

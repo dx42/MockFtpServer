@@ -15,8 +15,11 @@
  */
 package org.mockftpserver.stub.command;
 
+import static org.mockito.Mockito.*;
+
 import org.mockftpserver.core.command.*;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
+import org.mockito.Mockito;
 
 /**
  * Tests for the AcctCommandHandler class
@@ -37,14 +40,10 @@ public final class AcctCommandHandlerTest extends AbstractCommandHandlerTestCase
      * @throws Exception - if an error occurs
      */
     public void testHandleCommand() throws Exception {
-
-        session.sendReply(ReplyCodes.ACCT_OK, replyTextFor(ReplyCodes.ACCT_OK));
-        session.sendReply(ReplyCodes.ACCT_OK, replyTextFor(ReplyCodes.ACCT_OK));
-        replay(session);
-        
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
-        verify(session);
+
+        Mockito.verify(session, times(2)).sendReply(ReplyCodes.ACCT_OK, replyTextFor(ReplyCodes.ACCT_OK));
         
         verifyNumberOfInvocations(commandHandler, 2);
         verifyOneDataElement(commandHandler.getInvocation(0), AcctCommandHandler.ACCOUNT_KEY, ACCOUNT1);

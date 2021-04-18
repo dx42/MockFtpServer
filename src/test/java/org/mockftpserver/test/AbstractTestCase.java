@@ -16,25 +16,14 @@
 package org.mockftpserver.test;
 
 import junit.framework.TestCase;
+import org.mockftpserver.core.MockFtpServerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.easymock.MockControl;
-import org.mockftpserver.core.MockFtpServerException;
-import org.mockftpserver.core.util.Assert;
-import org.mockftpserver.core.util.AssertFailedException;
 
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Abstract superclass for all project test classes
@@ -47,91 +36,6 @@ public abstract class AbstractTestCase extends TestCase {
     protected static final List EMPTY_LIST = Collections.EMPTY_LIST;
     protected static final String[] EMPTY = new String[0];
     protected static final InetAddress DEFAULT_HOST = inetAddress(null);
-
-    /**
-     * Constructor
-     */
-    public AbstractTestCase() {
-        super();
-    }
-
-    //-------------------------------------------------------------------------
-    // Manage EasyMock Control objects under the covers, and provide a syntax
-    // somewhat similar to EasyMock 2.2 for createMock, verify and replay.
-    //-------------------------------------------------------------------------
-
-    private Map mocks = new HashMap();
-
-    /**
-     * Create a new mock for the specified interface. Keep track of the associated control object
-     * under the covers to support the associated  method.
-     *
-     * @param interfaceToMock - the Class of the interface to be mocked
-     * @return the new mock
-     */
-    protected Object createMock(Class interfaceToMock) {
-        MockControl control = MockControl.createControl(interfaceToMock);
-        Object mock = control.getMock();
-        mocks.put(mock, control);
-        return mock;
-    }
-
-    /**
-     * Put the mock object into replay mode
-     *
-     * @param mock - the mock to set in replay mode
-     * @throws AssertFailedException - if mock is null
-     * @throws AssertFailedException - if mock is not a mock object created using {@link #createMock(Class)}
-     */
-    protected void replay(Object mock) {
-        control(mock).replay();
-    }
-
-    /**
-     * Put all mocks created with createMock() into replay mode.
-     */
-    protected void replayAll() {
-        for (Iterator iter = mocks.keySet().iterator(); iter.hasNext();) {
-            Object mock = iter.next();
-            replay(mock);
-        }
-    }
-
-    /**
-     * Verify the mock object
-     *
-     * @param mock - the mock to verify
-     * @throws AssertFailedException - if mock is null
-     * @throws AssertFailedException - if mock is not a mock object created using {@link #createMock(Class)}
-     */
-    protected void verify(Object mock) {
-        control(mock).verify();
-    }
-
-    /**
-     * Verify all mocks created with createMock() into replay mode.
-     */
-    protected void verifyAll() {
-        for (Iterator iter = mocks.keySet().iterator(); iter.hasNext();) {
-            Object mock = iter.next();
-            verify(mock);
-        }
-    }
-
-    /**
-     * Return the mock control associated with the mock
-     *
-     * @param mock - the mock
-     * @return the associated MockControl
-     * @throws AssertFailedException - if mock is null
-     * @throws AssertFailedException - if mock is not a mock object created using {@link #createMock(Class)}
-     */
-    protected MockControl control(Object mock) {
-        Assert.notNull(mock, "mock");
-        MockControl control = (MockControl) mocks.get(mock);
-        Assert.notNull(control, "control");
-        return control;
-    }
 
     //-------------------------------------------------------------------------
     // Other Helper Methods
