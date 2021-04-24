@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -32,6 +33,7 @@ class RnfrCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     private static final FILE = "/file.txt"
     private static final DIR = "/subdir"
 
+    @Test
     void testHandleCommand() {
         createFile(FILE)
         handleCommand([FILE])
@@ -39,6 +41,7 @@ class RnfrCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert session.getAttribute(SessionKeys.RENAME_FROM) == FILE
     }
 
+    @Test
     void testHandleCommand_PathIsRelative() {
         createFile(FILE)
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, "/")
@@ -47,12 +50,14 @@ class RnfrCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert session.getAttribute(SessionKeys.RENAME_FROM) == FILE
     }
 
+    @Test
     void testHandleCommand_PathDoesNotExistInFileSystem() {
         handleCommand([FILE])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.doesNotExist', FILE])
         assert session.getAttribute(SessionKeys.RENAME_FROM) == null
     }
 
+    @Test
     void testHandleCommand_PathSpecifiesADirectory() {
         createDirectory(DIR)
         handleCommand([DIR])
@@ -60,6 +65,7 @@ class RnfrCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert session.getAttribute(SessionKeys.RENAME_FROM) == DIR
     }
 
+    @Test
     void testHandleCommand_NoReadAccessToFile() {
         createFile(FILE)
         fileSystem.getEntry(FILE).permissions = new Permissions('-wx-wx-wx')
@@ -67,6 +73,7 @@ class RnfrCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotRead', FILE])
     }
 
+    @Test
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])
     }

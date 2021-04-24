@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -36,6 +38,7 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     boolean testNotLoggedIn = false
 
+    @Test
     void testHandleCommand_UserExists_PasswordCorrect() {
         serverConfiguration.userAccounts[USERNAME] = userAccount
         handleCommand([PASSWORD])
@@ -44,6 +47,7 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertCurrentDirectory(HOME_DIRECTORY)
     }
 
+    @Test
     void testHandleCommand_UserExists_PasswordCorrect_AccountRequired() {
         serverConfiguration.userAccounts[USERNAME] = userAccount
         userAccount.accountRequiredForLogin = true
@@ -53,6 +57,7 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertCurrentDirectory(HOME_DIRECTORY)
     }
 
+    @Test
     void testHandleCommand_UserExists_PasswordIncorrect() {
         serverConfiguration.userAccounts[USERNAME] = userAccount
         handleCommand(["wrong"])
@@ -61,6 +66,7 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertCurrentDirectory(null)
     }
 
+    @Test
     void testHandleCommand_UserExists_PasswordWrongButIgnored() {
         userAccount.passwordCheckedDuringValidation = false
         serverConfiguration.userAccounts[USERNAME] = userAccount
@@ -70,6 +76,7 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertCurrentDirectory(HOME_DIRECTORY)
     }
 
+    @Test
     void testHandleCommand_UserExists_HomeDirectoryNotDefinedForUserAccount() {
         userAccount.homeDirectory = ''
         serverConfiguration.userAccounts[USERNAME] = userAccount
@@ -79,6 +86,7 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertCurrentDirectory(null)
     }
 
+    @Test
     void testHandleCommand_UserExists_HomeDirectoryDoesNotExist() {
         userAccount.homeDirectory = '/abc/def'
         serverConfiguration.userAccounts[USERNAME] = userAccount
@@ -88,6 +96,7 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertCurrentDirectory(null)
     }
 
+    @Test
     void testHandleCommand_UserDoesNotExist() {
         handleCommand([PASSWORD])
         assertSessionReply(ReplyCodes.USER_ACCOUNT_NOT_VALID, "login.userAccountNotValid")
@@ -95,6 +104,7 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertCurrentDirectory(null)
     }
 
+    @Test
     void testHandleCommand_UsernameNotSetInSession() {
         session.removeAttribute(SessionKeys.USERNAME)
         testHandleCommand_MissingRequiredSessionAttribute()
@@ -102,6 +112,7 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertCurrentDirectory(null)
     }
 
+    @Test
     void testHandleCommand_MissingPasswordParameter() {
         testHandleCommand_MissingRequiredParameter([])
         assertUserAccountInSession(false)
@@ -112,9 +123,8 @@ class PassCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     // Abstract and Overridden Methods
     //-------------------------------------------------------------------------
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
-
         createDirectory(HOME_DIRECTORY)
 
         userAccount = new UserAccount(USERNAME, PASSWORD, HOME_DIRECTORY)

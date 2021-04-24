@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.ReplyCodes
@@ -52,21 +54,25 @@ abstract class AbstractFakeCommandHandlerTestCase extends AbstractGroovyTestCase
     // Tests (common to all subclasses)
     //-------------------------------------------------------------------------
 
+    @Test
     void testHandleCommand_ServerConfigurationIsNull() {
         commandHandler.serverConfiguration = null
         def command = createValidCommand()
         shouldFailWithMessageContaining("serverConfiguration") { commandHandler.handleCommand(command, session) }
     }
 
+    @Test
     void testHandleCommand_CommandIsNull() {
         shouldFailWithMessageContaining("command") { commandHandler.handleCommand(null, session) }
     }
 
+    @Test
     void testHandleCommand_SessionIsNull() {
         def command = createValidCommand()
         shouldFailWithMessageContaining("session") { commandHandler.handleCommand(command, null) }
     }
 
+    @Test
     void testHandleCommand_NotLoggedIn() {
         if (getProperty('testNotLoggedIn')) {
             def command = createValidCommand()
@@ -95,8 +101,8 @@ abstract class AbstractFakeCommandHandlerTestCase extends AbstractGroovyTestCase
     // Test Setup
     //-------------------------------------------------------------------------
 
-    void setUp() {
-        super.setUp()
+    @BeforeEach
+    void setUpAbstractFakeCommandHandlerTest() {
         session = new StubSession()
         serverConfiguration = new StubServerConfiguration()
         replyTextBundle = new StubResourceBundle()

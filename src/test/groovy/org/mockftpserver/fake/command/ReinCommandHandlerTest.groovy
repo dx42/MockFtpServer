@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -33,6 +35,7 @@ class ReinCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     UserAccount userAccount
 
+    @Test
     void testHandleCommand_AlreadyLoggedIn() {
         session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
         assert isLoggedIn()
@@ -41,6 +44,7 @@ class ReinCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert !isLoggedIn()
     }
 
+    @Test
     void testHandleCommand_NotLoggedIn() {
         handleCommand([])
         assertSessionReply(ReplyCodes.REIN_OK, 'rein')
@@ -59,8 +63,8 @@ class ReinCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         return new Command(CommandNames.REIN, [])
     }
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
         userAccount = new UserAccount(username: 'user')
     }
 

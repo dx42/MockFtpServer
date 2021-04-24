@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -31,6 +32,7 @@ class SystCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     boolean testNotLoggedIn = false
 
+    @Test
     void testHandleCommand() {
         serverConfiguration.systemName = SYSTEM_NAME
         handleCommand([])
@@ -40,10 +42,6 @@ class SystCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
-
-    void setUp() {
-        super.setUp()
-    }
 
     CommandHandler createCommandHandler() {
         new SystCommandHandler()

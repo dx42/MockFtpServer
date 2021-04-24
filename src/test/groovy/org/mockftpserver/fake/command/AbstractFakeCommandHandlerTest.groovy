@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.CommandSyntaxException
 import org.mockftpserver.core.IllegalStateException
 import org.mockftpserver.core.NotLoggedInException
@@ -58,6 +60,7 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTestCase {
     // Tests
     //-------------------------------------------------------------------------
 
+    @Test
     void testHandleCommand() {
         def command = new Command("C1", ["abc"])
         commandHandler.handleCommand(command, session)
@@ -72,12 +75,14 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTestCase {
         shouldFail { commandHandler.handleCommand(command, null) }
     }
 
+    @Test
     void testHandleCommand_FileSystemException() {
         assertHandleCommandReplyCode(new FileSystemException(PATH, ''), ReplyCodes.READ_FILE_ERROR, PATH)
         commandHandler.replyCodeForFileSystemException = ReplyCodes.WRITE_FILE_ERROR
         assertHandleCommandReplyCode(new FileSystemException(PATH, ''), ReplyCodes.WRITE_FILE_ERROR, PATH)
     }
 
+    @Test
     void testSendReply() {
         commandHandler.sendReply(session, REPLY_CODE)
         assert session.sentReplies[0] == [REPLY_CODE, MSG], session.sentReplies[0]
@@ -89,6 +94,7 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTestCase {
         shouldFailWithMessageContaining('reply code') { commandHandler.sendReply(session, 0) }
     }
 
+    @Test
     void testSendReply_MessageKey() {
         commandHandler.sendReply(session, REPLY_CODE, MESSAGE_KEY)
         assert session.sentReplies[0] == [REPLY_CODE, MSG_FOR_KEY], session.sentReplies[0]
@@ -97,16 +103,19 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTestCase {
         shouldFailWithMessageContaining('reply code') { commandHandler.sendReply(session, 0, MESSAGE_KEY) }
     }
 
+    @Test
     void testSendReply_NullMessageKey() {
         commandHandler.sendReply(session, REPLY_CODE, null, null)
         assert session.sentReplies[0] == [REPLY_CODE, MSG_INTERNAL_ERROR], session.sentReplies[0]
     }
 
+    @Test
     void testAssertValidReplyCode() {
         commandHandler.assertValidReplyCode(1)        // no exception expected
         shouldFail { commandHandler.assertValidReplyCode(0) }
     }
 
+    @Test
     void testGetRequiredSessionAttribute() {
         shouldFail(IllegalStateException) { commandHandler.getRequiredSessionAttribute(session, "undefined") }
 
@@ -117,23 +126,27 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTestCase {
         commandHandler.getRequiredSessionAttribute(session, "abc") // no exception
     }
 
+    @Test
     void testVerifyLoggedIn() {
         shouldFail(NotLoggedInException) { commandHandler.verifyLoggedIn(session) }
         session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
         commandHandler.verifyLoggedIn(session)        // no exception expected
     }
 
+    @Test
     void testGetUserAccount() {
         assert commandHandler.getUserAccount(session) == null
         session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
         assert commandHandler.getUserAccount(session)
     }
 
+    @Test
     void testVerifyFileSystemCondition() {
         commandHandler.verifyFileSystemCondition(true, PATH, '')    // no exception expected
         shouldFail(FileSystemException) { commandHandler.verifyFileSystemCondition(false, PATH, '') }
     }
 
+    @Test
     void testGetRealPath() {
         assert commandHandler.getRealPath(session, "/xxx") == "/xxx"
 
@@ -149,8 +162,8 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTestCase {
     // Test Setup
     //-------------------------------------------------------------------------
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
         commandHandler = new TestFakeCommandHandler()
         session = new StubSession()
         serverConfiguration = new StubServerConfiguration()

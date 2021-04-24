@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.filesystem
 
+import org.junit.jupiter.api.Test
+
 import java.lang.reflect.Constructor
 import org.mockftpserver.test.AbstractGroovyTestCase
 
@@ -32,24 +34,27 @@ public abstract class AbstractFileSystemEntryTestCase extends AbstractGroovyTest
     protected static final PERMISSIONS = new Permissions('rwxrwx---')
     protected static final LAST_MODIFIED = new Date()
 
+    @Test
     void testConstructor_NoArgs() {
         AbstractFileSystemEntry entry = (AbstractFileSystemEntry) getImplementationClass().newInstance()
-        assertNull("path", entry.getPath())
+        assert entry.getPath() == null
         entry.setPath(PATH)
         assert entry.getPath() == PATH
         assert isDirectory() == entry.isDirectory()
     }
 
+    @Test
     void testConstructor_Path() {
         Constructor constructor = getImplementationClass().getConstructor([String.class] as Class[])
         AbstractFileSystemEntry entry = (AbstractFileSystemEntry) constructor.newInstance([PATH] as Object[])
         LOG.info(entry.toString())
-        assertEquals("path", PATH, entry.getPath())
+        assert entry.getPath() == PATH
         entry.setPath("")
         assert entry.getPath() == ""
         assert isDirectory() == entry.isDirectory()
     }
 
+    @Test
     void testLockPath() {
         def entry = createFileSystemEntry(PATH)
         entry.lockPath()
@@ -57,6 +62,7 @@ public abstract class AbstractFileSystemEntryTestCase extends AbstractGroovyTest
         assert entry.path == PATH
     }
 
+    @Test
     void testGetName() {
         assert createFileSystemEntry('abc').name == 'abc'
         assert createFileSystemEntry('/abc').name == 'abc'
@@ -64,6 +70,7 @@ public abstract class AbstractFileSystemEntryTestCase extends AbstractGroovyTest
         assert createFileSystemEntry('\\abc').name == 'abc'
     }
 
+    @Test
     void testSetPermissionsFromString() {
         def entry = createFileSystemEntry('abc')
         final PERM = 'rw-r---wx'

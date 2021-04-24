@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -27,6 +28,7 @@ import org.mockftpserver.core.command.ReplyCodes
  */
 class AborCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
+    @Test
     void testHandleCommand() {
         handleCommand([])
         assertSessionReply(ReplyCodes.ABOR_OK, 'abor')
@@ -42,10 +44,6 @@ class AborCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     Command createValidCommand() {
         return new Command(CommandNames.ABOR, [])
-    }
-
-    void setUp() {
-        super.setUp()
     }
 
 }

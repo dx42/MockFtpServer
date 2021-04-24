@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -29,15 +31,17 @@ import org.mockftpserver.fake.filesystem.Permissions
  */
 class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
-    def DIR = "/usr"
+    private static final String DIR = "/usr"
 
-    void testHandleCommand() {
+    @Test
+    protected void testHandleCommand() {
         createDirectory(DIR)
         handleCommand([DIR])
         assertSessionReply(ReplyCodes.CWD_OK, ['cwd', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == DIR
     }
 
+    @Test
     void testHandleCommand_PathIsRelative() {
         def SUB = "sub"
         createDirectory(p(DIR, SUB))
@@ -47,12 +51,14 @@ class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == p(DIR, SUB)
     }
 
+    @Test
     void testHandleCommand_PathDoesNotExistInFileSystem() {
         handleCommand([DIR])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.doesNotExist', DIR])
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
 
+    @Test
     void testHandleCommand_PathSpecifiesAFile() {
         createFile(DIR)
         handleCommand([DIR])
@@ -60,6 +66,7 @@ class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
 
+    @Test
     void testHandleCommand_NoExecuteAccessToParentDirectory() {
         def dir = createDirectory(DIR)
         dir.permissions = new Permissions('rw-rw-rw-')
@@ -68,6 +75,7 @@ class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == null
     }
 
+    @Test
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])
     }
@@ -84,8 +92,8 @@ class CwdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         return new Command(CommandNames.CWD, [DIR])
     }
 
-    void setUp() {
-        super.setUp()
+    @BeforeEach
+    void before() {
         userAccount.username = 'user'
     }
 

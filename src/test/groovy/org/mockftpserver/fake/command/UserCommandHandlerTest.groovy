@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -35,6 +37,7 @@ class UserCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     boolean testNotLoggedIn = false
 
+    @Test
     void testHandleCommand_UserExists() {
         serverConfiguration.userAccounts[USERNAME] = userAccount
         handleCommand([USERNAME])
@@ -43,6 +46,7 @@ class UserCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertCurrentDirectory(null)
     }
 
+    @Test
     void testHandleCommand_NoSuchUser() {
         handleCommand([USERNAME])
         // Will return OK, even if username is not recognized
@@ -51,6 +55,7 @@ class UserCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertCurrentDirectory(null)
     }
 
+    @Test
     void testHandleCommand_PasswordNotRequiredForLogin() {
         userAccount.passwordRequiredForLogin = false
         serverConfiguration.userAccounts[USERNAME] = userAccount
@@ -62,6 +67,7 @@ class UserCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertCurrentDirectory(HOME_DIRECTORY)
     }
 
+    @Test
     void testHandleCommand_UserExists_HomeDirectoryNotDefinedForUser() {
         userAccount.homeDirectory = ''
         serverConfiguration.userAccounts[USERNAME] = userAccount
@@ -71,6 +77,7 @@ class UserCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertCurrentDirectory(null)
     }
 
+    @Test
     void testHandleCommand_UserExists_HomeDirectoryDoesNotExist() {
         userAccount.homeDirectory = '/abc/def'
         serverConfiguration.userAccounts[USERNAME] = userAccount
@@ -80,6 +87,7 @@ class UserCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertCurrentDirectory(null)
     }
 
+    @Test
     void testHandleCommand_MissingUsernameParameter() {
         testHandleCommand_MissingRequiredParameter([])
         assertUsernameInSession(false)
@@ -90,9 +98,8 @@ class UserCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     // Abstract and Overridden Methods
     //-------------------------------------------------------------------------
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
-
         createDirectory(HOME_DIRECTORY)
         userAccount = new UserAccount(username: USERNAME, homeDirectory: HOME_DIRECTORY)
     }

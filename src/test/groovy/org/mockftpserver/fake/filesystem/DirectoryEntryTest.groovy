@@ -15,6 +15,9 @@
  */
 package org.mockftpserver.fake.filesystem
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
 /**
  * Tests for DirectoryEntry
  *
@@ -24,6 +27,7 @@ public class DirectoryEntryTest extends AbstractFileSystemEntryTestCase {
 
     private DirectoryEntry entry
 
+    @Test
     void testCloneWithNewPath() {
         entry.lastModified = LAST_MODIFIED
         entry.owner = USER
@@ -55,8 +59,8 @@ public class DirectoryEntryTest extends AbstractFileSystemEntryTestCase {
         return true
     }
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
         entry = new DirectoryEntry(PATH)
     }
 

@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -35,6 +37,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     private static final TO_FILE = "/file.txt"
     private static final FROM_DIR = "/subdir"
 
+    @Test
     void testHandleCommand_SingleFile() {
         createFile(FROM_FILE)
         handleCommand([TO_FILE])
@@ -44,6 +47,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertRenameFromSessionProperty(null)
     }
 
+    @Test
     void testHandleCommand_SingleFile_PathIsRelative() {
         createFile(FROM_FILE)
         handleCommand(["file.txt"])
@@ -53,11 +57,13 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertRenameFromSessionProperty(null)
     }
 
+    @Test
     void testHandleCommand_FromFileNotSetInSession() {
         session.removeAttribute(SessionKeys.RENAME_FROM)
         testHandleCommand_MissingRequiredSessionAttribute()
     }
 
+    @Test
     void testHandleCommand_ToFilenameNotValid() {
         createFile(FROM_FILE)
         handleCommand([""])
@@ -65,6 +71,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertRenameFromSessionProperty(FROM_FILE)
     }
 
+    @Test
     void testHandleCommand_EmptyDirectory() {
         final TO_DIR = "/newdir"
         createDirectory(FROM_DIR)
@@ -76,6 +83,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertRenameFromSessionProperty(null)
     }
 
+    @Test
     void testHandleCommand_DirectoryContainingFilesAndSubdirectory() {
         final TO_DIR = "/newdir"
         createDirectory(FROM_DIR)
@@ -99,6 +107,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertRenameFromSessionProperty(null)
     }
 
+    @Test
     void testHandleCommand_ToDirectoryIsChildOfFromDirectory() {
         final TO_DIR = FROM_DIR + "/child"
         createDirectory(FROM_DIR)
@@ -108,6 +117,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertRenameFromSessionProperty(FROM_DIR)
     }
 
+    @Test
     void testHandleCommand_NoWriteAccessToDirectory() {
         createFile(FROM_FILE)
         fileSystem.getEntry(DIR).permissions = new Permissions('r-xr-xr-x')
@@ -116,6 +126,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertRenameFromSessionProperty(FROM_FILE)
     }
 
+    @Test
     void testHandleCommand_FromFileDoesNotExist() {
         createDirectory(DIR)
         handleCommand([TO_FILE])
@@ -123,6 +134,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertRenameFromSessionProperty(FROM_FILE)
     }
 
+    @Test
     void testHandleCommand_ToFileParentDirectoryDoesNotExist() {
         createFile(FROM_FILE)
         final BAD_DIR = p(DIR, 'SUB')
@@ -132,6 +144,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertRenameFromSessionProperty(FROM_FILE)
     }
 
+    @Test
     void testHandleCommand_RenameThrowsException() {
         createDirectory(DIR)
         fileSystem.renameMethodException = new FileSystemException("bad", ERROR_MESSAGE_KEY)
@@ -140,6 +153,7 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertRenameFromSessionProperty(FROM_FILE)
     }
 
+    @Test
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])
     }
@@ -156,8 +170,8 @@ class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         return new Command(CommandNames.RNTO, [TO_FILE])
     }
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
         setCurrentDirectory(DIR)
         setRenameFromSessionProperty(FROM_FILE)
     }

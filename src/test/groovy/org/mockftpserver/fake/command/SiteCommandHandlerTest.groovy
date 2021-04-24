@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -27,6 +28,7 @@ import org.mockftpserver.core.command.ReplyCodes
  */
 class SiteCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
+    @Test
     void testHandleCommand() {
         handleCommand([])
         assertSessionReply(ReplyCodes.SITE_OK, 'site')
@@ -35,10 +37,6 @@ class SiteCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
-
-    void setUp() {
-        super.setUp()
-    }
 
     CommandHandler createCommandHandler() {
         new SiteCommandHandler()

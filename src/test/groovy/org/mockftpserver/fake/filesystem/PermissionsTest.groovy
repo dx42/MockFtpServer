@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.filesystem
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.test.AbstractGroovyTestCase
 
 /**
@@ -24,12 +25,14 @@ import org.mockftpserver.test.AbstractGroovyTestCase
  */
 class PermissionsTest extends AbstractGroovyTestCase {
 
+    @Test
     void testConstructor() {
         doTestConstructorWithValidString('rwxrwxrwx')
         doTestConstructorWithValidString('rwxr--r--')
         doTestConstructorWithValidString('---------')
     }
 
+    @Test
     void testConstructor_InvalidString() {
         doTestConstructorWithInvalidString('')
         doTestConstructorWithInvalidString('------')
@@ -42,6 +45,7 @@ class PermissionsTest extends AbstractGroovyTestCase {
         doTestConstructorWithInvalidString('--------Z')
     }
 
+    @Test
     void testCanReadWriteExecute() {
         doTestCanReadWriteExecute('rwxrwxrwx', true, true, true, true, true, true, true, true, true)
         doTestCanReadWriteExecute('r--r--r--', true, false, false, true, false, false, true, false, false)
@@ -49,11 +53,13 @@ class PermissionsTest extends AbstractGroovyTestCase {
         doTestCanReadWriteExecute('---------', false, false, false, false, false, false, false, false, false)
     }
 
+    @Test
     void testHashCode() {
         assert new Permissions('rwxrwxrwx').hashCode() == Permissions.DEFAULT.hashCode()
         assert new Permissions('---------').hashCode() == Permissions.NONE.hashCode()
     }
 
+    @Test
     void testEquals() {
         assert new Permissions('rwxrwxrwx').equals(Permissions.DEFAULT)
         assert new Permissions('---------').equals(Permissions.NONE)

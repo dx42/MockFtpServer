@@ -2,6 +2,9 @@ package org.mockftpserver.fake.example
 
 import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.net.ftp.FTPFile
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.fake.FakeFtpServer
 import org.mockftpserver.test.AbstractGroovyTestCase
 import org.springframework.context.ApplicationContext
@@ -32,6 +35,7 @@ class FakeFtpServerSpringConfigurationTest extends AbstractGroovyTestCase {
     private FakeFtpServer fakeFtpServer
     private FTPClient ftpClient
 
+    @Test
     void testFakeFtpServer_Unix() {
         startFtpServer('fakeftpserver-beans.xml')
         connectAndLogin()
@@ -51,6 +55,7 @@ class FakeFtpServerSpringConfigurationTest extends AbstractGroovyTestCase {
         LOG.info("File contents=[" + outputStream.toString() + "]")
     }
 
+    @Test
     void testFakeFtpServer_Windows_WithPermissions() {
         startFtpServer('fakeftpserver-permissions-beans.xml')
         connectAndLogin()
@@ -76,13 +81,13 @@ class FakeFtpServerSpringConfigurationTest extends AbstractGroovyTestCase {
         assert ftpClient.replyCode == 550
     }
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
         ftpClient = new FTPClient()
     }
 
+    @AfterEach
     void tearDown() {
-        super.tearDown()
         fakeFtpServer?.stop()
     }
 

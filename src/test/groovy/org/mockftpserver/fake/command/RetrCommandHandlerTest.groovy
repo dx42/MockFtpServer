@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -37,50 +39,59 @@ class RetrCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     def CONTENTS = "abc\ndef\nghi"
     def CONTENTS_ASCII = "abc\r\ndef\r\nghi"
 
+    @Test
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])
     }
 
+    @Test
     void testHandleCommand_AbsolutePath() {
         handleCommandAndVerifySendDataReplies([FILE])
         assertSessionData(CONTENTS_ASCII)
     }
 
+    @Test
     void testHandleCommand_AbsolutePath_NonAsciiMode() {
         session.setAttribute(SessionKeys.ASCII_TYPE, false)
         handleCommandAndVerifySendDataReplies([FILE])
         assertSessionData(CONTENTS)
     }
 
+    @Test
     void testHandleCommand_RelativePath() {
         setCurrentDirectory(DIR)
         handleCommandAndVerifySendDataReplies([FILENAME])
         assertSessionData(CONTENTS_ASCII)
     }
 
+    @Test
     void testHandleCommand_PathSpecifiesAnExistingDirectory() {
         handleCommand([DIR])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.isNotAFile', DIR])
     }
 
+    @Test
     void testHandleCommand_PathDoesNotExist() {
         def path = FILE + "XXX"
         handleCommand([path])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.doesNotExist', path])
     }
 
+    @Test
     void testHandleCommand_NoReadAccessToFile() {
         fileSystem.getEntry(FILE).permissions = Permissions.NONE
         handleCommand([FILE])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotRead', FILE])
     }
 
+    @Test
     void testHandleCommand_NoExecuteAccessToDirectory() {
         fileSystem.getEntry(DIR).permissions = Permissions.NONE
         handleCommand([FILE])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotExecute', DIR])
     }
 
+    @Test
     void testHandleCommand_ThrowsFileSystemException() {
         fileSystem.delete(FILE)
         def fileEntry = new BadFileEntry(FILE)
@@ -91,6 +102,7 @@ class RetrCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertSessionReply(1, ReplyCodes.READ_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
+    @Test
     void testConvertLfToCrLf() {
         // LF='\n' and CRLF='\r\n'
         assert commandHandler.convertLfToCrLf('abc'.bytes) == 'abc'.bytes
@@ -113,8 +125,8 @@ class RetrCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         return new Command(CommandNames.RETR, [FILE])
     }
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
         createDirectory(DIR)
         createFile(FILE, CONTENTS)
     }

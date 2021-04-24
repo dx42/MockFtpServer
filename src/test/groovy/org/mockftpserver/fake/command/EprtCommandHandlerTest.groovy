@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -35,6 +36,7 @@ class EprtCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     boolean testNotLoggedIn = false
 
+    @Test
     void testHandleCommand_IPv4() {
         handleCommand(PARAMETERS_IPV4)
         assertSessionReply(ReplyCodes.EPRT_OK, 'eprt')
@@ -42,6 +44,7 @@ class EprtCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert session.clientDataPort == PORT
     }
 
+    @Test
     void testHandleCommand_IPv6() {
         handleCommand(PARAMETERS_IPV6)
         assertSessionReply(ReplyCodes.EPRT_OK, 'eprt')
@@ -49,6 +52,7 @@ class EprtCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert session.clientDataPort == PORT
     }
 
+    @Test
     void testHandleCommand_IPv6_CustomDelimiter() {
         handleCommand(["@2@1080::8:800:200C:417A@6275@"])
         assertSessionReply(ReplyCodes.EPRT_OK, 'eprt')
@@ -56,21 +60,25 @@ class EprtCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert session.clientDataPort == PORT
     }
 
+    @Test
     void testHandleCommand_IllegalParameterFormat() {
         handleCommand(['abcdef'])
         assertSessionReply(ReplyCodes.COMMAND_SYNTAX_ERROR)
     }
 
+    @Test
     void testHandleCommand_PortMissing() {
         handleCommand(['|1|132.235.1.2|'])
         assertSessionReply(ReplyCodes.COMMAND_SYNTAX_ERROR)
     }
 
+    @Test
     void testHandleCommand_IllegalHostName() {
         handleCommand(['|1|132.@|6275|'])
         assertSessionReply(ReplyCodes.COMMAND_SYNTAX_ERROR)
     }
 
+    @Test
     void testHandleCommand_MissingRequiredParameter() {
         testHandleCommand_MissingRequiredParameter([])
     }
@@ -78,10 +86,6 @@ class EprtCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
-
-    void setUp() {
-        super.setUp()
-    }
 
     CommandHandler createCommandHandler() {
         new EprtCommandHandler()

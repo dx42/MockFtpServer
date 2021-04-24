@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -33,6 +34,7 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     static final PARENT = '/'
     static final DIR = p(PARENT, "usr")
 
+    @Test
     void testHandleCommand() {
         createDirectory(DIR)
         handleCommand([DIR])
@@ -40,6 +42,7 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert fileSystem.exists(DIR) == false
     }
 
+    @Test
     void testHandleCommand_PathIsRelative() {
         def SUB = "sub"
         createDirectory(p(DIR, SUB))
@@ -49,11 +52,13 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert fileSystem.exists(p(DIR, SUB)) == false
     }
 
+    @Test
     void testHandleCommand_PathDoesNotExistInFileSystem() {
         handleCommand([DIR])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.doesNotExist', DIR])
     }
 
+    @Test
     void testHandleCommand_PathSpecifiesAFile() {
         createFile(DIR)
         handleCommand([DIR])
@@ -61,6 +66,7 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert fileSystem.exists(DIR)
     }
 
+    @Test
     void testHandleCommand_DirectoryIsNotEmpty() {
         final FILE = DIR + "/file.txt"
         createFile(FILE)
@@ -70,10 +76,12 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert fileSystem.exists(FILE)
     }
 
+    @Test
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])
     }
 
+    @Test
     void testHandleCommand_ListNamesThrowsException() {
         createDirectory(DIR)
         fileSystem.listNamesMethodException = new FileSystemException("bad", ERROR_MESSAGE_KEY)
@@ -81,6 +89,7 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
+    @Test
     void testHandleCommand_DeleteThrowsException() {
         createDirectory(DIR)
         fileSystem.deleteMethodException = new FileSystemException("bad", ERROR_MESSAGE_KEY)
@@ -88,6 +97,7 @@ class RmdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
+    @Test
     void testHandleCommand_NoWriteAccessToParentDirectory() {
         createDirectory(DIR)
         fileSystem.getEntry(PARENT).permissions = new Permissions('r-xr-xr-x')

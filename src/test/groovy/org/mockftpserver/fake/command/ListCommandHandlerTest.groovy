@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -38,6 +40,7 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     private static final NAME = "abc.txt"
     private static final LAST_MODIFIED = new Date()
 
+    @Test
     void testHandleCommand_SingleFile() {
         final entry = new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc")
         fileSystem.add(entry)
@@ -45,6 +48,7 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertSessionDataWithEndOfLine(listingFor(entry))
     }
 
+    @Test
     void testHandleCommand_FilesAndDirectories() {
         def DATA3 = "".padRight(1000, 'x')
         final entry1 = new FileEntry(path: p(DIR, "abc.txt"), lastModified: LAST_MODIFIED, contents: "abc")
@@ -66,6 +70,7 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertSessionDataEndsWithEndOfLine()
     }
 
+    @Test
     void testHandleCommand_NoPath_UseCurrentDirectory() {
         final entry = new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc")
         fileSystem.add(entry)
@@ -74,11 +79,13 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertSessionDataWithEndOfLine(listingFor(entry))
     }
 
+    @Test
     void testHandleCommand_EmptyDirectory() {
         handleCommandAndVerifySendDataReplies([DIR])
         assertSessionData("")
     }
 
+    @Test
     void testHandleCommand_PathSpecifiesAFile() {
         final entry = new FileEntry(path: p(DIR, NAME), lastModified: LAST_MODIFIED, contents: "abc")
         fileSystem.add(entry)
@@ -86,17 +93,20 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertSessionDataWithEndOfLine(listingFor(entry))
     }
 
+    @Test
     void testHandleCommand_PathDoesNotExist() {
         handleCommandAndVerifySendDataReplies(["/DoesNotExist"])
         assertSessionData("")
     }
 
+    @Test
     void testHandleCommand_NoReadAccessToDirectory() {
         fileSystem.getEntry(DIR).permissions = new Permissions('-wx-wx-wx')
         handleCommand([DIR])
         assertSessionReply(0, ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotRead', DIR])
     }
 
+    @Test
     void testHandleCommand_ListFilesThrowsException() {
         fileSystem.listFilesMethodException = new FileSystemException("bad", ERROR_MESSAGE_KEY)
         handleCommand([DIR])
@@ -115,8 +125,8 @@ class ListCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         return new Command(CommandNames.LIST, [DIR])
     }
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
         createDirectory(DIR)
         fileSystem.directoryListingFormatter = [format: {entry -> entry.toString()}] as DirectoryListingFormatter
     }

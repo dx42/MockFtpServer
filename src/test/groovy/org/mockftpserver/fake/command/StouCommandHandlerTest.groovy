@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -28,23 +30,27 @@ class StouCommandHandlerTest extends AbstractStoreFileCommandHandlerTestCase {
 
     def expectedBaseName
 
+    @Test
     void testHandleCommand_SpecifyBaseFilename() {
         setCurrentDirectory(DIR)
         expectedBaseName = FILENAME
         testHandleCommand([expectedBaseName], 'stou', CONTENTS)
     }
 
+    @Test
     void testHandleCommand_UseDefaultBaseFilename() {
         setCurrentDirectory(DIR)
         expectedBaseName = 'Temp'
         testHandleCommand([expectedBaseName], 'stou', CONTENTS)
     }
 
+    @Test
     void testHandleCommand_AbsolutePath() {
         expectedBaseName = FILENAME
         testHandleCommand([FILE], 'stou', CONTENTS)
     }
 
+    @Test
     void testHandleCommand_NoWriteAccessToExistingFile() {
         // This command always stores a new (unique) file, so this test does not apply
     }
@@ -60,8 +66,8 @@ class StouCommandHandlerTest extends AbstractStoreFileCommandHandlerTestCase {
         return new Command(CommandNames.STOU, [])
     }
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
         session.dataToRead = CONTENTS.bytes
     }
 

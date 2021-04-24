@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -29,6 +30,7 @@ class NoopCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     boolean testNotLoggedIn = false
 
+    @Test
     void testHandleCommand() {
         handleCommand([])
         assertSessionReply(ReplyCodes.NOOP_OK, 'noop')
@@ -37,10 +39,6 @@ class NoopCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
-
-    void setUp() {
-        super.setUp()
-    }
 
     CommandHandler createCommandHandler() {
         new NoopCommandHandler()
