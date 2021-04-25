@@ -17,6 +17,9 @@ package org.mockftpserver.stub.example;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.stub.StubFtpServer;
@@ -30,7 +33,7 @@ import java.io.ByteArrayOutputStream;
  * Example test for StubFtpServer, using the Spring Framework ({@link http://www.springframework.org/}) 
  * for configuration.
  */
-public class SpringConfigurationTest extends AbstractTestCase {
+class SpringConfigurationTest extends AbstractTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(SpringConfigurationTest.class);
     private static final String SERVER = "localhost";
@@ -42,7 +45,8 @@ public class SpringConfigurationTest extends AbstractTestCase {
     /**
      * Test starting the StubFtpServer configured within the example Spring configuration file 
      */
-    public void testStubFtpServer() throws Exception {
+    @Test
+    void testStubFtpServer() throws Exception {
         stubFtpServer.start();
         
         ftpClient.connect(SERVER, PORT);
@@ -66,23 +70,16 @@ public class SpringConfigurationTest extends AbstractTestCase {
         LOG.info("File contents=[" + outputStream.toString() + "]");
     }
 
-    /**
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-        
+    @BeforeEach
+    void setUp() throws Exception {
         ApplicationContext context = new ClassPathXmlApplicationContext("stubftpserver-beans.xml");
         stubFtpServer = (StubFtpServer) context.getBean("stubFtpServer");
 
         ftpClient = new FTPClient();
     }
 
-    /**
-     * @see org.mockftpserver.test.AbstractTestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterEach
+    void tearDown() throws Exception {
         stubFtpServer.stop();
     }
 

@@ -15,16 +15,17 @@
  */
 package org.mockftpserver.test
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.mockftpserver.test.LoggingUtil
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /**
  * Abstract superclass for Groovy tests
  *
  * @author Chris Mair
  */
-abstract class AbstractGroovyTestCase extends GroovyTestCase {
+abstract class AbstractGroovyTestCase {
 
     protected final Logger LOG = LoggerFactory.getLogger(this.class)
     private LoggingUtil testLogger
@@ -74,9 +75,33 @@ abstract class AbstractGroovyTestCase extends GroovyTestCase {
      * 	exception message does not contain the expected text
      */
     protected String shouldFailWithMessageContaining(String text, Closure code) {
-        def message = shouldFail(code)
-        assert message.contains(text), "message=[$message], text=[$text]"
-        return message
+        try {
+            code.call()
+        } catch(Throwable t) {
+            def message = t.message
+            assert message.contains(text), "message=[$message], text=[$text]"
+            return message
+        }
+        assert false, "No exception thrown"
+    }
+
+    protected String shouldFail(Closure code) {
+        try {
+            code.call()
+        } catch(Throwable t) {
+            return
+        }
+        assert false, "No exception thrown"
+    }
+
+    protected String shouldFail(Class theClass, Closure code) {
+        try {
+            code.call()
+        } catch(Throwable t) {
+            assert theClass.isAssignableFrom(t.class)
+            return
+        }
+        assert false, "No exception thrown"
     }
 
     /**
@@ -96,24 +121,6 @@ abstract class AbstractGroovyTestCase extends GroovyTestCase {
      */
     protected static InetAddress inetAddress(String host) {
         return InetAddress.getByName(host);
-    }
-
-    //------------------------------------------------------------------------------------
-    // Test Setup and Tear Down
-    //------------------------------------------------------------------------------------
-
-    void setUp() {
-        testLogger = LoggingUtil.getTestCaseLogger(this)
-        testLogger.logStartOfTest()
-
-        super.setUp()
-    }
-
-    void tearDown() {
-        super.tearDown();
-        if (testLogger) {
-            testLogger.logEndOfTest()
-        }
     }
 
 }

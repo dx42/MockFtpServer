@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -28,18 +29,21 @@ import org.mockftpserver.core.session.SessionKeys
  */
 class TypeCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
+    @Test
     void testHandleCommand_Ascii() {
         handleCommand(['A'])
         assertSessionReply(ReplyCodes.TYPE_OK, 'type')
         assert session.getAttribute(SessionKeys.ASCII_TYPE) == true
     }
 
+    @Test
     void testHandleCommand_NonAscii() {
         handleCommand(['I'])
         assertSessionReply(ReplyCodes.TYPE_OK, 'type')
         assert session.getAttribute(SessionKeys.ASCII_TYPE) == false
     }
 
+    @Test
     void testHandleCommand_MissingRequiredParameter() {
         testHandleCommand_MissingRequiredParameter([])
         assert session.getAttribute(SessionKeys.ASCII_TYPE) == null
@@ -55,10 +59,6 @@ class TypeCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     Command createValidCommand() {
         return new Command(CommandNames.TYPE, ['A'])
-    }
-
-    void setUp() {
-        super.setUp()
     }
 
 }

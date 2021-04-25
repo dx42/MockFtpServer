@@ -17,6 +17,8 @@ package org.mockftpserver.core.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
@@ -33,7 +35,7 @@ import java.util.ResourceBundle;
  * 
  * @author Chris Mair
  */
-public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
+class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(SimpleCompositeCommandHandlerTest.class);
     
@@ -44,10 +46,8 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
     private CommandHandler commandHandler2;
     private CommandHandler commandHandler3;
     
-    /**
-     * Test the handleCommand() method 
-     */
-    public void testHandleCommand_OneHandler_OneInvocation() throws Exception {
+    @Test
+    void testHandleCommand_OneHandler_OneInvocation() throws Exception {
         simpleCompositeCommandHandler.addCommandHandler(commandHandler1);
         
         simpleCompositeCommandHandler.handleCommand(command, session);
@@ -55,10 +55,8 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
         verify(commandHandler1).handleCommand(command, session);
     }
     
-    /**
-     * Test the handleCommand() method, with two CommandHandler defined, but with multiple invocation 
-     */
-    public void testHandleCommand_TwoHandlers() throws Exception {
+    @Test
+    void testHandleCommand_TwoHandlers() throws Exception {
         simpleCompositeCommandHandler.addCommandHandler(commandHandler1);
         simpleCompositeCommandHandler.addCommandHandler(commandHandler2);
 
@@ -69,11 +67,8 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
         verify(commandHandler2).handleCommand(command, session);
     }
     
-    /**
-     * Test the handleCommand() method, with three CommandHandler defined, and multiple invocation 
-     */
-    public void testHandleCommand_ThreeHandlers() throws Exception {
-        
+    @Test
+    void testHandleCommand_ThreeHandlers() throws Exception {
         List list = new ArrayList();
         list.add(commandHandler1);
         list.add(commandHandler2);
@@ -89,10 +84,8 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
         verify(commandHandler3).handleCommand(command, session);
     }
     
-    /**
-     * Test the handleCommand() method, with a single CommandHandler defined, but too many invocations 
-     */
-    public void testHandleCommand_OneHandler_TooManyInvocations() throws Exception {
+    @Test
+    void testHandleCommand_OneHandler_TooManyInvocations() throws Exception {
         simpleCompositeCommandHandler.addCommandHandler(commandHandler1);
 
         simpleCompositeCommandHandler.handleCommand(command, session);
@@ -109,10 +102,8 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
         }
     }
     
-    /**
-     * Test the handleCommand_NoHandlersDefined() method 
-     */
-    public void testHandleCommand_NoHandlersDefined() throws Exception {
+    @Test
+    void testHandleCommand_NoHandlersDefined() throws Exception {
         try {
             simpleCompositeCommandHandler.handleCommand(command, session);
             fail("Expected AssertFailedException");
@@ -122,10 +113,8 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
         }
     }
     
-    /**
-     * Test the handleCommand(Command,Session) method, passing in a null Command
-     */
-    public void testHandleCommand_NullCommand() throws Exception {
+    @Test
+    void testHandleCommand_NullCommand() throws Exception {
         try {
             simpleCompositeCommandHandler.handleCommand(null, session);
             fail("Expected AssertFailedException");
@@ -135,10 +124,8 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
         }
     }
     
-    /**
-     * Test the handleCommand(Command,Session) method, passing in a null Session
-     */
-    public void testHandleCommand_NullSession() throws Exception {
+    @Test
+    void testHandleCommand_NullSession() throws Exception {
         try {
             simpleCompositeCommandHandler.handleCommand(command, null);
             fail("Expected AssertFailedException");
@@ -148,10 +135,8 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the addCommandHandler(CommandHandler) method, passing in a null CommandHandler
-     */
-    public void testAddCommandHandler_NullCommandHandler() throws Exception {
+    @Test
+    void testAddCommandHandler_NullCommandHandler() throws Exception {
         try {
             simpleCompositeCommandHandler.addCommandHandler(null);
             fail("Expected AssertFailedException");
@@ -161,10 +146,8 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
         }
     }
     
-    /**
-     * Test the setCommandHandlers(List) method, passing in a null
-     */
-    public void testSetCommandHandlers_Null() throws Exception {
+    @Test
+    void testSetCommandHandlers_Null() throws Exception {
         try {
             simpleCompositeCommandHandler.setCommandHandlers(null);
             fail("Expected AssertFailedException");
@@ -174,10 +157,8 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
         }
     }
     
-    /**
-     * Test the getCommandHandler(int) method, passing in an index for which no CommandHandler is defined
-     */
-    public void testGetCommandHandler_UndefinedIndex() throws Exception {
+    @Test
+    void testGetCommandHandler_UndefinedIndex() throws Exception {
         simpleCompositeCommandHandler.addCommandHandler(commandHandler1);
         try {
             simpleCompositeCommandHandler.getCommandHandler(1);
@@ -187,21 +168,17 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
             LOG.info("Expected: " + expected);
         }
     }
-    
-    /**
-     * Test the getCommandHandler(int) method
-     */
-    public void testGetCommandHandler() throws Exception {
+
+    @Test
+    void testGetCommandHandler() throws Exception {
         simpleCompositeCommandHandler.addCommandHandler(commandHandler1);
         simpleCompositeCommandHandler.addCommandHandler(commandHandler2);
         assertSame("index 0", commandHandler1, simpleCompositeCommandHandler.getCommandHandler(0));
         assertSame("index 1", commandHandler2, simpleCompositeCommandHandler.getCommandHandler(1));
     }
     
-    /**
-     * Test the getCommandHandler(int) method, passing in a negative index
-     */
-    public void testGetCommandHandler_NegativeIndex() throws Exception {
+    @Test
+    void testGetCommandHandler_NegativeIndex() throws Exception {
         simpleCompositeCommandHandler.addCommandHandler(commandHandler1);
         try {
             simpleCompositeCommandHandler.getCommandHandler(-1);
@@ -212,17 +189,13 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
         }
     }
     
-    /**
-     * Test the getReplyTextBundle() method
-     */
-    public void testGetReplyTextBundle() {
+    @Test
+    void testGetReplyTextBundle() {
         assertNull(simpleCompositeCommandHandler.getReplyTextBundle());
     }
     
-    /**
-     * Test the setReplyTextBundle() method
-     */
-    public void testSetReplyTextBundle() {
+    @Test
+    void testSetReplyTextBundle() {
         AbstractTrackingCommandHandler replyTextBundleAwareCommandHandler1 = new StaticReplyCommandHandler();
         AbstractTrackingCommandHandler replyTextBundleAwareCommandHandler2 = new StaticReplyCommandHandler();
         simpleCompositeCommandHandler.addCommandHandler(replyTextBundleAwareCommandHandler1);
@@ -244,12 +217,8 @@ public class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
     // Test setup
     //-------------------------------------------------------------------------
     
-    /**
-     * Perform initialization before each test
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         simpleCompositeCommandHandler = new SimpleCompositeCommandHandler();
         session = mock(Session.class);
         command = new Command("cmd", EMPTY);

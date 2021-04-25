@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.filesystem
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.util.IoUtil
@@ -24,23 +26,26 @@ import org.mockftpserver.core.util.IoUtil
  *
  * @author Chris Mair
  */
-public class FileEntryTest extends AbstractFileSystemEntryTestCase {
+class FileEntryTest extends AbstractFileSystemEntryTestCase {
 
     private static final LOG = LoggerFactory.getLogger(FileEntryTest)
     private static final CONTENTS = "abc 123 %^& xxx"
 
     private FileEntry entry
 
+    @Test
     void testConstructorWithStringContents() {
         entry = new FileEntry(PATH, CONTENTS)
         verifyContents(CONTENTS)
     }
 
+    @Test
     void testSettingContentsFromString() {
         entry.setContents(CONTENTS)
         verifyContents(CONTENTS)
     }
 
+    @Test
     void testSettingContentsFromString_WithCharset() {
         final String CHARSET = "ISO-8859-1"
         final byte[] EXPECTED = CONTENTS.getBytes(CHARSET)
@@ -48,11 +53,13 @@ public class FileEntryTest extends AbstractFileSystemEntryTestCase {
         verifyContents(EXPECTED)
     }
 
+    @Test
     void testSettingContentsFromString_WithCharset_UnsupportedEncodingException() {
         final String CHARSET = "invalid"
         shouldFail(UnsupportedEncodingException) { entry.setContents(CONTENTS, CHARSET) }
     }
 
+    @Test
     void testSettingContentsFromBytes() {
         byte[] contents = CONTENTS.getBytes()
         entry.setContents(contents)
@@ -61,22 +68,26 @@ public class FileEntryTest extends AbstractFileSystemEntryTestCase {
         verifyContents(CONTENTS)
     }
 
+    @Test
     void testSetContents_BytesNotInCharSet() {
         byte[] contents = [65, -99, 91, -115] as byte[]
         entry.setContents(contents)
         verifyContents(contents)
     }
 
+    @Test
     void testSetContents_NullString() {
         entry.setContents((String) null)
         assert entry.size == 0
     }
 
+    @Test
     void testSetContents_NullBytes() {
         entry.setContents((byte[]) null)
         assert entry.size == 0
     }
 
+    @Test
     void testCreateOutputStream() {
         // New, empty file
         OutputStream out = entry.createOutputStream(false)
@@ -114,10 +125,12 @@ public class FileEntryTest extends AbstractFileSystemEntryTestCase {
         verifyContents(NEW_CONTENTS + CONTENTS + CONTENTS + NEW_CONTENTS)
     }
 
+    @Test
     void testCreateInputStream_NullContents() {
         verifyContents("")
     }
 
+    @Test
     void testCloneWithNewPath() {
         entry.lastModified = LAST_MODIFIED
         entry.owner = USER
@@ -136,6 +149,7 @@ public class FileEntryTest extends AbstractFileSystemEntryTestCase {
         assert !clone.directory
     }
 
+    @Test
     void testCloneWithNewPath_WriteToOutputStream() {
         def outputStream = entry.createOutputStream(false)
         outputStream.withWriter { writer -> writer.write('ABCDEF') }
@@ -173,16 +187,12 @@ public class FileEntryTest extends AbstractFileSystemEntryTestCase {
     // Implementation of Required Abstract Methods
     //-------------------------------------------------------------------------
 
-    /**
-     * @see org.mockftpserver.fake.filesystem.AbstractFileSystemEntryTestCase#getImplementationClass()
-     */
+    @Override
     protected Class getImplementationClass() {
         return FileEntry.class
     }
 
-    /**
-     * @see org.mockftpserver.fake.filesystem.AbstractFileSystemEntryTestCase#isDirectory()
-     */
+    @Override
     protected boolean isDirectory() {
         return false
     }
@@ -191,8 +201,8 @@ public class FileEntryTest extends AbstractFileSystemEntryTestCase {
     // Test setup
     //-------------------------------------------------------------------------
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
         entry = new FileEntry(PATH)
     }
 

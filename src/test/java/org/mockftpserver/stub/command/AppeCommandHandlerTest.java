@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -27,25 +29,18 @@ import org.mockftpserver.core.command.ReplyCodes;
  *
  * @author Chris Mair
  */
-public final class AppeCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class AppeCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private AppeCommandHandler commandHandler;
 
-    /**
-     * Perform initialization before each test
-     *
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new AppeCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
     }
 
-    /**
-     * Test the handleCommand() method, as well as the getFileContents() and clearFileContents() methods
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         final String DATA = "ABC";
 
         when(session.readData()).thenReturn(DATA.getBytes());
@@ -63,10 +58,8 @@ public final class AppeCommandHandlerTest extends AbstractCommandHandlerTestCase
                 AppeCommandHandler.FILE_CONTENTS_KEY, DATA.getBytes());
     }
 
-    /**
-     * Test the handleCommand() method, when no pathname parameter has been specified
-     */
-    public void testHandleCommand_MissingPathnameParameter() throws Exception {
+    @Test
+    void testHandleCommand_MissingPathnameParameter() throws Exception {
         testHandleCommand_InvalidParameters(commandHandler, CommandNames.APPE, EMPTY);
     }
 

@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -32,6 +34,7 @@ class CdupCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     def DIR = "/usr"
     def SUBDIR = "${DIR}/sub"
 
+    @Test
     void testHandleCommand() {
         setCurrentDirectory(SUBDIR)
         handleCommand([])
@@ -39,6 +42,7 @@ class CdupCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == DIR
     }
 
+    @Test
     void testHandleCommand_NoParentDirectory() {
         setCurrentDirectory('/')
         handleCommand([])
@@ -46,6 +50,7 @@ class CdupCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert session.getAttribute(SessionKeys.CURRENT_DIRECTORY) == '/'
     }
 
+    @Test
     void testHandleCommand_NoExecuteAccessToDirectory() {
         setCurrentDirectory(SUBDIR)
         def dir = fileSystem.getEntry(DIR)
@@ -67,8 +72,8 @@ class CdupCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         return new Command(CommandNames.CDUP, [])
     }
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
         createDirectory(SUBDIR)
     }
 

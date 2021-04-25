@@ -1,6 +1,8 @@
 package org.mockftpserver.fake
 
 import org.apache.commons.net.ftp.FTPClient
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.test.AbstractGroovyTestCase
 import org.springframework.context.ApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext
@@ -35,6 +37,7 @@ class FakeFtpServer_LoadTest extends AbstractGroovyTestCase {
     // Tests
     //--------------------------------------------------------------------------
 
+    @Test
     void testLotsOfClientConnections() {
         startFtpServer('fakeftpserver-beans.xml')
 
@@ -45,6 +48,7 @@ class FakeFtpServer_LoadTest extends AbstractGroovyTestCase {
         }
     }
 
+    @Test
     void testLotsOfClientConnections_LocalPassiveMode() {
         startFtpServer('fakeftpserver-beans.xml')
 
@@ -55,6 +59,7 @@ class FakeFtpServer_LoadTest extends AbstractGroovyTestCase {
         }
     }
 
+    @Test
     void testLotsOfClientConnections_NoQuit() {
         startFtpServer('fakeftpserver-beans.xml')
 
@@ -69,12 +74,8 @@ class FakeFtpServer_LoadTest extends AbstractGroovyTestCase {
     // Setup and tear-down and helper methods
     //--------------------------------------------------------------------------
 
-    void setUp() {
-        super.setUp()
-    }
-
+    @AfterEach
     void tearDown() {
-        super.tearDown()
         fakeFtpServer?.stop()
     }
 

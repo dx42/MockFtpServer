@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -29,24 +30,28 @@ class HelpCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     boolean testNotLoggedIn = false
 
+    @Test
     void testHandleCommand_Arg() {
         serverConfiguration.helpText = [abc: '_abc']
         handleCommand(['abc'])
         assertSessionReply(ReplyCodes.HELP_OK, ['help', '_abc'])
     }
 
+    @Test
     void testHandleCommand_MultiWordArg() {
         serverConfiguration.helpText = ["abc def": 'abcdef']
         handleCommand(['abc', 'def'])
         assertSessionReply(ReplyCodes.HELP_OK, ['help', 'abcdef'])
     }
 
+    @Test
     void testHandleCommand_NoArg_UseDefault() {
         serverConfiguration.helpText = ['': 'default']
         handleCommand([])
         assertSessionReply(ReplyCodes.HELP_OK, ['help', 'default'])
     }
 
+    @Test
     void testHandleCommand_Unrecognized() {
         serverConfiguration.helpText = ['': 'default']
         handleCommand(['unrecognized'])
@@ -65,10 +70,6 @@ class HelpCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     Command createValidCommand() {
         return new Command(CommandNames.HELP, [])
-    }
-
-    void setUp() {
-        super.setUp()
     }
 
 }

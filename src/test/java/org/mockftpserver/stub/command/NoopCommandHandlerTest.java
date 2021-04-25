@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -27,14 +29,12 @@ import org.mockftpserver.core.command.ReplyCodes;
  * 
  * @author Chris Mair
  */
-public final class NoopCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class NoopCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private NoopCommandHandler commandHandler;
 
-    /**
-     * Test the handleCommand() method
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         final Command COMMAND = new Command(CommandNames.NOOP, EMPTY);
 
         commandHandler.handleCommand(COMMAND, session);
@@ -45,13 +45,8 @@ public final class NoopCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyNoDataElements(commandHandler.getInvocation(0));
     }
 
-    /**
-     * Perform initialization before each test
-     * 
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new NoopCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
     }

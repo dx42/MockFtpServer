@@ -16,6 +16,8 @@
 package org.mockftpserver.core.server;
 
 import org.apache.commons.net.ftp.FTPClient;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.test.*;
 import org.mockftpserver.test.AbstractTestCase;
 
@@ -30,10 +32,8 @@ public abstract class AbstractFtpServer_StartTestCase extends AbstractTestCase {
 
     private AbstractFtpServer ftpServer;
 
-    /**
-     * Test the start() and stop() methods. Start the server and then stop it immediately.
-     */
-    public void testStartAndStop() throws Exception {
+    @Test
+    void testStartAndStop() throws Exception {
         ftpServer.setServerControlPort(PortTestUtil.getFtpServerControlPort());
         assertEquals("started - before", false, ftpServer.isStarted());
 
@@ -47,10 +47,8 @@ public abstract class AbstractFtpServer_StartTestCase extends AbstractTestCase {
         assertEquals("shutdown - after stop()", true, ftpServer.isShutdown());
     }
 
-    /**
-     * Test setting a non-default port number for the StubFtpServer control connection socket.
-     */
-    public void testCustomServerControlPort() throws Exception {
+    @Test
+    void testCustomServerControlPort() throws Exception {
         final int SERVER_CONTROL_PORT = 9187;
 
         ftpServer.setServerControlPort(SERVER_CONTROL_PORT);
@@ -69,11 +67,8 @@ public abstract class AbstractFtpServer_StartTestCase extends AbstractTestCase {
     // Test setup
     //-------------------------------------------------------------------------
 
-    /**
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         ftpServer = createFtpServer();
     }
 

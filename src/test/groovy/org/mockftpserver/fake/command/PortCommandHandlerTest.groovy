@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -34,6 +35,7 @@ class PortCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     boolean testNotLoggedIn = false
 
+    @Test
     void testHandleCommand() {
         handleCommand(PARAMETERS)
         assertSessionReply(ReplyCodes.PORT_OK, 'port')
@@ -41,6 +43,7 @@ class PortCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert session.clientDataHost == HOST
     }
 
+    @Test
     void testHandleCommand_MissingRequiredParameter() {
         testHandleCommand_MissingRequiredParameter(PARAMETERS_INSUFFICIENT)
     }
@@ -48,10 +51,6 @@ class PortCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
-
-    void setUp() {
-        super.setUp()
-    }
 
     CommandHandler createCommandHandler() {
         new PortCommandHandler()

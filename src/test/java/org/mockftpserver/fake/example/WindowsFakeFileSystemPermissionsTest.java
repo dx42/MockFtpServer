@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.example;
 
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.fake.FakeFtpServer;
@@ -30,12 +31,12 @@ import org.mockftpserver.test.AbstractTestCase;
  * Example code illustrating how to programmatically configure a FakeFtpServer with a (simulated) Windows
  * filesystem, and including file/directory permissions.
  */
-public class WindowsFakeFileSystemPermissionsTest extends AbstractTestCase implements IntegrationTest {
+class WindowsFakeFileSystemPermissionsTest extends AbstractTestCase implements IntegrationTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(WindowsFakeFileSystemPermissionsTest.class);
 
-    public void testFilesystemWithPermissions() throws Exception {
-
+    @Test
+    void testFilesystemWithPermissions() throws Exception {
         final String USER1 = "joe";
         final String USER2 = "mary";
         final String GROUP = "dev";

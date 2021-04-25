@@ -17,6 +17,8 @@ package org.mockftpserver.core.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Chris Mair
  */
-public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class StaticReplyCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(StaticReplyCommandHandlerTest.class);
     private static final int REPLY_CODE = 999;
@@ -35,10 +37,8 @@ public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerT
     
     private StaticReplyCommandHandler commandHandler;
     
-    /**
-     * Test the constructor that takes a replyCode, passing in a null
-     */
-    public void testConstructor_String_InvalidReplyCode() {
+    @Test
+    void testConstructor_String_InvalidReplyCode() {
         try {
             new StaticReplyCommandHandler(-1);
             fail("Expected AssertFailedException");
@@ -47,11 +47,9 @@ public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerT
             LOG.info("Expected: " + expected);
         }
     }
-    
-    /**
-     * Test the constructor that takes a replyCode and replyText, passing in a null replyCode
-     */
-    public void testConstructor_StringString_InvalidReplyCode() {
+
+    @Test
+    void testConstructor_StringString_InvalidReplyCode() {
         try {
             new StaticReplyCommandHandler(-99, "text");
             fail("Expected AssertFailedException");
@@ -61,10 +59,8 @@ public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerT
         }
     }
     
-    /**
-     * Test the setReplyCode() method, passing in a null
-     */
-    public void testSetReplyCode_Invalid() {
+    @Test
+    void testSetReplyCode_Invalid() {
         try {
             commandHandler.setReplyCode(-1);
             fail("Expected AssertFailedException");
@@ -74,12 +70,8 @@ public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerT
         }
     }
     
-    /**
-     * Test the handleCommand() method when the replyText attribute has not been set.
-     * So, use whatever replyText has been configured in the replyCodeMapping
-     * @throws Exception - if an error occurs
-     */
-    public void testHandleCommand_ReplyTextNotSet() throws Exception {
+    @Test
+    void testHandleCommand_ReplyTextNotSet() throws Exception {
         commandHandler.setReplyCode(250);
 
         commandHandler.handleCommand(COMMAND, session);
@@ -89,11 +81,8 @@ public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerT
         verifyNoDataElements(commandHandler.getInvocation(0));
     }
     
-    /**
-     * Test the handleCommand() method, when the replyCode and replyText are both set
-     * @throws Exception - if an error occurs
-     */
-    public void testHandleCommand_SetReplyText() throws Exception {
+    @Test
+    void testHandleCommand_SetReplyText() throws Exception {
         commandHandler.setReplyCode(REPLY_CODE);
         commandHandler.setReplyText(REPLY_TEXT);
 
@@ -104,11 +93,8 @@ public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerT
         verifyNoDataElements(commandHandler.getInvocation(0));
     }
     
-    /**
-     * Test the handleCommand() method when the replyCode attribute has not been set
-     * @throws Exception - if an error occurs
-     */
-    public void testHandleCommand_ReplyCodeNotSet() throws Exception {
+    @Test
+    void testHandleCommand_ReplyCodeNotSet() throws Exception {
         try {
             commandHandler.handleCommand(COMMAND, session);
             fail("Expected AssertFailedException");
@@ -121,11 +107,8 @@ public final class StaticReplyCommandHandlerTest extends AbstractCommandHandlerT
         verifyNoDataElements(commandHandler.getInvocation(0));
     }
     
-    /**
-     * @see AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new StaticReplyCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
     }

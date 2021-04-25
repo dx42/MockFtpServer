@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -32,12 +33,14 @@ class PwdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     boolean testNotLoggedIn = false
 
+    @Test
     void testHandleCommand() {
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
         handleCommand([])
         assertSessionReply(ReplyCodes.PWD_OK, ["pwd", DIR])
     }
 
+    @Test
     void testHandleCommand_CurrentDirectoryNotSet() {
         handleCommand([])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, 'filesystem.currentDirectoryNotSet')

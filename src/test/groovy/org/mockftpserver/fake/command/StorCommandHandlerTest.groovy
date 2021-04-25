@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -27,25 +28,30 @@ import org.mockftpserver.core.command.ReplyCodes
  */
 class StorCommandHandlerTest extends AbstractStoreFileCommandHandlerTestCase {
 
+    @Test
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])
     }
 
+    @Test
     void testHandleCommand_AbsolutePath() {
         testHandleCommand([FILE], 'stor', CONTENTS)
     }
 
+    @Test
     void testHandleCommand_RelativePath() {
         setCurrentDirectory(DIR)
         testHandleCommand([FILENAME], 'stor', CONTENTS)
     }
 
+    @Test
     void testHandleCommand_PathSpecifiesAnExistingDirectory() {
         createDirectory(FILE)
         handleCommand([FILE])
         assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, FILE)
     }
 
+    @Test
     void testHandleCommand_ParentDirectoryDoesNotExist() {
         def NO_SUCH_DIR = "/path/DoesNotExist"
         handleCommand([p(NO_SUCH_DIR, FILENAME)])
@@ -62,10 +68,6 @@ class StorCommandHandlerTest extends AbstractStoreFileCommandHandlerTestCase {
 
     Command createValidCommand() {
         return new Command(CommandNames.STOR, [FILE])
-    }
-
-    void setUp() {
-        super.setUp()
     }
 
     protected String verifyOutputFile() {

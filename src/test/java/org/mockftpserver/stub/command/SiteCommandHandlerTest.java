@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -27,7 +29,7 @@ import org.mockftpserver.core.command.ReplyCodes;
  * 
  * @author Chris Mair
  */
-public final class SiteCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class SiteCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final String PARAMETERS1 = "abc def";
     private static final String PARAMETERS2 = "abc,23,def";
@@ -36,11 +38,8 @@ public final class SiteCommandHandlerTest extends AbstractCommandHandlerTestCase
     private Command command1;
     private Command command2;
     
-    /**
-     * Test the handleCommand(Command,Session) method
-     * @throws Exception - if an error occurs
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
 
@@ -51,19 +50,13 @@ public final class SiteCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyOneDataElement(commandHandler.getInvocation(1), SiteCommandHandler.PARAMETERS_KEY, PARAMETERS2);
     }
 
-    /**
-     * Test the handleCommand() method, when no "parameters" parameter has been specified
-     */
-    public void testHandleCommand_MissingParameters() throws Exception {
+    @Test
+    void testHandleCommand_MissingParameters() throws Exception {
         testHandleCommand_InvalidParameters(commandHandler, CommandNames.SITE, EMPTY);
     }
 
-    /**
-     * Perform initialization before each test
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new SiteCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
         command1 = new Command(CommandNames.SITE, array(PARAMETERS1));

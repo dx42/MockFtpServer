@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.core.util
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.test.AbstractGroovyTestCase
 
 /**
@@ -24,6 +25,7 @@ import org.mockftpserver.test.AbstractGroovyTestCase
  */
 class StringUtilTest extends AbstractGroovyTestCase {
 
+    @Test
     void testPadRight() {
         assert StringUtil.padRight('', 0) == ''
         assert StringUtil.padRight('', 1) == ' '
@@ -34,6 +36,7 @@ class StringUtilTest extends AbstractGroovyTestCase {
         assert StringUtil.padRight('z', 5) == 'z    '
     }
 
+    @Test
     void testPadLeft() {
         assert StringUtil.padLeft('', 0) == ''
         assert StringUtil.padLeft('', 1) == ' '
@@ -44,6 +47,7 @@ class StringUtilTest extends AbstractGroovyTestCase {
         assert StringUtil.padLeft('z', 5) == '    z'
     }
 
+    @Test
     void testJoin() {
         assert StringUtil.join([], ' ') == ''
         assert StringUtil.join([], 'x') == ''

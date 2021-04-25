@@ -17,6 +17,8 @@ package org.mockftpserver.core.server;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.command.CommandHandler;
@@ -42,10 +44,8 @@ public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
     private CommandHandler commandHandler;
     private CommandHandler commandHandler2;
 
-    /**
-     * Test the setCommandHandlers() method
-     */
-    public void testSetCommandHandlers() {
+    @Test
+    void testSetCommandHandlers() {
         Map mapping = new HashMap();
         mapping.put("AAA", commandHandler);
         mapping.put("BBB", commandHandler2);
@@ -61,10 +61,8 @@ public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
         assertTrue("ConnectCommandHandler", ftpServer.getCommandHandler(CommandNames.CONNECT) != null);
     }
 
-    /**
-     * Test the setCommandHandlers() method, when the Map is null
-     */
-    public void testSetCommandHandlers_Null() {
+    @Test
+    void testSetCommandHandlers_Null() {
         try {
             ftpServer.setCommandHandlers(null);
             fail("Expected AssertFailedException");
@@ -74,19 +72,15 @@ public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the setCommandHandler() method
-     */
-    public void testSetCommandHandler() {
+    @Test
+    void testSetCommandHandler() {
         ftpServer.setCommandHandler("ZZZ", commandHandler2);
         assertSame("commandHandler", commandHandler2, ftpServer.getCommandHandler("ZZZ"));
         verifyCommandHandlerInitialized(commandHandler2);
     }
 
-    /**
-     * Test the setCommandHandler() method, when the commandName is null
-     */
-    public void testSetCommandHandler_NullCommandName() {
+    @Test
+    void testSetCommandHandler_NullCommandName() {
         CommandHandler commandHandler = mock(CommandHandler.class);
         try {
             ftpServer.setCommandHandler(null, commandHandler);
@@ -97,10 +91,8 @@ public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the setCommandHandler() method, when the commandHandler is null
-     */
-    public void testSetCommandHandler_NullCommandHandler() {
+    @Test
+    void testSetCommandHandler_NullCommandHandler() {
         try {
             ftpServer.setCommandHandler("ZZZ", null);
             fail("Expected AssertFailedException");
@@ -110,16 +102,15 @@ public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
         }
     }
 
-    public void testSetServerControlPort() {
+    @Test
+    void testSetServerControlPort() {
         assertEquals("default", 21, ftpServer.getServerControlPort());
         ftpServer.setServerControlPort(99);
         assertEquals("99", 99, ftpServer.getServerControlPort());
     }
 
-    /**
-     * Test the setCommandHandler() and getCommandHandler() methods for commands in lower case or mixed case
-     */
-    public void testLowerCaseOrMixedCaseCommandNames() {
+    @Test
+    void testLowerCaseOrMixedCaseCommandNames() {
         ftpServer.setCommandHandler("XXX", commandHandler);
         assertSame("ZZZ", commandHandler, ftpServer.getCommandHandler("XXX"));
         assertSame("Zzz", commandHandler, ftpServer.getCommandHandler("Xxx"));
@@ -136,14 +127,13 @@ public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
         assertSame("zzz", commandHandler, ftpServer.getCommandHandler("zzz"));
     }
 
-    /**
-     * Test calling stop() for a server that was never started.
-     */
-    public void testStopWithoutStart() {
+    @Test
+    void testStopWithoutStart() {
         ftpServer.stop();
     }
 
-    public void testCreateSession() {
+    @Test
+    void testCreateSession() {
         assertEquals(ftpServer.createSession(new Socket()).getClass(), DefaultSession.class);
     }
 
@@ -151,14 +141,9 @@ public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
     // Test setup
     //-------------------------------------------------------------------------
 
-    /**
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @BeforeEach
+    void setUp_AbstractFtpServerTestCase() throws Exception {
         ftpServer = createFtpServer();
-
         commandHandler = createCommandHandler();
         commandHandler2 = createCommandHandler();
     }

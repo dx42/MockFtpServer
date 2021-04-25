@@ -18,6 +18,9 @@ package org.mockftpserver.stub;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.command.CommandHandler;
@@ -38,7 +41,7 @@ import java.io.IOException;
  *
  * @author Chris Mair
  */
-public final class StubFtpServerIntegrationTest extends AbstractTestCase implements IntegrationTest {
+class StubFtpServerIntegrationTest extends AbstractTestCase implements IntegrationTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(StubFtpServerIntegrationTest.class);
     private static final String SERVER = "localhost";
@@ -57,7 +60,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
     // Tests
     //-------------------------------------------------------------------------
 
-    public void testLogin() throws Exception {
+    @Test
+    void testLogin() throws Exception {
         // Connect
         LOG.info("Conecting to " + SERVER);
         ftpClientConnect();
@@ -79,7 +83,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("quit", 221);
     }
 
-    public void testAcct() throws Exception {
+    @Test
+    void testAcct() throws Exception {
         ftpClientConnect();
 
         // ACCT
@@ -87,14 +92,13 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         assertEquals("acct", 230, replyCode);
     }
 
-    /**
-     * Test the stop() method when no session has ever been started
-     */
-    public void testStop_NoSessionEverStarted() throws Exception {
+    @Test
+    void testStop_NoSessionEverStarted() throws Exception {
         LOG.info("Testing a stop() when no session has ever been started");
     }
 
-    public void testHelp() throws Exception {
+    @Test
+    void testHelp() throws Exception {
         // Modify HELP CommandHandler to return a predefined help message
         final String HELP = "help message";
         HelpCommandHandler helpCommandHandler = (HelpCommandHandler) stubFtpServer.getCommandHandler(CommandNames.HELP);
@@ -108,10 +112,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("listHelp", 214);
     }
 
-    /**
-     * Test the LIST and SYST commands.
-     */
-    public void testList() throws Exception {
+    @Test
+    void testList() throws Exception {
         ftpClientConnect();
 
         // Set directory listing
@@ -127,10 +129,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("list", 226);
     }
 
-    /**
-     * Test the LIST, PASV and SYST commands, transferring a directory listing in passive mode
-     */
-    public void testList_PassiveMode() throws Exception {
+    @Test
+    void testList_PassiveMode() throws Exception {
         ftpClientConnect();
 
         ftpClient.enterLocalPassiveMode();
@@ -145,7 +145,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("list", 226);
     }
 
-    public void testNlst() throws Exception {
+    @Test
+    void testNlst() throws Exception {
         ftpClientConnect();
 
         // Set directory listing
@@ -160,10 +161,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("listNames", 226);
     }
 
-    /**
-     * Test printing the current working directory (PWD)
-     */
-    public void testPwd() throws Exception {
+    @Test
+    void testPwd() throws Exception {
         // Modify PWD CommandHandler to return a predefined directory
         final String DIR = "some/dir";
         PwdCommandHandler pwdCommandHandler = (PwdCommandHandler) stubFtpServer.getCommandHandler(CommandNames.PWD);
@@ -177,7 +176,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("printWorkingDirectory", 257);
     }
 
-    public void testStat() throws Exception {
+    @Test
+    void testStat() throws Exception {
         // Modify Stat CommandHandler to return predefined text
         final String STATUS = "some information 123";
         StatCommandHandler statCommandHandler = (StatCommandHandler) stubFtpServer.getCommandHandler(CommandNames.STAT);
@@ -191,10 +191,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("getStatus", 211);
     }
 
-    /**
-     * Test getting the status (STAT), when the reply text contains multiple lines
-     */
-    public void testStat_MultilineReplyText() throws Exception {
+    @Test
+    void testStat_MultilineReplyText() throws Exception {
         // Modify Stat CommandHandler to return predefined text
         final String STATUS = "System name: abc.def\r\nVersion 3.5.7\r\nNumber of failed logins: 2";
         final String FORMATTED_REPLY_STATUS = "211-System name: abc.def\r\nVersion 3.5.7\r\n211 Number of failed logins: 2.";
@@ -209,7 +207,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("getStatus", 211);
     }
 
-    public void testSyst() throws Exception {
+    @Test
+    void testSyst() throws Exception {
         ftpClientConnect();
 
         // SYST
@@ -217,7 +216,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("syst", 215);
     }
 
-    public void testCwd() throws Exception {
+    @Test
+    void testCwd() throws Exception {
         // Connect
         LOG.info("Conecting to " + SERVER);
         ftpClientConnect();
@@ -229,10 +229,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("changeWorkingDirectory", 250);
     }
 
-    /**
-     * Test changing the current working directory (CWD), when it causes a remote error
-     */
-    public void testCwd_Error() throws Exception {
+    @Test
+    void testCwd_Error() throws Exception {
         // Override CWD CommandHandler to return error reply code
         final int REPLY_CODE = 500;
         StaticReplyCommandHandler cwdCommandHandler = new StaticReplyCommandHandler(REPLY_CODE);
@@ -246,7 +244,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("changeWorkingDirectory", REPLY_CODE);
     }
 
-    public void testCdup() throws Exception {
+    @Test
+    void testCdup() throws Exception {
         ftpClientConnect();
 
         // CDUP
@@ -255,7 +254,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("changeToParentDirectory", 200);
     }
 
-    public void testDele() throws Exception {
+    @Test
+    void testDele() throws Exception {
         ftpClientConnect();
 
         // DELE
@@ -264,20 +264,23 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("deleteFile", 250);
     }
 
-    public void testEprt() throws Exception {
+    @Test
+    void testEprt() throws Exception {
         LOG.info("Skipping...");
 //        ftpClientConnect();
 //        ftpClient.sendCommand("EPRT", "|2|1080::8:800:200C:417A|5282|");
 //        verifyReplyCode("EPRT", 200);
     }
 
-    public void testEpsv() throws Exception {
+    @Test
+    void testEpsv() throws Exception {
         ftpClientConnect();
         ftpClient.sendCommand("EPSV");
         verifyReplyCode("EPSV", 229);
     }
-    
-    public void testFeat_UseStaticReplyCommandHandler() throws IOException {
+
+    @Test
+    void testFeat_UseStaticReplyCommandHandler() throws IOException {
         // The FEAT command is not supported out of the box
         final String FEAT_TEXT = "Extensions supported:\r\n" +
                 "MLST size*;create;modify*;perm;media-type\r\n" +
@@ -292,7 +295,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         LOG.info(ftpClient.getReplyString());
     }
 
-    public void testMkd() throws Exception {
+    @Test
+    void testMkd() throws Exception {
         ftpClientConnect();
 
         // MKD
@@ -301,7 +305,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("makeDirectory", 257);
     }
 
-    public void testNoop() throws Exception {
+    @Test
+    void testNoop() throws Exception {
         ftpClientConnect();
 
         // NOOP
@@ -310,7 +315,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("NOOP", 200);
     }
 
-    public void testRest() throws Exception {
+    @Test
+    void testRest() throws Exception {
         ftpClientConnect();
 
         // REST
@@ -318,7 +324,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         assertEquals("Unable to REST", 350, replyCode);
     }
 
-    public void testRmd() throws Exception {
+    @Test
+    void testRmd() throws Exception {
         ftpClientConnect();
 
         // RMD
@@ -327,7 +334,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("removeDirectory", 250);
     }
 
-    public void testRename() throws Exception {
+    @Test
+    void testRename() throws Exception {
         ftpClientConnect();
 
         // Rename (RNFR, RNTO)
@@ -336,7 +344,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("rename", 250);
     }
 
-    public void testAllo() throws Exception {
+    @Test
+    void testAllo() throws Exception {
         ftpClientConnect();
 
         // ALLO
@@ -344,10 +353,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         assertTrue("ALLO with recordSize", ftpClient.allocate(1024, 64));
     }
 
-    /**
-     * Test GET and PUT of ASCII files
-     */
-    public void testTransferAsciiFile() throws Exception {
+    @Test
+    void testTransferAsciiFile() throws Exception {
         retrCommandHandler.setFileContents(ASCII_CONTENTS);
 
         ftpClientConnect();
@@ -369,10 +376,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         assertEquals("File contents", ASCII_CONTENTS.getBytes(), contents);
     }
 
-    /**
-     * Test GET and PUT of binary files
-     */
-    public void testTransferBinaryFiles() throws Exception {
+    @Test
+    void testTransferBinaryFiles() throws Exception {
         retrCommandHandler.setFileContents(BINARY_CONTENTS);
 
         ftpClientConnect();
@@ -395,7 +400,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         assertEquals("File contents", BINARY_CONTENTS, contents);
     }
 
-    public void testStou() throws Exception {
+    @Test
+    void testStou() throws Exception {
         StouCommandHandler stouCommandHandler = (StouCommandHandler) stubFtpServer.getCommandHandler(CommandNames.STOU);
         stouCommandHandler.setFilename(FILENAME);
 
@@ -410,7 +416,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         assertEquals("File contents", ASCII_CONTENTS.getBytes(), contents);
     }
 
-    public void testAppe() throws Exception {
+    @Test
+    void testAppe() throws Exception {
         AppeCommandHandler appeCommandHandler = (AppeCommandHandler) stubFtpServer.getCommandHandler(CommandNames.APPE);
 
         ftpClientConnect();
@@ -424,14 +431,16 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         assertEquals("File contents", ASCII_CONTENTS.getBytes(), contents);
     }
 
-    public void testAbor() throws Exception {
+    @Test
+    void testAbor() throws Exception {
         ftpClientConnect();
 
         // ABOR
         assertTrue("ABOR", ftpClient.abort());
     }
 
-    public void testPasv() throws Exception {
+    @Test
+    void testPasv() throws Exception {
         ftpClientConnect();
 
         // PASV
@@ -439,7 +448,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         // no reply code; the PASV command is sent only when the data connection is opened 
     }
 
-    public void testMode() throws Exception {
+    @Test
+    void testMode() throws Exception {
         ftpClientConnect();
 
         // MODE
@@ -448,7 +458,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("setFileTransferMode", 200);
     }
 
-    public void testStru() throws Exception {
+    @Test
+    void testStru() throws Exception {
         ftpClientConnect();
 
         // STRU
@@ -457,7 +468,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("setFileStructure", 200);
     }
 
-    public void testSimpleCompositeCommandHandler() throws Exception {
+    @Test
+    void testSimpleCompositeCommandHandler() throws Exception {
         // Replace CWD CommandHandler with a SimpleCompositeCommandHandler
         CommandHandler commandHandler1 = new StaticReplyCommandHandler(500);
         CommandHandler commandHandler2 = new CwdCommandHandler();
@@ -474,7 +486,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         assertTrue("first", ftpClient.changeWorkingDirectory("dir1/dir2"));
     }
 
-    public void testSite() throws Exception {
+    @Test
+    void testSite() throws Exception {
         ftpClientConnect();
 
         // SITE
@@ -482,7 +495,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         assertEquals("SITE", 200, replyCode);
     }
 
-    public void testSmnt() throws Exception {
+    @Test
+    void testSmnt() throws Exception {
         ftpClientConnect();
 
         // SMNT
@@ -490,17 +504,16 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         verifyReplyCode("structureMount", 250);
     }
 
-    public void testRein() throws Exception {
+    @Test
+    void testRein() throws Exception {
         ftpClientConnect();
 
         // REIN
         assertEquals("REIN", 220, ftpClient.rein());
     }
 
-    /**
-     * Test that command names in lowercase or mixed upper/lower case are accepted
-     */
-    public void testCommandNamesInLowerOrMixedCase() throws Exception {
+    @Test
+    void testCommandNamesInLowerOrMixedCase() throws Exception {
         ftpClientConnect();
 
         assertEquals("rein", 220, ftpClient.sendCommand("rein"));
@@ -509,7 +522,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         assertEquals("Rein", 220, ftpClient.sendCommand("Rein"));
     }
 
-    public void testUnrecognizedCommand() throws Exception {
+    @Test
+    void testUnrecognizedCommand() throws Exception {
         ftpClientConnect();
 
         assertEquals("Unrecognized:XXXX", 502, ftpClient.sendCommand("XXXX"));
@@ -519,14 +533,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
     // Test setup and tear-down
     // -------------------------------------------------------------------------
 
-    /**
-     * Perform initialization before each test
-     *
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @BeforeEach
+    void setUp() throws Exception {
         for (int i = 0; i < BINARY_CONTENTS.length; i++) {
             BINARY_CONTENTS[i] = (byte) i;
         }
@@ -539,13 +547,8 @@ public final class StubFtpServerIntegrationTest extends AbstractTestCase impleme
         storCommandHandler = (StorCommandHandler) stubFtpServer.getCommandHandler(CommandNames.STOR);
     }
 
-    /**
-     * Perform cleanup after each test
-     *
-     * @see org.mockftpserver.test.AbstractTestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterEach
+    void tearDown() throws Exception {
         stubFtpServer.stop();
     }
 

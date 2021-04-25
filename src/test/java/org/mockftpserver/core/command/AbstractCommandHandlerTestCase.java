@@ -17,6 +17,7 @@ package org.mockftpserver.core.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.test.AbstractTestCase;
 import org.slf4j.Logger;
@@ -106,9 +107,7 @@ public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
      * @param key2             - the expected key2
      * @param value2-          the expected value2
      */
-    protected void verifyTwoDataElements(InvocationRecord invocationRecord, String key1, Object value1,
-                                         String key2, Object value2) {
-
+    protected void verifyTwoDataElements(InvocationRecord invocationRecord, String key1, Object value1, String key2, Object value2) {
         LOG.info("Verifying: " + invocationRecord);
         assertEquals("number of data elements", 2, invocationRecord.keySet().size());
         assertEqualsAllTypes("value1:" + value1, value1, invocationRecord.getObject(key1));
@@ -124,7 +123,6 @@ public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
      * @param actual   - the actual value
      */
     private void assertEqualsAllTypes(String message, Object expected, Object actual) {
-
         if (expected instanceof byte[] || actual instanceof byte[]) {
             assertEquals(message, (byte[]) expected, (byte[]) actual);
         } else if (expected instanceof Object[] || actual instanceof Object[]) {
@@ -134,14 +132,8 @@ public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
         }
     }
 
-    /**
-     * Perform setup before each test
-     *
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @BeforeEach
+    void setUp_AbstractCommandHandlerTestCase() throws Exception {
         session = mock(Session.class);
         when(session.getClientHost()).thenReturn(DEFAULT_HOST);
 

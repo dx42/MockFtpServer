@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -27,14 +29,12 @@ import org.mockftpserver.core.command.ReplyCodes;
  * 
  * @author Chris Mair
  */
-public final class PwdCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class PwdCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private PwdCommandHandler commandHandler;
 
-    /**
-     * Test the handleCommand() method
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
 
         final String RESPONSE_DATA = "current dir 1";
         commandHandler.setDirectory(RESPONSE_DATA);
@@ -49,13 +49,8 @@ public final class PwdCommandHandlerTest extends AbstractCommandHandlerTestCase 
         verifyNoDataElements(commandHandler.getInvocation(0));
     }
 
-    /**
-     * Perform initialization before each test
-     * 
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new PwdCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
     }

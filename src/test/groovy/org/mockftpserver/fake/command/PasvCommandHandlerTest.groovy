@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -30,6 +31,7 @@ class PasvCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     static final PORT = (23 << 8) + 77
     static final InetAddress SERVER = inetAddress("192.168.0.2")
 
+    @Test
     void testHandleCommand() {
         final HOST_AND_PORT = "192,168,0,2,23,77"
         session.switchToPassiveModeReturnValue = PORT
@@ -50,10 +52,6 @@ class PasvCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     Command createValidCommand() {
         return new Command(CommandNames.PASV, [])
-    }
-
-    void setUp() {
-        super.setUp()
     }
 
 }

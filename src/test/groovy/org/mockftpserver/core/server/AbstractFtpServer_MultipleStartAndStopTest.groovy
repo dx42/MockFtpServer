@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.core.server
 
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.fake.FakeFtpServer
 import org.mockftpserver.test.AbstractGroovyTestCase
 import org.mockftpserver.test.PortTestUtil
@@ -30,6 +32,7 @@ class AbstractFtpServer_MultipleStartAndStopTest extends AbstractGroovyTestCase 
 
     // Takes ~ 500ms per start/stop
 
+    @Test
     void testStartAndStop() {
         10.times {
             final def port = PortTestUtil.getFtpServerControlPort()
@@ -38,15 +41,16 @@ class AbstractFtpServer_MultipleStartAndStopTest extends AbstractGroovyTestCase 
             ftpServer.start();
             assert ftpServer.getServerControlPort() == port
             Thread.sleep(100L);     // give it some time to get started
-            assertEquals("started - after start()", true, ftpServer.isStarted());
-            assertEquals("shutdown - after start()", false, ftpServer.isShutdown());
+            assert ftpServer.isStarted()
+            assert !ftpServer.isShutdown()
 
             ftpServer.stop();
 
-            assertEquals("shutdown - after stop()", true, ftpServer.isShutdown());
+            assert ftpServer.isShutdown()
         }
     }
 
+    @Test
     void testStartAndStop_UseDynamicFreePort() {
         5.times {
             ftpServer.setServerControlPort(0);
@@ -60,8 +64,8 @@ class AbstractFtpServer_MultipleStartAndStopTest extends AbstractGroovyTestCase 
         }
     }
 
+    @AfterEach
     void tearDown() {
-        super.tearDown()
         ftpServer.stop();   // just to be sure
     }
 }

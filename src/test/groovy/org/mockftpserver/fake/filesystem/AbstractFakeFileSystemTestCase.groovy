@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.filesystem
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.util.IoUtil
 
 /**
@@ -28,10 +29,12 @@ abstract class AbstractFakeFileSystemTestCase extends AbstractFileSystemTestCase
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     void testDefaultDirectoryListingFormatterClass() {
         assert fileSystem.directoryListingFormatter.class == expectedDirectoryListingFormatterClass
     }
 
+    @Test
     void testAdd_PathLocked() {
         def dirEntry = new DirectoryEntry(NEW_DIR)
         fileSystem.add(dirEntry)
@@ -43,6 +46,7 @@ abstract class AbstractFakeFileSystemTestCase extends AbstractFileSystemTestCase
         shouldFail { fileEntry.setPath('abc') }
     }
 
+    @Test
     void testAdd_Directory_CreateParentDirectoriesAutomatically() {
         final NEW_SUBDIR = fileSystem.path(NEW_DIR, "sub")
         assert !fileSystem.exists(NEW_DIR), "Before createDirectory"
@@ -54,6 +58,7 @@ abstract class AbstractFakeFileSystemTestCase extends AbstractFileSystemTestCase
         assert fileSystem.exists(NEW_SUBDIR), "$NEW_SUBDIR: After createDirectory"
     }
 
+    @Test
     void testAdd_File_CreateParentDirectoriesAutomatically() {
         final NEW_FILE_IN_SUBDIR = fileSystem.path(NEW_DIR, "abc.txt")
         assert !fileSystem.exists(NEW_DIR), "Before createDirectory"
@@ -65,6 +70,7 @@ abstract class AbstractFakeFileSystemTestCase extends AbstractFileSystemTestCase
         assert fileSystem.exists(NEW_FILE_IN_SUBDIR), "$NEW_FILE_IN_SUBDIR: After createDirectory"
     }
 
+    @Test
     void testAdd_File_CreateParentDirectoriesAutomatically_False() {
         fileSystem.createParentDirectoriesAutomatically = false
         final NEW_FILE_IN_SUBDIR = fileSystem.path(NEW_DIR, "abc.txt")
@@ -74,6 +80,7 @@ abstract class AbstractFakeFileSystemTestCase extends AbstractFileSystemTestCase
         assert !fileSystem.exists(NEW_DIR), "After createDirectory"
     }
 
+    @Test
     void testSetEntries() {
         fileSystem.createParentDirectoriesAutomatically = false
         def entries = [new FileEntry(NEW_FILE), new DirectoryEntry(NEW_DIR)]
@@ -82,6 +89,7 @@ abstract class AbstractFakeFileSystemTestCase extends AbstractFileSystemTestCase
         assert fileSystem.exists(NEW_FILE)
     }
 
+    @Test
     void testToString() {
         String toString = fileSystem.toString()
         LOG.info("toString=" + toString)
@@ -89,6 +97,7 @@ abstract class AbstractFakeFileSystemTestCase extends AbstractFileSystemTestCase
         assert toString.contains(EXISTING_FILE)
     }
 
+    @Test
     void testFormatDirectoryListing() {
         def fileEntry = new FileEntry(path: 'abc')
         def formatter = [format: {f ->
@@ -99,18 +108,21 @@ abstract class AbstractFakeFileSystemTestCase extends AbstractFileSystemTestCase
         assert fileSystem.formatDirectoryListing(fileEntry) == 'abc'
     }
 
+    @Test
     void testFormatDirectoryListing_NullDirectoryListingFormatter() {
         fileSystem.directoryListingFormatter = null
         def fileEntry = new FileEntry('abc')
         shouldFailWithMessageContaining('directoryListingFormatter') { assert fileSystem.formatDirectoryListing(fileEntry) }
     }
 
+    @Test
     void testFormatDirectoryListing_NullFileSystemEntry() {
         def formatter = [format: {f -> }] as DirectoryListingFormatter
         fileSystem.directoryListingFormatter = formatter
         shouldFailWithMessageContaining('fileSystemEntry') { assert fileSystem.formatDirectoryListing(null) }
     }
 
+    @Test
     void testGetEntry() {
         assert fileSystem.getEntry(NO_SUCH_DIR) == null
         assert fileSystem.getEntry(NO_SUCH_FILE) == null
@@ -132,10 +144,12 @@ abstract class AbstractFakeFileSystemTestCase extends AbstractFileSystemTestCase
         assert entry.permissions == permissions
     }
 
+    @Test
     void testNormalize_Null() {
         shouldFailWithMessageContaining("path") { fileSystem.normalize(null) }
     }
 
+    @Test
     void testGetName_Null() {
         shouldFailWithMessageContaining("path") { fileSystem.getName(null) }
     }

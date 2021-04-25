@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.filesystem
 
+import org.junit.jupiter.api.Test
+
 /**
  * Tests for WindowsFakeFileSystem.
  *
@@ -38,19 +40,21 @@ class WindowsFakeFileSystemTest extends AbstractFakeFileSystemTestCase {
     // Tests
     // -------------------------------------------------------------------------
 
+    @Test
     void testOtherRoots() {
         final String X = "x:/"
         final String Y = "y:\\"
-        assertFalse(X, fileSystem.exists(X))
-        assertFalse(Y, fileSystem.exists(Y))
+        assert fileSystem.exists(X) == false, X
+        assert fileSystem.exists(Y) == false, Y
 
         fileSystem.add(new DirectoryEntry(X))
         fileSystem.add(new DirectoryEntry(Y))
 
-        assertTrue(X, fileSystem.exists(X))
-        assertTrue(Y, fileSystem.exists(Y))
+        assert fileSystem.exists(X), X
+        assert fileSystem.exists(Y), Y
     }
 
+    @Test
     void testPath() {
         assert fileSystem.path(null, null) == ""
         assert fileSystem.path(null, "abc") == "abc"
@@ -69,6 +73,7 @@ class WindowsFakeFileSystemTest extends AbstractFakeFileSystemTestCase {
         assert fileSystem.path("abc/.", null) == "abc"
     }
 
+    @Test
     void testNormalize() {
         assert fileSystem.normalize("a:\\") == "a:\\"
         assert fileSystem.normalize("a:/") == "a:\\"
@@ -84,6 +89,7 @@ class WindowsFakeFileSystemTest extends AbstractFakeFileSystemTestCase {
         assert fileSystem.normalize("z:/abc").toLowerCase() == path("z:", "abc")
     }
 
+    @Test
     void testGetName() {
         assert fileSystem.getName("l:\\") == ""
         assert fileSystem.getName("m:\\abc") == "abc"
@@ -91,13 +97,15 @@ class WindowsFakeFileSystemTest extends AbstractFakeFileSystemTestCase {
         assert fileSystem.getName("o:/abc/def") == "def"
     }
 
-    public void testGetParent() {
+    @Test
+    void testGetParent() {
         assert fileSystem.getParent("p:/") == null
         assert fileSystem.getParent("q:\\abc") == "q:\\"
         assert fileSystem.getParent("r:/abc\\def") == path("r:", "abc")
         assert fileSystem.getParent("s:\\abc/def") == path("s:", "abc")
     }
 
+    @Test
     void testIsValidName() {
         // \/:*?"<>|
         ["a:\\abc",
@@ -129,6 +137,7 @@ class WindowsFakeFileSystemTest extends AbstractFakeFileSystemTestCase {
         }
     }
 
+    @Test
     void testIsAbsolute() {
         assert fileSystem.isAbsolute("c:\\")
         assert fileSystem.isAbsolute("x:\\Documents")
@@ -142,6 +151,7 @@ class WindowsFakeFileSystemTest extends AbstractFakeFileSystemTestCase {
         shouldFailWithMessageContaining("path") { fileSystem.isAbsolute(null) }
     }
 
+    @Test
     void testCaseInsensitive() {
         def fileEntry = fileSystem.getEntry(EXISTING_FILE)
         assert fileEntry
@@ -149,20 +159,12 @@ class WindowsFakeFileSystemTest extends AbstractFakeFileSystemTestCase {
     }
 
     //-------------------------------------------------------------------------
-    // Test setup
+    // Helper Methods
     //-------------------------------------------------------------------------
-
-    void setUp() {
-        super.setUp()
-    }
 
     protected Class getExpectedDirectoryListingFormatterClass() {
         return WindowsDirectoryListingFormatter
     }
-
-    //-----------------------------------------------------------------------------------
-    // Helper Methods
-    //-----------------------------------------------------------------------------------
 
     /**
      * Return a new instance of the FileSystem implementation class under test

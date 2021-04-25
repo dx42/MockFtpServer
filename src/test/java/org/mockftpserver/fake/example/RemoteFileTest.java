@@ -15,6 +15,9 @@
  */
 package org.mockftpserver.fake.example;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.fake.FakeFtpServer;
 import org.mockftpserver.fake.UserAccount;
 import org.mockftpserver.fake.filesystem.FileEntry;
@@ -29,7 +32,7 @@ import java.io.IOException;
 /**
  * Example test using FakeFtpServer, with programmatic configuration.
  */
-public class RemoteFileTest extends AbstractTestCase implements IntegrationTest {
+class RemoteFileTest extends AbstractTestCase implements IntegrationTest {
 
     private static final String HOME_DIR = "/";
     private static final String FILE = "/dir/sample.txt";
@@ -38,12 +41,14 @@ public class RemoteFileTest extends AbstractTestCase implements IntegrationTest 
     private RemoteFile remoteFile;
     private FakeFtpServer fakeFtpServer;
 
-    public void testReadFile() throws Exception {
+    @Test
+    void testReadFile() throws Exception {
         String contents = remoteFile.readFile(FILE);
         assertEquals("contents", CONTENTS, contents);
     }
 
-    public void testReadFileThrowsException() {
+    @Test
+    void testReadFileThrowsException() {
         try {
             remoteFile.readFile("NoSuchFile.txt");
             fail("Expected IOException");
@@ -53,8 +58,8 @@ public class RemoteFileTest extends AbstractTestCase implements IntegrationTest 
         }
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void before() throws Exception {
         fakeFtpServer = new FakeFtpServer();
         fakeFtpServer.setServerControlPort(0);  // use any free port
 
@@ -73,8 +78,8 @@ public class RemoteFileTest extends AbstractTestCase implements IntegrationTest 
         remoteFile.setPort(port);
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterEach
+    void after() throws Exception {
         fakeFtpServer.stop();
     }
 

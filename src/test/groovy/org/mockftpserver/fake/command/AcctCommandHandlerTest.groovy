@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -33,18 +35,21 @@ class AcctCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     boolean testNotLoggedIn = false
 
+    @Test
     void testHandleCommand() {
         handleCommand([ACCOUNT_NAME])
         assertSessionReply(ReplyCodes.ACCT_OK, ['acct', USERNAME])
         assertAccountNameInSession(true)
     }
 
+    @Test
     void testHandleCommand_UsernameNotSetInSession() {
         session.removeAttribute(SessionKeys.USERNAME)
         testHandleCommand_MissingRequiredSessionAttribute()
         assertAccountNameInSession(false)
     }
 
+    @Test
     void testHandleCommand_MissingAccountNameParameter() {
         testHandleCommand_MissingRequiredParameter([])
         assertAccountNameInSession(false)
@@ -54,8 +59,8 @@ class AcctCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     // Abstract and Overridden Methods
     //-------------------------------------------------------------------------
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
         session.setAttribute(SessionKeys.USERNAME, USERNAME)
     }
 

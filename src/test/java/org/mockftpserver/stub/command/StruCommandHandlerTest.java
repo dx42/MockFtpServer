@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -27,7 +29,7 @@ import org.mockftpserver.core.command.ReplyCodes;
  * 
  * @author Chris Mair
  */
-public final class StruCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class StruCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final String CODE1 = "F";
     private static final String CODE2 = "R";
@@ -36,10 +38,8 @@ public final class StruCommandHandlerTest extends AbstractCommandHandlerTestCase
     private Command command1;
     private Command command2;
 
-    /**
-     * Test the handleCommand() method
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
 
@@ -50,20 +50,13 @@ public final class StruCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyOneDataElement(commandHandler.getInvocation(1), StruCommandHandler.FILE_STRUCTURE_KEY, CODE2);
     }
 
-    /**
-     * Test the handleCommand() method, when no pathname parameter has been specified
-     */
-    public void testHandleCommand_MissingPathnameParameter() throws Exception {
+    @Test
+    void testHandleCommand_MissingPathnameParameter() throws Exception {
         testHandleCommand_InvalidParameters(commandHandler, CommandNames.STRU, EMPTY);
     }
 
-    /**
-     * Perform initialization before each test
-     * 
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new StruCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
         command1 = new Command(CommandNames.STRU, array(CODE1));

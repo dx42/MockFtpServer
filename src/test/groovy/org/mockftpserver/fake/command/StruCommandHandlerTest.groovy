@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -27,6 +28,7 @@ import org.mockftpserver.core.command.ReplyCodes
  */
 class StruCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
+    @Test
     void testHandleCommand() {
         handleCommand([])
         assertSessionReply(ReplyCodes.STRU_OK, 'stru')
@@ -42,10 +44,6 @@ class StruCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     Command createValidCommand() {
         return new Command(CommandNames.STRU, [])
-    }
-
-    void setUp() {
-        super.setUp()
     }
 
 }

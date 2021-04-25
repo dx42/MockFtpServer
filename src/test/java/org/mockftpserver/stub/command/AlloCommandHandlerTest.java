@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -30,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Chris Mair
  */
-public final class AlloCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class AlloCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(AlloCommandHandlerTest.class);
     private static final int BYTES1 = 64;
@@ -41,10 +43,8 @@ public final class AlloCommandHandlerTest extends AbstractCommandHandlerTestCase
     private Command command1;
     private Command command2;
 
-    /**
-     * Test the handleCommand() method
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
 
@@ -57,18 +57,13 @@ public final class AlloCommandHandlerTest extends AbstractCommandHandlerTestCase
                 BYTES2), AlloCommandHandler.RECORD_SIZE_KEY, new Integer(RECORD_SIZE));
     }
 
-    /**
-     * Test the handleCommand() method, when no numberOfBytes parameter has been specified
-     */
-    public void testHandleCommand_MissingNumberOfBytesParameter() throws Exception {
+    @Test
+    void testHandleCommand_MissingNumberOfBytesParameter() throws Exception {
         testHandleCommand_InvalidParameters(commandHandler, CommandNames.ALLO, EMPTY);
     }
 
-    /**
-     * Test the handleCommand() method, when the recordSize delimiter ("R") parameter is specified,
-     * but is not followed by the recordSize value.
-     */
-    public void testHandleCommand_RecordSizeDelimiterWithoutValue() throws Exception {
+    @Test
+    void testHandleCommand_RecordSizeDelimiterWithoutValue() throws Exception {
         try {
             commandHandler.handleCommand(new Command(CommandNames.ALLO, array("123 R ")), session);
             fail("Expected AssertFailedException");
@@ -78,11 +73,8 @@ public final class AlloCommandHandlerTest extends AbstractCommandHandlerTestCase
         }
     }
 
-    /**
-     * Test the handleCommand() method, when a non-numeric numberOfBytes parameter has been
-     * specified
-     */
-    public void testHandleCommand_InvalidNumberOfBytesParameter() throws Exception {
+    @Test
+    void testHandleCommand_InvalidNumberOfBytesParameter() throws Exception {
         try {
             commandHandler.handleCommand(new Command(CommandNames.ALLO, array("xx")), session);
             fail("Expected NumberFormatException");
@@ -92,10 +84,8 @@ public final class AlloCommandHandlerTest extends AbstractCommandHandlerTestCase
         }
     }
 
-    /**
-     * Test the handleCommand() method, when a non-numeric recordSize parameter has been specified
-     */
-    public void testHandleCommand_InvalidRecordSizeParameter() throws Exception {
+    @Test
+    void testHandleCommand_InvalidRecordSizeParameter() throws Exception {
         try {
             commandHandler.handleCommand(new Command(CommandNames.ALLO, array("123 R xx")), session);
             fail("Expected NumberFormatException");
@@ -105,13 +95,8 @@ public final class AlloCommandHandlerTest extends AbstractCommandHandlerTestCase
         }
     }
 
-    /**
-     * Perform initialization before each test
-     * 
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new AlloCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
         command1 = new Command(CommandNames.ALLO, array(Integer.toString(BYTES1)));

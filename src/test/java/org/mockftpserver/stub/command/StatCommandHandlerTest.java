@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -27,17 +29,15 @@ import org.mockftpserver.core.command.ReplyCodes;
  * 
  * @author Chris Mair
  */
-public final class StatCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class StatCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final String RESPONSE_DATA = "status info 123.456";
     private static final String PATHNAME = "dir/file";
 
     private StatCommandHandler commandHandler;
 
-    /**
-     * Test the handleCommand() method, when no pathname parameter is specified
-     */
-    public void testHandleCommand_NoPathname() throws Exception {
+    @Test
+    void testHandleCommand_NoPathname() throws Exception {
         final Command COMMAND = new Command(CommandNames.STAT, EMPTY);
         commandHandler.setStatus(RESPONSE_DATA);
         commandHandler.handleCommand(COMMAND, session);
@@ -48,11 +48,8 @@ public final class StatCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyOneDataElement(commandHandler.getInvocation(0), StatCommandHandler.PATHNAME_KEY, null);
     }
 
-    /**
-     * Test the handleCommand() method, specifying a pathname parameter
-     * @throws Exception - if an error occurs
-     */
-    public void testHandleCommand_Pathname() throws Exception {
+    @Test
+    void testHandleCommand_Pathname() throws Exception {
         final Command COMMAND = new Command(CommandNames.STAT, array(PATHNAME));
 
         commandHandler.setStatus(RESPONSE_DATA);
@@ -64,10 +61,8 @@ public final class StatCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyOneDataElement(commandHandler.getInvocation(0), StatCommandHandler.PATHNAME_KEY, PATHNAME);
     }
 
-    /**
-     * Test the handleCommand() method, when the replyCode is explicitly set
-     */
-    public void testHandleCommand_OverrideReplyCode() throws Exception {
+    @Test
+    void testHandleCommand_OverrideReplyCode() throws Exception {
         final Command COMMAND = new Command(CommandNames.STAT, EMPTY);
         commandHandler.setStatus(RESPONSE_DATA);
         commandHandler.setReplyCode(200);
@@ -79,13 +74,8 @@ public final class StatCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyOneDataElement(commandHandler.getInvocation(0), StatCommandHandler.PATHNAME_KEY, null);
     }
 
-    /**
-     * Perform initialization before each test
-     * 
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new StatCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
     }

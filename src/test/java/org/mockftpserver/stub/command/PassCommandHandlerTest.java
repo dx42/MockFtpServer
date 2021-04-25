@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -27,7 +29,7 @@ import org.mockftpserver.core.command.ReplyCodes;
  * 
  * @author Chris Mair
  */
-public final class PassCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class PassCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final String PASSWORD1 = "password1";
     private static final String PASSWORD2 = "password2";
@@ -36,10 +38,8 @@ public final class PassCommandHandlerTest extends AbstractCommandHandlerTestCase
     private Command command1;
     private Command command2;
 
-    /**
-     * Test the handleCommand() method
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
 
@@ -50,19 +50,13 @@ public final class PassCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyOneDataElement(commandHandler.getInvocation(1), PassCommandHandler.PASSWORD_KEY, PASSWORD2);
     }
     
-    /**
-     * Test the handleCommand() method, when no password parameter has been specified
-     */
-    public void testHandleCommand_MissingPasswordParameter() throws Exception {
+    @Test
+    void testHandleCommand_MissingPasswordParameter() throws Exception {
         testHandleCommand_InvalidParameters(commandHandler, CommandNames.PASS, EMPTY);
     }
 
-    /**
-     * Perform initialization before each test
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new PassCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
         command1 = new Command(CommandNames.PASS, array(PASSWORD1));

@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.core.util;
 
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.test.AbstractTestCase;
@@ -30,7 +31,7 @@ import java.util.Map;
  *
  * @author Chris Mair
  */
-public class AssertTest extends AbstractTestCase {
+class AssertTest extends AbstractTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(AssertTest.class);
 
@@ -49,11 +50,8 @@ public class AssertTest extends AbstractTestCase {
 
     private static final String MESSAGE = "exception message";
 
-    /**
-     * Test the assertNull() method
-     */
-    public void testAssertNull() {
-
+    @Test
+    void testAssertNull() {
         Assert.isNull(null, MESSAGE);
 
         try {
@@ -66,12 +64,8 @@ public class AssertTest extends AbstractTestCase {
         }
     }
 
-
-    /**
-     * Test the assertNotNull() method
-     */
-    public void testAssertNotNull() {
-
+    @Test
+    void testAssertNotNull() {
         Assert.notNull("OK", MESSAGE);
 
         try {
@@ -84,11 +78,8 @@ public class AssertTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the assertTrue() method
-     */
-    public void testAssertTrue() throws Exception {
-
+    @Test
+    void testAssertTrue() throws Exception {
         Assert.isTrue(true, MESSAGE);
 
         verifyThrowsAssertFailedException(true, new ExceptionClosure() {
@@ -98,11 +89,8 @@ public class AssertTest extends AbstractTestCase {
         });
     }
 
-    /**
-     * Test the assertFalse() method
-     */
-    public void testAssertFalse() throws Exception {
-
+    @Test
+    void testAssertFalse() throws Exception {
         Assert.isFalse(false, MESSAGE);
 
         verifyThrowsAssertFailedException(true, new ExceptionClosure() {
@@ -112,11 +100,8 @@ public class AssertTest extends AbstractTestCase {
         });
     }
 
-    /**
-     * Test the assertNotEmpty(Collection,String) method
-     */
-    public void testAssertNotNullOrEmpty_Collection() throws Exception {
-
+    @Test
+    void testAssertNotNullOrEmpty_Collection() throws Exception {
         final Collection COLLECTION = Collections.singletonList("item");
         Assert.notNullOrEmpty(COLLECTION, MESSAGE);
 
@@ -133,11 +118,8 @@ public class AssertTest extends AbstractTestCase {
         });
     }
 
-    /**
-     * Test the assertNotEmpty(Map,String) method
-     */
-    public void testAssertNotNullOrEmpty_Map() throws Exception {
-
+    @Test
+    void testAssertNotNullOrEmpty_Map() throws Exception {
         final Map MAP = Collections.singletonMap("key", "value");
         Assert.notNullOrEmpty(MAP, MESSAGE);
 
@@ -154,11 +136,8 @@ public class AssertTest extends AbstractTestCase {
         });
     }
 
-    /**
-     * Test the assertNotEmpty(Objecct[],String) method
-     */
-    public void testAssertNotNullOrEmpty_array() throws Exception {
-
+    @Test
+    void testAssertNotNullOrEmpty_array() throws Exception {
         final Object[] ARRAY = {"1", "2"};
         Assert.notNullOrEmpty(ARRAY, MESSAGE);
 
@@ -175,11 +154,8 @@ public class AssertTest extends AbstractTestCase {
         });
     }
 
-    /**
-     * Test the assertNotEmpty(String,String) method
-     */
-    public void testAssertNotNullOrEmpty_String() throws Exception {
-
+    @Test
+    void testAssertNotNullOrEmpty_String() throws Exception {
         Assert.notNullOrEmpty("OK", MESSAGE);
 
         verifyThrowsAssertFailedException(true, new ExceptionClosure() {
@@ -210,9 +186,7 @@ public class AssertTest extends AbstractTestCase {
      *
      * @param closure - the ExceptionClosure encapsulating the code to execute
      */
-    private void verifyThrowsAssertFailedException(boolean checkMessage, ExceptionClosure closure)
-            throws Exception {
-
+    private void verifyThrowsAssertFailedException(boolean checkMessage, ExceptionClosure closure) throws Exception {
         try {
             closure.execute();
             fail("Expected IllegalArumentException");

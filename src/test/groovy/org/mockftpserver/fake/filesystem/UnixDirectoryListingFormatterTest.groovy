@@ -15,8 +15,12 @@
  */
 package org.mockftpserver.fake.filesystem
 
-import java.text.SimpleDateFormat
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.test.AbstractGroovyTestCase
+
+import java.text.SimpleDateFormat
 
 /**
  * Tests for UnixDirectoryListingFormatter
@@ -46,6 +50,7 @@ class UnixDirectoryListingFormatterTest extends AbstractGroovyTestCase {
     // "drwxr-xr-x   2 c096336  iawebgrp    8192 Nov  7  2006 tmp"
     // "drwxr-xr-x   39 ftp      ftp          4096 Mar 19  2004 a"
 
+    @Test
     void testFormat_File() {
         def fileSystemEntry = new FileEntry(path: FILE_PATH, contents: '12345678901', lastModified: LAST_MODIFIED,
                 owner: OWNER, group: GROUP, permissions: FILE_PERMISSIONS)
@@ -53,12 +58,14 @@ class UnixDirectoryListingFormatterTest extends AbstractGroovyTestCase {
         verifyFormat(fileSystemEntry, "-rw-r--r--  1 owner123 group456              11 $lastModifiedFormatted def.txt")
     }
 
+    @Test
     void testFormat_File_Defaults() {
         def fileSystemEntry = new FileEntry(path: FILE_PATH, contents: '12345678901', lastModified: LAST_MODIFIED)
         LOG.info(fileSystemEntry.toString())
         verifyFormat(fileSystemEntry, "-rwxrwxrwx  1 none     none                  11 $lastModifiedFormatted def.txt")
     }
 
+    @Test
     void testFormat_File_NonEnglishDefaultLocale() {
         Locale.setDefault(Locale.GERMAN)
         def fileSystemEntry = new FileEntry(path: FILE_PATH, contents: '12345678901', lastModified: LAST_MODIFIED)
@@ -66,6 +73,7 @@ class UnixDirectoryListingFormatterTest extends AbstractGroovyTestCase {
         verifyFormat(fileSystemEntry, "-rwxrwxrwx  1 none     none                  11 $lastModifiedFormatted def.txt")
     }
 
+    @Test
     void testFormat_File_NonEnglishLocale() {
         formatter.setLocale(Locale.FRENCH)
         def fileSystemEntry = new FileEntry(path: FILE_PATH, contents: '12345678901', lastModified: LAST_MODIFIED)
@@ -76,6 +84,7 @@ class UnixDirectoryListingFormatterTest extends AbstractGroovyTestCase {
         assert result.contains(formattedDate)
     }
 
+    @Test
     void testFormat_Directory() {
         def fileSystemEntry = new DirectoryEntry(path: DIR_PATH, lastModified: LAST_MODIFIED,
                 owner: OWNER, group: GROUP, permissions: DIR_PERMISSIONS)
@@ -83,22 +92,23 @@ class UnixDirectoryListingFormatterTest extends AbstractGroovyTestCase {
         verifyFormat(fileSystemEntry, "drwxr-xr-x  1 owner123 group456               0 $lastModifiedFormatted etc")
     }
 
+    @Test
     void testFormat_Directory_Defaults() {
         def fileSystemEntry = new DirectoryEntry(path: DIR_PATH, lastModified: LAST_MODIFIED)
         LOG.info(fileSystemEntry.toString())
         verifyFormat(fileSystemEntry, "drwxrwxrwx  1 none     none                   0 $lastModifiedFormatted etc")
     }
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
         formatter = new UnixDirectoryListingFormatter()
         def dateFormat = new SimpleDateFormat(UnixDirectoryListingFormatter.DATE_FORMAT, Locale.ENGLISH)
         lastModifiedFormatted = dateFormat.format(LAST_MODIFIED)
         defaultLocale = Locale.default
     }
 
+    @AfterEach
     void tearDown() {
-        super.tearDown()
         Locale.setDefault(defaultLocale)
     }
 

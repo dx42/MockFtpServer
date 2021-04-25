@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.core.session;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.command.Command;
@@ -37,7 +39,7 @@ import java.util.ResourceBundle;
  *
  * @author Chris Mair
  */
-public final class DefaultSession_RunTest extends AbstractTestCase {
+class DefaultSession_RunTest extends AbstractTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultSession_RunTest.class);
     private static final Command COMMAND = new Command("USER", EMPTY);
@@ -51,13 +53,14 @@ public final class DefaultSession_RunTest extends AbstractTestCase {
     private boolean commandHandled = false;
     private String commandToRegister = COMMAND.getName();
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandlerMap = new HashMap();
         outputStream = new ByteArrayOutputStream();
     }
 
-    public void testInvocationOfCommandHandler() throws Exception {
+    @Test
+    void testInvocationOfCommandHandler() throws Exception {
         AbstractStubCommandHandler commandHandler = new AbstractStubCommandHandler() {
             public void handleCommand(Command command, Session cmdSession, InvocationRecord invocationRecord) {
                 assertEquals("command", COMMAND, command);
@@ -70,7 +73,8 @@ public final class DefaultSession_RunTest extends AbstractTestCase {
         runCommandAndVerifyOutput(commandHandler, "");
     }
 
-    public void testClose() throws Exception {
+    @Test
+    void testClose() throws Exception {
         CommandHandler commandHandler = new AbstractStubCommandHandler() {
             public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
                 session.close();
@@ -82,7 +86,8 @@ public final class DefaultSession_RunTest extends AbstractTestCase {
         assertTrue("Session should be closed", session.isClosed());
     }
 
-    public void testClose_WithoutCommand() throws Exception {
+    @Test
+    void testClose_WithoutCommand() throws Exception {
         PipedOutputStream pipedOutputStream = new PipedOutputStream();
         PipedInputStream inputStream = new PipedInputStream(pipedOutputStream);
         stubSocket = new StubSocket(DEFAULT_HOST, inputStream, outputStream);
@@ -99,7 +104,8 @@ public final class DefaultSession_RunTest extends AbstractTestCase {
         assertTrue("Session should be closed", session.isClosed());
     }
 
-    public void testGetClientHost() throws Exception {
+    @Test
+    void testGetClientHost() throws Exception {
         CommandHandler commandHandler = new AbstractStubCommandHandler() {
             public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
                 commandHandled = true;
@@ -110,7 +116,8 @@ public final class DefaultSession_RunTest extends AbstractTestCase {
         assertEquals("clientHost", DEFAULT_HOST, session.getClientHost());
     }
 
-    public void testSendReply_NullReplyText() throws Exception {
+    @Test
+    void testSendReply_NullReplyText() throws Exception {
         CommandHandler commandHandler = new AbstractStubCommandHandler() {
             public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
                 session.sendReply(REPLY_CODE, null);
@@ -120,7 +127,8 @@ public final class DefaultSession_RunTest extends AbstractTestCase {
         runCommandAndVerifyOutput(commandHandler, Integer.toString(REPLY_CODE));
     }
 
-    public void testSendReply_TrimReplyText() throws Exception {
+    @Test
+    void testSendReply_TrimReplyText() throws Exception {
         CommandHandler commandHandler = new AbstractStubCommandHandler() {
             public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
                 session.sendReply(REPLY_CODE, " " + REPLY_TEXT + " ");
@@ -130,7 +138,8 @@ public final class DefaultSession_RunTest extends AbstractTestCase {
         runCommandAndVerifyOutput(commandHandler, REPLY_CODE + " " + REPLY_TEXT);
     }
 
-    public void testSendReply_MultiLineText() throws Exception {
+    @Test
+    void testSendReply_MultiLineText() throws Exception {
         final String MULTILINE_REPLY_TEXT = "abc\ndef\nghi\njkl";
         final String FORMATTED_MULTILINE_REPLY_TEXT = "123-abc\ndef\nghi\n123 jkl";
 
@@ -143,7 +152,8 @@ public final class DefaultSession_RunTest extends AbstractTestCase {
         runCommandAndVerifyOutput(commandHandler, FORMATTED_MULTILINE_REPLY_TEXT);
     }
 
-    public void testSendReply_ReplyText() throws Exception {
+    @Test
+    void testSendReply_ReplyText() throws Exception {
         CommandHandler commandHandler = new AbstractStubCommandHandler() {
             public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
                 session.sendReply(REPLY_CODE, REPLY_TEXT);
@@ -153,7 +163,8 @@ public final class DefaultSession_RunTest extends AbstractTestCase {
         runCommandAndVerifyOutput(commandHandler, REPLY_CODE + " " + REPLY_TEXT);
     }
 
-    public void testUnrecognizedCommand() throws Exception {
+    @Test
+    void testUnrecognizedCommand() throws Exception {
         // Register a handler for unsupported commands
         CommandHandler commandHandler = new AbstractStubCommandHandler() {
             public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {

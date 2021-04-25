@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.ReplyCodes
@@ -39,6 +41,7 @@ abstract class AbstractStoreFileCommandHandlerTestCase extends AbstractFakeComma
     // Tests Common to All Subclasses
     //-------------------------------------------------------------------------
 
+    @Test
     void testHandleCommand_NoWriteAccessToExistingFile() {
         fileSystem.add(new FileEntry(path: FILE))
         fileSystem.getEntry(FILE).permissions = Permissions.NONE
@@ -46,12 +49,14 @@ abstract class AbstractStoreFileCommandHandlerTestCase extends AbstractFakeComma
         assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ['filesystem.cannotWrite', FILE])
     }
 
+    @Test
     void testHandleCommand_NoWriteAccessToDirectoryForNewFile() {
         fileSystem.getEntry(DIR).permissions = new Permissions('r-xr-xr-x')
         handleCommand([FILE])
         assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ['filesystem.cannotWrite', DIR])
     }
 
+    @Test
     void testHandleCommand_NoExecuteAccessToDirectory() {
         fileSystem.add(new FileEntry(path: FILE))
         fileSystem.getEntry(DIR).permissions = new Permissions('rw-rw-rw-')
@@ -59,6 +64,7 @@ abstract class AbstractStoreFileCommandHandlerTestCase extends AbstractFakeComma
         assertSessionReply(ReplyCodes.WRITE_FILE_ERROR, ['filesystem.cannotExecute', DIR])
     }
 
+    @Test
     void testHandleCommand_ThrowsFileSystemException() {
         fileSystem.addMethodException = new FileSystemException("bad", ERROR_MESSAGE_KEY)
 
@@ -99,8 +105,8 @@ abstract class AbstractStoreFileCommandHandlerTestCase extends AbstractFakeComma
         return new Command(CommandNames.APPE, [FILE])
     }
 
-    void setUp() {
-        super.setUp()
+    @BeforeEach
+    void setUp_AbstractStoreFileCommandHandlerTestCase() {
         createDirectory(DIR)
     }
 

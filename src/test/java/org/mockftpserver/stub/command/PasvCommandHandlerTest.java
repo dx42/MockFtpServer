@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -31,17 +33,15 @@ import java.net.InetAddress;
  *
  * @author Chris Mair
  */
-public final class PasvCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class PasvCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(PasvCommandHandlerTest.class);
     private static final int PORT = (23 << 8) + 77;
 
     private PasvCommandHandler commandHandler;
 
-    /**
-     * Test the handleCommand() method
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         final InetAddress SERVER = inetAddress("192.168.0.2");
         when(session.switchToPassiveMode()).thenReturn(PORT);
         when(session.getServerHost()).thenReturn(SERVER);
@@ -56,13 +56,8 @@ public final class PasvCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyNoDataElements(commandHandler.getInvocation(0));
     }
 
-    /**
-     * Perform initialization before each test
-     *
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new PasvCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
     }

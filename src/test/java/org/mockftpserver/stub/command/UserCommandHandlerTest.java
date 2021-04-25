@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -27,7 +29,7 @@ import org.mockftpserver.core.command.ReplyCodes;
  * 
  * @author Chris Mair
  */
-public final class UserCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class UserCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final String USERNAME1 = "user1";
     private static final String USERNAME2 = "user2";
@@ -36,10 +38,8 @@ public final class UserCommandHandlerTest extends AbstractCommandHandlerTestCase
     private Command command1;
     private Command command2;
 
-    /**
-     * Test the handleCommand() method
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         commandHandler.handleCommand(command1, session);
         commandHandler.setPasswordRequired(false);
         commandHandler.handleCommand(command2, session);
@@ -52,29 +52,20 @@ public final class UserCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyOneDataElement(commandHandler.getInvocation(1), UserCommandHandler.USERNAME_KEY, USERNAME2);
     }
 
-    /**
-     * Test the handleCommand() method, when no username parameter has been specified
-     */
-    public void testHandleCommand_MissingUsernameParameter() throws Exception {
+    @Test
+    void testHandleCommand_MissingUsernameParameter() throws Exception {
         testHandleCommand_InvalidParameters(commandHandler, CommandNames.USER, EMPTY);
     }
 
-    /**
-     * Test the setPasswordRequired() and isPasswordRequired() methods 
-     */
-    public void testSetPasswordRequired() {
+    @Test
+    void testSetPasswordRequired() {
         assertTrue("initial state", commandHandler.isPasswordRequired());
         commandHandler.setPasswordRequired(false);
         assertFalse("after set false", commandHandler.isPasswordRequired());
     }
     
-    /**
-     * Perform initialization before each test
-     * 
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new UserCommandHandler();
         command1 = new Command(CommandNames.USER, array(USERNAME1));
         command2 = new Command(CommandNames.USER, array(USERNAME2));

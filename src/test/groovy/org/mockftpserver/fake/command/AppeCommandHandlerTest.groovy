@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -29,32 +30,38 @@ import org.mockftpserver.fake.filesystem.Permissions
  */
 class AppeCommandHandlerTest extends AbstractStoreFileCommandHandlerTestCase {
 
+    @Test
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])
     }
 
+    @Test
     void testHandleCommand_AbsolutePath() {
         userAccount.defaultPermissionsForNewFile = Permissions.NONE
         testHandleCommand([FILE], 'appe', CONTENTS)
     }
 
+    @Test
     void testHandleCommand_AbsolutePath_FileAlreadyExists() {
         def ORIGINAL_CONTENTS = '123 456 789'
         fileSystem.add(new FileEntry(path: FILE, contents: ORIGINAL_CONTENTS))
         testHandleCommand([FILE], 'appe', ORIGINAL_CONTENTS + CONTENTS)
     }
 
+    @Test
     void testHandleCommand_RelativePath() {
         setCurrentDirectory(DIR)
         testHandleCommand([FILENAME], 'appe', CONTENTS)
     }
 
+    @Test
     void testHandleCommand_PathSpecifiesAnExistingDirectory() {
         createDirectory(FILE)
         handleCommand([FILE])
         assertSessionReply(ReplyCodes.FILENAME_NOT_VALID, FILE)
     }
 
+    @Test
     void testHandleCommand_ParentDirectoryDoesNotExist() {
         def NO_SUCH_DIR = "/path/DoesNotExist"
         handleCommand([p(NO_SUCH_DIR, FILENAME)])
@@ -71,10 +78,6 @@ class AppeCommandHandlerTest extends AbstractStoreFileCommandHandlerTestCase {
 
     Command createValidCommand() {
         return new Command(CommandNames.APPE, [FILE])
-    }
-
-    void setUp() {
-        super.setUp()
     }
 
     protected String verifyOutputFile() {

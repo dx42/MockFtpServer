@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -33,6 +34,7 @@ class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
     static final FILENAME = "f.txt"
     static final FILE = p(DIR, FILENAME)
 
+    @Test
     void testHandleCommand() {
         createFile(FILE)
         handleCommand([FILE])
@@ -40,6 +42,7 @@ class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert fileSystem.exists(FILE) == false
     }
 
+    @Test
     void testHandleCommand_PathIsRelative() {
         createFile(FILE)
         setCurrentDirectory("/")
@@ -48,11 +51,13 @@ class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert fileSystem.exists(FILE) == false
     }
 
+    @Test
     void testHandleCommand_PathDoesNotExistInFileSystem() {
         handleCommand([FILE])
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ['filesystem.isNotAFile', FILE])
     }
 
+    @Test
     void testHandleCommand_PathSpecifiesADirectory() {
         createDirectory(FILE)
         handleCommand([FILE])
@@ -60,10 +65,12 @@ class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assert fileSystem.exists(FILE)
     }
 
+    @Test
     void testHandleCommand_MissingPathParameter() {
         testHandleCommand_MissingRequiredParameter([])
     }
 
+    @Test
     void testHandleCommand_DeleteThrowsException() {
         createFile(FILE)
 //        overrideMethodToThrowFileSystemException("delete")
@@ -72,6 +79,7 @@ class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertSessionReply(ReplyCodes.READ_FILE_ERROR, ERROR_MESSAGE_KEY)
     }
 
+    @Test
     void testHandleCommand_NoWriteAccessToParentDirectory() {
         createFile(FILE)
         fileSystem.getEntry(DIR).permissions = new Permissions('r-xr-xr-x')

@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -27,16 +29,14 @@ import org.mockftpserver.core.command.ReplyCodes;
  * 
  * @author Chris Mair
  */
-public final class MkdCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class MkdCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private MkdCommandHandler commandHandler;
     private Command command1;
     private Command command2;
 
-    /**
-     * Test the handleCommand() method
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
 
@@ -47,20 +47,13 @@ public final class MkdCommandHandlerTest extends AbstractCommandHandlerTestCase 
         verifyOneDataElement(commandHandler.getInvocation(1), MkdCommandHandler.PATHNAME_KEY, DIR2);
     }
 
-    /**
-     * Test the handleCommand() method, when no pathname parameter has been specified
-     */
-    public void testHandleCommand_MissingPathnameParameter() throws Exception {
+    @Test
+    void testHandleCommand_MissingPathnameParameter() throws Exception {
         testHandleCommand_InvalidParameters(commandHandler, CommandNames.MKD, EMPTY);
     }
 
-    /**
-     * Perform initialization before each test
-     * 
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new MkdCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
         commandHandler.setReplyTextBundle(replyTextBundle);

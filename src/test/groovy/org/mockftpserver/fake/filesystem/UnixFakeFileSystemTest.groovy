@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.filesystem
 
+import org.junit.jupiter.api.Test
+
 /**
  * Tests for UnixFakeFileSystem.
  *
@@ -34,7 +36,7 @@ class UnixFakeFileSystemTest extends AbstractFakeFileSystemTestCase {
         NO_SUCH_FILE = "/xx/yy/zz.txt"
     }
 
-
+    @Test
     void testListNames_FromRoot() {
         final DIR = '/'
         final FILENAME = 'abc.txt'
@@ -46,6 +48,7 @@ class UnixFakeFileSystemTest extends AbstractFakeFileSystemTestCase {
         assert names.find { it == FILENAME }
     }
 
+    @Test
     void testPath() {
         assert fileSystem.path(null, null) == ""
         assert fileSystem.path(null, "abc") == "abc"
@@ -63,6 +66,7 @@ class UnixFakeFileSystemTest extends AbstractFakeFileSystemTestCase {
         assert fileSystem.path("abc/.", null) == "abc"
     }
 
+    @Test
     void testNormalize() {
         assert fileSystem.normalize("/") == "/"
         assert fileSystem.normalize("/aBc") == "/aBc"
@@ -73,6 +77,7 @@ class UnixFakeFileSystemTest extends AbstractFakeFileSystemTestCase {
         assert fileSystem.normalize("/abc/def/./gHI") == "/abc/def/gHI"
     }
 
+    @Test
     void testGetName() {
         assert fileSystem.getName("/") == ""
         assert fileSystem.getName("/aBC") == "aBC"
@@ -80,12 +85,14 @@ class UnixFakeFileSystemTest extends AbstractFakeFileSystemTestCase {
         assert fileSystem.getName("/abc/def/../GHI") == "GHI"
     }
 
-    public void testGetParent() {
+    @Test
+    void testGetParent() {
         assert fileSystem.getParent("/") == null
         assert fileSystem.getParent("/abc") == "/"
         assert fileSystem.getParent("/abc/def") == "/abc"
     }
 
+    @Test
     void testIsValidName() {
         ["/abc",
                 "/test/",
@@ -107,6 +114,7 @@ class UnixFakeFileSystemTest extends AbstractFakeFileSystemTestCase {
         }
     }
 
+    @Test
     void testIsAbsolute() {
         assert fileSystem.isAbsolute("/")
         assert fileSystem.isAbsolute("/abc")

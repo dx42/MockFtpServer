@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -29,17 +31,15 @@ import java.net.InetAddress;
  *
  * @author Chris Mair
  */
-public final class EpsvCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class EpsvCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final InetAddress SERVER = inetAddress("1080::8:800:200C:417A");
     private static final int PORT = 6275;
 
     private EpsvCommandHandler commandHandler;
 
-    /**
-     * Test the handleCommand() method
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         when(session.switchToPassiveMode()).thenReturn(PORT);
         when(session.getServerHost()).thenReturn(SERVER);
 
@@ -52,13 +52,8 @@ public final class EpsvCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyNoDataElements(commandHandler.getInvocation(0));
     }
 
-    /**
-     * Perform initialization before each test
-     *
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new EpsvCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
     }

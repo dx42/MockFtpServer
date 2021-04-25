@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -30,16 +32,14 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Chris Mair
  */
-public final class SystCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class SystCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(SystCommandHandlerTest.class);
     
     private SystCommandHandler commandHandler;
 
-    /**
-     * Test the handleCommand() method
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         final String SYSTEM_NAME = "UNIX";
         commandHandler.setSystemName(SYSTEM_NAME);
 
@@ -53,10 +53,8 @@ public final class SystCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyNoDataElements(commandHandler.getInvocation(0));
     }
     
-    /**
-     * Test the SetSystemName method, passing in a null
-     */
-    public void testSetSystemName_Null() {
+    @Test
+    void testSetSystemName_Null() {
         try {
             commandHandler.setSystemName(null);
             fail("Expected AssertFailedException");
@@ -66,12 +64,8 @@ public final class SystCommandHandlerTest extends AbstractCommandHandlerTestCase
         }
     }
     
-    /**
-     * Perform initialization before each test
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new SystCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
     }

@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.core.util
 
+import org.junit.jupiter.api.Test
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.CommandSyntaxException
@@ -39,67 +40,79 @@ class PortParserTest extends AbstractGroovyTestCase {
     static final HOST_IPV6 = InetAddress.getByName("1080::8:800:200C:417A")
     static final E_PORT = 6275
 
+    @Test
     void testParseExtendedAddressHostAndPort_IPv4() {
         def client = PortParser.parseExtendedAddressHostAndPort(PARAMETER_IPV4)
         assert client.host == HOST_IPV4
         assert client.port == E_PORT
     }
 
+    @Test
     void testParseExtendedAddressHostAndPort_IPv6() {
         def client = PortParser.parseExtendedAddressHostAndPort(PARAMETER_IPV6)
         assert client.host == HOST_IPV6
         assert client.port == E_PORT
     }
 
+    @Test
     void testParseExtendedAddressHostAndPort_IPv6_CustomDelimiter() {
         def client = PortParser.parseExtendedAddressHostAndPort("@2@1080::8:800:200C:417A@6275@")
         assert client.host == HOST_IPV6
         assert client.port == E_PORT
     }
 
+    @Test
     void testParseExtendedAddressHostAndPort_IllegalParameterFormat() {
         final PARM = 'abcdef'
         shouldFail(CommandSyntaxException) { PortParser.parseExtendedAddressHostAndPort(PARM) }
     }
 
+    @Test
     void testParseExtendedAddressHostAndPort_PortMissing() {
         final PARM = '|1|132.235.1.2|'
         shouldFail(CommandSyntaxException) { PortParser.parseExtendedAddressHostAndPort(PARM) }
     }
 
+    @Test
     void testParseExtendedAddressHostAndPort_IllegalHostName() {
         final PARM = '|1|132.@|6275|'
         shouldFail(CommandSyntaxException) { PortParser.parseExtendedAddressHostAndPort(PARM) }
     }
 
+    @Test
     void testParseExtendedAddressHostAndPort_Null() {
         shouldFail(CommandSyntaxException) { PortParser.parseExtendedAddressHostAndPort(null) }
     }
 
+    @Test
     void testParseExtendedAddressHostAndPort_Empty() {
         shouldFail(CommandSyntaxException) { PortParser.parseExtendedAddressHostAndPort('') }
     }
 
+    @Test
     void testParseHostAndPort() {
         def client = PortParser.parseHostAndPort(PARAMETERS)
         assert client.host == HOST
         assert client.port == PORT
     }
 
+    @Test
     void testParseHostAndPort_Null() {
         shouldFail(CommandSyntaxException) { PortParser.parseHostAndPort(null) }
     }
 
+    @Test
     void testParseHostAndPort_InsufficientParameters() throws UnknownHostException {
         shouldFail(CommandSyntaxException) { PortParser.parseHostAndPort(PARAMETERS_INSUFFICIENT) }
     }
 
+    @Test
     void testConvertHostAndPortToStringOfBytes() {
         int port = (23 << 8) + 77
         InetAddress host = InetAddress.getByName("196.168.44.55")
         String result = PortParser.convertHostAndPortToCommaDelimitedBytes(host, port)
         LOG.info("result=" + result)
-        assertEquals("result", "196,168,44,55,23,77", result)
+        assert result == "196,168,44,55,23,77"
     }
 
 }

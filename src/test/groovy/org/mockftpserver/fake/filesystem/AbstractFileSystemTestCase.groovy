@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.filesystem
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.test.AbstractGroovyTestCase
 
 /**
@@ -49,6 +51,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
     // Common Tests
     //-------------------------------------------------------------------------
 
+    @Test
     void testExists() {
         assert !fileSystem.exists(NEW_FILE)
         assert !fileSystem.exists(NEW_DIR)
@@ -59,6 +62,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         shouldFailWithMessageContaining("path") { fileSystem.exists(null) }
     }
 
+    @Test
     void testIsDirectory() {
         assert fileSystem.isDirectory(EXISTING_DIR)
         assert !fileSystem.isDirectory(EXISTING_FILE)
@@ -69,6 +73,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         shouldFailWithMessageContaining("path") { fileSystem.isDirectory(null) }
     }
 
+    @Test
     void testIsFile() {
         assert fileSystem.isFile(EXISTING_FILE)
         assert !fileSystem.isFile(EXISTING_DIR)
@@ -79,6 +84,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         shouldFailWithMessageContaining("path") { fileSystem.isFile(null) }
     }
 
+    @Test
     void testAdd_Directory() {
         assert !fileSystem.exists(NEW_DIR), "Before createDirectory"
         fileSystem.add(new DirectoryEntry(NEW_DIR))
@@ -98,6 +104,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         shouldFailWithMessageContaining("path") { fileSystem.add(new DirectoryEntry(null)) }
     }
 
+    @Test
     void testAdd_File() {
         assert !fileSystem.exists(NEW_FILE), "Before createFile"
         fileSystem.add(new FileEntry(NEW_FILE))
@@ -122,14 +129,17 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         shouldFailWithMessageContaining("path") { fileSystem.add(new FileEntry(null)) }
     }
 
+    @Test
     void testRename_NullFromPath() {
         shouldFailWithMessageContaining("fromPath") { fileSystem.rename(null, FILENAME1) }
     }
 
+    @Test
     void testRename_NullToPath() {
         shouldFailWithMessageContaining("toPath") { fileSystem.rename(FILENAME1, null) }
     }
 
+    @Test
     void testListNames() {
         fileSystem.add(new DirectoryEntry(NEW_DIR))
         assert fileSystem.listNames(NEW_DIR) == []
@@ -151,6 +161,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         shouldFailWithMessageContaining("path") { fileSystem.listNames(null) }
     }
 
+    @Test
     void testListNames_Wildcards() {
         fileSystem.add(new DirectoryEntry(NEW_DIR))
         fileSystem.add(new FileEntry(p(NEW_DIR, 'abc.txt')))
@@ -165,6 +176,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         assertSameIgnoringOrder(fileSystem.listNames(p(NEW_DIR, 'd?f.*')), ['def.txt'])
     }
 
+    @Test
     void testListFiles() {
         fileSystem.add(new DirectoryEntry(NEW_DIR))
         assert [] == fileSystem.listFiles(NEW_DIR)
@@ -197,6 +209,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         shouldFailWithMessageContaining("path") { fileSystem.listFiles(null) }
     }
 
+    @Test
     void testListFiles_Wildcards() {
         def dirEntry = new DirectoryEntry(NEW_DIR)
         def fileEntry1 = new FileEntry(p(NEW_DIR, 'abc.txt'))
@@ -215,6 +228,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         assert fileSystem.listFiles(p(NEW_DIR, 'd?f.*')) as Set == [fileEntry2] as Set
     }
 
+    @Test
     void testDelete() {
         fileSystem.add(new FileEntry(NEW_FILE))
         assert fileSystem.delete(NEW_FILE)
@@ -235,6 +249,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         shouldFailWithMessageContaining("path") { fileSystem.delete(null) }
     }
 
+    @Test
     void testRename() {
         final FROM_FILE = NEW_FILE + "2"
         fileSystem.add(new FileEntry(FROM_FILE))
@@ -251,6 +266,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         assert fileSystem.exists(TO_DIR)
     }
 
+    @Test
     void testRename_ToPathFileAlreadyExists() {
         final FROM_FILE = EXISTING_FILE
         final String TO_FILE = NEW_FILE
@@ -260,6 +276,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
          }
     }
 
+    @Test
     void testRename_FromPathDoesNotExist() {
         final TO_FILE2 = NEW_FILE + "2"
         shouldThrowFileSystemExceptionWithMessageKey('filesystem.doesNotExist') {
@@ -268,6 +285,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         assert !fileSystem.exists(TO_FILE2), "After failed rename"
     }
 
+    @Test
     void testRename_ToPathIsChildOfFromPath() {
         final FROM_DIR = NEW_DIR
         final TO_DIR = FROM_DIR + "/child"
@@ -278,6 +296,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         assert !fileSystem.exists(TO_DIR), "After failed rename"
     }
 
+    @Test
     void testRename_EmptyDirectory() {
         final FROM_DIR = NEW_DIR
         final TO_DIR = FROM_DIR + "2"
@@ -287,6 +306,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         assert fileSystem.exists(TO_DIR)
     }
 
+    @Test
     void testRename_DirectoryContainsFiles() {
         fileSystem.add(new DirectoryEntry(NEW_DIR))
         fileSystem.add(new FileEntry(NEW_DIR + "/a.txt"))
@@ -306,6 +326,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         assert fileSystem.exists(TO_DIR + "/subdir")
     }
 
+    @Test
     void testRename_ParentOfToPathDoesNotExist() {
         final String FROM_FILE = NEW_FILE
         final String TO_FILE = fileSystem.path(NO_SUCH_DIR, "abc")
@@ -318,6 +339,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
         assert !fileSystem.exists(TO_FILE)
     }
 
+    @Test
     void testGetParent_Null() {
         shouldFailWithMessageContaining("path") { fileSystem.getParent(null) }
     }
@@ -326,8 +348,8 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
     // Test setup
     //-------------------------------------------------------------------------
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
         fileSystem = createFileSystem()
     }
 

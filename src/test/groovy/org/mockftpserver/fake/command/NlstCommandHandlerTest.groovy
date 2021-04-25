@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.command
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.CommandNames
@@ -32,12 +34,14 @@ class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
     def DIR = "/usr"
 
+    @Test
     void testHandleCommand_SingleFile() {
         createFile("/usr/f1.txt")
         handleCommandAndVerifySendDataReplies([DIR])
         assertSessionDataWithEndOfLine("f1.txt")
     }
 
+    @Test
     void testHandleCommand_FilesAndDirectories() {
         createFile("/usr/f1.txt")
         createDirectory("/usr/OtherFiles")
@@ -52,6 +56,7 @@ class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertSessionDataEndsWithEndOfLine()
     }
 
+    @Test
     void testHandleCommand_NoPath_UseCurrentDirectory() {
         createFile("/usr/f1.txt")
         session.setAttribute(SessionKeys.CURRENT_DIRECTORY, DIR)
@@ -59,22 +64,26 @@ class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertSessionDataWithEndOfLine("f1.txt")
     }
 
+    @Test
     void testHandleCommand_EmptyDirectory() {
         handleCommandAndVerifySendDataReplies([DIR])
         assertSessionData("")
     }
 
+    @Test
     void testHandleCommand_PathSpecifiesAFile() {
         createFile("/usr/f1.txt")
         handleCommandAndVerifySendDataReplies(["/usr/f1.txt"])
         assertSessionDataWithEndOfLine("f1.txt")
     }
 
+    @Test
     void testHandleCommand_PathDoesNotExist() {
         handleCommandAndVerifySendDataReplies(["/DoesNotExist"])
         assertSessionData("")
     }
 
+    @Test
     void testHandleCommand_NoReadAccessToDirectory() {
         fileSystem.getEntry(DIR).permissions = new Permissions('-wx-wx-wx')
         handleCommand([DIR])
@@ -82,6 +91,7 @@ class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         assertSessionReply(0, ReplyCodes.READ_FILE_ERROR, ['filesystem.cannotRead', DIR])
     }
 
+    @Test
     void testHandleCommand_ListNamesThrowsException() {
         fileSystem.listNamesMethodException = new FileSystemException("bad", ERROR_MESSAGE_KEY)
         handleCommand([DIR])
@@ -101,8 +111,8 @@ class NlstCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
         return new Command(CommandNames.NLST, [DIR])
     }
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
         createDirectory(DIR)
     }
 

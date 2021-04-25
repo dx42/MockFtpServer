@@ -33,7 +33,7 @@ dependencies {
     testCompile 'commons-net:commons-net:3.8.0'
     testCompile 'org.springframework:spring:2.5.6.SEC03'
     testCompile 'org.mockito:mockito-core:3.9.0'
-    testCompile 'junit:junit:4.13.2'
+    testCompile 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
 }
 
 java {

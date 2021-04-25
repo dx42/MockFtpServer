@@ -18,6 +18,8 @@ package org.mockftpserver.stub.command;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -33,7 +35,7 @@ import java.util.Arrays;
  *
  * @author Chris Mair
  */
-public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class FileRetrCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileRetrCommandHandlerTest.class);
     private static final byte BYTE1 = (byte) 7;
@@ -41,10 +43,8 @@ public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest
 
     private FileRetrCommandHandler commandHandler;
 
-    /**
-     * Test the constructor that takes a String, passing in a null
-     */
-    public void testConstructor_String_Null() {
+    @Test
+    void testConstructor_String_Null() {
         try {
             new FileRetrCommandHandler(null);
             fail("Expected AssertFailedException");
@@ -54,10 +54,8 @@ public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest
         }
     }
 
-    /**
-     * Test the setFile(String) method, passing in a null
-     */
-    public void testSetFile_Null() {
+    @Test
+    void testSetFile_Null() {
         try {
             commandHandler.setFile(null);
             fail("Expected AssertFailedException");
@@ -67,13 +65,8 @@ public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest
         }
     }
 
-    /**
-     * Test the handleCommand(Command,Session) method. Create a temporary (binary) file, and
-     * make sure its contents are written back
-     *
-     * @throws Exception - if an error occurs
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
 
         final byte[] BUFFER = new byte[FileRetrCommandHandler.BUFFER_SIZE];
         Arrays.fill(BUFFER, BYTE1);
@@ -94,18 +87,14 @@ public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest
         verifyOneDataElement(commandHandler.getInvocation(0), FileRetrCommandHandler.PATHNAME_KEY, FILENAME1);
     }
 
-    /**
-     * Test the handleCommand() method, when no pathname parameter has been specified
-     */
-    public void testHandleCommand_MissingPathnameParameter() throws Exception {
+    @Test
+    void testHandleCommand_MissingPathnameParameter() throws Exception {
         commandHandler.setFile("abc.txt");      // this property must be set
         testHandleCommand_InvalidParameters(commandHandler, CommandNames.RETR, EMPTY);
     }
 
-    /**
-     * Test the HandleCommand method, when the file property has not been set
-     */
-    public void testHandleCommand_FileNotSet() throws Exception {
+    @Test
+    void testHandleCommand_FileNotSet() throws Exception {
         try {
             commandHandler.handleCommand(new Command(CommandNames.RETR, EMPTY), session);
             fail("Expected AssertFailedException");
@@ -115,13 +104,8 @@ public final class FileRetrCommandHandlerTest extends AbstractCommandHandlerTest
         }
     }
 
-    /**
-     * Perform initialization before each test
-     *
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new FileRetrCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
     }

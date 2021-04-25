@@ -17,6 +17,8 @@ package org.mockftpserver.core.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.util.AssertFailedException;
@@ -30,48 +32,37 @@ import java.util.ResourceBundle;
  * 
  * @author Chris Mair
  */
-public final class ReplyTextBundleUtilTest extends AbstractTestCase {
+class ReplyTextBundleUtilTest extends AbstractTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReplyTextBundleUtilTest.class);
     
     private ResourceBundle resourceBundle1;
     private ResourceBundle resourceBundle2;
-    
-    /**
-     * Test the setReplyTextBundleIfAppropriate() method, when the CommandHandler implements 
-     * the ResourceBundleAware interface, and the replyTextBundle has not yet been set. 
-     */
-    public void testSetReplyTextBundleIfAppropriate_ReplyTextBundleAware_NotSetYet() {
+
+    @Test
+    void testSetReplyTextBundleIfAppropriate_ReplyTextBundleAware_NotSetYet() {
         AbstractTrackingCommandHandler commandHandler = new StaticReplyCommandHandler();
         ReplyTextBundleUtil.setReplyTextBundleIfAppropriate(commandHandler, resourceBundle1);
         assertSame(resourceBundle1, commandHandler.getReplyTextBundle());
     }
 
-    /**
-     * Test the setReplyTextBundleIfAppropriate() method, when the CommandHandler implements 
-     * the ResourceBundleAware interface, and the replyTextBundle has already been set. 
-     */
-    public void testSetReplyTextBundleIfAppropriate_ReplyTextBundleAware_AlreadySet() {
+    @Test
+    void testSetReplyTextBundleIfAppropriate_ReplyTextBundleAware_AlreadySet() {
         AbstractTrackingCommandHandler commandHandler = new StaticReplyCommandHandler();
         commandHandler.setReplyTextBundle(resourceBundle2);
         ReplyTextBundleUtil.setReplyTextBundleIfAppropriate(commandHandler, resourceBundle1);
         assertSame(resourceBundle2, commandHandler.getReplyTextBundle());
     }
 
-    /**
-     * Test the setReplyTextBundleIfAppropriate() method, when the CommandHandler does not 
-     * implement the ResourceBundleAware interface. 
-     */
-    public void testSetReplyTextBundleIfAppropriate_NotReplyTextBundleAware() {
+    @Test
+    void testSetReplyTextBundleIfAppropriate_NotReplyTextBundleAware() {
         CommandHandler commandHandler = mock(CommandHandler.class);
         ReplyTextBundleUtil.setReplyTextBundleIfAppropriate(commandHandler, resourceBundle1);
         verifyNoInteractions(commandHandler);         // expect no method calls
     }
-    
-    /**
-     * Test the setReplyTextBundleIfAppropriate() method, when the CommandHandler is null. 
-     */
-    public void testSetReplyTextBundleIfAppropriate_NullCommandHandler() {
+
+    @Test
+    void testSetReplyTextBundleIfAppropriate_NullCommandHandler() {
         try {
             ReplyTextBundleUtil.setReplyTextBundleIfAppropriate(null, resourceBundle1);
             fail("Expected AssertFailedException");
@@ -80,13 +71,9 @@ public final class ReplyTextBundleUtilTest extends AbstractTestCase {
             LOG.info("Expected: " + expected);
         }
     }
-    
-    /**
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
 
+    @BeforeEach
+    void setUp() throws Exception {
         resourceBundle1 = new ListResourceBundle() {
             protected Object[][] getContents() {
                 return null;

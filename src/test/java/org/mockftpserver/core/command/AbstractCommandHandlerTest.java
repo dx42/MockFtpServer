@@ -17,6 +17,8 @@ package org.mockftpserver.core.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.session.Session;
@@ -32,7 +34,7 @@ import java.util.ResourceBundle;
  *
  * @author Chris Mair
  */
-public final class AbstractCommandHandlerTest extends AbstractTestCase {
+class AbstractCommandHandlerTest extends AbstractTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractTrackingCommandHandlerTest.class);
     private static final int REPLY_CODE1 = 777;
@@ -44,18 +46,14 @@ public final class AbstractCommandHandlerTest extends AbstractTestCase {
 
     private AbstractCommandHandler commandHandler;
 
-    /**
-     * Test the quotes utility method
-     */
-    public void testQuotes() {
+    @Test
+    void testQuotes() {
         assertEquals("abc", "\"abc\"", AbstractStubCommandHandler.quotes("abc"));
         assertEquals("<empty>", "\"\"", AbstractStubCommandHandler.quotes(""));
     }
 
-    /**
-     * Test the quotes utility method, passing in a null
-     */
-    public void testQuotes_Null() {
+    @Test
+    void testQuotes_Null() {
         try {
             AbstractStubCommandHandler.quotes(null);
             fail("Expected AssertFailedException");
@@ -65,10 +63,8 @@ public final class AbstractCommandHandlerTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the assertValidReplyCode() method
-     */
-    public void testAssertValidReplyCode() {
+    @Test
+    void testAssertValidReplyCode() {
         // These are valid, so expect no exceptions
         commandHandler.assertValidReplyCode(1);
         commandHandler.assertValidReplyCode(100);
@@ -78,11 +74,6 @@ public final class AbstractCommandHandlerTest extends AbstractTestCase {
         testAssertValidReplyCodeWithInvalid(-1);
     }
 
-    /**
-     * Test the assertValidReplyCode() method , passing in an invalid replyCode value
-     *
-     * @param invalidReplyCode - a reply code that is expected to be invalid
-     */
     private void testAssertValidReplyCodeWithInvalid(int invalidReplyCode) {
         try {
             commandHandler.assertValidReplyCode(invalidReplyCode);
@@ -97,14 +88,8 @@ public final class AbstractCommandHandlerTest extends AbstractTestCase {
     // Test setup
     //-------------------------------------------------------------------------
 
-    /**
-     * Perform initialization before each test
-     *
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-        Session session = mock(Session.class);
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new AbstractCommandHandler() {
             public void handleCommand(Command command, Session session) throws Exception {
             }

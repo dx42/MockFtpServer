@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -27,17 +29,14 @@ import org.mockftpserver.core.command.ReplyCodes;
  * 
  * @author Chris Mair
  */
-public final class DeleCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class DeleCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private DeleCommandHandler commandHandler;
     private Command command1;
     private Command command2;
     
-    /**
-     * Test the handleCommand(Command,Session) method
-     * @throws Exception - if an error occurs
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
         verify(session, times(2)).sendReply(ReplyCodes.DELE_OK, replyTextFor(ReplyCodes.DELE_OK));
@@ -47,19 +46,13 @@ public final class DeleCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyOneDataElement(commandHandler.getInvocation(1), DeleCommandHandler.PATHNAME_KEY, FILENAME2);
     }
 
-    /**
-     * Test the handleCommand() method, when no pathname parameter has been specified
-     */
-    public void testHandleCommand_MissingPathnameParameter() throws Exception {
+    @Test
+    void testHandleCommand_MissingPathnameParameter() throws Exception {
         testHandleCommand_InvalidParameters(commandHandler, CommandNames.DELE, EMPTY);
     }
 
-    /**
-     * Perform initialization before each test
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new DeleCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
         command1 = new Command(CommandNames.DELE, array(FILENAME1));
