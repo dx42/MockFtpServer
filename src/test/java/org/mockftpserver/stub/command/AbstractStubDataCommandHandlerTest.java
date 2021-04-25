@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.core.session.Session;
@@ -33,7 +35,7 @@ import java.util.ResourceBundle;
  * 
  * @author Chris Mair
  */
-public final class AbstractStubDataCommandHandlerTest extends AbstractTestCase {
+class AbstractStubDataCommandHandlerTest extends AbstractTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractStubDataCommandHandlerTest.class);
     private static final Command COMMAND = new Command("command", EMPTY);
@@ -49,10 +51,8 @@ public final class AbstractStubDataCommandHandlerTest extends AbstractTestCase {
     private ResourceBundle replyTextBundle;
     private AbstractStubDataCommandHandler commandHandler;
 
-    /**
-     * Test the handleCommand() method
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         // Define CommandHandler test subclass
         commandHandler = new AbstractStubDataCommandHandler() {
             protected void beforeProcessData(Command c, Session s, InvocationRecord ir) {
@@ -92,10 +92,8 @@ public final class AbstractStubDataCommandHandlerTest extends AbstractTestCase {
         verify(session).sendReply(226, REPLY_TEXT226);
     }
 
-    /**
-     * Test the handleCommand() method, overriding the initial reply code and text
-     */
-    public void testHandleCommand_OverrideInitialReplyCodeAndText() throws Exception {
+    @Test
+    void testHandleCommand_OverrideInitialReplyCodeAndText() throws Exception {
         final int OVERRIDE_REPLY_CODE = 333;
         final String OVERRIDE_REPLY_TEXT = "reply text";
 
@@ -110,10 +108,8 @@ public final class AbstractStubDataCommandHandlerTest extends AbstractTestCase {
         verify(session).sendReply(226, REPLY_TEXT226);
     }
 
-    /**
-     * Test the setPreliminaryReplyCode() method, passing in an invalid value 
-     */
-    public void testSetPreliminaryReplyCode_Invalid() {
+    @Test
+    void testSetPreliminaryReplyCode_Invalid() {
         try {
             commandHandler.setPreliminaryReplyCode(0);
             fail("Expected AssertFailedException");
@@ -123,10 +119,8 @@ public final class AbstractStubDataCommandHandlerTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the setFinalReplyCode() method, passing in an invalid value 
-     */
-    public void testSetFinalReplyCode_Invalid() {
+    @Test
+    void testSetFinalReplyCode_Invalid() {
         try {
             commandHandler.setFinalReplyCode(0);
             fail("Expected AssertFailedException");
@@ -139,14 +133,9 @@ public final class AbstractStubDataCommandHandlerTest extends AbstractTestCase {
     //-------------------------------------------------------------------------
     // Test setup
     //-------------------------------------------------------------------------
-    
-    /**
-     * Perform initialization before each test
-     * 
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+
+    @BeforeEach
+    void setUp() throws Exception {
         session = (Session) mock(Session.class);
         replyTextBundle = new ListResourceBundle() {
             protected Object[][] getContents() {

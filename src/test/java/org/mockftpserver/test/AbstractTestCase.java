@@ -15,7 +15,7 @@
  */
 package org.mockftpserver.test;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Assertions;
 import org.mockftpserver.core.MockFtpServerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,16 +30,67 @@ import java.util.*;
  *
  * @author Chris Mair
  */
-public abstract class AbstractTestCase extends TestCase {
+public abstract class AbstractTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractTestCase.class);
-    protected static final List EMPTY_LIST = Collections.EMPTY_LIST;
     protected static final String[] EMPTY = new String[0];
     protected static final InetAddress DEFAULT_HOST = inetAddress(null);
 
     //-------------------------------------------------------------------------
     // Other Helper Methods
     //-------------------------------------------------------------------------
+
+    protected void fail(String message) {
+        Assertions.fail(message);
+    }
+
+    protected void assertTrue(String message, boolean b) {
+        Assertions.assertTrue(b, message);
+    }
+
+    protected void assertSame(String message, Object o1, Object o2) {
+        Assertions.assertSame(o1, o2, message);
+    }
+
+    protected void assertSame(Object o1, Object o2) {
+        Assertions.assertSame(o1, o2);
+    }
+
+    protected void assertNotSame(String message, Object o1, Object o2) {
+        Assertions.assertNotSame(o1, o2, message);
+    }
+
+    protected void assertNull(String message, Object o) {
+        Assertions.assertNull(o, message);
+    }
+
+    protected void assertNull(Object o) {
+        Assertions.assertNull(o);
+    }
+
+    protected void assertNotNull(String message, Object o) {
+        Assertions.assertNotNull(o, message);
+    }
+
+    protected void assertTrue(boolean b) {
+        Assertions.assertTrue(b);
+    }
+
+    protected void assertFalse(String message, boolean b) {
+        Assertions.assertFalse(b, message);
+    }
+
+    protected void assertFalse(boolean b) {
+        Assertions.assertFalse(b);
+    }
+
+    protected void assertEquals(String message, Object object1, Object object2) {
+        Assertions.assertEquals(object1, object2, message);
+    }
+
+    protected void assertEquals(Object object1, Object object2) {
+        Assertions.assertEquals(object1, object2);
+    }
 
     /**
      * Assert that the two objects are not equal
@@ -48,7 +99,7 @@ public abstract class AbstractTestCase extends TestCase {
      * @param object2 - the second object
      */
     protected void assertNotEquals(String message, Object object1, Object object2) {
-        assertFalse(message, object1.equals(object2));
+        Assertions.assertFalse(object1.equals(object2), message);
     }
 
     /**
@@ -58,7 +109,7 @@ public abstract class AbstractTestCase extends TestCase {
      * @param array2 - the second array
      */
     protected void assertEquals(String message, byte[] array1, byte[] array2) {
-        assertTrue("Arrays not equal: " + message, Arrays.equals(array1, array2));
+        Assertions.assertTrue(Arrays.equals(array1, array2), "Arrays not equal: " + message);
     }
 
     /**
@@ -68,7 +119,7 @@ public abstract class AbstractTestCase extends TestCase {
      * @param array2 - the second array
      */
     protected void assertEquals(String message, Object[] array1, Object[] array2) {
-        assertTrue("Arrays not equal: " + message, Arrays.equals(array1, array2));
+        Assertions.assertTrue(Arrays.equals(array1, array2), "Arrays not equal: " + message);
     }
 
     /**
@@ -172,74 +223,6 @@ public abstract class AbstractTestCase extends TestCase {
         return set;
     }
 
-    /**
-     * Override the default test run behavior to write out the current test name
-     * and handle Errors and Exceptions in a standard way.
-     *
-     * @see junit.framework.TestCase#runBare()
-     */
-    public void runBare() throws Throwable {
-
-        LoggingUtil loggingUtil = null;
-        try {
-            loggingUtil = LoggingUtil.getTestCaseLogger(this);
-            loggingUtil.logStartOfTest();
-            super.runBare();
-        }
-        catch (Exception e) {
-            handleException(e);
-        }
-        catch (Error e) {
-            handleError(e);
-        }
-        finally {
-            if (loggingUtil != null) {
-                loggingUtil.logEndOfTest();
-            }
-        }
-    }
-
-    /**
-     * Setup before each test.
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /**
-     * Cleanup after each test.
-     */
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    //-----------------------------------------------------------
-    // Private Internal Methods
-    //-----------------------------------------------------------
-
-    /**
-     * Handle an exception
-     *
-     * @param e the Exception
-     * @throws Exception - if an error occurs
-     */
-    private void handleException(Exception e) throws Exception {
-
-        LOG.error("EXCEPTION: ", e);
-        throw e;
-    }
-
-    /**
-     * Handle an Error
-     *
-     * @param e the Error
-     * @throws Exception - if an error occurs
-     */
-    private void handleError(Error e) throws Exception {
-        LOG.error("ERROR: ", e);
-        throw e;
-    }
-
     //-------------------------------------------------------------------------
     // Helper methods
     //-------------------------------------------------------------------------
@@ -266,7 +249,7 @@ public abstract class AbstractTestCase extends TestCase {
      */
     protected void verifyFileExists(String filename) {
         File keyFile = new File(filename);
-        assertTrue("File does not exist [" + filename + "]", keyFile.exists());
+        Assertions.assertTrue(keyFile.exists(), "File does not exist [" + filename + "]");
     }
 
 }

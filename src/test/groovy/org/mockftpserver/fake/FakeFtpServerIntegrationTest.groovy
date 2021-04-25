@@ -18,6 +18,9 @@ package org.mockftpserver.fake
 import org.apache.commons.net.ftp.FTP
 import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.net.ftp.FTPFile
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.CommandNames
 import org.mockftpserver.core.command.StaticReplyCommandHandler
 
@@ -62,23 +65,27 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
     // Tests
     //-------------------------------------------------------------------------
 
+    @Test
     void testAbor() {
         ftpClientConnectAndLogin()
         assert ftpClient.abort()
         verifyReplyCode("ABOR", 226)
     }
 
+    @Test
     void testAcct() {
         ftpClientConnectAndLogin()
         assert ftpClient.acct(ACCOUNT) == 230
     }
 
+    @Test
     void testAllo() {
         ftpClientConnectAndLogin()
         assert ftpClient.allocate(99)
         verifyReplyCode("ALLO", 200)
     }
 
+    @Test
     void testAppe() {
         def ORIGINAL_CONTENTS = '123 456 789'
         fileSystem.add(new FileEntry(path: FILE1, contents: ORIGINAL_CONTENTS))
@@ -93,12 +100,14 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         assert contents == ORIGINAL_CONTENTS + ASCII_DATA
     }
 
+    @Test
     void testCdup() {
         ftpClientConnectAndLogin()
         assert ftpClient.changeToParentDirectory()
         verifyReplyCode("changeToParentDirectory", 200)
     }
 
+    @Test
     void testCwd() {
         ftpClientConnectAndLogin()
         assert ftpClient.changeWorkingDirectory(SUBDIR_NAME)
@@ -108,6 +117,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
     /**
      * Test that a CWD to ".." properly resolves the current dir (without the "..") so that PWD returns the parent 
      */
+    @Test
     void testCwd_DotDot_Pwd() {
         ftpClientConnectAndLogin()
         assert ftpClient.changeWorkingDirectory("..")
@@ -120,6 +130,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
     /**
      * Test that a CWD to "." properly resolves the current dir (without the ".") so that PWD returns the parent
      */
+    @Test
     void testCwd_Dot_Pwd() {
         ftpClientConnectAndLogin()
         assert ftpClient.changeWorkingDirectory(".")
@@ -127,6 +138,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         assert p(ftpClient.printWorkingDirectory()) == p(HOME_DIR)
     }
 
+    @Test
     void testCwd_UseStaticReplyCommandHandler() {
         final int REPLY_CODE = 500;
         StaticReplyCommandHandler cwdCommandHandler = new StaticReplyCommandHandler(REPLY_CODE);
@@ -137,6 +149,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         verifyReplyCode("changeWorkingDirectory", REPLY_CODE)
     }
 
+    @Test
     void testCwd_UseStubCommandHandler() {
         final int REPLY_CODE = 502;
         CwdCommandHandler cwdCommandHandler = new CwdCommandHandler();     // Stub command handler
@@ -149,6 +162,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         assert cwdCommandHandler.getInvocation(0)
     }
 
+    @Test
     void testDele() {
         fileSystem.add(new FileEntry(FILE1))
 
@@ -158,17 +172,20 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         assert !fileSystem.exists(FILENAME1)
     }
 
+    @Test
     void testEprt() {
         log("Skipping...")
 //        ftpClientConnectAndLogin()
 //        assert ftpClient.sendCommand("EPRT", "|2|1080::8:800:200C:417A|5282|") == 200
     }
 
+    @Test
     void testEpsv() {
         ftpClientConnectAndLogin()
         assert ftpClient.sendCommand("EPSV") == 229
     }
 
+    @Test
     void testFeat_UseStaticReplyCommandHandler() {
         // The FEAT command is not supported out of the box
         StaticReplyCommandHandler featCommandHandler = new StaticReplyCommandHandler(211, "No Features");
@@ -178,6 +195,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         assert ftpClient.sendCommand("FEAT") == 211
     }
 
+    @Test
     void testHelp() {
         ftpServer.helpText = [a: 'aaa', '': 'default']
         ftpClientConnect()
@@ -195,6 +213,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         verifyReplyCode("listHelp", 214)
     }
 
+    @Test
     void testList() {
         def LAST_MODIFIED = new Date()
         fileSystem.add(new FileEntry(path: p(SUBDIR, FILENAME1), lastModified: LAST_MODIFIED, contents: ASCII_DATA))
@@ -214,6 +233,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         verifyReplyCode("list", 226)
     }
 
+    @Test
     void testList_NoReadPermission() {
         def subDir = fileSystem.getEntry(SUBDIR)
         subDir.setOwner("other")
@@ -225,6 +245,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         verifyReplyCode("list", 550)
     }
 
+    @Test
     void testList_Unix() {
         ftpServer.systemName = 'UNIX'
         userAccount.homeDirectory = '/'
@@ -252,16 +273,18 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         verifyReplyCode("list", 226)
     }
 
+    @Test
     void testLogin() {
         ftpClientConnect()
         LOG.info("Logging in as $USERNAME/$PASSWORD")
         assert ftpClient.login(USERNAME, PASSWORD)
         verifyReplyCode("login with $USERNAME/$PASSWORD", 230)
 
-        assertTrue("isStarted", ftpServer.isStarted());
-        assertFalse("isShutdown", ftpServer.isShutdown());
+        assert ftpServer.isStarted()
+        assert !ftpServer.isShutdown()
     }
 
+    @Test
     void testLogin_WithAccount() {
         userAccount.accountRequiredForLogin = true
         ftpClientConnect()
@@ -270,6 +293,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         verifyReplyCode("login with $USERNAME/$PASSWORD with $ACCOUNT", 230)
     }
 
+    @Test
     void testMkd() {
         ftpClientConnectAndLogin()
 
@@ -279,12 +303,14 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         assert fileSystem.isDirectory(DIR)
     }
 
+    @Test
     void testMode() {
         ftpClientConnectAndLogin()
         assert ftpClient.setFileTransferMode(FTP.STREAM_TRANSFER_MODE);
         verifyReplyCode("MODE", 200)
     }
 
+    @Test
     void testNlst() {
         fileSystem.add(new FileEntry(path: p(SUBDIR, FILENAME1)))
         fileSystem.add(new DirectoryEntry(path: p(SUBDIR, SUBDIR_NAME2)))
@@ -296,6 +322,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         verifyReplyCode("listNames", 226)
     }
 
+    @Test
     void testNlst_NoReadPermission() {
         def subDir = fileSystem.getEntry(SUBDIR)
         subDir.setOwner("other")
@@ -308,12 +335,14 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
     }
 
 
+    @Test
     void testNoop() {
         ftpClientConnectAndLogin()
         assert ftpClient.sendNoOp()
         verifyReplyCode("NOOP", 200)
     }
 
+    @Test
     void testPasv_Nlst() {
         fileSystem.add(new FileEntry(path: p(SUBDIR, FILENAME1)))
         fileSystem.add(new FileEntry(path: p(SUBDIR, FILENAME2)))
@@ -326,29 +355,34 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         verifyReplyCode("listNames", 226)
     }
 
+    @Test
     void testPwd() {
         ftpClientConnectAndLogin()
         assert ftpClient.printWorkingDirectory() == HOME_DIR
         verifyReplyCode("printWorkingDirectory", 257)
     }
 
+    @Test
     void testQuit() {
         ftpClientConnect()
         ftpClient.quit()
         verifyReplyCode("quit", 221)
     }
 
+    @Test
     void testRein() {
         ftpClientConnectAndLogin()
         assert ftpClient.rein() == 220
         assert ftpClient.cdup() == 530      // now logged out
     }
 
+    @Test
     void testRest() {
         ftpClientConnectAndLogin()
         assert ftpClient.rest("marker") == 350
     }
 
+    @Test
     void testRetr() {
         fileSystem.add(new FileEntry(path: FILE1, contents: ASCII_DATA))
 
@@ -361,6 +395,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         assert outputStream.toString() == ASCII_DATA
     }
 
+    @Test
     void testRmd() {
         ftpClientConnectAndLogin()
 
@@ -369,6 +404,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         assert !fileSystem.exists(SUBDIR)
     }
 
+    @Test
     void testRename() {                 // RNFR and RNTO
         fileSystem.add(new FileEntry(FILE1))
 
@@ -380,16 +416,19 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         assert fileSystem.exists(FILE1 + "NEW")
     }
 
+    @Test
     void testSite() {
         ftpClientConnectAndLogin()
         assert ftpClient.site("parameters,1,2,3") == 200
     }
 
+    @Test
     void testSmnt() {
         ftpClientConnectAndLogin()
         assert ftpClient.smnt("dir") == 250
     }
 
+    @Test
     void testStat() {
         ftpClientConnectAndLogin()
         def status = ftpClient.getStatus()
@@ -397,6 +436,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         verifyReplyCode("stat", 211)
     }
 
+    @Test
     void testStor() {
         ftpClientConnectAndLogin()
 
@@ -408,6 +448,7 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         assert contents == ASCII_DATA
     }
 
+    @Test
     void testStou() {
         ftpClientConnectAndLogin()
 
@@ -423,12 +464,14 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         assert contents == ASCII_DATA
     }
 
+    @Test
     void testStru() {
         ftpClientConnectAndLogin()
         assert ftpClient.setFileStructure(FTP.FILE_STRUCTURE);
         verifyReplyCode("STRU", 200)
     }
 
+    @Test
     void testSyst() {
         ftpClientConnectAndLogin()
 
@@ -438,12 +481,14 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         verifyReplyCode("getSystemName", 215)
     }
 
+    @Test
     void testType() {
         ftpClientConnectAndLogin()
         assert ftpClient.type(FTP.ASCII_FILE_TYPE)
         verifyReplyCode("TYPE", 200)
     }
 
+    @Test
     void testUnrecognizedCommand() {
         ftpClientConnectAndLogin()
         assert ftpClient.sendCommand("XXX") == 502
@@ -454,13 +499,8 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
     // Test setup and tear-down
     // -------------------------------------------------------------------------
 
-    /**
-     * Perform initialization before each test
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
+    @BeforeEach
     void setUp() {
-        super.setUp()
-
         for (int i = 0; i < BINARY_DATA.length; i++) {
             BINARY_DATA[i] = (byte) i
         }
@@ -481,12 +521,8 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         ftpClient = new FTPClient()
     }
 
-    /**
-     * Perform cleanup after each test
-     * @see org.mockftpserver.test.AbstractTestCase#tearDown()
-     */
+    @AfterEach
     void tearDown() {
-        super.tearDown()
         ftpServer.stop()
     }
 
@@ -518,14 +554,14 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
     private void verifyReplyCode(String operation, int expectedReplyCode) {
         int replyCode = ftpClient.getReplyCode()
         LOG.info("Reply: operation=\"" + operation + "\" replyCode=" + replyCode)
-        assertEquals("Unexpected replyCode for " + operation, expectedReplyCode, replyCode)
+        assert replyCode == expectedReplyCode, "Unexpected replyCode for " + operation
     }
 
     private void verifyFTPFile(FTPFile ftpFile, int type, String name, long size) {
         LOG.info(ftpFile.toString())
-        assertEquals("type: " + ftpFile, type, ftpFile.getType())
-        assertEquals("name: " + ftpFile, name, ftpFile.getName())
-        assertEquals("size: " + ftpFile, size, ftpFile.getSize())
+        assert ftpFile.getType() == type
+        assert ftpFile.getName() == name
+        assert ftpFile.getSize() == size
     }
 
 }

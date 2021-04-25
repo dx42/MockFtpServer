@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -29,7 +31,7 @@ import java.net.InetAddress;
  *
  * @author Chris Mair
  */
-public final class EprtCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class EprtCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final String[] PARAMETERS_INSUFFICIENT = EMPTY;
     private static final String[] PARAMETERS_IPV4 = {"|1|132.235.1.2|6275|"};
@@ -40,7 +42,8 @@ public final class EprtCommandHandlerTest extends AbstractCommandHandlerTestCase
 
     private EprtCommandHandler commandHandler;
 
-    public void testHandleCommand_IPv4() throws Exception {
+    @Test
+    void testHandleCommand_IPv4() throws Exception {
         final Command COMMAND = new Command(CommandNames.EPRT, PARAMETERS_IPV4);
 
         commandHandler.handleCommand(COMMAND, session);
@@ -55,7 +58,8 @@ public final class EprtCommandHandlerTest extends AbstractCommandHandlerTestCase
                 PortCommandHandler.PORT_KEY, new Integer(PORT));
     }
 
-    public void testHandleCommand_IPv6() throws Exception {
+    @Test
+    void testHandleCommand_IPv6() throws Exception {
         final Command COMMAND = new Command(CommandNames.EPRT, PARAMETERS_IPV6);
 
         commandHandler.handleCommand(COMMAND, session);
@@ -70,17 +74,13 @@ public final class EprtCommandHandlerTest extends AbstractCommandHandlerTestCase
                 PortCommandHandler.PORT_KEY, new Integer(PORT));
     }
 
-    public void testHandleCommand_MissingRequiredParameter() throws Exception {
+    @Test
+    void testHandleCommand_MissingRequiredParameter() throws Exception {
         testHandleCommand_InvalidParameters(commandHandler, CommandNames.EPRT, PARAMETERS_INSUFFICIENT);
     }
 
-    /**
-     * Perform initialization before each test
-     *
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new EprtCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
     }

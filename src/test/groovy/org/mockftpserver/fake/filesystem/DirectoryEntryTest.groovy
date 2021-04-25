@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
  *
  * @author Chris Mair
  */
-public class DirectoryEntryTest extends AbstractFileSystemEntryTestCase {
+class DirectoryEntryTest extends AbstractFileSystemEntryTestCase {
 
     private DirectoryEntry entry
 
@@ -45,16 +45,12 @@ public class DirectoryEntryTest extends AbstractFileSystemEntryTestCase {
         assert clone.directory
     }
 
-    /**
-     * @see org.mockftpserver.fake.filesystem.AbstractFileSystemEntryTestCase#getImplementationClass()
-     */
+    @Override
     protected Class getImplementationClass() {
         return DirectoryEntry.class
     }
 
-    /**
-     * @see org.mockftpserver.fake.filesystem.AbstractFileSystemEntryTestCase#isDirectory()
-     */
+    @Override
     protected boolean isDirectory() {
         return true
     }

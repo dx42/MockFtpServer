@@ -15,6 +15,9 @@
  */
 package org.mockftpserver.stub
 
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.test.AbstractGroovyTestCase
 import org.apache.commons.net.ftp.FTPClient
 import org.mockftpserver.test.PortTestUtil
@@ -29,6 +32,7 @@ class StubFtpServer_RestartTest extends AbstractGroovyTestCase {
     private stubFtpServer
     private ftpClient
 
+    @Test
     void testRestart() {
         stubFtpServer.start()
         ftpClient.connect(SERVER, PortTestUtil.getFtpServerControlPort())
@@ -42,15 +46,15 @@ class StubFtpServer_RestartTest extends AbstractGroovyTestCase {
         assert ftpClient.changeWorkingDirectory("dir1")
     }
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
         stubFtpServer = new StubFtpServer()
         stubFtpServer.setServerControlPort(PortTestUtil.getFtpServerControlPort())
         ftpClient = new FTPClient()
     }
 
+    @AfterEach
     void tearDown() {
-        super.tearDown()
         stubFtpServer.stop()
     }
 }

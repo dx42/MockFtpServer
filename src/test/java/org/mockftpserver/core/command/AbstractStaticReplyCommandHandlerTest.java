@@ -17,6 +17,8 @@ package org.mockftpserver.core.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
@@ -31,7 +33,7 @@ import java.util.ResourceBundle;
  *
  * @author Chris Mair
  */
-public final class AbstractStaticReplyCommandHandlerTest extends AbstractTestCase {
+class AbstractStaticReplyCommandHandlerTest extends AbstractTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractStaticReplyCommandHandlerTest.class);
     private static final int REPLY_CODE1 = 777;
@@ -47,29 +49,24 @@ public final class AbstractStaticReplyCommandHandlerTest extends AbstractTestCas
     private AbstractStaticReplyCommandHandler commandHandler;
     private Session session;
 
-    /**
-     * Test the sendReply(Session) method
-     */
-    public void testSendReply() {
+
+    @Test
+    void testSendReply() {
         commandHandler.setReplyCode(REPLY_CODE1);
         commandHandler.sendReply(session);
         verify(session).sendReply(REPLY_CODE1, REPLY_TEXT1);
     }
 
-    /**
-     * Test the sendReply(Session) method, when the replyText has been set
-     */
-    public void testSendReply_SetReplyText() {
+    @Test
+    void testSendReply_SetReplyText() {
         commandHandler.setReplyCode(REPLY_CODE1);
         commandHandler.setReplyText(OVERRIDE_REPLY_TEXT);
         commandHandler.sendReply(session);
         verify(session).sendReply(REPLY_CODE1, OVERRIDE_REPLY_TEXT);
     }
 
-    /**
-     * Test the sendReply(Session) method, when the replyMessageKey has been set
-     */
-    public void testSendReply_SetReplyMessageKey() {
+    @Test
+    void testSendReply_SetReplyMessageKey() {
         commandHandler.setReplyCode(REPLY_CODE1);
         commandHandler.setReplyMessageKey(Integer.toString(REPLY_CODE2));
         commandHandler.sendReply(session);
@@ -77,10 +74,8 @@ public final class AbstractStaticReplyCommandHandlerTest extends AbstractTestCas
         verify(session).sendReply(REPLY_CODE1, REPLY_TEXT2);
     }
 
-    /**
-     * Test the sendReply(Session) method, when the replyCode has not been set
-     */
-    public void testSendReply_ReplyCodeNotSet() {
+    @Test
+    void testSendReply_ReplyCodeNotSet() {
         try {
             commandHandler.sendReply(session);
             fail("Expected AssertFailedException");
@@ -90,10 +85,8 @@ public final class AbstractStaticReplyCommandHandlerTest extends AbstractTestCas
         }
     }
 
-    /**
-     * Test the sendReply(Session,Object) method
-     */
-    public void testSendReply_MessageParameter() {
+    @Test
+    void testSendReply_MessageParameter() {
         commandHandler.setReplyCode(REPLY_CODE2);
         commandHandler.sendReply(session);
         commandHandler.sendReply(session, ARG);
@@ -102,10 +95,8 @@ public final class AbstractStaticReplyCommandHandlerTest extends AbstractTestCas
         verify(session).sendReply(REPLY_CODE2, REPLY_TEXT2_FORMATTED);
     }
 
-    /**
-     * Test the setReplyCode() method, passing in an invalid value
-     */
-    public void testSetReplyCode_Invalid() {
+    @Test
+    void testSetReplyCode_Invalid() {
         try {
             commandHandler.setReplyCode(0);
             fail("Expected AssertFailedException");
@@ -119,12 +110,8 @@ public final class AbstractStaticReplyCommandHandlerTest extends AbstractTestCas
     // Test setup
     //-------------------------------------------------------------------------
 
-    /**
-     * Perform initialization before each test
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         session = mock(Session.class);
         commandHandler = new AbstractStaticReplyCommandHandler() {
             public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) throws Exception {

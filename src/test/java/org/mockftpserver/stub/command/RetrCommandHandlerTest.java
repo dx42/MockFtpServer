@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -30,16 +32,14 @@ import org.slf4j.LoggerFactory;
  *
  * @author Chris Mair
  */
-public final class RetrCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class RetrCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(RetrCommandHandlerTest.class);
 
     private RetrCommandHandler commandHandler;
 
-    /**
-     * Test the constructor that takes a String, passing in a null
-     */
-    public void testConstructor_String_Null() {
+    @Test
+    void testConstructor_String_Null() {
         try {
             new RetrCommandHandler((String) null);
             fail("Expected AssertFailedException");
@@ -49,10 +49,8 @@ public final class RetrCommandHandlerTest extends AbstractCommandHandlerTestCase
         }
     }
 
-    /**
-     * Test the constructor that takes a byte[], passing in a null
-     */
-    public void testConstructor_ByteArray_Null() {
+    @Test
+    void testConstructor_ByteArray_Null() {
         try {
             new RetrCommandHandler((byte[]) null);
             fail("Expected AssertFailedException");
@@ -62,10 +60,8 @@ public final class RetrCommandHandlerTest extends AbstractCommandHandlerTestCase
         }
     }
 
-    /**
-     * Test the setFileContents(String) method, passing in a null
-     */
-    public void testSetFileContents_String_Null() {
+    @Test
+    void testSetFileContents_String_Null() {
         try {
             commandHandler.setFileContents((String) null);
             fail("Expected AssertFailedException");
@@ -75,10 +71,8 @@ public final class RetrCommandHandlerTest extends AbstractCommandHandlerTestCase
         }
     }
 
-    /**
-     * Test the setFileContents(byte[]) method, passing in a null
-     */
-    public void testSetFileContents_ByteArray_Null() {
+    @Test
+    void testSetFileContents_ByteArray_Null() {
         try {
             commandHandler.setFileContents((byte[]) null);
             fail("Expected AssertFailedException");
@@ -88,12 +82,8 @@ public final class RetrCommandHandlerTest extends AbstractCommandHandlerTestCase
         }
     }
 
-    /**
-     * Test the handleCommand() method
-     *
-     * @throws Exception - if an error occurs
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         final String FILE_CONTENTS = "abc_123 456";
         commandHandler.setFileContents(FILE_CONTENTS);
 
@@ -110,20 +100,13 @@ public final class RetrCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyOneDataElement(commandHandler.getInvocation(0), RetrCommandHandler.PATHNAME_KEY, FILENAME1);
     }
 
-    /**
-     * Test the handleCommand() method, when no pathname parameter has been specified
-     */
-    public void testHandleCommand_MissingPathnameParameter() throws Exception {
+    @Test
+    void testHandleCommand_MissingPathnameParameter() throws Exception {
         testHandleCommand_InvalidParameters(commandHandler, CommandNames.RETR, EMPTY);
     }
 
-    /**
-     * Perform initialization before each test
-     *
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new RetrCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
     }

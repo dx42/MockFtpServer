@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.core.command;
 
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.CommandSyntaxException;
@@ -28,24 +29,20 @@ import java.util.List;
  *
  * @author Chris Mair
  */
-public final class CommandTest extends AbstractTestCase {
+class CommandTest extends AbstractTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(CommandTest.class);
 
-    /**
-     * Test the Command(String,String[]) constructor
-     */
-    public void testConstructor() {
+    @Test
+    void testConstructor() {
         final String[] PARAMETERS = array("123");
         Command command = new Command("abc", PARAMETERS);
         assertEquals("name", "abc", command.getName());
         assertEquals("parameters", PARAMETERS, command.getParameters());
     }
 
-    /**
-     * Test the Command(String,List) constructor
-     */
-    public void testConstructor_List() {
+    @Test
+    void testConstructor_List() {
         final List PARAMETERS_LIST = list("123");
         final String[] PARAMETERS_ARRAY = array("123");
         Command command = new Command("abc", PARAMETERS_LIST);
@@ -53,10 +50,8 @@ public final class CommandTest extends AbstractTestCase {
         assertEquals("parameters String[]", PARAMETERS_ARRAY, command.getParameters());
     }
 
-    /**
-     * Test the Constructor method, passing in a null name
-     */
-    public void testConstructor_NullName() {
+    @Test
+    void testConstructor_NullName() {
         try {
             new Command(null, EMPTY);
             fail("Expected AssertFailedException");
@@ -66,10 +61,8 @@ public final class CommandTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the Constructor method, passing in a null parameters
-     */
-    public void testConstructor_NullParameters() {
+    @Test
+    void testConstructor_NullParameters() {
         try {
             new Command("OK", (String[]) null);
             fail("Expected AssertFailedException");
@@ -79,28 +72,22 @@ public final class CommandTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the normalizeName() method
-     */
-    public void testNormalizeName() {
+    @Test
+    void testNormalizeName() {
         assertEquals("XXX", "XXX", Command.normalizeName("XXX"));
         assertEquals("xxx", "XXX", Command.normalizeName("xxx"));
         assertEquals("Xxx", "XXX", Command.normalizeName("Xxx"));
     }
 
-    /**
-     * Test the getRequiredParameter method
-     */
-    public void testGetRequiredParameter() {
+    @Test
+    void testGetRequiredParameter() {
         Command command = new Command("abc", array("123", "456"));
         assertEquals("123", "123", command.getRequiredParameter(0));
         assertEquals("456", "456", command.getRequiredParameter(1));
     }
 
-    /**
-     * Test the getRequiredParameter method, when the index is not valid
-     */
-    public void testGetRequiredParameter_IndexNotValid() {
+    @Test
+    void testGetRequiredParameter_IndexNotValid() {
         Command command = new Command("abc", array("123", "456"));
         try {
             command.getRequiredParameter(2);
@@ -111,40 +98,32 @@ public final class CommandTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the getOptionalString method
-     */
-    public void testGetOptionalString() {
+    @Test
+    void testGetOptionalString() {
         Command command = new Command("abc", array("123", "456"));
         assertEquals("123", "123", command.getOptionalString(0));
         assertEquals("456", "456", command.getOptionalString(1));
         assertEquals("null", null, command.getOptionalString(2));
     }
 
-    /**
-     * Test the getParameter method
-     */
-    public void testGetParameter() {
+    @Test
+    void testGetParameter() {
         Command command = new Command("abc", array("123", "456"));
         assertEquals("123", "123", command.getParameter(0));
         assertEquals("456", "456", command.getParameter(1));
         assertEquals("null", null, command.getParameter(2));
     }
 
-    /**
-     * Test that a Command object is immutable, changing the original parameters passed in to the constructor
-     */
-    public void testImmutable_ChangeOriginalParameters() {
+    @Test
+    void testImmutable_ChangeOriginalParameters() {
         final String[] PARAMETERS = {"a", "b", "c"};
         final Command COMMAND = new Command("command", PARAMETERS);
         PARAMETERS[2] = "xxx";
         assertEquals("parameters", COMMAND.getParameters(), new String[]{"a", "b", "c"});
     }
 
-    /**
-     * Test that a Command object is immutable, changing the parameters returned from getParameters
-     */
-    public void testImmutable_ChangeRetrievedParameters() {
+    @Test
+    void testImmutable_ChangeRetrievedParameters() {
         final String[] PARAMETERS = {"a", "b", "c"};
         final Command COMMAND = new Command("command", PARAMETERS);
         String[] parameters = COMMAND.getParameters();
@@ -152,23 +131,19 @@ public final class CommandTest extends AbstractTestCase {
         assertEquals("parameters", PARAMETERS, COMMAND.getParameters());
     }
 
-    /**
-     * Test the equals() method, and tests the hasCode() method implicitly
-     *
-     * @throws Exception - if an error occurs
-     */
-    public void testEquals() throws Exception {
+    @Test
+    void testEquals() throws Exception {
         final Command COMMAND1 = new Command("a", EMPTY);
         final Command COMMAND2 = new Command("a", EMPTY);
         final Command COMMAND3 = new Command("b", array("1"));
         final Command COMMAND4 = new Command("b", array("2"));
         final Command COMMAND5 = new Command("c", array("1"));
-        _testEquals(COMMAND1, null, false);
-        _testEquals(COMMAND1, COMMAND1, true);
-        _testEquals(COMMAND1, COMMAND2, true);
-        _testEquals(COMMAND1, COMMAND3, false);
-        _testEquals(COMMAND3, COMMAND4, false);
-        _testEquals(COMMAND3, COMMAND5, false);
+        doTestEquals(COMMAND1, null, false);
+        doTestEquals(COMMAND1, COMMAND1, true);
+        doTestEquals(COMMAND1, COMMAND2, true);
+        doTestEquals(COMMAND1, COMMAND3, false);
+        doTestEquals(COMMAND3, COMMAND4, false);
+        doTestEquals(COMMAND3, COMMAND5, false);
     }
 
     /**
@@ -178,7 +153,7 @@ public final class CommandTest extends AbstractTestCase {
      * @param command2      - the second command
      * @param expectedEqual - true if command1 is expected to equal command2
      */
-    private void _testEquals(Command command1, Command command2, boolean expectedEqual) {
+    private void doTestEquals(Command command1, Command command2, boolean expectedEqual) {
         assertEquals(command1.toString() + " and " + command2, expectedEqual, command1.equals(command2));
     }
 

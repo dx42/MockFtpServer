@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -27,17 +29,14 @@ import org.mockftpserver.core.command.ReplyCodes;
  * 
  * @author Chris Mair
  */
-public final class CdupCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class CdupCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private CdupCommandHandler commandHandler;
     private Command command1;
     private Command command2;
     
-    /**
-     * Test the handleCommand(Command,Session) method
-     * @throws Exception - if an error occurs
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
 
@@ -48,12 +47,8 @@ public final class CdupCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyNoDataElements(commandHandler.getInvocation(1));
     }
 
-    /**
-     * Perform initialization before each test
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new CdupCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
         command1 = new Command(CommandNames.CDUP, EMPTY);

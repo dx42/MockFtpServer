@@ -17,17 +17,21 @@ package org.mockftpserver.core.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * Tests for the ConnectCommandHandler class
  *
  * @author Chris Mair
  */
-public final class ConnectCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class ConnectCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private ConnectCommandHandler commandHandler;
     private Command command1;
 
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         commandHandler.handleCommand(command1, session);
 
         verify(session).sendReply(ReplyCodes.CONNECT_OK, replyTextFor(ReplyCodes.CONNECT_OK));
@@ -36,8 +40,8 @@ public final class ConnectCommandHandlerTest extends AbstractCommandHandlerTestC
         verifyNoDataElements(commandHandler.getInvocation(0));
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new ConnectCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
         command1 = new Command(CommandNames.CONNECT, EMPTY);

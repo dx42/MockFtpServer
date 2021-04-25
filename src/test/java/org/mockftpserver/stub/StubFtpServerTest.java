@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.stub;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.InvocationRecord;
@@ -32,7 +34,7 @@ import java.util.ResourceBundle;
  *
  * @author Chris Mair
  */
-public final class StubFtpServerTest extends AbstractFtpServerTestCase {
+class StubFtpServerTest extends AbstractFtpServerTestCase {
 
     private StubFtpServer stubFtpServer;
     private AbstractStubCommandHandler commandHandler;
@@ -42,28 +44,21 @@ public final class StubFtpServerTest extends AbstractFtpServerTestCase {
     // Extra tests  (Standard tests defined in superclass)
     //-------------------------------------------------------------------------
 
-    /**
-     * Test the setCommandHandler() method, for a CommandHandler that does not implement ResourceBundleAware
-     */
-    public void testSetCommandHandler_NotReplyTextBundleAware() {
+    @Test
+    void testSetCommandHandler_NotReplyTextBundleAware() {
         stubFtpServer.setCommandHandler("ZZZ", commandHandler_NoReplyTextBundle);
         assertSame("commandHandler", commandHandler_NoReplyTextBundle, stubFtpServer.getCommandHandler("ZZZ"));
     }
 
-    /**
-     * Test the setCommandHandler() method, for a CommandHandler that implements ReplyTextBundleAware,
-     * and whose replyTextBundle attribute is null.
-     */
-    public void testSetCommandHandler_NullReplyTextBundle() {
+    @Test
+    void testSetCommandHandler_NullReplyTextBundle() {
         stubFtpServer.setCommandHandler("ZZZ", commandHandler);
         assertSame("commandHandler", commandHandler, stubFtpServer.getCommandHandler("ZZZ"));
         assertSame("replyTextBundle", stubFtpServer.getReplyTextBundle(), commandHandler.getReplyTextBundle());
     }
 
-    /**
-     * Test setReplyTextBaseName() method
-     */
-    public void testSetReplyTextBaseName() {
+    @Test
+    void testSetReplyTextBaseName() {
         stubFtpServer.setReplyTextBaseName("SampleReplyText");
         CwdCommandHandler commandHandler = new CwdCommandHandler();
 
@@ -77,12 +72,8 @@ public final class StubFtpServerTest extends AbstractFtpServerTestCase {
     // Test setup
     //-------------------------------------------------------------------------
 
-    /**
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @BeforeEach
+    void setUp() throws Exception {
         stubFtpServer = (StubFtpServer) ftpServer;
 
         // Create a CommandHandler instance that also implements ResourceBundleAware

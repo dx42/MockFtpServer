@@ -23,7 +23,7 @@ import org.mockftpserver.core.server.AbstractFtpServer_StartTestCase;
  *
  * @author Chris Mair
  */
-public final class StubFtpServer_StartTest extends AbstractFtpServer_StartTestCase {
+class StubFtpServer_StartTest extends AbstractFtpServer_StartTestCase {
 
     //-------------------------------------------------------------------------
     // Abstract method implementations

@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -29,7 +31,7 @@ import java.net.InetAddress;
  *
  * @author Chris Mair
  */
-public final class PortCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class PortCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final String[] PARAMETERS = new String[]{"11", "22", "33", "44", "1", "206"};
     private static final String[] PARAMETERS_INSUFFICIENT = new String[]{"7", "29", "99", "11", "77"};
@@ -38,10 +40,8 @@ public final class PortCommandHandlerTest extends AbstractCommandHandlerTestCase
 
     private PortCommandHandler commandHandler;
 
-    /**
-     * Test the handleCommand() method
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         final Command COMMAND = new Command(CommandNames.PORT, PARAMETERS);
 
         commandHandler.handleCommand(COMMAND, session);
@@ -56,20 +56,13 @@ public final class PortCommandHandlerTest extends AbstractCommandHandlerTestCase
                 PortCommandHandler.PORT_KEY, new Integer(PORT));
     }
 
-    /**
-     * Test the handleCommand() method, when not enough parameters have been specified
-     */
-    public void testHandleCommand_InsufficientParameters() throws Exception {
+    @Test
+    void testHandleCommand_InsufficientParameters() throws Exception {
         testHandleCommand_InvalidParameters(commandHandler, CommandNames.PORT, PARAMETERS_INSUFFICIENT);
     }
 
-    /**
-     * Perform initialization before each test
-     *
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new PortCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
     }

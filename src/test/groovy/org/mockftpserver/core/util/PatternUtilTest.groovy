@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.core.util
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.test.AbstractGroovyTestCase
 
 /**
@@ -22,8 +23,9 @@ import org.mockftpserver.test.AbstractGroovyTestCase
  *
  * @author Chris Mair
  */
-public class PatternUtilTest extends AbstractGroovyTestCase {
+class PatternUtilTest extends AbstractGroovyTestCase {
 
+    @Test
     void testConvertStringWithWildcardsToRegex() {
         assert PatternUtil.convertStringWithWildcardsToRegex('abc') == /abc/
         assert PatternUtil.convertStringWithWildcardsToRegex('abc.def') == /abc\.def/
@@ -35,6 +37,7 @@ public class PatternUtilTest extends AbstractGroovyTestCase {
         assert PatternUtil.convertStringWithWildcardsToRegex('??x?.*') == /..x.\..*/
     }
 
+    @Test
     void testContainsWildcards() {
         assert !PatternUtil.containsWildcards('')
         assert !PatternUtil.containsWildcards('abc')

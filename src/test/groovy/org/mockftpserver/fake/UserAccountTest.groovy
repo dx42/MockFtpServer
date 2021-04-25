@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystemEntry
 import org.mockftpserver.fake.filesystem.Permissions
@@ -34,6 +36,7 @@ class UserAccountTest extends AbstractGroovyTestCase {
 
     private UserAccount userAccount
 
+    @Test
     void testConstructor() {
         def acct = new UserAccount(USERNAME, PASSWORD, HOME_DIR)
         assert acct.username == USERNAME
@@ -41,6 +44,7 @@ class UserAccountTest extends AbstractGroovyTestCase {
         assert acct.homeDirectory == HOME_DIR
     }
 
+    @Test
     void testGetPrimaryGroup() {
         assert userAccount.primaryGroup == UserAccount.DEFAULT_GROUP
 
@@ -54,6 +58,7 @@ class UserAccountTest extends AbstractGroovyTestCase {
         assert userAccount.primaryGroup == UserAccount.DEFAULT_GROUP
     }
 
+    @Test
     void testIsValidPassword() {
         userAccount.username = USERNAME
         userAccount.password = PASSWORD
@@ -64,6 +69,7 @@ class UserAccountTest extends AbstractGroovyTestCase {
         assert !userAccount.isValidPassword(null)
     }
 
+    @Test
     void testIsValidPassword_UsernameNullOrEmpty() {
         userAccount.password = PASSWORD
         shouldFailWithMessageContaining('username') { userAccount.isValidPassword(PASSWORD) }
@@ -72,6 +78,7 @@ class UserAccountTest extends AbstractGroovyTestCase {
         shouldFailWithMessageContaining('username') { userAccount.isValidPassword(PASSWORD) }
     }
 
+    @Test
     void testIsValidPassword_OverrideComparePassword() {
         def customUserAccount = new CustomUserAccount()
         customUserAccount.username = USERNAME
@@ -81,6 +88,7 @@ class UserAccountTest extends AbstractGroovyTestCase {
         assert customUserAccount.isValidPassword(PASSWORD + "123")
     }
 
+    @Test
     void testIsValidPassword_PasswordNotCheckedDuringValidation() {
         userAccount.username = USERNAME
         userAccount.password = PASSWORD
@@ -88,6 +96,7 @@ class UserAccountTest extends AbstractGroovyTestCase {
         assert userAccount.isValidPassword("wrong")
     }
 
+    @Test
     void testIsValid() {
         assert !userAccount.valid
         userAccount.homeDirectory = ""
@@ -96,6 +105,7 @@ class UserAccountTest extends AbstractGroovyTestCase {
         assert userAccount.valid
     }
 
+    @Test
     void testCanRead() {
         // No file permissions - readable by all
         doTestCanRead(USERNAME, GROUP, null, true)
@@ -120,6 +130,7 @@ class UserAccountTest extends AbstractGroovyTestCase {
         doTestCanRead(null, null, 'rwxrwx-wx', false)
     }
 
+    @Test
     void testCanWrite() {
         // No file permissions - writable by all
         doTestCanWrite(USERNAME, GROUP, null, true)
@@ -144,6 +155,7 @@ class UserAccountTest extends AbstractGroovyTestCase {
         doTestCanWrite(null, null, 'rwxrwxr-x', false)
     }
 
+    @Test
     void testCanExecute() {
         // No file permissions - executable by all
         doTestCanExecute(USERNAME, GROUP, null, true)
@@ -168,6 +180,7 @@ class UserAccountTest extends AbstractGroovyTestCase {
         doTestCanExecute(null, null, 'rwxrwxrw-', false)
     }
 
+    @Test
     void testDefaultPermissions() {
         assert userAccount.defaultPermissionsForNewFile == new Permissions('rw-rw-rw-')
         assert userAccount.defaultPermissionsForNewDirectory == Permissions.ALL
@@ -197,8 +210,8 @@ class UserAccountTest extends AbstractGroovyTestCase {
         return new FileEntry(path: '', owner: owner, group: group, permissions: permissions)
     }
 
+    @BeforeEach
     void setUp() {
-        super.setUp()
         userAccount = new UserAccount()
     }
 }

@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -27,14 +29,12 @@ import org.mockftpserver.core.command.ReplyCodes;
  * 
  * @author Chris Mair
  */
-public final class TypeCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class TypeCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private TypeCommandHandler commandHandler;
 
-    /**
-     * Test the handleCommand() method
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         final Command COMMAND1 = new Command("TYPE", array("A"));
         final Command COMMAND2 = new Command("TYPE", array("B"));
         final Command COMMAND3 = new Command("TYPE", array("L", "8"));
@@ -51,19 +51,13 @@ public final class TypeCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyOneDataElement(commandHandler.getInvocation(2), TypeCommandHandler.TYPE_INFO_KEY, new String[] {"L", "8"});
     }
     
-    /**
-     * Test the handleCommand() method, when no type parameter has been specified
-     */
-    public void testHandleCommand_MissingTypeParameter() throws Exception {
+    @Test
+    void testHandleCommand_MissingTypeParameter() throws Exception {
         testHandleCommand_InvalidParameters(commandHandler, CommandNames.TYPE, EMPTY);
     }
 
-    /**
-     * Perform initialization before each test
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new TypeCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
     }

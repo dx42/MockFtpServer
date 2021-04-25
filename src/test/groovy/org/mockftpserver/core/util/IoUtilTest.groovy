@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.core.util
 
+import org.junit.jupiter.api.Test
 import org.mockftpserver.test.AbstractGroovyTestCase
 
 /**
@@ -22,20 +23,16 @@ import org.mockftpserver.test.AbstractGroovyTestCase
  *
  * @author Chris Mair
  */
-public class IoUtilTest extends AbstractGroovyTestCase {
+class IoUtilTest extends AbstractGroovyTestCase {
 
-    /**
-     * Test the readBytes() method 
-     */
+    @Test
     void testReadBytes() {
         final byte[] BYTES = "abc 123 %^&".getBytes()
         InputStream input = new ByteArrayInputStream(BYTES)
         assert IoUtil.readBytes(input) == BYTES
     }
 
-    /**
-     * Test the readBytes() method, passing in a null 
-     */
+    @Test
     void testReadBytes_Null() {
         shouldFailWithMessageContaining("input") { IoUtil.readBytes(null) }
     }

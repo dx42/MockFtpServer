@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake
 
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.test.AbstractGroovyTestCase
 import org.mockftpserver.test.PortTestUtil
 
@@ -22,11 +24,12 @@ class FakeFtpServer_AlreadyStartedTest extends AbstractGroovyTestCase {
     private FakeFtpServer ftpServer1 = new FakeFtpServer()
     private FakeFtpServer ftpServer2 = new FakeFtpServer()
 
+    @Test
     void testStartServer_WhenAlreadyStarted() {
         ftpServer1.setServerControlPort(PortTestUtil.getFtpServerControlPort())
         ftpServer1.start();
         Thread.sleep(200L);     // give it some time to get started
-        assertEquals("started - after start()", true, ftpServer1.isStarted());
+        assert ftpServer1.isStarted()
 
         ftpServer2.setServerControlPort(PortTestUtil.getFtpServerControlPort())
         ftpServer2.start();
@@ -35,8 +38,8 @@ class FakeFtpServer_AlreadyStartedTest extends AbstractGroovyTestCase {
         assert !ftpServer2.isStarted()
     }
 
+    @AfterEach
     void tearDown() {
-        super.tearDown()
         ftpServer1.stop();
         ftpServer2.stop();
     }

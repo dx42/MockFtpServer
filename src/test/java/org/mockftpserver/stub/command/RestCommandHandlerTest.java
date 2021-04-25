@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -27,7 +29,7 @@ import org.mockftpserver.core.command.ReplyCodes;
  * 
  * @author Chris Mair
  */
-public final class RestCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class RestCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private static final String MARKER1 = "marker1";
     private static final String MARKER2 = "marker2";
@@ -36,10 +38,8 @@ public final class RestCommandHandlerTest extends AbstractCommandHandlerTestCase
     private Command command1;
     private Command command2;
 
-    /**
-     * Test the handleCommand() method
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
 
         commandHandler.handleCommand(command1, session);
         commandHandler.handleCommand(command2, session);
@@ -51,20 +51,13 @@ public final class RestCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyOneDataElement(commandHandler.getInvocation(1), RestCommandHandler.MARKER_KEY, MARKER2);
     }
 
-    /**
-     * Test the handleCommand() method, when no marker parameter has been specified
-     */
-    public void testHandleCommand_MissingPathnameParameter() throws Exception {
+    @Test
+    void testHandleCommand_MissingPathnameParameter() throws Exception {
         testHandleCommand_InvalidParameters(commandHandler, CommandNames.REST, EMPTY);
     }
 
-    /**
-     * Perform initialization before each test
-     * 
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new RestCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
         commandHandler.setReplyTextBundle(replyTextBundle);

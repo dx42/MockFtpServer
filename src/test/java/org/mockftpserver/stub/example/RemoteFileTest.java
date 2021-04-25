@@ -15,6 +15,9 @@
  */
 package org.mockftpserver.stub.example;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.stub.StubFtpServer;
@@ -27,18 +30,16 @@ import java.io.IOException;
 /**
  * Example test using StubFtpServer, with programmatic configuration.
  */
-public class RemoteFileTest extends AbstractTestCase implements IntegrationTest {
+class RemoteFileTest extends AbstractTestCase implements IntegrationTest {
 
     private static final int PORT = 9981;
     private static final String FILENAME = "dir/sample.txt";
 
     private RemoteFile remoteFile;
     private StubFtpServer stubFtpServer;
-    
-    /**
-     * Test readFile() method 
-     */
-    public void testReadFile() throws Exception {
+
+    @Test
+    void testReadFile() throws Exception {
 
         final String CONTENTS = "abcdef 1234567890";
 
@@ -60,10 +61,8 @@ public class RemoteFileTest extends AbstractTestCase implements IntegrationTest 
         assertEquals("filename", FILENAME, filename);
     }
 
-    /**
-     * Test the readFile() method when the FTP transfer fails (returns a non-success reply code) 
-     */
-    public void testReadFileThrowsException() {
+    @Test
+    void testReadFileThrowsException() {
 
         // Replace the default RETR CommandHandler; return failure reply code
         RetrCommandHandler retrCommandHandler = new RetrCommandHandler();
@@ -81,11 +80,8 @@ public class RemoteFileTest extends AbstractTestCase implements IntegrationTest 
         }
     }
     
-    /**
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         remoteFile = new RemoteFile();
         remoteFile.setServer("localhost");
         remoteFile.setPort(PORT);
@@ -93,11 +89,8 @@ public class RemoteFileTest extends AbstractTestCase implements IntegrationTest 
         stubFtpServer.setServerControlPort(PORT);
     }
 
-    /**
-     * @see org.mockftpserver.test.AbstractTestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterEach
+    void tearDown() throws Exception {
         stubFtpServer.stop();
     }
 

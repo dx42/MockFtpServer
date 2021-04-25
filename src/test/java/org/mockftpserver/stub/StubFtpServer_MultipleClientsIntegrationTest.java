@@ -16,6 +16,9 @@
 package org.mockftpserver.stub;
 
 import org.apache.commons.net.ftp.FTPClient;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.command.Command;
@@ -32,8 +35,7 @@ import org.mockftpserver.test.PortTestUtil;
  * 
  * @author Chris Mair
  */
-public final class StubFtpServer_MultipleClientsIntegrationTest extends AbstractTestCase implements
-        IntegrationTest {
+class StubFtpServer_MultipleClientsIntegrationTest extends AbstractTestCase implements IntegrationTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(StubFtpServer_MultipleClientsIntegrationTest.class);
     private static final String SERVER = "localhost";
@@ -52,10 +54,8 @@ public final class StubFtpServer_MultipleClientsIntegrationTest extends Abstract
     private FTPClient ftpClient2;
     private FTPClient ftpClient3;
 
-    /**
-     * Test that multiple simultaneous clients can connect and establish sessions. 
-     */
-    public void testMultipleClients() throws Exception {
+    @Test
+    void testMultipleClients() throws Exception {
 
         // Connect from client 1
         LOG.info("connect() to ftpClient1");
@@ -90,13 +90,8 @@ public final class StubFtpServer_MultipleClientsIntegrationTest extends Abstract
     // Test setup and tear-down
     // -------------------------------------------------------------------------
 
-    /**
-     * Perform initialization before each test
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @BeforeEach
+    void setUp() throws Exception {
         stubFtpServer = new StubFtpServer();
         stubFtpServer.setServerControlPort(PortTestUtil.getFtpServerControlPort());
         stubFtpServer.setCommandHandler(CommandNames.PWD, new CustomPwdCommandHandler());
@@ -111,13 +106,8 @@ public final class StubFtpServer_MultipleClientsIntegrationTest extends Abstract
         ftpClient3.setDefaultTimeout(1000);
     }
 
-    /**
-     * Perform cleanup after each test
-     * @see org.mockftpserver.test.AbstractTestCase#tearDown()
-     */
+    @AfterEach
     protected void tearDown() throws Exception {
-        super.tearDown();
-
         LOG.info("Cleaning up...");
         if (ftpClient1.isConnected()) {
             ftpClient1.disconnect();

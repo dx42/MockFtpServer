@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake
 
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
 import org.mockftpserver.core.command.ReplyTextBundleAware
@@ -36,17 +38,20 @@ class FakeFtpServerTest extends AbstractFtpServerTestCase {
     // Extra tests  (Standard tests defined in superclass)
     //-------------------------------------------------------------------------
 
+    @Test
     void testSetCommandHandler_NotServerConfigurationAware() {
         ftpServer.setCommandHandler("ZZZ", commandHandler_NotServerConfigurationAware)
         assert ftpServer.getCommandHandler("ZZZ") == commandHandler_NotServerConfigurationAware
     }
 
+    @Test
     void testSetCommandHandler_ServerConfigurationAware() {
         ftpServer.setCommandHandler("ZZZ", commandHandler)
         assert ftpServer.getCommandHandler("ZZZ") == commandHandler
         assert ftpServer == commandHandler.serverConfiguration
     }
 
+    @Test
     void testSetCommandHandler_ReplyTextBundleAware() {
         def cmdHandler = new TestCommandHandlerReplyTextBundleAware()
         ftpServer.setCommandHandler("ZZZ", cmdHandler)
@@ -54,6 +59,7 @@ class FakeFtpServerTest extends AbstractFtpServerTestCase {
         assert ftpServer.replyTextBundle == cmdHandler.replyTextBundle
     }
 
+    @Test
     void testUserAccounts() {
         def userAccount = new UserAccount(username: 'abc')
 
@@ -67,6 +73,7 @@ class FakeFtpServerTest extends AbstractFtpServerTestCase {
         assert ftpServer.getUserAccount("abc") == userAccount
     }
 
+    @Test
     void testHelpText() {
         ftpServer.helpText = [a: 'aaaaa', b: 'bbbbb', '': 'default']
         assert ftpServer.getHelpText('a') == 'aaaaa'
@@ -75,18 +82,21 @@ class FakeFtpServerTest extends AbstractFtpServerTestCase {
         assert ftpServer.getHelpText('unrecognized') == null
     }
 
+    @Test
     void testSystemName() {
         assert ftpServer.systemName == "WINDOWS"
         ftpServer.systemName = "abc"
         assert ftpServer.systemName == "abc"
     }
 
+    @Test
     void testSystemStatus() {
         assert ftpServer.systemStatus == "Connected"
         ftpServer.systemStatus = "abc"
         assert ftpServer.systemStatus == "abc"
     }
 
+    @Test
     void testReplyText() {
         ftpServer.replyTextBaseName = "SampleReplyText"
 
@@ -98,8 +108,8 @@ class FakeFtpServerTest extends AbstractFtpServerTestCase {
     // Test set up
     //-------------------------------------------------------------------------
 
+    @BeforeEach
     void setUp() {
-        super.setUp();
         commandHandler = new TestCommandHandler()
         commandHandler_NotServerConfigurationAware = new TestCommandHandlerNotServerConfigurationAware()
     }

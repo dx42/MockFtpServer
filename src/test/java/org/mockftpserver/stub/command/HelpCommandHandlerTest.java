@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -27,14 +29,12 @@ import org.mockftpserver.core.command.ReplyCodes;
  * 
  * @author Chris Mair
  */
-public final class HelpCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class HelpCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private HelpCommandHandler commandHandler;
 
-    /**
-     * Test the handleCommand() method
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
 
         final String RESPONSE_DATA = "help for ABC...";
         commandHandler.setHelpMessage(RESPONSE_DATA);
@@ -52,13 +52,8 @@ public final class HelpCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyOneDataElement(commandHandler.getInvocation(1), HelpCommandHandler.COMMAND_NAME_KEY, "abc");
     }
 
-    /**
-     * Perform initialization before each test
-     * 
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new HelpCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
     }

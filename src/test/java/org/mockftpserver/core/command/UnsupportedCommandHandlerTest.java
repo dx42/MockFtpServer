@@ -17,17 +17,21 @@ package org.mockftpserver.core.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
  * Tests for the UnsupportedCommandHandler class
  *
  * @author Chris Mair
  */
-public final class UnsupportedCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class UnsupportedCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private UnsupportedCommandHandler commandHandler;
     private Command command1;
 
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         commandHandler.handleCommand(command1, session);
 
         verify(session).sendReply(ReplyCodes.COMMAND_NOT_SUPPORTED, replyTextFor(ReplyCodes.COMMAND_NOT_SUPPORTED));
@@ -36,8 +40,8 @@ public final class UnsupportedCommandHandlerTest extends AbstractCommandHandlerT
         verifyNoDataElements(commandHandler.getInvocation(0));
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new UnsupportedCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
         command1 = new Command("XXXX", EMPTY);

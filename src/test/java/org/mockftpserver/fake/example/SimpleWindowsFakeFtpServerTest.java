@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.fake.example;
 
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.fake.FakeFtpServer;
 import org.mockftpserver.fake.UserAccount;
 import org.mockftpserver.fake.filesystem.DirectoryEntry;
@@ -28,9 +29,10 @@ import org.mockftpserver.test.AbstractTestCase;
  * Example code illustrating how to programmatically configure a FakeFtpServer with a (simulated) Windows
  * filesystem.
  */
-public class SimpleWindowsFakeFtpServerTest extends AbstractTestCase implements IntegrationTest {
+class SimpleWindowsFakeFtpServerTest extends AbstractTestCase implements IntegrationTest {
 
-    public void testConfigureAndStart() throws Exception {
+    @Test
+    void testConfigureAndStart() throws Exception {
         FakeFtpServer fakeFtpServer = new FakeFtpServer();
         fakeFtpServer.setServerControlPort(9981);
         fakeFtpServer.addUserAccount(new UserAccount("user", "password", "c:\\data"));

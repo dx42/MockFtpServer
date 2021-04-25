@@ -26,7 +26,7 @@ import org.mockftpserver.core.util.IoUtil
  *
  * @author Chris Mair
  */
-public class FileEntryTest extends AbstractFileSystemEntryTestCase {
+class FileEntryTest extends AbstractFileSystemEntryTestCase {
 
     private static final LOG = LoggerFactory.getLogger(FileEntryTest)
     private static final CONTENTS = "abc 123 %^& xxx"
@@ -187,16 +187,12 @@ public class FileEntryTest extends AbstractFileSystemEntryTestCase {
     // Implementation of Required Abstract Methods
     //-------------------------------------------------------------------------
 
-    /**
-     * @see org.mockftpserver.fake.filesystem.AbstractFileSystemEntryTestCase#getImplementationClass()
-     */
+    @Override
     protected Class getImplementationClass() {
         return FileEntry.class
     }
 
-    /**
-     * @see org.mockftpserver.fake.filesystem.AbstractFileSystemEntryTestCase#isDirectory()
-     */
+    @Override
     protected boolean isDirectory() {
         return false
     }

@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -27,14 +29,12 @@ import org.mockftpserver.core.command.ReplyCodes;
  *
  * @author Chris Mair
  */
-public final class NlstCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class NlstCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private NlstCommandHandler commandHandler;
 
-    /**
-     * Test the handleCommand() method
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         final String DIR_LISTING = " directory listing\nabc.txt\ndef.log\n";
         final String DIR_LISTING_TRIMMED = DIR_LISTING.trim();
         ((NlstCommandHandler) commandHandler).setDirectoryListing(DIR_LISTING);
@@ -56,13 +56,8 @@ public final class NlstCommandHandlerTest extends AbstractCommandHandlerTestCase
         verifyOneDataElement(commandHandler.getInvocation(1), NlstCommandHandler.PATHNAME_KEY, null);
     }
 
-    /**
-     * Perform initialization before each test
-     *
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new NlstCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
     }

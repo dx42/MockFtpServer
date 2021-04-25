@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.core.session;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.MockFtpServerException;
@@ -38,7 +40,7 @@ import java.util.Map;
  * 
  * @author Chris Mair
  */
-public final class DefaultSessionTest extends AbstractTestCase {
+class DefaultSessionTest extends AbstractTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultSessionTest.class);
     private static final String DATA = "sample data 123";
@@ -54,7 +56,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
     private StubSocket stubSocket;
     private InetAddress clientHost;
 
-    public void testConstructor_NullControlSocket() {
+    @Test
+    void testConstructor_NullControlSocket() {
         try {
             new DefaultSession(null, commandHandlerMap);
             fail("Expected AssertFailedException");
@@ -64,7 +67,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
         }
     }
 
-    public void testConstructor_NullCommandHandlerMap() {
+    @Test
+    void testConstructor_NullCommandHandlerMap() {
         try {
             new DefaultSession(stubSocket, null);
             fail("Expected AssertFailedException");
@@ -74,7 +78,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
         }
     }
 
-    public void testSetClientDataPort() {
+    @Test
+    void testSetClientDataPort() {
         StubSocket stubSocket = createTestSocket("");
         StubSocketFactory stubSocketFactory = new StubSocketFactory(stubSocket);
         session.socketFactory = stubSocketFactory;
@@ -84,7 +89,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertEquals("data port", PORT, stubSocketFactory.requestedDataPort);
     }
 
-    public void testSetClientDataPort_AfterPassiveConnectionMode() throws IOException {
+    @Test
+    void testSetClientDataPort_AfterPassiveConnectionMode() throws IOException {
         StubServerSocket stubServerSocket = new StubServerSocket(PORT);
         StubServerSocketFactory stubServerSocketFactory = new StubServerSocketFactory(stubServerSocket);
         session.serverSocketFactory = stubServerSocketFactory;
@@ -99,7 +105,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertNull("passiveModeDataSocket should be null", session.passiveModeDataSocket);
     }
 
-    public void testSetClientHost() throws Exception {
+    @Test
+    void testSetClientHost() throws Exception {
         StubSocket stubSocket = createTestSocket("");
         StubSocketFactory stubSocketFactory = new StubSocketFactory(stubSocket);
         session.socketFactory = stubSocketFactory;
@@ -108,7 +115,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertEquals("client host", clientHost, stubSocketFactory.requestedHost);
     }
 
-    public void testOpenDataConnection() {
+    @Test
+    void testOpenDataConnection() {
         StubSocket stubSocket = createTestSocket("");
         StubSocketFactory stubSocketFactory = new StubSocketFactory(stubSocket);
         session.socketFactory = stubSocketFactory;
@@ -127,7 +135,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertEquals("client host", clientHost, stubSocketFactory.requestedHost);
     }
 
-    public void testOpenDataConnection_PassiveMode_NoConnection() throws IOException {
+    @Test
+    void testOpenDataConnection_PassiveMode_NoConnection() throws IOException {
         StubServerSocket stubServerSocket = new StubServerSocket(PORT);
         StubServerSocketFactory stubServerSocketFactory = new StubServerSocketFactory(stubServerSocket);
         session.serverSocketFactory = stubServerSocketFactory;
@@ -144,7 +153,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
         }
     }
 
-    public void testOpenDataConnection_NullClientHost() {
+    @Test
+    void testOpenDataConnection_NullClientHost() {
         try {
             session.openDataConnection();
             fail("Expected AssertFailedException");
@@ -154,7 +164,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
         }
     }
 
-    public void testReadData() {
+    @Test
+    void testReadData() {
         StubSocket stubSocket = createTestSocket(DATA);
         session.socketFactory = new StubSocketFactory(stubSocket);
         session.setClientDataHost(clientHost);
@@ -165,7 +176,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertEquals("data", DATA.getBytes(), data);
     }
 
-    public void testReadData_PassiveMode() throws IOException {
+    @Test
+    void testReadData_PassiveMode() throws IOException {
         StubSocket stubSocket = createTestSocket(DATA);
         StubServerSocket stubServerSocket = new StubServerSocket(PORT, stubSocket);
         StubServerSocketFactory stubServerSocketFactory = new StubServerSocketFactory(stubServerSocket);
@@ -178,7 +190,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertEquals("data", DATA.getBytes(), data);
     }
 
-    public void testReadData_NumBytes() {
+    @Test
+    void testReadData_NumBytes() {
         final int NUM_BYTES = 5;
         final String EXPECTED_DATA = DATA.substring(0, NUM_BYTES);
         StubSocket stubSocket = createTestSocket(DATA);
@@ -191,7 +204,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertEquals("data", EXPECTED_DATA.getBytes(), data);
     }
 
-    public void testReadData_NumBytes_AskForMoreBytesThanThereAre() {
+    @Test
+    void testReadData_NumBytes_AskForMoreBytesThanThereAre() {
         StubSocket stubSocket = createTestSocket(DATA);
         session.socketFactory = new StubSocketFactory(stubSocket);
         session.setClientDataHost(clientHost);
@@ -202,7 +216,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertEquals("data", DATA.getBytes(), data);
     }
 
-    public void testCloseDataConnection() {
+    @Test
+    void testCloseDataConnection() {
         StubSocket stubSocket = createTestSocket(DATA);
         session.socketFactory = new StubSocketFactory(stubSocket);
 
@@ -212,7 +227,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertTrue("client data socket should be closed", stubSocket.isClosed());
     }
 
-    public void testCloseDataConnection_PassiveMode() throws IOException {
+    @Test
+    void testCloseDataConnection_PassiveMode() throws IOException {
         StubSocket stubSocket = createTestSocket(DATA);
         StubServerSocket stubServerSocket = new StubServerSocket(1, stubSocket);
         session.serverSocketFactory = new StubServerSocketFactory(stubServerSocket);
@@ -225,7 +241,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertTrue("passive mode data socket should be closed", stubServerSocket.isClosed());
     }
 
-    public void testSwitchToPassiveMode() throws IOException {
+    @Test
+    void testSwitchToPassiveMode() throws IOException {
         StubServerSocket stubServerSocket = new StubServerSocket(PORT);
         StubServerSocketFactory stubServerSocketFactory = new StubServerSocketFactory(stubServerSocket);
         session.serverSocketFactory = stubServerSocketFactory;
@@ -236,21 +253,25 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertEquals("port", PORT, port);
     }
 
-    public void testGetServerHost() {
+    @Test
+    void testGetServerHost() {
         assertEquals("host", DEFAULT_HOST, session.getServerHost());
     }
 
-    public void testGetClientHost_NotRunning() {
+    @Test
+    void testGetClientHost_NotRunning() {
         assertNull("null", session.getClientHost());
     }
 
-    public void testReadCommand() {
+    @Test
+    void testReadCommand() {
         StringReader stringReader = new StringReader(COMMAND);
         session.controlConnectionReader = new BufferedReader(stringReader);
         assertEquals(new Command(COMMAND, EMPTY), session.readCommand());
     }
 
-    public void testReadCommand_ReadLineReturnsNull_ReturnsNull() {
+    @Test
+    void testReadCommand_ReadLineReturnsNull_ReturnsNull() {
         session.controlConnectionReader = new BufferedReader(new StringReader(COMMAND)) {
             public boolean ready() { return true; }
             public String readLine() { return null; }
@@ -258,12 +279,14 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertNull(session.readCommand());
     }
 
-    public void testReadCommand_Closed_ReturnsNull() {
+    @Test
+    void testReadCommand_Closed_ReturnsNull() {
         session.close();
         assertNull(session.readCommand());
     }
 
-    public void testParseCommand() {
+    @Test
+    void testParseCommand() {
         Command command = session.parseCommand("LIST");
         assertEquals("command name", "LIST", command.getName());
         assertEquals("command parameters", EMPTY, command.getParameters());
@@ -278,7 +301,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
                 .getParameters());
     }
 
-    public void testParseCommand_EmptyCommandString() {
+    @Test
+    void testParseCommand_EmptyCommandString() {
         try {
             session.parseCommand("");
             fail("Expected AssertFailedException");
@@ -287,8 +311,9 @@ public final class DefaultSessionTest extends AbstractTestCase {
             LOG.info("Expected: " + expected);
         }
     }
-    
-    public void testSendData() {
+
+    @Test
+    void testSendData() {
         StubSocket stubSocket = createTestSocket("1234567890 abcdef");
         session.socketFactory = new StubSocketFactory(stubSocket);
 
@@ -299,7 +324,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertEquals("output", DATA, outputStream.toString());
     }
 
-    public void testSendData_Null() {
+    @Test
+    void testSendData_Null() {
         try {
             session.sendData(null, 1);
             fail("Expected AssertFailedException");
@@ -309,7 +335,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
         }
     }
 
-    public void testSendReply_InvalidReplyCode() {
+    @Test
+    void testSendReply_InvalidReplyCode() {
         try {
             session.sendReply(-66, "text");
             fail("Expected AssertFailedException");
@@ -319,7 +346,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
         }
     }
 
-    public void testGetAndSetAttribute() {
+    @Test
+    void testGetAndSetAttribute() {
         assertNull("name does not exist yet", session.getAttribute(NAME1));
         session.setAttribute(NAME1, VALUE);
         session.setAttribute(NAME2, null);
@@ -327,8 +355,9 @@ public final class DefaultSessionTest extends AbstractTestCase {
         assertNull("NAME2", session.getAttribute(NAME2));
         assertNull("no such name", session.getAttribute("noSuchName"));
     }
-    
-    public void testGetAttribute_Null() {
+
+    @Test
+    void testGetAttribute_Null() {
         try {
             session.getAttribute(null);
             fail("Expected AssertFailedException");
@@ -337,8 +366,9 @@ public final class DefaultSessionTest extends AbstractTestCase {
             LOG.info("Expected: " + expected);
         }
     }
-    
-    public void testSetAttribute_NullName() {
+
+    @Test
+    void testSetAttribute_NullName() {
         try {
             session.setAttribute(null, VALUE);
             fail("Expected AssertFailedException");
@@ -347,15 +377,17 @@ public final class DefaultSessionTest extends AbstractTestCase {
             LOG.info("Expected: " + expected);
         }
     }
-    
-    public void testRemoveAttribute() {
+
+    @Test
+    void testRemoveAttribute() {
         session.removeAttribute("noSuchName");      // do nothing
         session.setAttribute(NAME1, VALUE);
         session.removeAttribute(NAME1);
         assertNull("NAME1", session.getAttribute(NAME1));
     }
-    
-    public void testRemoveAttribute_Null() {
+
+    @Test
+    void testRemoveAttribute_Null() {
         try {
             session.removeAttribute(null);
             fail("Expected AssertFailedException");
@@ -364,8 +396,9 @@ public final class DefaultSessionTest extends AbstractTestCase {
             LOG.info("Expected: " + expected);
         }
     }
-    
-    public void testGetAttributeNames() {
+
+    @Test
+    void testGetAttributeNames() {
         assertEquals("No names yet", Collections.EMPTY_SET, session.getAttributeNames());
         session.setAttribute(NAME1, VALUE);
         assertEquals("1", Collections.singleton(NAME1), session.getAttributeNames());
@@ -377,9 +410,8 @@ public final class DefaultSessionTest extends AbstractTestCase {
     // Setup and Internal Helper Methods
     // -------------------------------------------------------------------------
 
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandlerMap = new HashMap();
         outputStream = new ByteArrayOutputStream();
         session = createDefaultSession("");

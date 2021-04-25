@@ -17,6 +17,8 @@ package org.mockftpserver.stub.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.AbstractCommandHandlerTestCase;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
@@ -27,25 +29,18 @@ import org.mockftpserver.core.command.ReplyCodes;
  *
  * @author Chris Mair
  */
-public final class StouCommandHandlerTest extends AbstractCommandHandlerTestCase {
+class StouCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     private StouCommandHandler commandHandler;
 
-    /**
-     * Perform initialization before each test
-     *
-     * @see org.mockftpserver.core.command.AbstractCommandHandlerTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         commandHandler = new StouCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
     }
 
-    /**
-     * Test the handleCommand() method, as well as the getFileContents() and clearFileContents() methods
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         final String DATA = "ABC";
         final String FILENAME = "abc.txt";
 

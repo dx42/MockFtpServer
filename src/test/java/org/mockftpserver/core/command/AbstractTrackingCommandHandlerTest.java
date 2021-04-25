@@ -17,6 +17,8 @@ package org.mockftpserver.core.command;
 
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
@@ -31,7 +33,7 @@ import java.util.ResourceBundle;
  *
  * @author Chris Mair
  */
-public final class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
+class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractTrackingCommandHandlerTest.class);
     private static final String COMMAND_NAME = "abc";
@@ -52,20 +54,16 @@ public final class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
     private AbstractTrackingCommandHandler commandHandler;
     private Session session;
 
-    /**
-     * Test the handleCommand(Command,Session) method
-     */
-    public void testHandleCommand() throws Exception {
+    @Test
+    void testHandleCommand() throws Exception {
         assertEquals("before", 0, commandHandler.numberOfInvocations());
         commandHandler.handleCommand(COMMAND, session);
         assertEquals("after", 1, commandHandler.numberOfInvocations());
         assertTrue("locked", commandHandler.getInvocation(0).isLocked());
     }
 
-    /**
-     * Test the handleCommand(Command,Session) method, passing in a null Command
-     */
-    public void testHandleCommand_NullCommand() throws Exception {
+    @Test
+    void testHandleCommand_NullCommand() throws Exception {
         try {
             commandHandler.handleCommand(null, session);
             fail("Expected AssertFailedException");
@@ -75,10 +73,8 @@ public final class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the handleCommand(Command,Session) method, passing in a null Session
-     */
-    public void testHandleCommand_NullSession() throws Exception {
+    @Test
+    void testHandleCommand_NullSession() throws Exception {
         try {
             commandHandler.handleCommand(COMMAND, null);
             fail("Expected AssertFailedException");
@@ -88,10 +84,8 @@ public final class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the numberOfInvocations(), addInvocationRecord() and clearInvocationRecord() methods
-     */
-    public void testInvocationHistory() throws Exception {
+    @Test
+    void testInvocationHistory() throws Exception {
         assertEquals("none", 0, commandHandler.numberOfInvocations());
         commandHandler.handleCommand(COMMAND, session);
         assertEquals("1", 1, commandHandler.numberOfInvocations());
@@ -101,22 +95,16 @@ public final class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
         assertEquals("cleared", 0, commandHandler.numberOfInvocations());
     }
 
-    /**
-     * Test the getInvocation() method
-     *
-     * @throws Exception - if an error occurs
-     */
-    public void testGetInvocation() throws Exception {
+    @Test
+    void testGetInvocation() throws Exception {
         commandHandler.handleCommand(COMMAND, session);
         commandHandler.handleCommand(COMMAND_WITH_ARGS, session);
         assertSame("1", COMMAND, commandHandler.getInvocation(0).getCommand());
         assertSame("2", COMMAND_WITH_ARGS, commandHandler.getInvocation(1).getCommand());
     }
 
-    /**
-     * Test the getInvocation() method, passing in an invalid index
-     */
-    public void testGetInvocation_IndexOutOfBounds() throws Exception {
+    @Test
+    void testGetInvocation_IndexOutOfBounds() throws Exception {
         commandHandler.handleCommand(COMMAND, session);
         try {
             commandHandler.getInvocation(2);
@@ -127,10 +115,8 @@ public final class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the sendReply() method, when no message arguments are specified
-     */
-    public void testSendReply() {
+    @Test
+    void testSendReply() {
         commandHandler.sendReply(session, REPLY_CODE1, null, null, null);
         commandHandler.sendReply(session, REPLY_CODE1, MESSAGE_KEY, null, null);
         commandHandler.sendReply(session, REPLY_CODE1, MESSAGE_KEY, OVERRIDE_REPLY_TEXT, null);
@@ -142,19 +128,15 @@ public final class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
         verify(session).sendReply(REPLY_CODE3, null);
     }
 
-    /**
-     * Test the sendReply() method, passing in message arguments
-     */
-    public void testSendReply_WithMessageArguments() {
+    @Test
+    void testSendReply_WithMessageArguments() {
         commandHandler.sendReply(session, REPLY_CODE1, null, REPLY_TEXT2, ARGS);
 
         verify(session).sendReply(REPLY_CODE1, REPLY_TEXT2_FORMATTED);
     }
 
-    /**
-     * Test the sendReply() method, passing in a null Session
-     */
-    public void testSendReply_NullSession() {
+    @Test
+    void testSendReply_NullSession() {
         try {
             commandHandler.sendReply(null, REPLY_CODE1, REPLY_TEXT1, null, null);
             fail("Expected AssertFailedException");
@@ -164,10 +146,8 @@ public final class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the sendReply() method, passing in an invalid replyCode
-     */
-    public void testSendReply_InvalidReplyCode() {
+    @Test
+    void testSendReply_InvalidReplyCode() {
         try {
             commandHandler.sendReply(session, 0, REPLY_TEXT1, null, null);
             fail("Expected AssertFailedException");
@@ -181,13 +161,8 @@ public final class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
     // Test setup
     //-------------------------------------------------------------------------
 
-    /**
-     * Perform initialization before each test
-     *
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         session = mock(Session.class);
         commandHandler = new AbstractTrackingCommandHandler() {
             public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) throws Exception {

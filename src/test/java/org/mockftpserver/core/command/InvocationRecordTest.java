@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.core.command;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.util.AssertFailedException;
@@ -29,7 +31,7 @@ import java.util.Set;
  * 
  * @author Chris Mair
  */
-public final class InvocationRecordTest extends AbstractTestCase {
+class InvocationRecordTest extends AbstractTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(InvocationRecordTest.class);
     private static final Command COMMAND = new Command("command", EMPTY);
@@ -40,10 +42,8 @@ public final class InvocationRecordTest extends AbstractTestCase {
 
     private InvocationRecord invocationRecord;
 
-    /**
-     * Test the Constructor
-     */
-    public void testConstructor() {
+    @Test
+    void testConstructor() {
         final Command COMMAND = new Command("ABC", EMPTY);
         long beforeTime = System.currentTimeMillis();
         InvocationRecord commandInvocation = new InvocationRecord(COMMAND, DEFAULT_HOST);
@@ -55,10 +55,8 @@ public final class InvocationRecordTest extends AbstractTestCase {
         assertEquals("host", DEFAULT_HOST, commandInvocation.getClientHost());
     }
 
-    /**
-     * Test the set() method, passing in a null key
-     */
-    public void testSet_NullKey() {
+    @Test
+    void testSet_NullKey() {
         try {
             invocationRecord.set(null, STRING);
             fail("Expected AssertFailedException");
@@ -68,27 +66,21 @@ public final class InvocationRecordTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the set() method, passing in a null value
-     */
-    public void testSet_NullValue() {
+    @Test
+    void testSet_NullValue() {
         invocationRecord.set(KEY1, null);
         assertNull(KEY1, invocationRecord.getObject(KEY1));
     }
 
-    /**
-     * Test the containsKey() method
-     */
-    public void testContainsKey() {
+    @Test
+    void testContainsKey() {
         invocationRecord.set(KEY1, STRING);
         assertTrue(KEY1, invocationRecord.containsKey(KEY1));
         assertFalse(KEY2, invocationRecord.containsKey(KEY2));
     }
 
-    /**
-     * Test the containsKey() method, passing in a null key
-     */
-    public void testContainsKey_Null() {
+    @Test
+    void testContainsKey_Null() {
         try {
             invocationRecord.containsKey(null);
             fail("Expected AssertFailedException");
@@ -98,19 +90,15 @@ public final class InvocationRecordTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the getString() method
-     */
-    public void testGetString() {
+    @Test
+    void testGetString() {
         assertNull("undefined", invocationRecord.getString("UNDEFINED"));
         invocationRecord.set(KEY1, STRING);
         assertEquals(KEY1, STRING, invocationRecord.getString(KEY1));
     }
 
-    /**
-     * Test the getString() method, passing in a null key
-     */
-    public void testGetString_Null() {
+    @Test
+    void testGetString_Null() {
         try {
             invocationRecord.getString(null);
             fail("Expected AssertFailedException");
@@ -120,10 +108,8 @@ public final class InvocationRecordTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the getString() method, when the value for the key is not a String
-     */
-    public void testGetString_NotAString() {
+    @Test
+    void testGetString_NotAString() {
 
         invocationRecord.set(KEY1, INT);
         try {
@@ -135,19 +121,15 @@ public final class InvocationRecordTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the getObject() method
-     */
-    public void testGetObject() {
+    @Test
+    void testGetObject() {
         assertNull("undefined", invocationRecord.getObject("UNDEFINED"));
         invocationRecord.set(KEY1, STRING);
         assertEquals(KEY1, STRING, invocationRecord.getObject(KEY1));
     }
 
-    /**
-     * Test the keySet() method
-     */
-    public void testKeySet() {
+    @Test
+    void testKeySet() {
         Set set = new HashSet();
         assertEquals("empty", set, invocationRecord.keySet());
         invocationRecord.set(KEY1, STRING);
@@ -157,10 +139,8 @@ public final class InvocationRecordTest extends AbstractTestCase {
         assertEquals("2", set, invocationRecord.keySet());
     }
 
-    /**
-     * Test that the keySet() return value does not allow breaking immutability   
-     */
-    public void testKeySet_Immutability() {
+    @Test
+    void testKeySet_Immutability() {
         Set keySet = invocationRecord.keySet();
         try {
             keySet.add("abc");
@@ -170,11 +150,9 @@ public final class InvocationRecordTest extends AbstractTestCase {
             LOG.info("Expected: " + expected);
         }
     }
-    
-    /**
-     * Test the getObject() method, passing in a null key
-     */
-    public void testGetObject_Null() {
+
+    @Test
+    void testGetObject_Null() {
         try {
             invocationRecord.getObject(null);
             fail("Expected AssertFailedException");
@@ -184,10 +162,8 @@ public final class InvocationRecordTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * Test the lock() method 
-     */
-    public void testLock() {
+    @Test
+    void testLock() {
         assertFalse("locked - before", invocationRecord.isLocked());
         invocationRecord.set(KEY1, STRING);
         invocationRecord.lock();
@@ -200,25 +176,17 @@ public final class InvocationRecordTest extends AbstractTestCase {
             LOG.info("Expected: " + expected);
         }
     }
-    
-    /**
-     * Test that the getTime() return value does not break immutability   
-     */
-    public void testGetTime_Immutability() {
-        
+
+    @Test
+    void testGetTime_Immutability() {
         Date timestamp = invocationRecord.getTime();
         long timeInMillis = timestamp.getTime();
         timestamp.setTime(12345L);
         assertEquals("time", timeInMillis, invocationRecord.getTime().getTime());
     }
-    
-    /**
-     * Perform initialization before each test
-     * 
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+
+    @BeforeEach
+    void setUp() throws Exception {
         invocationRecord = new InvocationRecord(COMMAND, DEFAULT_HOST);
     }
 }

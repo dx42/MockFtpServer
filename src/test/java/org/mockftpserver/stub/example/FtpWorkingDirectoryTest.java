@@ -15,6 +15,9 @@
  */
 package org.mockftpserver.stub.example;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.stub.StubFtpServer;
 import org.mockftpserver.stub.command.PwdCommandHandler;
@@ -24,16 +27,14 @@ import org.mockftpserver.test.IntegrationTest;
 /**
  * Example test using StubFtpServer, with programmatic configuration.
  */
-public class FtpWorkingDirectoryTest extends AbstractTestCase implements IntegrationTest {
+class FtpWorkingDirectoryTest extends AbstractTestCase implements IntegrationTest {
 
     private static final int PORT = 9981;
     private FtpWorkingDirectory ftpWorkingDirectory;
     private StubFtpServer stubFtpServer;
     
-    /**
-     * Test FtpWorkingDirectory getWorkingDirectory() method 
-     */
-    public void testGetWorkingDirectory() throws Exception {
+    @Test
+    void testGetWorkingDirectory() throws Exception {
         
         // Replace the existing (default) CommandHandler; customize returned directory pathname
         final String DIR = "some/dir";
@@ -48,22 +49,16 @@ public class FtpWorkingDirectoryTest extends AbstractTestCase implements Integra
         assertEquals("workingDirectory", DIR, workingDir);
     }
 
-    /**
-     * @see org.mockftpserver.test.AbstractTestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         ftpWorkingDirectory = new FtpWorkingDirectory();
         ftpWorkingDirectory.setPort(PORT);
         stubFtpServer = new StubFtpServer();
         stubFtpServer.setServerControlPort(PORT);
     }
 
-    /**
-     * @see org.mockftpserver.test.AbstractTestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterEach
+    void tearDown() throws Exception {
         stubFtpServer.stop();
     }
 

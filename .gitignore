@@ -2,6 +2,7 @@
 /bin/
 /build/
 /gradle/
+/out/
 
 # IDEA files
 *.eml
@@ -9,3 +10,4 @@
 *.iws
 *.ipr
 /.idea/
+/out/production/classes/org/mockftpserver/fake/command/AborCommandHandler.class
