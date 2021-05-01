@@ -45,61 +45,41 @@ abstract class AbstractGroovyTestCase {
     }
     
     /**
-     * Assert that the specified code throws an exception of the specified type.
-     * @param expectedExceptionClass - the Class of exception that is expected
-     * @param code - the Closure containing the code to be executed, which is expected to throw an exception of the specified type
-     * @return the thrown Exception instance
-     *
-     * @throws AssertionError - if no exception is thrown by the code or if the thrown exception is not of the expected type
-     */
-    protected Throwable shouldThrow(Class expectedExceptionClass, Closure code) {
-        def actualException = null
-        try {
-            code.call()
-        } catch (Throwable thrown) {
-            actualException = thrown
-        }
-        assert actualException, "No exception thrown. Expected [${expectedExceptionClass.getName()}]"
-        assert actualException.class == expectedExceptionClass, "Expected [${expectedExceptionClass.getName()}] but was [${actualException.class.name}]"
-        return actualException
-    }
-
-    /**
      * Assert that the specified code throws an exception with an error message
      * containing the specified text.
      * @param text - the text expected within the exception message
      * @param code - the Closure containing the code to be executed, which is expected to throw an exception of the specified type
-     * @return the message from the thrown Exception
+     * @return the thrown Exception instance
      *
      * @throws AssertionError - if no exception is thrown by the code or if the thrown
      * 	exception message does not contain the expected text
      */
-    protected String shouldFailWithMessageContaining(String text, Closure code) {
+    protected Throwable shouldFailWithMessageContaining(String text, Closure code) {
         try {
             code.call()
         } catch(Throwable t) {
             def message = t.message
             assert message.contains(text), "message=[$message], text=[$text]"
-            return message
+            return t
         }
         assert false, "No exception thrown"
     }
 
-    protected String shouldFail(Closure code) {
+    protected Throwable shouldFail(Closure code) {
         try {
             code.call()
         } catch(Throwable t) {
-            return
+            return t
         }
         assert false, "No exception thrown"
     }
 
-    protected String shouldFail(Class theClass, Closure code) {
+    protected Throwable shouldFail(Class theClass, Closure code) {
         try {
             code.call()
         } catch(Throwable t) {
             assert theClass.isAssignableFrom(t.class)
-            return
+            return t
         }
         assert false, "No exception thrown"
     }

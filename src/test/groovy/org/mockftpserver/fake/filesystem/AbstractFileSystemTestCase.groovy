@@ -358,7 +358,7 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
     //-------------------------------------------------------------------------
 
     protected void shouldThrowFileSystemExceptionWithMessageKey(String messageKey, Closure closure) {
-        def e = shouldThrow(FileSystemException, closure)
+        def e = shouldFail(FileSystemException, closure)
         assert e.messageKey == messageKey, "Expected message key [$messageKey], but was [${e.messageKey}]"
     }
     
