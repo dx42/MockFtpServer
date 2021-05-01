@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.core.command;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -93,80 +94,38 @@ class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
         verify(commandHandler1).handleCommand(command, session);
 
         // Second invocation throws an exception
-        try {
-            simpleCompositeCommandHandler.handleCommand(command, session);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> simpleCompositeCommandHandler.handleCommand(command, session));
     }
     
     @Test
     void testHandleCommand_NoHandlersDefined() throws Exception {
-        try {
-            simpleCompositeCommandHandler.handleCommand(command, session);
-            fail("Expected AssertFailedException");
-        }
-        catch(AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> simpleCompositeCommandHandler.handleCommand(command, session));
     }
     
     @Test
     void testHandleCommand_NullCommand() throws Exception {
-        try {
-            simpleCompositeCommandHandler.handleCommand(null, session);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> simpleCompositeCommandHandler.handleCommand(null, session));
     }
     
     @Test
     void testHandleCommand_NullSession() throws Exception {
-        try {
-            simpleCompositeCommandHandler.handleCommand(command, null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> simpleCompositeCommandHandler.handleCommand(command, null));
     }
 
     @Test
     void testAddCommandHandler_NullCommandHandler() throws Exception {
-        try {
-            simpleCompositeCommandHandler.addCommandHandler(null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> simpleCompositeCommandHandler.addCommandHandler(null));
     }
     
     @Test
     void testSetCommandHandlers_Null() throws Exception {
-        try {
-            simpleCompositeCommandHandler.setCommandHandlers(null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> simpleCompositeCommandHandler.setCommandHandlers(null));
     }
     
     @Test
     void testGetCommandHandler_UndefinedIndex() throws Exception {
         simpleCompositeCommandHandler.addCommandHandler(commandHandler1);
-        try {
-            simpleCompositeCommandHandler.getCommandHandler(1);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> simpleCompositeCommandHandler.getCommandHandler(1));
     }
 
     @Test
@@ -180,13 +139,7 @@ class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
     @Test
     void testGetCommandHandler_NegativeIndex() throws Exception {
         simpleCompositeCommandHandler.addCommandHandler(commandHandler1);
-        try {
-            simpleCompositeCommandHandler.getCommandHandler(-1);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> simpleCompositeCommandHandler.getCommandHandler(-1));
     }
     
     @Test

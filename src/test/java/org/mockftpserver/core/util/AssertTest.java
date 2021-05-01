@@ -15,16 +15,14 @@
  */
 package org.mockftpserver.core.util;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
+import org.mockftpserver.test.AbstractTestCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.mockftpserver.test.AbstractTestCase;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Tests for the Assert class
@@ -34,70 +32,38 @@ import java.util.Map;
 class AssertTest extends AbstractTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(AssertTest.class);
-
-    /**
-     * This interface defines a generic closure (a generic wrapper for a block of code).
-     */
-    private static interface ExceptionClosure {
-        /**
-         * Execute arbitrary logic that can throw any type of Exception
-         *
-         * @throws Exception - if an error occurs
-         */
-        public void execute() throws Exception;
-    }
-
-
     private static final String MESSAGE = "exception message";
 
     @Test
     void testAssertNull() {
         Assert.isNull(null, MESSAGE);
 
-        try {
-            Assert.isNull("OK", MESSAGE);
-            fail("Expected IllegalArumentException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-            assertExceptionMessageContains(expected, MESSAGE);
-        }
+        Throwable t = assertThrows(AssertFailedException.class, () -> Assert.isNull("OK", MESSAGE));
+        assertExceptionMessageContains(t, MESSAGE);
     }
 
     @Test
     void testAssertNotNull() {
         Assert.notNull("OK", MESSAGE);
 
-        try {
-            Assert.notNull(null, MESSAGE);
-            fail("Expected IllegalArumentException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-            assertExceptionMessageContains(expected, MESSAGE);
-        }
+        Throwable t = assertThrows(AssertFailedException.class, () -> Assert.notNull(null, MESSAGE));
+        assertExceptionMessageContains(t, MESSAGE);
     }
 
     @Test
     void testAssertTrue() throws Exception {
         Assert.isTrue(true, MESSAGE);
 
-        verifyThrowsAssertFailedException(true, new ExceptionClosure() {
-            public void execute() throws Exception {
-                Assert.isTrue(false, MESSAGE);
-            }
-        });
+        Throwable t = assertThrows(AssertFailedException.class, () -> Assert.isTrue(false, MESSAGE));
+        assertExceptionMessageContains(t, MESSAGE);
     }
 
     @Test
     void testAssertFalse() throws Exception {
         Assert.isFalse(false, MESSAGE);
 
-        verifyThrowsAssertFailedException(true, new ExceptionClosure() {
-            public void execute() throws Exception {
-                Assert.isFalse(true, MESSAGE);
-            }
-        });
+        Throwable t = assertThrows(AssertFailedException.class, () -> Assert.isFalse(true, MESSAGE));
+        assertExceptionMessageContains(t, MESSAGE);
     }
 
     @Test
@@ -105,17 +71,11 @@ class AssertTest extends AbstractTestCase {
         final Collection COLLECTION = Collections.singletonList("item");
         Assert.notNullOrEmpty(COLLECTION, MESSAGE);
 
-        verifyThrowsAssertFailedException(true, new ExceptionClosure() {
-            public void execute() throws Exception {
-                Assert.notNullOrEmpty((Collection) null, MESSAGE);
-            }
-        });
+        Throwable t = assertThrows(AssertFailedException.class, () -> Assert.notNullOrEmpty((Collection) null, MESSAGE));
+        assertExceptionMessageContains(t, MESSAGE);
 
-        verifyThrowsAssertFailedException(true, new ExceptionClosure() {
-            public void execute() throws Exception {
-                Assert.notNullOrEmpty(new ArrayList(), MESSAGE);
-            }
-        });
+        t = assertThrows(AssertFailedException.class, () -> Assert.notNullOrEmpty(new ArrayList(), MESSAGE));
+        assertExceptionMessageContains(t, MESSAGE);
     }
 
     @Test
@@ -123,17 +83,11 @@ class AssertTest extends AbstractTestCase {
         final Map MAP = Collections.singletonMap("key", "value");
         Assert.notNullOrEmpty(MAP, MESSAGE);
 
-        verifyThrowsAssertFailedException(true, new ExceptionClosure() {
-            public void execute() throws Exception {
-                Assert.notNullOrEmpty((Map) null, MESSAGE);
-            }
-        });
+        Throwable t = assertThrows(AssertFailedException.class, () -> Assert.notNullOrEmpty((Map) null, MESSAGE));
+        assertExceptionMessageContains(t, MESSAGE);
 
-        verifyThrowsAssertFailedException(true, new ExceptionClosure() {
-            public void execute() throws Exception {
-                Assert.notNullOrEmpty(new HashMap(), MESSAGE);
-            }
-        });
+        t = assertThrows(AssertFailedException.class, () -> Assert.notNullOrEmpty(new HashMap(), MESSAGE));
+        assertExceptionMessageContains(t, MESSAGE);
     }
 
     @Test
@@ -141,34 +95,22 @@ class AssertTest extends AbstractTestCase {
         final Object[] ARRAY = {"1", "2"};
         Assert.notNullOrEmpty(ARRAY, MESSAGE);
 
-        verifyThrowsAssertFailedException(true, new ExceptionClosure() {
-            public void execute() throws Exception {
-                Assert.notNullOrEmpty((Object[]) null, MESSAGE);
-            }
-        });
+        Throwable t = assertThrows(AssertFailedException.class, () -> Assert.notNullOrEmpty((Object[]) null, MESSAGE));
+        assertExceptionMessageContains(t, MESSAGE);
 
-        verifyThrowsAssertFailedException(true, new ExceptionClosure() {
-            public void execute() throws Exception {
-                Assert.notNullOrEmpty(new String[]{}, MESSAGE);
-            }
-        });
+        t = assertThrows(AssertFailedException.class, () -> Assert.notNullOrEmpty(new String[]{}, MESSAGE));
+        assertExceptionMessageContains(t, MESSAGE);
     }
 
     @Test
     void testAssertNotNullOrEmpty_String() throws Exception {
         Assert.notNullOrEmpty("OK", MESSAGE);
 
-        verifyThrowsAssertFailedException(true, new ExceptionClosure() {
-            public void execute() throws Exception {
-                Assert.notNullOrEmpty((String) null, MESSAGE);
-            }
-        });
+        Throwable t = assertThrows(AssertFailedException.class, () -> Assert.notNullOrEmpty((String) null, MESSAGE));
+        assertExceptionMessageContains(t, MESSAGE);
 
-        verifyThrowsAssertFailedException(true, new ExceptionClosure() {
-            public void execute() throws Exception {
-                Assert.notNullOrEmpty("", MESSAGE);
-            }
-        });
+         t = assertThrows(AssertFailedException.class, () -> Assert.notNullOrEmpty("", MESSAGE));
+        assertExceptionMessageContains(t, MESSAGE);
     }
 
     //-------------------------------------------------------------------------
@@ -179,24 +121,5 @@ class AssertTest extends AbstractTestCase {
         String message = exception.getMessage();
         assertTrue("Exception message [" + message + "] does not contain [" + text + "]", message.indexOf(text) != -1);
     }
-
-    /**
-     * Verify that execution of the ExceptionClosure (code block) results in an
-     * AssertFailedException being thrown with the constant MESSAGE as its message.
-     *
-     * @param closure - the ExceptionClosure encapsulating the code to execute
-     */
-    private void verifyThrowsAssertFailedException(boolean checkMessage, ExceptionClosure closure) throws Exception {
-        try {
-            closure.execute();
-            fail("Expected IllegalArumentException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-            if (checkMessage) {
-                assertExceptionMessageContains(expected, MESSAGE);
-            }
-		}
-	}
 
 }

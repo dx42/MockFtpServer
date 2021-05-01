@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.core.command;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -64,24 +65,12 @@ class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
 
     @Test
     void testHandleCommand_NullCommand() throws Exception {
-        try {
-            commandHandler.handleCommand(null, session);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> commandHandler.handleCommand(null, session));
     }
 
     @Test
     void testHandleCommand_NullSession() throws Exception {
-        try {
-            commandHandler.handleCommand(COMMAND, null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> commandHandler.handleCommand(COMMAND, null));
     }
 
     @Test
@@ -106,13 +95,7 @@ class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
     @Test
     void testGetInvocation_IndexOutOfBounds() throws Exception {
         commandHandler.handleCommand(COMMAND, session);
-        try {
-            commandHandler.getInvocation(2);
-            fail("Expected IndexOutOfBoundsException");
-        }
-        catch (IndexOutOfBoundsException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(IndexOutOfBoundsException.class, () -> commandHandler.getInvocation(2));
     }
 
     @Test
@@ -137,24 +120,12 @@ class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
 
     @Test
     void testSendReply_NullSession() {
-        try {
-            commandHandler.sendReply(null, REPLY_CODE1, REPLY_TEXT1, null, null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> commandHandler.sendReply(null, REPLY_CODE1, REPLY_TEXT1, null, null));
     }
 
     @Test
     void testSendReply_InvalidReplyCode() {
-        try {
-            commandHandler.sendReply(session, 0, REPLY_TEXT1, null, null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> commandHandler.sendReply(session, 0, REPLY_TEXT1, null, null));
     }
 
     //-------------------------------------------------------------------------

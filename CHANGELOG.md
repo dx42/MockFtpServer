@@ -7,6 +7,7 @@ TODO Version 3.0.0 (??? 2021)
  - #11: Upgrade to commons-net 3.8.0.
  - #8: Upgrade to Groovy 3.0.7.
  - #9: Remove EasyMock dependency. Switch to Mockito.
+ - #10: Convert tests to JUnit 5.
 
 
 Version 2.8.0 (Feb 2021)

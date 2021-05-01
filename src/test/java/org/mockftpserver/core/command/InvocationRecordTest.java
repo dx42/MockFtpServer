@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.core.command;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -57,13 +59,7 @@ class InvocationRecordTest extends AbstractTestCase {
 
     @Test
     void testSet_NullKey() {
-        try {
-            invocationRecord.set(null, STRING);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> invocationRecord.set(null, STRING));
     }
 
     @Test
@@ -81,13 +77,7 @@ class InvocationRecordTest extends AbstractTestCase {
 
     @Test
     void testContainsKey_Null() {
-        try {
-            invocationRecord.containsKey(null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> invocationRecord.containsKey(null));
     }
 
     @Test
@@ -99,26 +89,13 @@ class InvocationRecordTest extends AbstractTestCase {
 
     @Test
     void testGetString_Null() {
-        try {
-            invocationRecord.getString(null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> invocationRecord.getString(null));
     }
 
     @Test
     void testGetString_NotAString() {
-
         invocationRecord.set(KEY1, INT);
-        try {
-            invocationRecord.getString(KEY1);
-            fail("Expected ClassCastException");
-        }
-        catch (ClassCastException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(ClassCastException.class, () -> invocationRecord.getString(KEY1));
     }
 
     @Test
@@ -142,24 +119,12 @@ class InvocationRecordTest extends AbstractTestCase {
     @Test
     void testKeySet_Immutability() {
         Set keySet = invocationRecord.keySet();
-        try {
-            keySet.add("abc");
-            fail("Expected UnsupportedOperationException");
-        }
-        catch (UnsupportedOperationException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(UnsupportedOperationException.class, () -> keySet.add("abc"));
     }
 
     @Test
     void testGetObject_Null() {
-        try {
-            invocationRecord.getObject(null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> invocationRecord.getObject(null));
     }
 
     @Test
@@ -168,13 +133,7 @@ class InvocationRecordTest extends AbstractTestCase {
         invocationRecord.set(KEY1, STRING);
         invocationRecord.lock();
         assertTrue("locked - after", invocationRecord.isLocked());
-        try {
-            invocationRecord.set(KEY2, "abc");
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> invocationRecord.set(KEY2, "abc"));
     }
 
     @Test

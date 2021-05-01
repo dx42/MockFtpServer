@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.fake.example;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,8 +26,8 @@ import org.mockftpserver.fake.filesystem.FileEntry;
 import org.mockftpserver.fake.filesystem.FileSystem;
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem;
 import org.mockftpserver.stub.example.RemoteFile;
-import org.mockftpserver.test.*;
 import org.mockftpserver.test.AbstractTestCase;
+import org.mockftpserver.test.IntegrationTest;
 
 import java.io.IOException;
 
@@ -49,13 +51,7 @@ class RemoteFileTest extends AbstractTestCase implements IntegrationTest {
 
     @Test
     void testReadFileThrowsException() {
-        try {
-            remoteFile.readFile("NoSuchFile.txt");
-            fail("Expected IOException");
-        }
-        catch (IOException expected) {
-            // Expected this
-        }
+        assertThrows(IOException.class, () -> remoteFile.readFile("NoSuchFile.txt"));
     }
 
     @BeforeEach

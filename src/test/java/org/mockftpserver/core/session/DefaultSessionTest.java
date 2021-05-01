@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.core.session;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -58,24 +60,12 @@ class DefaultSessionTest extends AbstractTestCase {
 
     @Test
     void testConstructor_NullControlSocket() {
-        try {
-            new DefaultSession(null, commandHandlerMap);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> new DefaultSession(null, commandHandlerMap));
     }
 
     @Test
     void testConstructor_NullCommandHandlerMap() {
-        try {
-            new DefaultSession(stubSocket, null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> new DefaultSession(stubSocket, null));
     }
 
     @Test
@@ -143,25 +133,12 @@ class DefaultSessionTest extends AbstractTestCase {
 
         session.switchToPassiveMode();
 
-        try {
-            session.openDataConnection();
-            fail("Expected MockFtpServerException");
-        }
-        catch (MockFtpServerException expected) {
-            LOG.info("Expected: " + expected);
-            assertSame("cause", SocketTimeoutException.class, expected.getCause().getClass());
-        }
+        assertThrows(MockFtpServerException.class, () -> session.openDataConnection());
     }
 
     @Test
     void testOpenDataConnection_NullClientHost() {
-        try {
-            session.openDataConnection();
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> session.openDataConnection());
     }
 
     @Test
@@ -303,13 +280,7 @@ class DefaultSessionTest extends AbstractTestCase {
 
     @Test
     void testParseCommand_EmptyCommandString() {
-        try {
-            session.parseCommand("");
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> session.parseCommand(""));
     }
 
     @Test
@@ -326,24 +297,12 @@ class DefaultSessionTest extends AbstractTestCase {
 
     @Test
     void testSendData_Null() {
-        try {
-            session.sendData(null, 1);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> session.sendData(null, 1));
     }
 
     @Test
     void testSendReply_InvalidReplyCode() {
-        try {
-            session.sendReply(-66, "text");
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> session.sendReply(-66, "text"));
     }
 
     @Test
@@ -358,24 +317,12 @@ class DefaultSessionTest extends AbstractTestCase {
 
     @Test
     void testGetAttribute_Null() {
-        try {
-            session.getAttribute(null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> session.getAttribute(null));
     }
 
     @Test
     void testSetAttribute_NullName() {
-        try {
-            session.setAttribute(null, VALUE);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> session.setAttribute(null, VALUE));
     }
 
     @Test
@@ -388,13 +335,7 @@ class DefaultSessionTest extends AbstractTestCase {
 
     @Test
     void testRemoveAttribute_Null() {
-        try {
-            session.removeAttribute(null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> session.removeAttribute(null));
     }
 
     @Test

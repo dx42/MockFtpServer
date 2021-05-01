@@ -15,17 +15,18 @@
  */
 package org.mockftpserver.core.server;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.command.CommandHandler;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.session.DefaultSession;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.Socket;
 import java.util.HashMap;
@@ -63,13 +64,7 @@ public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
 
     @Test
     void testSetCommandHandlers_Null() {
-        try {
-            ftpServer.setCommandHandlers(null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> ftpServer.setCommandHandlers(null));
     }
 
     @Test
@@ -82,24 +77,12 @@ public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
     @Test
     void testSetCommandHandler_NullCommandName() {
         CommandHandler commandHandler = mock(CommandHandler.class);
-        try {
-            ftpServer.setCommandHandler(null, commandHandler);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> ftpServer.setCommandHandler(null, commandHandler));
     }
 
     @Test
     void testSetCommandHandler_NullCommandHandler() {
-        try {
-            ftpServer.setCommandHandler("ZZZ", null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> ftpServer.setCommandHandler("ZZZ", null));
     }
 
     @Test

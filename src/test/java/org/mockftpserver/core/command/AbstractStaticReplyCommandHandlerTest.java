@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.core.command;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -76,13 +77,7 @@ class AbstractStaticReplyCommandHandlerTest extends AbstractTestCase {
 
     @Test
     void testSendReply_ReplyCodeNotSet() {
-        try {
-            commandHandler.sendReply(session);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> commandHandler.sendReply(session));
     }
 
     @Test
@@ -97,13 +92,7 @@ class AbstractStaticReplyCommandHandlerTest extends AbstractTestCase {
 
     @Test
     void testSetReplyCode_Invalid() {
-        try {
-            commandHandler.setReplyCode(0);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> commandHandler.setReplyCode(0));
     }
 
     //-------------------------------------------------------------------------

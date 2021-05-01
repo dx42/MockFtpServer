@@ -17,10 +17,7 @@ package org.mockftpserver.test;
 
 import org.junit.jupiter.api.Assertions;
 import org.mockftpserver.core.MockFtpServerException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -32,12 +29,11 @@ import java.util.*;
  */
 public abstract class AbstractTestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractTestCase.class);
     protected static final String[] EMPTY = new String[0];
     protected static final InetAddress DEFAULT_HOST = inetAddress(null);
 
     //-------------------------------------------------------------------------
-    // Other Helper Methods
+    // Helper Methods
     //-------------------------------------------------------------------------
 
     protected void fail(String message) {
@@ -50,10 +46,6 @@ public abstract class AbstractTestCase {
 
     protected void assertSame(String message, Object o1, Object o2) {
         Assertions.assertSame(o1, o2, message);
-    }
-
-    protected void assertSame(Object o1, Object o2) {
-        Assertions.assertSame(o1, o2);
     }
 
     protected void assertNotSame(String message, Object o1, Object o2) {
@@ -80,26 +72,12 @@ public abstract class AbstractTestCase {
         Assertions.assertFalse(b, message);
     }
 
-    protected void assertFalse(boolean b) {
-        Assertions.assertFalse(b);
-    }
-
     protected void assertEquals(String message, Object object1, Object object2) {
         Assertions.assertEquals(object1, object2, message);
     }
 
     protected void assertEquals(Object object1, Object object2) {
         Assertions.assertEquals(object1, object2);
-    }
-
-    /**
-     * Assert that the two objects are not equal
-     *
-     * @param object1 - the first object
-     * @param object2 - the second object
-     */
-    protected void assertNotEquals(String message, Object object1, Object object2) {
-        Assertions.assertFalse(object1.equals(object2), message);
     }
 
     /**
@@ -172,20 +150,6 @@ public abstract class AbstractTestCase {
     }
 
     /**
-     * Create and return a List containing the Objects passed as arguments to this method
-     *
-     * @param e1- the first element to add
-     * @param e2- the second element to add
-     * @return the List containing the specified elements
-     */
-    protected static List list(Object e1, Object e2) {
-        List list = new ArrayList();
-        list.add(e1);
-        list.add(e2);
-        return list;
-    }
-
-    /**
      * Create and return a List containing the single Object passed as an argument to this method
      *
      * @param element- the element to add
@@ -197,59 +161,14 @@ public abstract class AbstractTestCase {
 
     /**
      * Create and return a Set containing the Objects passed as arguments to this method
-     *
-     * @param e1 - the first element to add
-     * @param e2 - the second element to add
-     * @return the Set containing the specified elements
      */
-    protected static Set set(Object e1, Object e2) {
+    protected static Set set(Object e1, Object... otherElements) {
         Set set = new HashSet();
         set.add(e1);
-        set.add(e2);
+        for (Object element : otherElements) {
+            set.add(element);
+        }
         return set;
-    }
-
-    /**
-     * Create and return a Set containing the Objects passed as arguments to this method
-     *
-     * @param e1 - the first element to add
-     * @param e2 - the second element to add
-     * @param e3 - the third element to add
-     * @return the Set containing the specified elements
-     */
-    protected static Set set(Object e1, Object e2, Object e3) {
-        Set set = set(e1, e2);
-        set.add(e3);
-        return set;
-    }
-
-    //-------------------------------------------------------------------------
-    // Helper methods
-    //-------------------------------------------------------------------------
-
-    /**
-     * Delete the named file if it exists
-     *
-     * @param filename - the full pathname of the file
-     */
-    protected void deleteFile(String filename) {
-        File keyFile = new File(filename);
-        boolean deleted = keyFile.delete();
-        LOG.info("Deleted [" + filename + "]: " + deleted);
-    }
-
-    //-------------------------------------------------------------------------
-    // Common validation helper methods
-    //-------------------------------------------------------------------------
-
-    /**
-     * Verify that the named file exists
-     *
-     * @param filename - the full pathname of the file
-     */
-    protected void verifyFileExists(String filename) {
-        File keyFile = new File(filename);
-        Assertions.assertTrue(keyFile.exists(), "File does not exist [" + filename + "]");
     }
 
 }

@@ -15,14 +15,15 @@
  */
 package org.mockftpserver.core.command;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
@@ -43,7 +44,7 @@ class ReplyTextBundleUtilTest extends AbstractTestCase {
     void testSetReplyTextBundleIfAppropriate_ReplyTextBundleAware_NotSetYet() {
         AbstractTrackingCommandHandler commandHandler = new StaticReplyCommandHandler();
         ReplyTextBundleUtil.setReplyTextBundleIfAppropriate(commandHandler, resourceBundle1);
-        assertSame(resourceBundle1, commandHandler.getReplyTextBundle());
+        assertSame("replyTextBundle", resourceBundle1, commandHandler.getReplyTextBundle());
     }
 
     @Test
@@ -51,7 +52,7 @@ class ReplyTextBundleUtilTest extends AbstractTestCase {
         AbstractTrackingCommandHandler commandHandler = new StaticReplyCommandHandler();
         commandHandler.setReplyTextBundle(resourceBundle2);
         ReplyTextBundleUtil.setReplyTextBundleIfAppropriate(commandHandler, resourceBundle1);
-        assertSame(resourceBundle2, commandHandler.getReplyTextBundle());
+        assertSame("replyTextBundle", resourceBundle2, commandHandler.getReplyTextBundle());
     }
 
     @Test
@@ -63,13 +64,7 @@ class ReplyTextBundleUtilTest extends AbstractTestCase {
 
     @Test
     void testSetReplyTextBundleIfAppropriate_NullCommandHandler() {
-        try {
-            ReplyTextBundleUtil.setReplyTextBundleIfAppropriate(null, resourceBundle1);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> ReplyTextBundleUtil.setReplyTextBundleIfAppropriate(null, resourceBundle1));
     }
 
     @BeforeEach

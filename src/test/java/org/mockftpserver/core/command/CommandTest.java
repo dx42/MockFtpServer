@@ -15,12 +15,14 @@
  */
 package org.mockftpserver.core.command;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.CommandSyntaxException;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -52,24 +54,12 @@ class CommandTest extends AbstractTestCase {
 
     @Test
     void testConstructor_NullName() {
-        try {
-            new Command(null, EMPTY);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> new Command(null, EMPTY));
     }
 
     @Test
     void testConstructor_NullParameters() {
-        try {
-            new Command("OK", (String[]) null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> new Command("OK", (String[]) null));
     }
 
     @Test
@@ -89,13 +79,7 @@ class CommandTest extends AbstractTestCase {
     @Test
     void testGetRequiredParameter_IndexNotValid() {
         Command command = new Command("abc", array("123", "456"));
-        try {
-            command.getRequiredParameter(2);
-            fail("Expected CommandSyntaxException");
-        }
-        catch (CommandSyntaxException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(CommandSyntaxException.class, () -> command.getRequiredParameter(2));
     }
 
     @Test

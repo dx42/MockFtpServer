@@ -15,16 +15,16 @@
  */
 package org.mockftpserver.core.command;
 
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.stub.command.AbstractStubCommandHandler;
 import org.mockftpserver.test.AbstractTestCase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
@@ -54,13 +54,7 @@ class AbstractCommandHandlerTest extends AbstractTestCase {
 
     @Test
     void testQuotes_Null() {
-        try {
-            AbstractStubCommandHandler.quotes(null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> AbstractStubCommandHandler.quotes(null));
     }
 
     @Test
@@ -75,13 +69,7 @@ class AbstractCommandHandlerTest extends AbstractTestCase {
     }
 
     private void testAssertValidReplyCodeWithInvalid(int invalidReplyCode) {
-        try {
-            commandHandler.assertValidReplyCode(invalidReplyCode);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> commandHandler.assertValidReplyCode(invalidReplyCode));
     }
 
     //-------------------------------------------------------------------------

@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.stub.command;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -110,24 +111,12 @@ class AbstractStubDataCommandHandlerTest extends AbstractTestCase {
 
     @Test
     void testSetPreliminaryReplyCode_Invalid() {
-        try {
-            commandHandler.setPreliminaryReplyCode(0);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> commandHandler.setPreliminaryReplyCode(0));
     }
 
     @Test
     void testSetFinalReplyCode_Invalid() {
-        try {
-            commandHandler.setFinalReplyCode(0);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> commandHandler.setFinalReplyCode(0));
     }
 
     //-------------------------------------------------------------------------
