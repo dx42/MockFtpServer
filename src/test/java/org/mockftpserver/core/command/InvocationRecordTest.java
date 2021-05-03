@@ -19,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
 
@@ -35,7 +33,6 @@ import java.util.Set;
  */
 class InvocationRecordTest extends AbstractTestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(InvocationRecordTest.class);
     private static final Command COMMAND = new Command("command", EMPTY);
     private static final String KEY1 = "key1";
     private static final String KEY2 = "key2";
@@ -50,7 +47,7 @@ class InvocationRecordTest extends AbstractTestCase {
         long beforeTime = System.currentTimeMillis();
         InvocationRecord commandInvocation = new InvocationRecord(COMMAND, DEFAULT_HOST);
         long afterTime = System.currentTimeMillis();
-        LOG.info(commandInvocation.toString());
+        log(commandInvocation.toString());
         assertEquals("Command", COMMAND, commandInvocation.getCommand());
         assertTrue("time", commandInvocation.getTime().getTime() >= beforeTime
                 && commandInvocation.getTime().getTime() <= afterTime);
@@ -145,7 +142,7 @@ class InvocationRecordTest extends AbstractTestCase {
     }
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         invocationRecord = new InvocationRecord(COMMAND, DEFAULT_HOST);
     }
 }

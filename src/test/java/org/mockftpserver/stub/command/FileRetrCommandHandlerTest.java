@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.stub.command;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -25,8 +26,6 @@ import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
 import org.mockftpserver.core.util.AssertFailedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
@@ -37,7 +36,6 @@ import java.util.Arrays;
  */
 class FileRetrCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FileRetrCommandHandlerTest.class);
     private static final byte BYTE1 = (byte) 7;
     private static final byte BYTE2 = (byte) 21;
 
@@ -45,29 +43,16 @@ class FileRetrCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     @Test
     void testConstructor_String_Null() {
-        try {
-            new FileRetrCommandHandler(null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> new FileRetrCommandHandler(null));
     }
 
     @Test
     void testSetFile_Null() {
-        try {
-            commandHandler.setFile(null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> commandHandler.setFile(null));
     }
 
     @Test
     void testHandleCommand() throws Exception {
-
         final byte[] BUFFER = new byte[FileRetrCommandHandler.BUFFER_SIZE];
         Arrays.fill(BUFFER, BYTE1);
 
@@ -95,13 +80,7 @@ class FileRetrCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     @Test
     void testHandleCommand_FileNotSet() throws Exception {
-        try {
-            commandHandler.handleCommand(new Command(CommandNames.RETR, EMPTY), session);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> commandHandler.handleCommand(new Command(CommandNames.RETR, EMPTY), session));
     }
 
     @BeforeEach

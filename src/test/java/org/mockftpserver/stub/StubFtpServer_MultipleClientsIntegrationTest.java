@@ -19,8 +19,6 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.InvocationRecord;
@@ -37,7 +35,6 @@ import org.mockftpserver.test.PortTestUtil;
  */
 class StubFtpServer_MultipleClientsIntegrationTest extends AbstractTestCase implements IntegrationTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(StubFtpServer_MultipleClientsIntegrationTest.class);
     private static final String SERVER = "localhost";
 
     // Custom CommandHandler for PWD so that we can verify unique session-specific responses.
@@ -58,22 +55,22 @@ class StubFtpServer_MultipleClientsIntegrationTest extends AbstractTestCase impl
     void testMultipleClients() throws Exception {
 
         // Connect from client 1
-        LOG.info("connect() to ftpClient1");
+        log("connect() to ftpClient1");
         ftpClient1.connect(SERVER, PortTestUtil.getFtpServerControlPort());
         String sessionId1 = ftpClient1.printWorkingDirectory();
-        LOG.info("PWD(1) reply =[" + sessionId1 + "]");
+        log("PWD(1) reply =[" + sessionId1 + "]");
 
         // Connect from client 2
-        LOG.info("connect() to ftpClient2");
+        log("connect() to ftpClient2");
         ftpClient2.connect(SERVER, PortTestUtil.getFtpServerControlPort());
         String sessionId2 = ftpClient2.printWorkingDirectory();
-        LOG.info("PWD(2) reply =[" + sessionId2 + "]");
+        log("PWD(2) reply =[" + sessionId2 + "]");
 
         // Connect from client 3
-        LOG.info("connect() to ftpClient3");
+        log("connect() to ftpClient3");
         ftpClient3.connect(SERVER, PortTestUtil.getFtpServerControlPort());
         String sessionId3 = ftpClient3.printWorkingDirectory();
-        LOG.info("PWD(3) reply =[" + sessionId3 + "]");
+        log("PWD(3) reply =[" + sessionId3 + "]");
         
         // Make sure all session ids are unique
         assertNotSame("sessionId1 vs sessionId2", sessionId1, sessionId2);
@@ -91,7 +88,7 @@ class StubFtpServer_MultipleClientsIntegrationTest extends AbstractTestCase impl
     // -------------------------------------------------------------------------
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         stubFtpServer = new StubFtpServer();
         stubFtpServer.setServerControlPort(PortTestUtil.getFtpServerControlPort());
         stubFtpServer.setCommandHandler(CommandNames.PWD, new CustomPwdCommandHandler());
@@ -108,7 +105,7 @@ class StubFtpServer_MultipleClientsIntegrationTest extends AbstractTestCase impl
 
     @AfterEach
     protected void tearDown() throws Exception {
-        LOG.info("Cleaning up...");
+        log("Cleaning up...");
         if (ftpClient1.isConnected()) {
             ftpClient1.disconnect();
         }

@@ -21,16 +21,11 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.mockftpserver.core.command.CommandHandler;
-import org.mockftpserver.core.command.CommandNames;
-import org.mockftpserver.core.command.InvocationRecord;
-import org.mockftpserver.core.command.SimpleCompositeCommandHandler;
-import org.mockftpserver.core.command.StaticReplyCommandHandler;
+import org.mockftpserver.core.command.*;
 import org.mockftpserver.stub.command.*;
-import org.mockftpserver.test.*;
 import org.mockftpserver.test.AbstractTestCase;
+import org.mockftpserver.test.IntegrationTest;
+import org.mockftpserver.test.PortTestUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -43,7 +38,6 @@ import java.io.IOException;
  */
 class StubFtpServerIntegrationTest extends AbstractTestCase implements IntegrationTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(StubFtpServerIntegrationTest.class);
     private static final String SERVER = "localhost";
     private static final String USERNAME = "user123";
     private static final String PASSWORD = "password";
@@ -63,13 +57,13 @@ class StubFtpServerIntegrationTest extends AbstractTestCase implements Integrati
     @Test
     void testLogin() throws Exception {
         // Connect
-        LOG.info("Conecting to " + SERVER);
+        log("Conecting to " + SERVER);
         ftpClientConnect();
         verifyReplyCode("connect", 220);
 
         // Login
         String userAndPassword = USERNAME + "/" + PASSWORD;
-        LOG.info("Logging in as " + userAndPassword);
+        log("Logging in as " + userAndPassword);
         boolean success = ftpClient.login(USERNAME, PASSWORD);
         assertTrue("Unable to login with " + userAndPassword, success);
         verifyReplyCode("login with " + userAndPassword, 230);
@@ -78,7 +72,7 @@ class StubFtpServerIntegrationTest extends AbstractTestCase implements Integrati
         assertFalse("isShutdown", stubFtpServer.isShutdown());
 
         // Quit
-        LOG.info("Quit");
+        log("Quit");
         ftpClient.quit();
         verifyReplyCode("quit", 221);
     }
@@ -93,8 +87,8 @@ class StubFtpServerIntegrationTest extends AbstractTestCase implements Integrati
     }
 
     @Test
-    void testStop_NoSessionEverStarted() throws Exception {
-        LOG.info("Testing a stop() when no session has ever been started");
+    void testStop_NoSessionEverStarted() {
+        log("Testing a stop() when no session has ever been started");
     }
 
     @Test
@@ -219,7 +213,7 @@ class StubFtpServerIntegrationTest extends AbstractTestCase implements Integrati
     @Test
     void testCwd() throws Exception {
         // Connect
-        LOG.info("Conecting to " + SERVER);
+        log("Conecting to " + SERVER);
         ftpClientConnect();
         verifyReplyCode("connect", 220);
 
@@ -265,8 +259,8 @@ class StubFtpServerIntegrationTest extends AbstractTestCase implements Integrati
     }
 
     @Test
-    void testEprt() throws Exception {
-        LOG.info("Skipping...");
+    void testEprt() {
+        log("Skipping...");
 //        ftpClientConnect();
 //        ftpClient.sendCommand("EPRT", "|2|1080::8:800:200C:417A|5282|");
 //        verifyReplyCode("EPRT", 200);
@@ -292,7 +286,7 @@ class StubFtpServerIntegrationTest extends AbstractTestCase implements Integrati
 
         ftpClientConnect();
         assertEquals(ftpClient.sendCommand("FEAT"), 211);
-        LOG.info(ftpClient.getReplyString());
+        log(ftpClient.getReplyString());
     }
 
     @Test
@@ -360,19 +354,19 @@ class StubFtpServerIntegrationTest extends AbstractTestCase implements Integrati
         ftpClientConnect();
 
         // Get File
-        LOG.info("Get File for remotePath [" + FILENAME + "]");
+        log("Get File for remotePath [" + FILENAME + "]");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         assertTrue(ftpClient.retrieveFile(FILENAME, outputStream));
-        LOG.info("File contents=[" + outputStream.toString());
+        log("File contents=[" + outputStream.toString());
         assertEquals("File contents", ASCII_CONTENTS, outputStream.toString());
 
         // Put File
-        LOG.info("Put File for local path [" + FILENAME + "]");
+        log("Put File for local path [" + FILENAME + "]");
         ByteArrayInputStream inputStream = new ByteArrayInputStream(ASCII_CONTENTS.getBytes());
         assertTrue(ftpClient.storeFile(FILENAME, inputStream));
         InvocationRecord invocationRecord = storCommandHandler.getInvocation(0);
         byte[] contents = (byte[]) invocationRecord.getObject(StorCommandHandler.FILE_CONTENTS_KEY);
-        LOG.info("File contents=[" + contents + "]");
+        log("File contents=[" + contents + "]");
         assertEquals("File contents", ASCII_CONTENTS.getBytes(), contents);
     }
 
@@ -384,19 +378,19 @@ class StubFtpServerIntegrationTest extends AbstractTestCase implements Integrati
         ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 
         // Get File
-        LOG.info("Get File for remotePath [" + FILENAME + "]");
+        log("Get File for remotePath [" + FILENAME + "]");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         assertTrue("GET", ftpClient.retrieveFile(FILENAME, outputStream));
-        LOG.info("GET File length=" + outputStream.size());
+        log("GET File length=" + outputStream.size());
         assertEquals("File contents", BINARY_CONTENTS, outputStream.toByteArray());
 
         // Put File
-        LOG.info("Put File for local path [" + FILENAME + "]");
+        log("Put File for local path [" + FILENAME + "]");
         ByteArrayInputStream inputStream = new ByteArrayInputStream(BINARY_CONTENTS);
         assertTrue("PUT", ftpClient.storeFile(FILENAME, inputStream));
         InvocationRecord invocationRecord = storCommandHandler.getInvocation(0);
         byte[] contents = (byte[]) invocationRecord.getObject(StorCommandHandler.FILE_CONTENTS_KEY);
-        LOG.info("PUT File length=" + contents.length);
+        log("PUT File length=" + contents.length);
         assertEquals("File contents", BINARY_CONTENTS, contents);
     }
 
@@ -412,7 +406,7 @@ class StubFtpServerIntegrationTest extends AbstractTestCase implements Integrati
         assertTrue(ftpClient.storeUniqueFile(FILENAME, inputStream));
         InvocationRecord invocationRecord = stouCommandHandler.getInvocation(0);
         byte[] contents = (byte[]) invocationRecord.getObject(StorCommandHandler.FILE_CONTENTS_KEY);
-        LOG.info("File contents=[" + contents + "]");
+        log("File contents=[" + contents + "]");
         assertEquals("File contents", ASCII_CONTENTS.getBytes(), contents);
     }
 
@@ -427,7 +421,7 @@ class StubFtpServerIntegrationTest extends AbstractTestCase implements Integrati
         assertTrue(ftpClient.appendFile(FILENAME, inputStream));
         InvocationRecord invocationRecord = appeCommandHandler.getInvocation(0);
         byte[] contents = (byte[]) invocationRecord.getObject(AppeCommandHandler.FILE_CONTENTS_KEY);
-        LOG.info("File contents=[" + contents + "]");
+        log("File contents=[" + contents + "]");
         assertEquals("File contents", ASCII_CONTENTS.getBytes(), contents);
     }
 
@@ -534,7 +528,7 @@ class StubFtpServerIntegrationTest extends AbstractTestCase implements Integrati
     // -------------------------------------------------------------------------
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         for (int i = 0; i < BINARY_CONTENTS.length; i++) {
             BINARY_CONTENTS[i] = (byte) i;
         }
@@ -548,7 +542,7 @@ class StubFtpServerIntegrationTest extends AbstractTestCase implements Integrati
     }
 
     @AfterEach
-    void tearDown() throws Exception {
+    void tearDown() {
         stubFtpServer.stop();
     }
 
@@ -571,7 +565,7 @@ class StubFtpServerIntegrationTest extends AbstractTestCase implements Integrati
      */
     private void verifyReplyCode(String operation, int expectedReplyCode) {
         int replyCode = ftpClient.getReplyCode();
-        LOG.info("Reply: operation=\"" + operation + "\" replyCode=" + replyCode);
+        log("Reply: operation=\"" + operation + "\" replyCode=" + replyCode);
         assertEquals("Unexpected replyCode for " + operation, expectedReplyCode, replyCode);
     }
 
@@ -584,7 +578,7 @@ class StubFtpServerIntegrationTest extends AbstractTestCase implements Integrati
      * @param size    - the expected file size (will be zero for a directory)
      */
     private void verifyFTPFile(FTPFile ftpFile, int type, String name, long size) {
-        LOG.info(ftpFile.toString());
+        log(ftpFile.toString());
         assertEquals("type: " + ftpFile, type, ftpFile.getType());
         assertEquals("name: " + ftpFile, name, ftpFile.getName());
         assertEquals("size: " + ftpFile, size, ftpFile.getSize());

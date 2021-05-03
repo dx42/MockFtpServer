@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.stub.command;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -24,8 +25,6 @@ import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
 import org.mockftpserver.core.util.AssertFailedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Tests for the RetrCommandHandler class
@@ -34,52 +33,26 @@ import org.slf4j.LoggerFactory;
  */
 class RetrCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RetrCommandHandlerTest.class);
-
     private RetrCommandHandler commandHandler;
 
     @Test
     void testConstructor_String_Null() {
-        try {
-            new RetrCommandHandler((String) null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> new RetrCommandHandler((String) null));
     }
 
     @Test
     void testConstructor_ByteArray_Null() {
-        try {
-            new RetrCommandHandler((byte[]) null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> new RetrCommandHandler((byte[]) null));
     }
 
     @Test
     void testSetFileContents_String_Null() {
-        try {
-            commandHandler.setFileContents((String) null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> commandHandler.setFileContents((String) null));
     }
 
     @Test
     void testSetFileContents_ByteArray_Null() {
-        try {
-            commandHandler.setFileContents((byte[]) null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> commandHandler.setFileContents((byte[]) null));
     }
 
     @Test

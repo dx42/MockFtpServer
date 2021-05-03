@@ -21,8 +21,6 @@ import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.CommandSyntaxException;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -32,8 +30,6 @@ import java.util.List;
  * @author Chris Mair
  */
 class CommandTest extends AbstractTestCase {
-
-    private static final Logger LOG = LoggerFactory.getLogger(CommandTest.class);
 
     @Test
     void testConstructor() {
@@ -116,7 +112,7 @@ class CommandTest extends AbstractTestCase {
     }
 
     @Test
-    void testEquals() throws Exception {
+    void testEquals() {
         final Command COMMAND1 = new Command("a", EMPTY);
         final Command COMMAND2 = new Command("a", EMPTY);
         final Command COMMAND3 = new Command("b", array("1"));

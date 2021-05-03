@@ -15,13 +15,12 @@
  */
 package org.mockftpserver.core.command;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.util.AssertFailedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Tests for the StaticReplyCommandHandler class
@@ -30,7 +29,6 @@ import org.slf4j.LoggerFactory;
  */
 class StaticReplyCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(StaticReplyCommandHandlerTest.class);
     private static final int REPLY_CODE = 999;
     private static final String REPLY_TEXT = "some text 123";
     private static final Command COMMAND = new Command("ANY", EMPTY);
@@ -39,35 +37,17 @@ class StaticReplyCommandHandlerTest extends AbstractCommandHandlerTestCase {
     
     @Test
     void testConstructor_String_InvalidReplyCode() {
-        try {
-            new StaticReplyCommandHandler(-1);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> new StaticReplyCommandHandler(-1));
     }
 
     @Test
     void testConstructor_StringString_InvalidReplyCode() {
-        try {
-            new StaticReplyCommandHandler(-99, "text");
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> new StaticReplyCommandHandler(-99, "text"));
     }
     
     @Test
     void testSetReplyCode_Invalid() {
-        try {
-            commandHandler.setReplyCode(-1);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> commandHandler.setReplyCode(-1));
     }
     
     @Test
@@ -95,20 +75,14 @@ class StaticReplyCommandHandlerTest extends AbstractCommandHandlerTestCase {
     
     @Test
     void testHandleCommand_ReplyCodeNotSet() throws Exception {
-        try {
-            commandHandler.handleCommand(COMMAND, session);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
-        
+        assertThrows(AssertFailedException.class, () -> commandHandler.handleCommand(COMMAND, session));
+
         verifyNumberOfInvocations(commandHandler, 1);
         verifyNoDataElements(commandHandler.getInvocation(0));
     }
     
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         commandHandler = new StaticReplyCommandHandler();
         commandHandler.setReplyTextBundle(replyTextBundle);
     }

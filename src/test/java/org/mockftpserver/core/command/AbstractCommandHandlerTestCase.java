@@ -20,8 +20,6 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.test.AbstractTestCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 import java.util.ListResourceBundle;
@@ -33,8 +31,6 @@ import java.util.ResourceBundle;
  * @author Chris Mair
  */
 public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
-
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractCommandHandlerTestCase.class);
 
     // Some common test constants
     protected static final String DIR1 = "dir1";
@@ -79,7 +75,7 @@ public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
      * @param invocationRecord - the InvocationRecord
      */
     protected void verifyNoDataElements(InvocationRecord invocationRecord) {
-        LOG.info("Verifying: " + invocationRecord);
+        log("Verifying: " + invocationRecord);
         assertEquals("number of data elements", 0, invocationRecord.keySet().size());
     }
 
@@ -92,7 +88,7 @@ public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
      * @param value            - the expected value
      */
     protected void verifyOneDataElement(InvocationRecord invocationRecord, String key, Object value) {
-        LOG.info("Verifying: " + invocationRecord);
+        log("Verifying: " + invocationRecord);
         assertEquals("number of data elements", 1, invocationRecord.keySet().size());
         assertEqualsAllTypes("value:" + value, value, invocationRecord.getObject(key));
     }
@@ -108,7 +104,7 @@ public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
      * @param value2-          the expected value2
      */
     protected void verifyTwoDataElements(InvocationRecord invocationRecord, String key1, Object value1, String key2, Object value2) {
-        LOG.info("Verifying: " + invocationRecord);
+        log("Verifying: " + invocationRecord);
         assertEquals("number of data elements", 2, invocationRecord.keySet().size());
         assertEqualsAllTypes("value1:" + value1, value1, invocationRecord.getObject(key1));
         assertEqualsAllTypes("value2:" + value2, value2, invocationRecord.getObject(key2));
@@ -133,7 +129,7 @@ public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
     }
 
     @BeforeEach
-    void setUp_AbstractCommandHandlerTestCase() throws Exception {
+    void setUp_AbstractCommandHandlerTestCase() {
         session = mock(Session.class);
         when(session.getClientHost()).thenReturn(DEFAULT_HOST);
 

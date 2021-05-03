@@ -20,8 +20,6 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.mockftpserver.stub.StubFtpServer;
 import org.mockftpserver.test.AbstractTestCase;
 import org.springframework.context.ApplicationContext;
@@ -35,7 +33,6 @@ import java.io.ByteArrayOutputStream;
  */
 class SpringConfigurationTest extends AbstractTestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SpringConfigurationTest.class);
     private static final String SERVER = "localhost";
     private static final int PORT = 9981;
 
@@ -57,8 +54,8 @@ class SpringConfigurationTest extends AbstractTestCase {
         
         // LIST
         FTPFile[] files = ftpClient.listFiles();
-        LOG.info("FTPFile[0]=" + files[0]);
-        LOG.info("FTPFile[1]=" + files[1]);
+        log("FTPFile[0]=" + files[0]);
+        log("FTPFile[1]=" + files[1]);
         assertEquals("number of files from LIST", 2, files.length);
         
         // DELE
@@ -67,7 +64,7 @@ class SpringConfigurationTest extends AbstractTestCase {
         // RETR
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         assertTrue(ftpClient.retrieveFile("SomeFile.txt", outputStream));
-        LOG.info("File contents=[" + outputStream.toString() + "]");
+        log("File contents=[" + outputStream.toString() + "]");
     }
 
     @BeforeEach

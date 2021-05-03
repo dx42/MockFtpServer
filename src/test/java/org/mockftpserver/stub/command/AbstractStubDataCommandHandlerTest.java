@@ -25,8 +25,6 @@ import org.mockftpserver.core.command.InvocationRecord;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
@@ -38,7 +36,6 @@ import java.util.ResourceBundle;
  */
 class AbstractStubDataCommandHandlerTest extends AbstractTestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractStubDataCommandHandlerTest.class);
     private static final Command COMMAND = new Command("command", EMPTY);
     private static final InvocationRecord INVOCATION_RECORD = new InvocationRecord(COMMAND, DEFAULT_HOST);
 
@@ -125,7 +122,7 @@ class AbstractStubDataCommandHandlerTest extends AbstractTestCase {
 
     @BeforeEach
     void setUp() throws Exception {
-        session = (Session) mock(Session.class);
+        session = mock(Session.class);
         replyTextBundle = new ListResourceBundle() {
             protected Object[][] getContents() {
                 return new Object[][] { 

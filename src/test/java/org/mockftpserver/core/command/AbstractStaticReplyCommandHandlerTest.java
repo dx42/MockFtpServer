@@ -23,8 +23,6 @@ import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
@@ -36,7 +34,6 @@ import java.util.ResourceBundle;
  */
 class AbstractStaticReplyCommandHandlerTest extends AbstractTestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractStaticReplyCommandHandlerTest.class);
     private static final int REPLY_CODE1 = 777;
     private static final int REPLY_CODE2 = 888;
     private static final String REPLY_TEXT1 = "reply1 ... abcdef";
@@ -100,10 +97,10 @@ class AbstractStaticReplyCommandHandlerTest extends AbstractTestCase {
     //-------------------------------------------------------------------------
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         session = mock(Session.class);
         commandHandler = new AbstractStaticReplyCommandHandler() {
-            public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) throws Exception {
+            public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
             }
         };
         ResourceBundle replyTextBundle = new ListResourceBundle() {

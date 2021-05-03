@@ -16,8 +16,6 @@
 package org.mockftpserver.core.util
 
 import org.junit.jupiter.api.Test
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.CommandSyntaxException
 import org.mockftpserver.test.AbstractGroovyTestCase
 
@@ -28,7 +26,6 @@ import org.mockftpserver.test.AbstractGroovyTestCase
  */
 class PortParserTest extends AbstractGroovyTestCase {
 
-    static final Logger LOG = LoggerFactory.getLogger(PortParserTest.class)
     static final String[] PARAMETERS = ["192", "22", "250", "44", "1", "206"]
     static final String[] PARAMETERS_INSUFFICIENT = ["7", "29", "99", "11", "77"]
     static final int PORT = (1 << 8) + 206

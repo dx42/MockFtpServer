@@ -22,8 +22,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
@@ -35,8 +33,6 @@ import java.util.ResourceBundle;
  */
 class ReplyTextBundleUtilTest extends AbstractTestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ReplyTextBundleUtilTest.class);
-    
     private ResourceBundle resourceBundle1;
     private ResourceBundle resourceBundle2;
 
@@ -68,7 +64,7 @@ class ReplyTextBundleUtilTest extends AbstractTestCase {
     }
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         resourceBundle1 = new ListResourceBundle() {
             protected Object[][] getContents() {
                 return null;

@@ -36,6 +36,10 @@ public abstract class AbstractTestCase {
     // Helper Methods
     //-------------------------------------------------------------------------
 
+    protected void log(Object message) {
+        System.out.println("[" + getClass().getSimpleName() + "]: " + message);
+    }
+
     protected void fail(String message) {
         Assertions.fail(message);
     }

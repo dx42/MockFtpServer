@@ -23,8 +23,6 @@ import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.stub.command.AbstractStubCommandHandler;
 import org.mockftpserver.test.AbstractTestCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
@@ -36,7 +34,6 @@ import java.util.ResourceBundle;
  */
 class AbstractCommandHandlerTest extends AbstractTestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractTrackingCommandHandlerTest.class);
     private static final int REPLY_CODE1 = 777;
     private static final int REPLY_CODE2 = 888;
     private static final String REPLY_TEXT1 = "reply1 ... abcdef";
@@ -77,9 +74,9 @@ class AbstractCommandHandlerTest extends AbstractTestCase {
     //-------------------------------------------------------------------------
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         commandHandler = new AbstractCommandHandler() {
-            public void handleCommand(Command command, Session session) throws Exception {
+            public void handleCommand(Command command, Session session) {
             }
         };
         ResourceBundle replyTextBundle = new ListResourceBundle() {

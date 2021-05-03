@@ -19,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.MockFtpServerException;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.socket.StubServerSocket;
@@ -32,7 +30,6 @@ import org.mockftpserver.test.AbstractTestCase;
 
 import java.io.*;
 import java.net.InetAddress;
-import java.net.SocketTimeoutException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +41,6 @@ import java.util.Map;
  */
 class DefaultSessionTest extends AbstractTestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultSessionTest.class);
     private static final String DATA = "sample data 123";
     private static final int PORT = 197;
     private static final String NAME1 = "name1";
@@ -149,7 +145,7 @@ class DefaultSessionTest extends AbstractTestCase {
 
         session.openDataConnection();
         byte[] data = session.readData();
-        LOG.info("data=[" + new String(data) + "]");
+        log("data=[" + new String(data) + "]");
         assertEquals("data", DATA.getBytes(), data);
     }
 
@@ -163,7 +159,7 @@ class DefaultSessionTest extends AbstractTestCase {
         session.switchToPassiveMode();
         session.openDataConnection();
         byte[] data = session.readData();
-        LOG.info("data=[" + new String(data) + "]");
+        log("data=[" + new String(data) + "]");
         assertEquals("data", DATA.getBytes(), data);
     }
 
@@ -177,7 +173,7 @@ class DefaultSessionTest extends AbstractTestCase {
 
         session.openDataConnection();
         byte[] data = session.readData(NUM_BYTES);
-        LOG.info("data=[" + new String(data) + "]");
+        log("data=[" + new String(data) + "]");
         assertEquals("data", EXPECTED_DATA.getBytes(), data);
     }
 
@@ -189,7 +185,7 @@ class DefaultSessionTest extends AbstractTestCase {
 
         session.openDataConnection();
         byte[] data = session.readData(10000);
-        LOG.info("data=[" + new String(data) + "]");
+        log("data=[" + new String(data) + "]");
         assertEquals("data", DATA.getBytes(), data);
     }
 
@@ -291,7 +287,7 @@ class DefaultSessionTest extends AbstractTestCase {
         session.setClientDataHost(clientHost);
         session.openDataConnection();
         session.sendData(DATA.getBytes(), DATA.length());
-        LOG.info("output=[" + outputStream.toString() + "]");
+        log("output=[" + outputStream.toString() + "]");
         assertEquals("output", DATA, outputStream.toString());
     }
 

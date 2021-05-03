@@ -23,8 +23,6 @@ import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +36,6 @@ import java.util.ResourceBundle;
  */
 class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SimpleCompositeCommandHandlerTest.class);
-    
     private SimpleCompositeCommandHandler simpleCompositeCommandHandler;
     private Session session;
     private Command command;
@@ -98,38 +94,38 @@ class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
     }
     
     @Test
-    void testHandleCommand_NoHandlersDefined() throws Exception {
+    void testHandleCommand_NoHandlersDefined() {
         assertThrows(AssertFailedException.class, () -> simpleCompositeCommandHandler.handleCommand(command, session));
     }
     
     @Test
-    void testHandleCommand_NullCommand() throws Exception {
+    void testHandleCommand_NullCommand() {
         assertThrows(AssertFailedException.class, () -> simpleCompositeCommandHandler.handleCommand(null, session));
     }
     
     @Test
-    void testHandleCommand_NullSession() throws Exception {
+    void testHandleCommand_NullSession() {
         assertThrows(AssertFailedException.class, () -> simpleCompositeCommandHandler.handleCommand(command, null));
     }
 
     @Test
-    void testAddCommandHandler_NullCommandHandler() throws Exception {
+    void testAddCommandHandler_NullCommandHandler() {
         assertThrows(AssertFailedException.class, () -> simpleCompositeCommandHandler.addCommandHandler(null));
     }
     
     @Test
-    void testSetCommandHandlers_Null() throws Exception {
+    void testSetCommandHandlers_Null() {
         assertThrows(AssertFailedException.class, () -> simpleCompositeCommandHandler.setCommandHandlers(null));
     }
     
     @Test
-    void testGetCommandHandler_UndefinedIndex() throws Exception {
+    void testGetCommandHandler_UndefinedIndex() {
         simpleCompositeCommandHandler.addCommandHandler(commandHandler1);
         assertThrows(AssertFailedException.class, () -> simpleCompositeCommandHandler.getCommandHandler(1));
     }
 
     @Test
-    void testGetCommandHandler() throws Exception {
+    void testGetCommandHandler() {
         simpleCompositeCommandHandler.addCommandHandler(commandHandler1);
         simpleCompositeCommandHandler.addCommandHandler(commandHandler2);
         assertSame("index 0", commandHandler1, simpleCompositeCommandHandler.getCommandHandler(0));
@@ -137,7 +133,7 @@ class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
     }
     
     @Test
-    void testGetCommandHandler_NegativeIndex() throws Exception {
+    void testGetCommandHandler_NegativeIndex() {
         simpleCompositeCommandHandler.addCommandHandler(commandHandler1);
         assertThrows(AssertFailedException.class, () -> simpleCompositeCommandHandler.getCommandHandler(-1));
     }
@@ -171,7 +167,7 @@ class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
     //-------------------------------------------------------------------------
     
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         simpleCompositeCommandHandler = new SimpleCompositeCommandHandler();
         session = mock(Session.class);
         command = new Command("cmd", EMPTY);

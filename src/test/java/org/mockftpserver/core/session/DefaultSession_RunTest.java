@@ -17,13 +17,7 @@ package org.mockftpserver.core.session;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.CommandHandler;
-import org.mockftpserver.core.command.CommandNames;
-import org.mockftpserver.core.command.ConnectCommandHandler;
-import org.mockftpserver.core.command.InvocationRecord;
+import org.mockftpserver.core.command.*;
 import org.mockftpserver.core.socket.StubSocket;
 import org.mockftpserver.stub.command.AbstractStubCommandHandler;
 import org.mockftpserver.test.AbstractTestCase;
@@ -41,7 +35,6 @@ import java.util.ResourceBundle;
  */
 class DefaultSession_RunTest extends AbstractTestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultSession_RunTest.class);
     private static final Command COMMAND = new Command("USER", EMPTY);
     private static final int REPLY_CODE = 100;
     private static final String REPLY_TEXT = "sample text description";
@@ -112,7 +105,7 @@ class DefaultSession_RunTest extends AbstractTestCase {
             }
         };
         runCommandAndVerifyOutput(commandHandler, "");
-        LOG.info("clientHost=" + session.getClientHost());
+        log("clientHost=" + session.getClientHost());
         assertEquals("clientHost", DEFAULT_HOST, session.getClientHost());
     }
 
@@ -247,7 +240,7 @@ class DefaultSession_RunTest extends AbstractTestCase {
         assertEquals("commandHandled", true, commandHandled);
 
         String output = outputStream.toString();
-        LOG.info("output=[" + output.trim() + "]");
+        log("output=[" + output.trim() + "]");
         assertTrue("line ends with \\r\\n",
                 output.charAt(output.length() - 2) == '\r' && output.charAt(output.length() - 1) == '\n');
         assertTrue("output: expected [" + expectedOutput + "]", output.indexOf(expectedOutput) != -1);

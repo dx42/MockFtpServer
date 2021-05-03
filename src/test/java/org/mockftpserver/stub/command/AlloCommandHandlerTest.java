@@ -24,8 +24,6 @@ import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
 import org.mockftpserver.core.util.AssertFailedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Tests for the AlloCommandHandler class
@@ -34,7 +32,6 @@ import org.slf4j.LoggerFactory;
  */
 class AlloCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AlloCommandHandlerTest.class);
     private static final int BYTES1 = 64;
     private static final int BYTES2 = 555;
     private static final int RECORD_SIZE = 77;
@@ -69,7 +66,7 @@ class AlloCommandHandlerTest extends AbstractCommandHandlerTestCase {
             fail("Expected AssertFailedException");
         }
         catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
+            log("Expected: " + expected);
         }
     }
 
@@ -80,7 +77,7 @@ class AlloCommandHandlerTest extends AbstractCommandHandlerTestCase {
             fail("Expected NumberFormatException");
         }
         catch (NumberFormatException expected) {
-            LOG.info("Expected: " + expected);
+            log("Expected: " + expected);
         }
     }
 
@@ -91,7 +88,7 @@ class AlloCommandHandlerTest extends AbstractCommandHandlerTestCase {
             fail("Expected NumberFormatException");
         }
         catch (NumberFormatException expected) {
-            LOG.info("Expected: " + expected);
+            log("Expected: " + expected);
         }
     }
 

@@ -25,8 +25,6 @@ import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.session.DefaultSession;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.Socket;
 import java.util.HashMap;
@@ -38,8 +36,6 @@ import java.util.Map;
  * @author Chris Mair
  */
 public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
-
-    protected Logger LOG = LoggerFactory.getLogger(getClass());
 
     protected AbstractFtpServer ftpServer;
     private CommandHandler commandHandler;
@@ -125,7 +121,7 @@ public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
     //-------------------------------------------------------------------------
 
     @BeforeEach
-    void setUp_AbstractFtpServerTestCase() throws Exception {
+    void setUp_AbstractFtpServerTestCase() {
         ftpServer = createFtpServer();
         commandHandler = createCommandHandler();
         commandHandler2 = createCommandHandler();

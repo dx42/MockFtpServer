@@ -23,8 +23,6 @@ import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.session.Session;
 import org.mockftpserver.core.util.AssertFailedException;
 import org.mockftpserver.test.AbstractTestCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
@@ -36,7 +34,6 @@ import java.util.ResourceBundle;
  */
 class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractTrackingCommandHandlerTest.class);
     private static final String COMMAND_NAME = "abc";
     private static final Object ARG = "123";
     private static final Object[] ARGS = {ARG};
@@ -64,12 +61,12 @@ class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
     }
 
     @Test
-    void testHandleCommand_NullCommand() throws Exception {
+    void testHandleCommand_NullCommand() {
         assertThrows(AssertFailedException.class, () -> commandHandler.handleCommand(null, session));
     }
 
     @Test
-    void testHandleCommand_NullSession() throws Exception {
+    void testHandleCommand_NullSession() {
         assertThrows(AssertFailedException.class, () -> commandHandler.handleCommand(COMMAND, null));
     }
 
@@ -133,10 +130,10 @@ class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
     //-------------------------------------------------------------------------
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         session = mock(Session.class);
         commandHandler = new AbstractTrackingCommandHandler() {
-            public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) throws Exception {
+            public void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
             }
         };
         ResourceBundle replyTextBundle = new ListResourceBundle() {

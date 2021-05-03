@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.stub.command;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -24,8 +25,6 @@ import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.command.CommandNames;
 import org.mockftpserver.core.command.ReplyCodes;
 import org.mockftpserver.core.util.AssertFailedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Tests for the SystCommandHandler class
@@ -34,8 +33,6 @@ import org.slf4j.LoggerFactory;
  */
 class SystCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SystCommandHandlerTest.class);
-    
     private SystCommandHandler commandHandler;
 
     @Test
@@ -55,13 +52,7 @@ class SystCommandHandlerTest extends AbstractCommandHandlerTestCase {
     
     @Test
     void testSetSystemName_Null() {
-        try {
-            commandHandler.setSystemName(null);
-            fail("Expected AssertFailedException");
-        }
-        catch (AssertFailedException expected) {
-            LOG.info("Expected: " + expected);
-        }
+        assertThrows(AssertFailedException.class, () -> commandHandler.setSystemName(null));
     }
     
     @BeforeEach

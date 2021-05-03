@@ -19,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import org.mockftpserver.test.AbstractTestCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -31,7 +29,6 @@ import java.util.*;
  */
 class AssertTest extends AbstractTestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AssertTest.class);
     private static final String MESSAGE = "exception message";
 
     @Test
@@ -51,7 +48,7 @@ class AssertTest extends AbstractTestCase {
     }
 
     @Test
-    void testAssertTrue() throws Exception {
+    void testAssertTrue() {
         Assert.isTrue(true, MESSAGE);
 
         Throwable t = assertThrows(AssertFailedException.class, () -> Assert.isTrue(false, MESSAGE));
@@ -59,7 +56,7 @@ class AssertTest extends AbstractTestCase {
     }
 
     @Test
-    void testAssertFalse() throws Exception {
+    void testAssertFalse() {
         Assert.isFalse(false, MESSAGE);
 
         Throwable t = assertThrows(AssertFailedException.class, () -> Assert.isFalse(true, MESSAGE));
@@ -67,7 +64,7 @@ class AssertTest extends AbstractTestCase {
     }
 
     @Test
-    void testAssertNotNullOrEmpty_Collection() throws Exception {
+    void testAssertNotNullOrEmpty_Collection() {
         final Collection COLLECTION = Collections.singletonList("item");
         Assert.notNullOrEmpty(COLLECTION, MESSAGE);
 
@@ -79,7 +76,7 @@ class AssertTest extends AbstractTestCase {
     }
 
     @Test
-    void testAssertNotNullOrEmpty_Map() throws Exception {
+    void testAssertNotNullOrEmpty_Map() {
         final Map MAP = Collections.singletonMap("key", "value");
         Assert.notNullOrEmpty(MAP, MESSAGE);
 
@@ -91,7 +88,7 @@ class AssertTest extends AbstractTestCase {
     }
 
     @Test
-    void testAssertNotNullOrEmpty_array() throws Exception {
+    void testAssertNotNullOrEmpty_array() {
         final Object[] ARRAY = {"1", "2"};
         Assert.notNullOrEmpty(ARRAY, MESSAGE);
 
@@ -103,7 +100,7 @@ class AssertTest extends AbstractTestCase {
     }
 
     @Test
-    void testAssertNotNullOrEmpty_String() throws Exception {
+    void testAssertNotNullOrEmpty_String() {
         Assert.notNullOrEmpty("OK", MESSAGE);
 
         Throwable t = assertThrows(AssertFailedException.class, () -> Assert.notNullOrEmpty((String) null, MESSAGE));

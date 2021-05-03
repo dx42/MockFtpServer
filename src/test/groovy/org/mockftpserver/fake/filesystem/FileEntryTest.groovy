@@ -17,8 +17,6 @@ package org.mockftpserver.fake.filesystem
 
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.util.IoUtil
 
 /**
@@ -28,7 +26,6 @@ import org.mockftpserver.core.util.IoUtil
  */
 class FileEntryTest extends AbstractFileSystemEntryTestCase {
 
-    private static final LOG = LoggerFactory.getLogger(FileEntryTest)
     private static final CONTENTS = "abc 123 %^& xxx"
 
     private FileEntry entry
