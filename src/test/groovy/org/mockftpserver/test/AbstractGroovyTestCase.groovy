@@ -16,7 +16,6 @@
 package org.mockftpserver.test
 
 
-import org.mockftpserver.test.LoggingUtil
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -28,7 +27,6 @@ import org.slf4j.LoggerFactory
 abstract class AbstractGroovyTestCase {
 
     protected final Logger LOG = LoggerFactory.getLogger(this.class)
-    private LoggingUtil testLogger
 
     /**
      * Write out the specified log message, prefixing with the current class name.
