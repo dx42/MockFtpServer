@@ -46,7 +46,7 @@ class RemoteFileTest extends AbstractTestCase implements IntegrationTest {
     @Test
     void testReadFile() throws Exception {
         String contents = remoteFile.readFile(FILE);
-        assertEquals("contents", CONTENTS, contents);
+        assertEquals(CONTENTS, contents);
     }
 
     @Test

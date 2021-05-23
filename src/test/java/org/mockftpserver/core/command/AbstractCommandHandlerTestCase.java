@@ -16,6 +16,7 @@
 package org.mockftpserver.core.command;
 
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.mockftpserver.core.session.Session;
@@ -66,7 +67,7 @@ public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
      * @param expected       - the expected number of invocations
      */
     protected void verifyNumberOfInvocations(InvocationHistory commandHandler, int expected) {
-        assertEquals("number of invocations", expected, commandHandler.numberOfInvocations());
+        assertEquals(expected, commandHandler.numberOfInvocations());
     }
 
     /**
@@ -76,7 +77,7 @@ public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
      */
     protected void verifyNoDataElements(InvocationRecord invocationRecord) {
         log("Verifying: " + invocationRecord);
-        assertEquals("number of data elements", 0, invocationRecord.keySet().size());
+        assertEquals(0, invocationRecord.keySet().size(), "number of data elements");
     }
 
     /**
@@ -89,7 +90,7 @@ public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
      */
     protected void verifyOneDataElement(InvocationRecord invocationRecord, String key, Object value) {
         log("Verifying: " + invocationRecord);
-        assertEquals("number of data elements", 1, invocationRecord.keySet().size());
+        assertEquals(1, invocationRecord.keySet().size(), "number of data elements");
         assertEqualsAllTypes("value:" + value, value, invocationRecord.getObject(key));
     }
 
@@ -105,7 +106,7 @@ public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
      */
     protected void verifyTwoDataElements(InvocationRecord invocationRecord, String key1, Object value1, String key2, Object value2) {
         log("Verifying: " + invocationRecord);
-        assertEquals("number of data elements", 2, invocationRecord.keySet().size());
+        assertEquals(2, invocationRecord.keySet().size(), "number of data elements");
         assertEqualsAllTypes("value1:" + value1, value1, invocationRecord.getObject(key1));
         assertEqualsAllTypes("value2:" + value2, value2, invocationRecord.getObject(key2));
     }
@@ -120,11 +121,11 @@ public abstract class AbstractCommandHandlerTestCase extends AbstractTestCase {
      */
     private void assertEqualsAllTypes(String message, Object expected, Object actual) {
         if (expected instanceof byte[] || actual instanceof byte[]) {
-            assertEquals(message, (byte[]) expected, (byte[]) actual);
+            assertArrayEquals((byte[]) expected, (byte[]) actual, message);
         } else if (expected instanceof Object[] || actual instanceof Object[]) {
-            assertEquals(message, (Object[]) expected, (Object[]) actual);
+            assertArrayEquals((Object[]) expected, (Object[]) actual, message);
         } else {
-            assertEquals(message, expected, actual);
+            assertEquals(expected, actual, message);
         }
     }
 

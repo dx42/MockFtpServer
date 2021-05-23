@@ -116,7 +116,7 @@ class AssertTest extends AbstractTestCase {
 
     private void assertExceptionMessageContains(Throwable exception, String text) {
         String message = exception.getMessage();
-        assertTrue("Exception message [" + message + "] does not contain [" + text + "]", message.indexOf(text) != -1);
+        assertTrue(message.indexOf(text) != -1);
     }
 
 }

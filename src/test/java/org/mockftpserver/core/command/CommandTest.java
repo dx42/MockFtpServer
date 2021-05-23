@@ -35,8 +35,8 @@ class CommandTest extends AbstractTestCase {
     void testConstructor() {
         final String[] PARAMETERS = array("123");
         Command command = new Command("abc", PARAMETERS);
-        assertEquals("name", "abc", command.getName());
-        assertEquals("parameters", PARAMETERS, command.getParameters());
+        assertEquals("abc", command.getName());
+        assertArrayEquals(PARAMETERS, command.getParameters());
     }
 
     @Test
@@ -44,8 +44,8 @@ class CommandTest extends AbstractTestCase {
         final List PARAMETERS_LIST = list("123");
         final String[] PARAMETERS_ARRAY = array("123");
         Command command = new Command("abc", PARAMETERS_LIST);
-        assertEquals("name", "abc", command.getName());
-        assertEquals("parameters String[]", PARAMETERS_ARRAY, command.getParameters());
+        assertEquals("abc", command.getName());
+        assertArrayEquals(PARAMETERS_ARRAY, command.getParameters());
     }
 
     @Test
@@ -60,16 +60,16 @@ class CommandTest extends AbstractTestCase {
 
     @Test
     void testNormalizeName() {
-        assertEquals("XXX", "XXX", Command.normalizeName("XXX"));
-        assertEquals("xxx", "XXX", Command.normalizeName("xxx"));
-        assertEquals("Xxx", "XXX", Command.normalizeName("Xxx"));
+        assertEquals("XXX", Command.normalizeName("XXX"));
+        assertEquals("XXX", Command.normalizeName("xxx"));
+        assertEquals("XXX", Command.normalizeName("Xxx"));
     }
 
     @Test
     void testGetRequiredParameter() {
         Command command = new Command("abc", array("123", "456"));
-        assertEquals("123", "123", command.getRequiredParameter(0));
-        assertEquals("456", "456", command.getRequiredParameter(1));
+        assertEquals("123", command.getRequiredParameter(0));
+        assertEquals("456", command.getRequiredParameter(1));
     }
 
     @Test
@@ -81,17 +81,17 @@ class CommandTest extends AbstractTestCase {
     @Test
     void testGetOptionalString() {
         Command command = new Command("abc", array("123", "456"));
-        assertEquals("123", "123", command.getOptionalString(0));
-        assertEquals("456", "456", command.getOptionalString(1));
-        assertEquals("null", null, command.getOptionalString(2));
+        assertEquals("123", command.getOptionalString(0));
+        assertEquals("456", command.getOptionalString(1));
+        assertEquals(null, command.getOptionalString(2));
     }
 
     @Test
     void testGetParameter() {
         Command command = new Command("abc", array("123", "456"));
-        assertEquals("123", "123", command.getParameter(0));
-        assertEquals("456", "456", command.getParameter(1));
-        assertEquals("null", null, command.getParameter(2));
+        assertEquals("123", command.getParameter(0));
+        assertEquals("456", command.getParameter(1));
+        assertEquals(null, command.getParameter(2));
     }
 
     @Test
@@ -99,7 +99,7 @@ class CommandTest extends AbstractTestCase {
         final String[] PARAMETERS = {"a", "b", "c"};
         final Command COMMAND = new Command("command", PARAMETERS);
         PARAMETERS[2] = "xxx";
-        assertEquals("parameters", COMMAND.getParameters(), new String[]{"a", "b", "c"});
+        assertArrayEquals(COMMAND.getParameters(), new String[]{"a", "b", "c"});
     }
 
     @Test
@@ -108,7 +108,7 @@ class CommandTest extends AbstractTestCase {
         final Command COMMAND = new Command("command", PARAMETERS);
         String[] parameters = COMMAND.getParameters();
         parameters[2] = "xxx";
-        assertEquals("parameters", PARAMETERS, COMMAND.getParameters());
+        assertArrayEquals(PARAMETERS, COMMAND.getParameters());
     }
 
     @Test
@@ -134,7 +134,7 @@ class CommandTest extends AbstractTestCase {
      * @param expectedEqual - true if command1 is expected to equal command2
      */
     private void doTestEquals(Command command1, Command command2, boolean expectedEqual) {
-        assertEquals(command1.toString() + " and " + command2, expectedEqual, command1.equals(command2));
+        assertEquals(expectedEqual, command1.equals(command2));
     }
 
 }

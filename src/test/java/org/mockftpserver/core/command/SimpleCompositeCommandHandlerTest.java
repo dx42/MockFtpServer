@@ -128,8 +128,8 @@ class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
     void testGetCommandHandler() {
         simpleCompositeCommandHandler.addCommandHandler(commandHandler1);
         simpleCompositeCommandHandler.addCommandHandler(commandHandler2);
-        assertSame("index 0", commandHandler1, simpleCompositeCommandHandler.getCommandHandler(0));
-        assertSame("index 1", commandHandler2, simpleCompositeCommandHandler.getCommandHandler(1));
+        assertSame(commandHandler1, simpleCompositeCommandHandler.getCommandHandler(0));
+        assertSame(commandHandler2, simpleCompositeCommandHandler.getCommandHandler(1));
     }
     
     @Test
@@ -158,8 +158,8 @@ class SimpleCompositeCommandHandlerTest extends AbstractTestCase {
         };
         
         simpleCompositeCommandHandler.setReplyTextBundle(resourceBundle);
-        assertSame("1", resourceBundle, replyTextBundleAwareCommandHandler1.getReplyTextBundle());
-        assertSame("2", resourceBundle, replyTextBundleAwareCommandHandler1.getReplyTextBundle());
+        assertSame(resourceBundle, replyTextBundleAwareCommandHandler1.getReplyTextBundle());
+        assertSame(resourceBundle, replyTextBundleAwareCommandHandler1.getReplyTextBundle());
     }
     
     //-------------------------------------------------------------------------

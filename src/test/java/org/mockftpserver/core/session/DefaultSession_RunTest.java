@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.core.session;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.*;
@@ -56,10 +58,10 @@ class DefaultSession_RunTest extends AbstractTestCase {
     void testInvocationOfCommandHandler() throws Exception {
         AbstractStubCommandHandler commandHandler = new AbstractStubCommandHandler() {
             public void handleCommand(Command command, Session cmdSession, InvocationRecord invocationRecord) {
-                assertEquals("command", COMMAND, command);
-                assertSame("session", session, cmdSession);
-                assertEquals("InvocationRecord: command", COMMAND, invocationRecord.getCommand());
-                assertEquals("InvocationRecord: clientHost", DEFAULT_HOST, invocationRecord.getClientHost());
+                assertEquals(COMMAND, command);
+                assertSame(session, cmdSession);
+                assertEquals(COMMAND, invocationRecord.getCommand());
+                assertEquals(DEFAULT_HOST, invocationRecord.getClientHost());
                 commandHandled = true;
             }
         };
@@ -75,8 +77,8 @@ class DefaultSession_RunTest extends AbstractTestCase {
             }
         };
         runCommandAndVerifyOutput(commandHandler, "");
-        assertFalse("socket should not be closed", stubSocket.isClosed());
-        assertTrue("Session should be closed", session.isClosed());
+        assertFalse(stubSocket.isClosed());
+        assertTrue(session.isClosed());
     }
 
     @Test
@@ -94,7 +96,7 @@ class DefaultSession_RunTest extends AbstractTestCase {
 
         session.close();
         thread.join();
-        assertTrue("Session should be closed", session.isClosed());
+        assertTrue(session.isClosed());
     }
 
     @Test
@@ -106,7 +108,7 @@ class DefaultSession_RunTest extends AbstractTestCase {
         };
         runCommandAndVerifyOutput(commandHandler, "");
         log("clientHost=" + session.getClientHost());
-        assertEquals("clientHost", DEFAULT_HOST, session.getClientHost());
+        assertEquals(DEFAULT_HOST, session.getClientHost());
     }
 
     @Test
@@ -237,13 +239,12 @@ class DefaultSession_RunTest extends AbstractTestCase {
         session.close();
         thread.join();
 
-        assertEquals("commandHandled", true, commandHandled);
+        assertEquals(true, commandHandled);
 
         String output = outputStream.toString();
         log("output=[" + output.trim() + "]");
-        assertTrue("line ends with \\r\\n",
-                output.charAt(output.length() - 2) == '\r' && output.charAt(output.length() - 1) == '\n');
-        assertTrue("output: expected [" + expectedOutput + "]", output.indexOf(expectedOutput) != -1);
+        assertTrue(output.charAt(output.length() - 2) == '\r' && output.charAt(output.length() - 1) == '\n');
+        assertTrue(output.indexOf(expectedOutput) != -1);
     }
 
 }

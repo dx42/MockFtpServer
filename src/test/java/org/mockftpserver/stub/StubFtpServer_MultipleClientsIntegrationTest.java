@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.stub;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.apache.commons.net.ftp.FTPClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -78,9 +80,9 @@ class StubFtpServer_MultipleClientsIntegrationTest extends AbstractTestCase impl
         assertNotSame("sessionId1 vs sessionId3", sessionId1, sessionId3);
 
         // Now make sure that the replies from the existing sessions remain consistent
-        assertEquals("reply from session1", sessionId1, ftpClient1.printWorkingDirectory());
-        assertEquals("reply from session2", sessionId2, ftpClient2.printWorkingDirectory());
-        assertEquals("reply from session3", sessionId3, ftpClient3.printWorkingDirectory());
+        assertEquals(sessionId1, ftpClient1.printWorkingDirectory());
+        assertEquals(sessionId2, ftpClient2.printWorkingDirectory());
+        assertEquals(sessionId3, ftpClient3.printWorkingDirectory());
     }
     
     // -------------------------------------------------------------------------

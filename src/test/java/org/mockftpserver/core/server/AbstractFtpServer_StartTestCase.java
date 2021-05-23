@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.core.server;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.apache.commons.net.ftp.FTPClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,16 +37,16 @@ public abstract class AbstractFtpServer_StartTestCase extends AbstractTestCase {
     @Test
     void testStartAndStop() throws Exception {
         ftpServer.setServerControlPort(PortTestUtil.getFtpServerControlPort());
-        assertEquals("started - before", false, ftpServer.isStarted());
+        assertEquals(false, ftpServer.isStarted());
 
         ftpServer.start();
         Thread.sleep(200L);     // give it some time to get started
-        assertEquals("started - after start()", true, ftpServer.isStarted());
-        assertEquals("shutdown - after start()", false, ftpServer.isShutdown());
+        assertEquals(true, ftpServer.isStarted());
+        assertEquals(false, ftpServer.isShutdown());
 
         ftpServer.stop();
 
-        assertEquals("shutdown - after stop()", true, ftpServer.isShutdown());
+        assertEquals(true, ftpServer.isShutdown());
     }
 
     @Test

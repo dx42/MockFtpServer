@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.stub.example;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,12 +55,12 @@ class RemoteFileTest extends AbstractTestCase implements IntegrationTest {
         String contents = remoteFile.readFile(FILENAME);
 
         // Verify returned file contents
-        assertEquals("contents", CONTENTS, contents);
+        assertEquals(CONTENTS, contents);
         
         // Verify the submitted filename
         InvocationRecord invocationRecord = retrCommandHandler.getInvocation(0);
         String filename = invocationRecord.getString(RetrCommandHandler.PATHNAME_KEY);
-        assertEquals("filename", FILENAME, filename);
+        assertEquals(FILENAME, filename);
     }
 
     @Test

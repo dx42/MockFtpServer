@@ -54,10 +54,10 @@ class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
 
     @Test
     void testHandleCommand() throws Exception {
-        assertEquals("before", 0, commandHandler.numberOfInvocations());
+        assertEquals(0, commandHandler.numberOfInvocations());
         commandHandler.handleCommand(COMMAND, session);
-        assertEquals("after", 1, commandHandler.numberOfInvocations());
-        assertTrue("locked", commandHandler.getInvocation(0).isLocked());
+        assertEquals(1, commandHandler.numberOfInvocations());
+        assertTrue(commandHandler.getInvocation(0).isLocked());
     }
 
     @Test
@@ -72,21 +72,21 @@ class AbstractTrackingCommandHandlerTest extends AbstractTestCase {
 
     @Test
     void testInvocationHistory() throws Exception {
-        assertEquals("none", 0, commandHandler.numberOfInvocations());
+        assertEquals(0, commandHandler.numberOfInvocations());
         commandHandler.handleCommand(COMMAND, session);
-        assertEquals("1", 1, commandHandler.numberOfInvocations());
+        assertEquals(1, commandHandler.numberOfInvocations());
         commandHandler.handleCommand(COMMAND, session);
-        assertEquals("2", 2, commandHandler.numberOfInvocations());
+        assertEquals(2, commandHandler.numberOfInvocations());
         commandHandler.clearInvocations();
-        assertEquals("cleared", 0, commandHandler.numberOfInvocations());
+        assertEquals(0, commandHandler.numberOfInvocations());
     }
 
     @Test
     void testGetInvocation() throws Exception {
         commandHandler.handleCommand(COMMAND, session);
         commandHandler.handleCommand(COMMAND_WITH_ARGS, session);
-        assertSame("1", COMMAND, commandHandler.getInvocation(0).getCommand());
-        assertSame("2", COMMAND_WITH_ARGS, commandHandler.getInvocation(1).getCommand());
+        assertSame(COMMAND, commandHandler.getInvocation(0).getCommand());
+        assertSame(COMMAND_WITH_ARGS, commandHandler.getInvocation(1).getCommand());
     }
 
     @Test

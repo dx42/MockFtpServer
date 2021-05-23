@@ -45,8 +45,8 @@ class AbstractCommandHandlerTest extends AbstractTestCase {
 
     @Test
     void testQuotes() {
-        assertEquals("abc", "\"abc\"", AbstractStubCommandHandler.quotes("abc"));
-        assertEquals("<empty>", "\"\"", AbstractStubCommandHandler.quotes(""));
+        assertEquals("\"abc\"", AbstractStubCommandHandler.quotes("abc"));
+        assertEquals("\"\"", AbstractStubCommandHandler.quotes(""));
     }
 
     @Test

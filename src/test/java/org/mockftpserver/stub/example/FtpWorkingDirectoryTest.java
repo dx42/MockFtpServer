@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.stub.example;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,7 +48,7 @@ class FtpWorkingDirectoryTest extends AbstractTestCase implements IntegrationTes
         
         String workingDir = ftpWorkingDirectory.getWorkingDirectory();
 
-        assertEquals("workingDirectory", DIR, workingDir);
+        assertEquals(DIR, workingDir);
     }
 
     @BeforeEach

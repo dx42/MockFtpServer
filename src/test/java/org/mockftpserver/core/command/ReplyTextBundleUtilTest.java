@@ -40,7 +40,7 @@ class ReplyTextBundleUtilTest extends AbstractTestCase {
     void testSetReplyTextBundleIfAppropriate_ReplyTextBundleAware_NotSetYet() {
         AbstractTrackingCommandHandler commandHandler = new StaticReplyCommandHandler();
         ReplyTextBundleUtil.setReplyTextBundleIfAppropriate(commandHandler, resourceBundle1);
-        assertSame("replyTextBundle", resourceBundle1, commandHandler.getReplyTextBundle());
+        assertSame(resourceBundle1, commandHandler.getReplyTextBundle());
     }
 
     @Test
@@ -48,7 +48,7 @@ class ReplyTextBundleUtilTest extends AbstractTestCase {
         AbstractTrackingCommandHandler commandHandler = new StaticReplyCommandHandler();
         commandHandler.setReplyTextBundle(resourceBundle2);
         ReplyTextBundleUtil.setReplyTextBundleIfAppropriate(commandHandler, resourceBundle1);
-        assertSame("replyTextBundle", resourceBundle2, commandHandler.getReplyTextBundle());
+        assertSame(resourceBundle2, commandHandler.getReplyTextBundle());
     }
 
     @Test

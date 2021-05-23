@@ -72,9 +72,9 @@ class AbstractStubDataCommandHandlerTest extends AbstractTestCase {
             }
 
             private void verifyParameters(Command c, Session s, InvocationRecord ir) {
-                assertSame("command", COMMAND, c);
-                assertSame("session", session, s);
-                assertSame("invocationRecord", INVOCATION_RECORD, ir);
+                assertSame(COMMAND, c);
+                assertSame(session, s);
+                assertSame(INVOCATION_RECORD, ir);
             }
         };
 

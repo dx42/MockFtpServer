@@ -15,6 +15,7 @@
  */
 package org.mockftpserver.stub.command;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -59,9 +60,9 @@ class UserCommandHandlerTest extends AbstractCommandHandlerTestCase {
 
     @Test
     void testSetPasswordRequired() {
-        assertTrue("initial state", commandHandler.isPasswordRequired());
+        assertTrue(commandHandler.isPasswordRequired());
         commandHandler.setPasswordRequired(false);
-        assertFalse("after set false", commandHandler.isPasswordRequired());
+        assertFalse(commandHandler.isPasswordRequired());
     }
     
     @BeforeEach

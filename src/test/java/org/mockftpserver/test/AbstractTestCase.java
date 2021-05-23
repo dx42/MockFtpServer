@@ -15,12 +15,14 @@
  */
 package org.mockftpserver.test;
 
-import org.junit.jupiter.api.Assertions;
 import org.mockftpserver.core.MockFtpServerException;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Abstract superclass for all project test classes
@@ -38,70 +40,6 @@ public abstract class AbstractTestCase {
 
     protected void log(Object message) {
         System.out.println("[" + getClass().getSimpleName() + "]: " + message);
-    }
-
-    protected void fail(String message) {
-        Assertions.fail(message);
-    }
-
-    protected void assertTrue(String message, boolean b) {
-        Assertions.assertTrue(b, message);
-    }
-
-    protected void assertSame(String message, Object o1, Object o2) {
-        Assertions.assertSame(o1, o2, message);
-    }
-
-    protected void assertNotSame(String message, Object o1, Object o2) {
-        Assertions.assertNotSame(o1, o2, message);
-    }
-
-    protected void assertNull(String message, Object o) {
-        Assertions.assertNull(o, message);
-    }
-
-    protected void assertNull(Object o) {
-        Assertions.assertNull(o);
-    }
-
-    protected void assertNotNull(String message, Object o) {
-        Assertions.assertNotNull(o, message);
-    }
-
-    protected void assertTrue(boolean b) {
-        Assertions.assertTrue(b);
-    }
-
-    protected void assertFalse(String message, boolean b) {
-        Assertions.assertFalse(b, message);
-    }
-
-    protected void assertEquals(String message, Object object1, Object object2) {
-        Assertions.assertEquals(object1, object2, message);
-    }
-
-    protected void assertEquals(Object object1, Object object2) {
-        Assertions.assertEquals(object1, object2);
-    }
-
-    /**
-     * Assert that the two byte arrays have the same length and content
-     *
-     * @param array1 - the first array
-     * @param array2 - the second array
-     */
-    protected void assertEquals(String message, byte[] array1, byte[] array2) {
-        Assertions.assertTrue(Arrays.equals(array1, array2), "Arrays not equal: " + message);
-    }
-
-    /**
-     * Assert that the two Object arrays have the same length and content
-     *
-     * @param array1 - the first array
-     * @param array2 - the second array
-     */
-    protected void assertEquals(String message, Object[] array1, Object[] array2) {
-        Assertions.assertTrue(Arrays.equals(array1, array2), "Arrays not equal: " + message);
     }
 
     /**

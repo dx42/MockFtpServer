@@ -72,7 +72,7 @@ class DefaultSessionTest extends AbstractTestCase {
         session.setClientDataPort(PORT);
         session.setClientDataHost(clientHost);
         session.openDataConnection();
-        assertEquals("data port", PORT, stubSocketFactory.requestedDataPort);
+        assertEquals(PORT, stubSocketFactory.requestedDataPort);
     }
 
     @Test
@@ -82,13 +82,13 @@ class DefaultSessionTest extends AbstractTestCase {
         session.serverSocketFactory = stubServerSocketFactory;
 
         session.switchToPassiveMode();
-        assertFalse("server socket closed", stubServerSocket.isClosed());
-        assertNotNull("passiveModeDataSocket", session.passiveModeDataSocket);
+        assertFalse(stubServerSocket.isClosed());
+        assertNotNull(session.passiveModeDataSocket);
         session.setClientDataPort(PORT);
 
         // Make sure that any passive mode connection info is cleared out
-        assertTrue("server socket closed", stubServerSocket.isClosed());
-        assertNull("passiveModeDataSocket should be null", session.passiveModeDataSocket);
+        assertTrue(stubServerSocket.isClosed());
+        assertNull(session.passiveModeDataSocket);
     }
 
     @Test
@@ -98,7 +98,7 @@ class DefaultSessionTest extends AbstractTestCase {
         session.socketFactory = stubSocketFactory;
         session.setClientDataHost(clientHost);
         session.openDataConnection();
-        assertEquals("client host", clientHost, stubSocketFactory.requestedHost);
+        assertEquals(clientHost, stubSocketFactory.requestedHost);
     }
 
     @Test
@@ -110,15 +110,15 @@ class DefaultSessionTest extends AbstractTestCase {
         // Use default client data port
         session.setClientDataHost(clientHost);
         session.openDataConnection();
-        assertEquals("data port", DefaultSession.DEFAULT_CLIENT_DATA_PORT, stubSocketFactory.requestedDataPort);
-        assertEquals("client host", clientHost, stubSocketFactory.requestedHost);
+        assertEquals(DefaultSession.DEFAULT_CLIENT_DATA_PORT, stubSocketFactory.requestedDataPort);
+        assertEquals(clientHost, stubSocketFactory.requestedHost);
 
         // Set client data port explicitly
         session.setClientDataPort(PORT);
         session.setClientDataHost(clientHost);
         session.openDataConnection();
-        assertEquals("data port", PORT, stubSocketFactory.requestedDataPort);
-        assertEquals("client host", clientHost, stubSocketFactory.requestedHost);
+        assertEquals(PORT, stubSocketFactory.requestedDataPort);
+        assertEquals(clientHost, stubSocketFactory.requestedHost);
     }
 
     @Test
@@ -146,7 +146,7 @@ class DefaultSessionTest extends AbstractTestCase {
         session.openDataConnection();
         byte[] data = session.readData();
         log("data=[" + new String(data) + "]");
-        assertEquals("data", DATA.getBytes(), data);
+        assertArrayEquals(DATA.getBytes(), data);
     }
 
     @Test
@@ -160,7 +160,7 @@ class DefaultSessionTest extends AbstractTestCase {
         session.openDataConnection();
         byte[] data = session.readData();
         log("data=[" + new String(data) + "]");
-        assertEquals("data", DATA.getBytes(), data);
+        assertArrayEquals(DATA.getBytes(), data);
     }
 
     @Test
@@ -174,7 +174,7 @@ class DefaultSessionTest extends AbstractTestCase {
         session.openDataConnection();
         byte[] data = session.readData(NUM_BYTES);
         log("data=[" + new String(data) + "]");
-        assertEquals("data", EXPECTED_DATA.getBytes(), data);
+        assertArrayEquals(EXPECTED_DATA.getBytes(), data);
     }
 
     @Test
@@ -186,7 +186,7 @@ class DefaultSessionTest extends AbstractTestCase {
         session.openDataConnection();
         byte[] data = session.readData(10000);
         log("data=[" + new String(data) + "]");
-        assertEquals("data", DATA.getBytes(), data);
+        assertArrayEquals(DATA.getBytes(), data);
     }
 
     @Test
@@ -197,7 +197,7 @@ class DefaultSessionTest extends AbstractTestCase {
         session.setClientDataHost(clientHost);
         session.openDataConnection();
         session.closeDataConnection();
-        assertTrue("client data socket should be closed", stubSocket.isClosed());
+        assertTrue(stubSocket.isClosed());
     }
 
     @Test
@@ -210,8 +210,8 @@ class DefaultSessionTest extends AbstractTestCase {
         session.setClientDataHost(clientHost);
         session.openDataConnection();
         session.closeDataConnection();
-        assertTrue("client data socket should be closed", stubSocket.isClosed());
-        assertTrue("passive mode data socket should be closed", stubServerSocket.isClosed());
+        assertTrue(stubSocket.isClosed());
+        assertTrue(stubServerSocket.isClosed());
     }
 
     @Test
@@ -220,20 +220,20 @@ class DefaultSessionTest extends AbstractTestCase {
         StubServerSocketFactory stubServerSocketFactory = new StubServerSocketFactory(stubServerSocket);
         session.serverSocketFactory = stubServerSocketFactory;
 
-        assertNull("passiveModeDataSocket starts out null", session.passiveModeDataSocket);
+        assertNull(session.passiveModeDataSocket);
         int port = session.switchToPassiveMode();
-        assertSame("passiveModeDataSocket", stubServerSocket, session.passiveModeDataSocket);
-        assertEquals("port", PORT, port);
+        assertSame(stubServerSocket, session.passiveModeDataSocket);
+        assertEquals(PORT, port);
     }
 
     @Test
     void testGetServerHost() {
-        assertEquals("host", DEFAULT_HOST, session.getServerHost());
+        assertEquals(DEFAULT_HOST, session.getServerHost());
     }
 
     @Test
     void testGetClientHost_NotRunning() {
-        assertNull("null", session.getClientHost());
+        assertNull(session.getClientHost());
     }
 
     @Test
@@ -261,17 +261,16 @@ class DefaultSessionTest extends AbstractTestCase {
     @Test
     void testParseCommand() {
         Command command = session.parseCommand("LIST");
-        assertEquals("command name", "LIST", command.getName());
-        assertEquals("command parameters", EMPTY, command.getParameters());
+        assertEquals("LIST", command.getName());
+        assertArrayEquals(EMPTY, command.getParameters());
 
         command = session.parseCommand("USER user123");
-        assertEquals("command name", "USER", command.getName());
-        assertEquals("command parameters", array("user123"), command.getParameters());
+        assertEquals("USER", command.getName());
+        assertArrayEquals(array("user123"), command.getParameters());
 
         command = session.parseCommand("PORT 127,0,0,1,17,37");
-        assertEquals("command name", "PORT", command.getName());
-        assertEquals("command parameters", new String[] { "127", "0", "0", "1", "17", "37" }, command
-                .getParameters());
+        assertEquals("PORT", command.getName());
+        assertArrayEquals(new String[] { "127", "0", "0", "1", "17", "37" }, command.getParameters());
     }
 
     @Test
@@ -288,7 +287,7 @@ class DefaultSessionTest extends AbstractTestCase {
         session.openDataConnection();
         session.sendData(DATA.getBytes(), DATA.length());
         log("output=[" + outputStream.toString() + "]");
-        assertEquals("output", DATA, outputStream.toString());
+        assertEquals(DATA, outputStream.toString());
     }
 
     @Test
@@ -303,12 +302,12 @@ class DefaultSessionTest extends AbstractTestCase {
 
     @Test
     void testGetAndSetAttribute() {
-        assertNull("name does not exist yet", session.getAttribute(NAME1));
+        assertNull(session.getAttribute(NAME1));
         session.setAttribute(NAME1, VALUE);
         session.setAttribute(NAME2, null);
-        assertEquals("NAME1", VALUE, session.getAttribute(NAME1));
-        assertNull("NAME2", session.getAttribute(NAME2));
-        assertNull("no such name", session.getAttribute("noSuchName"));
+        assertEquals(VALUE, session.getAttribute(NAME1));
+        assertNull(session.getAttribute(NAME2));
+        assertNull(session.getAttribute("noSuchName"));
     }
 
     @Test
@@ -326,7 +325,7 @@ class DefaultSessionTest extends AbstractTestCase {
         session.removeAttribute("noSuchName");      // do nothing
         session.setAttribute(NAME1, VALUE);
         session.removeAttribute(NAME1);
-        assertNull("NAME1", session.getAttribute(NAME1));
+        assertNull(session.getAttribute(NAME1));
     }
 
     @Test
@@ -336,11 +335,11 @@ class DefaultSessionTest extends AbstractTestCase {
 
     @Test
     void testGetAttributeNames() {
-        assertEquals("No names yet", Collections.EMPTY_SET, session.getAttributeNames());
+        assertEquals(Collections.EMPTY_SET, session.getAttributeNames());
         session.setAttribute(NAME1, VALUE);
-        assertEquals("1", Collections.singleton(NAME1), session.getAttributeNames());
+        assertEquals(Collections.singleton(NAME1), session.getAttributeNames());
         session.setAttribute(NAME2, VALUE);
-        assertEquals("2", set(NAME1, NAME2), session.getAttributeNames());
+        assertEquals(set(NAME1, NAME2), session.getAttributeNames());
     }
     
     // -------------------------------------------------------------------------

@@ -48,14 +48,14 @@ public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
         mapping.put("BBB", commandHandler2);
 
         ftpServer.setCommandHandlers(mapping);
-        assertSame("commandHandler1", commandHandler, ftpServer.getCommandHandler("AAA"));
-        assertSame("commandHandler2", commandHandler2, ftpServer.getCommandHandler("BBB"));
+        assertSame(commandHandler, ftpServer.getCommandHandler("AAA"));
+        assertSame(commandHandler2, ftpServer.getCommandHandler("BBB"));
 
         verifyCommandHandlerInitialized(commandHandler);
         verifyCommandHandlerInitialized(commandHandler2);
 
         // Make sure default CommandHandlers are still set
-        assertTrue("ConnectCommandHandler", ftpServer.getCommandHandler(CommandNames.CONNECT) != null);
+        assertTrue(ftpServer.getCommandHandler(CommandNames.CONNECT) != null);
     }
 
     @Test
@@ -66,7 +66,7 @@ public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
     @Test
     void testSetCommandHandler() {
         ftpServer.setCommandHandler("ZZZ", commandHandler2);
-        assertSame("commandHandler", commandHandler2, ftpServer.getCommandHandler("ZZZ"));
+        assertSame(commandHandler2, ftpServer.getCommandHandler("ZZZ"));
         verifyCommandHandlerInitialized(commandHandler2);
     }
 
@@ -83,27 +83,27 @@ public abstract class AbstractFtpServerTestCase extends AbstractTestCase {
 
     @Test
     void testSetServerControlPort() {
-        assertEquals("default", 21, ftpServer.getServerControlPort());
+        assertEquals(21, ftpServer.getServerControlPort());
         ftpServer.setServerControlPort(99);
-        assertEquals("99", 99, ftpServer.getServerControlPort());
+        assertEquals(99, ftpServer.getServerControlPort());
     }
 
     @Test
     void testLowerCaseOrMixedCaseCommandNames() {
         ftpServer.setCommandHandler("XXX", commandHandler);
-        assertSame("ZZZ", commandHandler, ftpServer.getCommandHandler("XXX"));
-        assertSame("Zzz", commandHandler, ftpServer.getCommandHandler("Xxx"));
-        assertSame("zzz", commandHandler, ftpServer.getCommandHandler("xxx"));
+        assertSame(commandHandler, ftpServer.getCommandHandler("XXX"));
+        assertSame(commandHandler, ftpServer.getCommandHandler("Xxx"));
+        assertSame(commandHandler, ftpServer.getCommandHandler("xxx"));
 
         ftpServer.setCommandHandler("YyY", commandHandler);
-        assertSame("ZZZ", commandHandler, ftpServer.getCommandHandler("YYY"));
-        assertSame("Zzz", commandHandler, ftpServer.getCommandHandler("Yyy"));
-        assertSame("zzz", commandHandler, ftpServer.getCommandHandler("yyy"));
+        assertSame(commandHandler, ftpServer.getCommandHandler("YYY"));
+        assertSame(commandHandler, ftpServer.getCommandHandler("Yyy"));
+        assertSame(commandHandler, ftpServer.getCommandHandler("yyy"));
 
         ftpServer.setCommandHandler("zzz", commandHandler);
-        assertSame("ZZZ", commandHandler, ftpServer.getCommandHandler("ZZZ"));
-        assertSame("Zzz", commandHandler, ftpServer.getCommandHandler("zzZ"));
-        assertSame("zzz", commandHandler, ftpServer.getCommandHandler("zzz"));
+        assertSame(commandHandler, ftpServer.getCommandHandler("ZZZ"));
+        assertSame(commandHandler, ftpServer.getCommandHandler("zzZ"));
+        assertSame(commandHandler, ftpServer.getCommandHandler("zzz"));
     }
 
     @Test

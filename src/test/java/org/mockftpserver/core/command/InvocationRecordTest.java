@@ -48,10 +48,10 @@ class InvocationRecordTest extends AbstractTestCase {
         InvocationRecord commandInvocation = new InvocationRecord(COMMAND, DEFAULT_HOST);
         long afterTime = System.currentTimeMillis();
         log(commandInvocation.toString());
-        assertEquals("Command", COMMAND, commandInvocation.getCommand());
-        assertTrue("time", commandInvocation.getTime().getTime() >= beforeTime
+        assertEquals(COMMAND, commandInvocation.getCommand());
+        assertTrue(commandInvocation.getTime().getTime() >= beforeTime
                 && commandInvocation.getTime().getTime() <= afterTime);
-        assertEquals("host", DEFAULT_HOST, commandInvocation.getClientHost());
+        assertEquals(DEFAULT_HOST, commandInvocation.getClientHost());
     }
 
     @Test
@@ -62,14 +62,14 @@ class InvocationRecordTest extends AbstractTestCase {
     @Test
     void testSet_NullValue() {
         invocationRecord.set(KEY1, null);
-        assertNull(KEY1, invocationRecord.getObject(KEY1));
+        assertNull(invocationRecord.getObject(KEY1));
     }
 
     @Test
     void testContainsKey() {
         invocationRecord.set(KEY1, STRING);
-        assertTrue(KEY1, invocationRecord.containsKey(KEY1));
-        assertFalse(KEY2, invocationRecord.containsKey(KEY2));
+        assertTrue(invocationRecord.containsKey(KEY1));
+        assertFalse(invocationRecord.containsKey(KEY2));
     }
 
     @Test
@@ -79,9 +79,9 @@ class InvocationRecordTest extends AbstractTestCase {
 
     @Test
     void testGetString() {
-        assertNull("undefined", invocationRecord.getString("UNDEFINED"));
+        assertNull(invocationRecord.getString("UNDEFINED"));
         invocationRecord.set(KEY1, STRING);
-        assertEquals(KEY1, STRING, invocationRecord.getString(KEY1));
+        assertEquals(STRING, invocationRecord.getString(KEY1));
     }
 
     @Test
@@ -97,20 +97,20 @@ class InvocationRecordTest extends AbstractTestCase {
 
     @Test
     void testGetObject() {
-        assertNull("undefined", invocationRecord.getObject("UNDEFINED"));
+        assertNull(invocationRecord.getObject("UNDEFINED"));
         invocationRecord.set(KEY1, STRING);
-        assertEquals(KEY1, STRING, invocationRecord.getObject(KEY1));
+        assertEquals(STRING, invocationRecord.getObject(KEY1));
     }
 
     @Test
     void testKeySet() {
         Set set = new HashSet();
-        assertEquals("empty", set, invocationRecord.keySet());
+        assertEquals(set, invocationRecord.keySet());
         invocationRecord.set(KEY1, STRING);
         invocationRecord.set(KEY2, STRING);
         set.add(KEY1);
         set.add(KEY2);
-        assertEquals("2", set, invocationRecord.keySet());
+        assertEquals(set, invocationRecord.keySet());
     }
 
     @Test
@@ -126,10 +126,10 @@ class InvocationRecordTest extends AbstractTestCase {
 
     @Test
     void testLock() {
-        assertFalse("locked - before", invocationRecord.isLocked());
+        assertFalse(invocationRecord.isLocked());
         invocationRecord.set(KEY1, STRING);
         invocationRecord.lock();
-        assertTrue("locked - after", invocationRecord.isLocked());
+        assertTrue(invocationRecord.isLocked());
         assertThrows(AssertFailedException.class, () -> invocationRecord.set(KEY2, "abc"));
     }
 
@@ -138,7 +138,7 @@ class InvocationRecordTest extends AbstractTestCase {
         Date timestamp = invocationRecord.getTime();
         long timeInMillis = timestamp.getTime();
         timestamp.setTime(12345L);
-        assertEquals("time", timeInMillis, invocationRecord.getTime().getTime());
+        assertEquals(timeInMillis, invocationRecord.getTime().getTime());
     }
 
     @BeforeEach

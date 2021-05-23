@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.stub;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockftpserver.core.command.Command;
@@ -47,14 +49,14 @@ class StubFtpServerTest extends AbstractFtpServerTestCase {
     @Test
     void testSetCommandHandler_NotReplyTextBundleAware() {
         stubFtpServer.setCommandHandler("ZZZ", commandHandler_NoReplyTextBundle);
-        assertSame("commandHandler", commandHandler_NoReplyTextBundle, stubFtpServer.getCommandHandler("ZZZ"));
+        assertSame(commandHandler_NoReplyTextBundle, stubFtpServer.getCommandHandler("ZZZ"));
     }
 
     @Test
     void testSetCommandHandler_NullReplyTextBundle() {
         stubFtpServer.setCommandHandler("ZZZ", commandHandler);
-        assertSame("commandHandler", commandHandler, stubFtpServer.getCommandHandler("ZZZ"));
-        assertSame("replyTextBundle", stubFtpServer.getReplyTextBundle(), commandHandler.getReplyTextBundle());
+        assertSame(commandHandler, stubFtpServer.getCommandHandler("ZZZ"));
+        assertSame(stubFtpServer.getReplyTextBundle(), commandHandler.getReplyTextBundle());
     }
 
     @Test
@@ -65,7 +67,7 @@ class StubFtpServerTest extends AbstractFtpServerTestCase {
         // The resource bundle is passed along to new CommandHandlers (if they don't already have one) 
         stubFtpServer.setCommandHandler("CWD", commandHandler);
         ResourceBundle resourceBundle = commandHandler.getReplyTextBundle();
-        assertEquals("110", "Testing123", resourceBundle.getString("110"));
+        assertEquals("Testing123", resourceBundle.getString("110"));
     }
 
     //-------------------------------------------------------------------------
@@ -73,12 +75,12 @@ class StubFtpServerTest extends AbstractFtpServerTestCase {
     //-------------------------------------------------------------------------
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         stubFtpServer = (StubFtpServer) ftpServer;
 
         // Create a CommandHandler instance that also implements ResourceBundleAware
         commandHandler = new AbstractStubCommandHandler() {
-            protected void handleCommand(Command command, Session session, InvocationRecord invocationRecord) throws Exception {
+            protected void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
             }
         };
 
@@ -99,14 +101,14 @@ class StubFtpServerTest extends AbstractFtpServerTestCase {
 
     protected CommandHandler createCommandHandler() {
         return new AbstractStubCommandHandler() {
-            protected void handleCommand(Command command, Session session, InvocationRecord invocationRecord) throws Exception {
+            protected void handleCommand(Command command, Session session, InvocationRecord invocationRecord) {
             }
         };
     }
 
     protected void verifyCommandHandlerInitialized(CommandHandler commandHandler) {
         AbstractStubCommandHandler stubCommandHandler = (AbstractStubCommandHandler) commandHandler;
-        assertSame("replyTextBundle", stubFtpServer.getReplyTextBundle(), stubCommandHandler.getReplyTextBundle());
+        assertSame(stubFtpServer.getReplyTextBundle(), stubCommandHandler.getReplyTextBundle());
     }
 
 }

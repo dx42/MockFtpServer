@@ -15,6 +15,8 @@
  */
 package org.mockftpserver.stub.example;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.junit.jupiter.api.AfterEach;
@@ -50,16 +52,16 @@ class SpringConfigurationTest extends AbstractTestCase {
 
         // PWD
         String dir = ftpClient.printWorkingDirectory();
-        assertEquals("PWD", "foo/bar", dir);
+        assertEquals("foo/bar", dir);
         
         // LIST
         FTPFile[] files = ftpClient.listFiles();
         log("FTPFile[0]=" + files[0]);
         log("FTPFile[1]=" + files[1]);
-        assertEquals("number of files from LIST", 2, files.length);
+        assertEquals(2, files.length);
         
         // DELE
-        assertFalse("DELE", ftpClient.deleteFile("AnyFile.txt"));
+        assertFalse(ftpClient.deleteFile("AnyFile.txt"));
         
         // RETR
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
