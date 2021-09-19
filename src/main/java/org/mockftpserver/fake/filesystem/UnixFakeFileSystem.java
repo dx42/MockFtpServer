@@ -32,6 +32,7 @@ import org.mockftpserver.core.util.Assert;
  */
 public class UnixFakeFileSystem extends AbstractFakeFileSystem {
 
+    public static final String DEFAULT_SYSTEM_NAME = "UNIX";
     public static final char SEPARATOR = '/';
 
     /**
@@ -39,6 +40,7 @@ public class UnixFakeFileSystem extends AbstractFakeFileSystem {
      */
     public UnixFakeFileSystem() {
         this.setDirectoryListingFormatter(new UnixDirectoryListingFormatter());
+        this.setSystemName(DEFAULT_SYSTEM_NAME);
     }
 
     //-------------------------------------------------------------------------

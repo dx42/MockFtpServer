@@ -82,6 +82,13 @@ public interface FileSystem {
      */
     public String formatDirectoryListing(FileSystemEntry fileSystemEntry);
 
+    /**
+     * Return the system name to be returned from the SYST FTP command when using this FileSystem.
+     *
+     * @return the system name to be returned from the SYST FTP command when using this FileSystem.
+     */
+    public String getSystemName();
+
     //-------------------------------------------------------------------------
     // Path-related Methods
     //-------------------------------------------------------------------------

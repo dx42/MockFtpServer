@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test
 import org.mockftpserver.core.util.IoUtil
 
 /**
- * Tests for subclasses of AbstractFakeFileSystem. Subclasses must define
+ * Tests for subclasses of AbstractFakeFileSystem
  *
  * @author Chris Mair
  */

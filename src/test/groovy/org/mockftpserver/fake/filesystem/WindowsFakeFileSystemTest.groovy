@@ -158,6 +158,11 @@ class WindowsFakeFileSystemTest extends AbstractFakeFileSystemTestCase {
         assert fileEntry == fileSystem.getEntry(EXISTING_FILE.toLowerCase())
     }
 
+    @Test
+    void getSystemName() {
+        assert fileSystem.getSystemName() == 'WINDOWS'
+    }
+
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------

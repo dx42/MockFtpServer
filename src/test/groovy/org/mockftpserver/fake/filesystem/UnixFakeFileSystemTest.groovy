@@ -125,6 +125,14 @@ class UnixFakeFileSystemTest extends AbstractFakeFileSystemTestCase {
         shouldFailWithMessageContaining("path") { fileSystem.isAbsolute(null) }
     }
 
+    @Test
+    void getSystemName() {
+        assert fileSystem.getSystemName() == 'UNIX'
+
+        fileSystem.setSystemName("ABC")
+        assert fileSystem.getSystemName() == 'ABC'
+    }
+
     //-----------------------------------------------------------------------------------
     // Helper Methods
     //-----------------------------------------------------------------------------------

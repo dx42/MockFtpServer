@@ -42,6 +42,8 @@ import java.util.Map;
  * used by the <code>formatDirectoryListing</code> method to format directory listings in a
  * filesystem-specific manner. This property must be initialized by concrete subclasses.
  *
+ * <p> The <code>systemName</code>> property holds the default value returned by this FileSystem for the FTP SYST command.
+ *
  * @author Chris Mair
  */
 public abstract class AbstractFakeFileSystem implements FileSystem {
@@ -55,6 +57,8 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
      * does not exist. This value defaults to <code>true</code>.
      */
     private boolean createParentDirectoriesAutomatically = true;
+
+    private String systemName;
 
     /**
      * The {@link DirectoryListingFormatter} used by the {@link #formatDirectoryListing(FileSystemEntry)}
@@ -102,6 +106,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
      *
      * @param entry - the FileSystemEntry to add
      */
+    @Override
     public void add(FileSystemEntry entry) {
         String path = entry.getPath();
         checkForInvalidFilename(path);
@@ -138,6 +143,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
      *          - if path is null
      * @see org.mockftpserver.fake.filesystem.FileSystem#delete(java.lang.String)
      */
+    @Override
     public boolean delete(String path) {
         Assert.notNull(path, "path");
 
@@ -156,6 +162,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
      * @throws AssertionError - if path is null
      * @see org.mockftpserver.fake.filesystem.FileSystem#exists(java.lang.String)
      */
+    @Override
     public boolean exists(String path) {
         Assert.notNull(path, "path");
         return getEntry(path) != null;
@@ -169,6 +176,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
      * @throws AssertionError - if path is null
      * @see org.mockftpserver.fake.filesystem.FileSystem#isDirectory(java.lang.String)
      */
+    @Override
     public boolean isDirectory(String path) {
         Assert.notNull(path, "path");
         FileSystemEntry entry = getEntry(path);
@@ -183,6 +191,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
      * @throws AssertionError - if path is null
      * @see org.mockftpserver.fake.filesystem.FileSystem#isFile(java.lang.String)
      */
+    @Override
     public boolean isFile(String path) {
         Assert.notNull(path, "path");
         FileSystemEntry entry = getEntry(path);
@@ -199,6 +208,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
      * @return the List of FileSystemEntry objects for the specified directory or file; may be empty
      * @see org.mockftpserver.fake.filesystem.FileSystem#listFiles(java.lang.String)
      */
+    @Override
     public List listFiles(String path) {
         if (isFile(path)) {
             return Collections.singletonList(getEntry(path));
@@ -227,6 +237,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
      * @throws AssertionError - if path is null
      * @see org.mockftpserver.fake.filesystem.FileSystem#listNames(java.lang.String)
      */
+    @Override
     public List listNames(String path) {
         if (isFile(path)) {
             return Collections.singletonList(getName(path));
@@ -252,6 +263,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
      * @throws AssertionError      - if fromPath or toPath is null
      * @throws FileSystemException - if the rename fails.
      */
+    @Override
     public void rename(String fromPath, String toPath) {
         Assert.notNull(toPath, "toPath");
         Assert.notNull(fromPath, "fromPath");
@@ -293,9 +305,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
         removeEntry(normalizedFromPath);
     }
 
-    /**
-     * @see java.lang.Object#toString()
-     */
+    @Override
     public String toString() {
         return this.getClass().getName() + entries;
     }
@@ -306,6 +316,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
      * @param fileSystemEntry - the FileSystemEntry representing the file or directory entry to be formatted
      * @return the the formatted directory listing entry
      */
+    @Override
     public String formatDirectoryListing(FileSystemEntry fileSystemEntry) {
         Assert.notNull(directoryListingFormatter, "directoryListingFormatter");
         Assert.notNull(fileSystemEntry, "fileSystemEntry");
@@ -321,6 +332,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
      * @param path2 - the second path component may be null or empty
      * @return the normalized path resulting from concatenating path1 to path2
      */
+    @Override
     public String path(String path1, String path2) {
         StringBuffer buf = new StringBuffer();
         if (path1 != null && path1.length() > 0) {
@@ -349,6 +361,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
      * @return the parent of the specified path, or null if <code>path</code> has no parent
      * @throws AssertionError - if path is null
      */
+    @Override
     public String getParent(String path) {
         List parts = normalizedComponents(path);
         if (parts.size() < 2) {
@@ -382,8 +395,18 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
      * @return the FileSystemEntry containing the information for the file or directory, or else null
      * @see FileSystem#getEntry(String)
      */
+    @Override
     public FileSystemEntry getEntry(String path) {
         return (FileSystemEntry) entries.get(getFileSystemEntryKey(path));
+    }
+
+    @Override
+    public String getSystemName() {
+        return systemName;
+    }
+
+    public void setSystemName(String systemName) {
+        this.systemName = systemName;
     }
 
     //-------------------------------------------------------------------------

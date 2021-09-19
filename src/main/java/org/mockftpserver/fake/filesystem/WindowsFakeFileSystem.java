@@ -34,6 +34,7 @@ import org.mockftpserver.core.util.Assert;
  */
 public class WindowsFakeFileSystem extends AbstractFakeFileSystem {
 
+    public static final String DEFAULT_SYSTEM_NAME = "WINDOWS";
     public static final char SEPARATOR = '\\';
     private static final String VALID_PATTERN = "\\p{Alpha}\\:" + "(\\\\|(\\\\[^\\\\\\:\\*\\?\\<\\>\\|\\\"]+)+)";
     //static final VALID_PATTERN = /\p{Alpha}\:(\\|(\\[^\\\:\*\?\<\>\|\"]+)+)/
@@ -44,6 +45,7 @@ public class WindowsFakeFileSystem extends AbstractFakeFileSystem {
      */
     public WindowsFakeFileSystem() {
         this.setDirectoryListingFormatter(new WindowsDirectoryListingFormatter());
+        this.setSystemName(DEFAULT_SYSTEM_NAME);
     }
 
     //-------------------------------------------------------------------------
