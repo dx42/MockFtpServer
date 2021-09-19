@@ -3,6 +3,11 @@
 
 TODO Version 3.0.0 (??? 2021)
 ------------------------------------------
+Enhancements and Bug Fixes
+ - #15: `FileSystem`: Add String `getSystemName()`. `AbstractFakeFileSystem`: Add *systemName* property and default it in WindowsFakeFileSystem ("WINDOWS") and UnixFakeFileSystem ("UNIX"). 
+ - #15: `FakeFtpServer`: Use the *systemName* from the configured FileSystem for the SYST command if the *systemName* property is not set on `FakeFtpServer`.  
+
+Infrastructure and Dependencies
  - #7: Upgrade to Java 1.8.
  - #11: Upgrade to commons-net 3.8.0.
  - #8: Upgrade to Groovy 3.0.7.

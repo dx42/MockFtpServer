@@ -15,11 +15,7 @@
  */
 package org.mockftpserver.fake;
 
-import org.mockftpserver.core.command.CommandHandler;
-import org.mockftpserver.core.command.CommandNames;
-import org.mockftpserver.core.command.ConnectCommandHandler;
-import org.mockftpserver.core.command.ReplyTextBundleUtil;
-import org.mockftpserver.core.command.UnsupportedCommandHandler;
+import org.mockftpserver.core.command.*;
 import org.mockftpserver.core.server.AbstractFtpServer;
 import org.mockftpserver.fake.command.*;
 import org.mockftpserver.fake.filesystem.FileSystem;
@@ -121,7 +117,9 @@ import java.util.Map;
  * <p><b>Other Configuration</b></p>
  * The <code>systemName</code> property specifies the value returned by the <code>SYST</code>
  * command. Note that this is typically used by an FTP client to determine how to parse
- * system-dependent reply text, such as directory listings. This value defaults to <code>"WINDOWS"</code>.
+ * system-dependent reply text, such as directory listings. By default, the systemName from the
+ * configured FileSystem is used. But if the <code>systemName</code> property is set, then that
+ * will override the FileSystem value.
  *
  * <p>The <code>helpText</code> property specifies a <i>Map</i> of help text replies sent by the
  * <code>HELP</code> command. The keys in that <i>Map</i> correspond to the command names passed as
@@ -141,7 +139,7 @@ import java.util.Map;
 public class FakeFtpServer extends AbstractFtpServer implements ServerConfiguration {
 
     private FileSystem fileSystem;
-    private String systemName = "WINDOWS";
+    private String systemName;
     private String systemStatus = "Connected";
     private Map helpText = new HashMap();
     private Map userAccounts = new HashMap();
@@ -155,7 +153,7 @@ public class FakeFtpServer extends AbstractFtpServer implements ServerConfigurat
     }
 
     public String getSystemName() {
-        return systemName;
+        return systemName != null ? systemName : fileSystem.getSystemName();
     }
 
     public void setSystemName(String systemName) {

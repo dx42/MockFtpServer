@@ -23,6 +23,8 @@ import org.mockftpserver.core.command.ReplyTextBundleAware
 import org.mockftpserver.core.server.AbstractFtpServer
 import org.mockftpserver.core.server.AbstractFtpServerTestCase
 import org.mockftpserver.core.session.Session
+import org.mockftpserver.fake.filesystem.UnixFakeFileSystem
+import org.mockftpserver.fake.filesystem.WindowsFakeFileSystem
 
 /**
  * Tests for FakeFtpServer.
@@ -31,8 +33,8 @@ import org.mockftpserver.core.session.Session
  */
 class FakeFtpServerTest extends AbstractFtpServerTestCase {
 
-    def commandHandler
-    def commandHandler_NotServerConfigurationAware
+    private CommandHandler commandHandler
+    private CommandHandler commandHandler_NotServerConfigurationAware
 
     //-------------------------------------------------------------------------
     // Extra tests  (Standard tests defined in superclass)
@@ -84,7 +86,13 @@ class FakeFtpServerTest extends AbstractFtpServerTestCase {
 
     @Test
     void testSystemName() {
+        ftpServer.setFileSystem(new UnixFakeFileSystem())
+        assert ftpServer.systemName == "UNIX"
+
+        ftpServer.setFileSystem(new WindowsFakeFileSystem())
         assert ftpServer.systemName == "WINDOWS"
+
+        // Can be overridden; takes precedence over the FileSystem value
         ftpServer.systemName = "abc"
         assert ftpServer.systemName == "abc"
     }
