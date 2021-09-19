@@ -4,6 +4,7 @@
 TODO Version 3.0.0 (??? 2021)
 ------------------------------------------
 Enhancements and Bug Fixes
+ - #14: `UnixDirectoryListingFormatter`: When formatting lastModified timestamp, use "MMM dd HH:mm" for recent files and "MMM dd  yyyy" for older files (> 180 days old)
  - #15: `FileSystem`: Add String `getSystemName()`. `AbstractFakeFileSystem`: Add *systemName* property and default it in WindowsFakeFileSystem ("WINDOWS") and UnixFakeFileSystem ("UNIX"). 
  - #15: `FakeFtpServer`: Use the *systemName* from the configured FileSystem for the SYST command if the *systemName* property is not set on `FakeFtpServer`.  
 

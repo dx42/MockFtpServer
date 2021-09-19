@@ -21,6 +21,9 @@ import org.mockftpserver.core.util.StringUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -32,17 +35,14 @@ public class UnixDirectoryListingFormatter implements DirectoryListingFormatter 
 
     private static final Logger LOG = LoggerFactory.getLogger(UnixDirectoryListingFormatter.class);
 
-    private static final String DATE_FORMAT = "MMM dd  yyyy";
+    private static final String DATE_FORMAT_YEAR = "MMM dd  yyyy";
+    private static final String DATE_FORMAT_HOURS_MINUTES = "MMM dd HH:mm";
     private static final int SIZE_WIDTH = 15;
     private static final int OWNER_WIDTH = 8;
     private static final int GROUP_WIDTH = 8;
     private static final String NONE = "none";
 
     private Locale locale = Locale.ENGLISH;
-
-    // "-rw-rw-r--    1 ftp      ftp           254 Feb 23  2007 robots.txt"
-    // "-rw-r--r--    1 ftp      ftp      30014925 Apr 15 00:19 md5.sums.gz"
-    // "-rwxr-xr-x   1 henry    users       5778 Dec  1  2005 planaccess.sql"
 
     /**
      * Format the directory listing for a single file/directory entry.
@@ -51,11 +51,9 @@ public class UnixDirectoryListingFormatter implements DirectoryListingFormatter 
      * @return the formatted directory listing
      */
     public String format(FileSystemEntry fileSystemEntry) {
-        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, locale);
-        String dateStr = dateFormat.format(fileSystemEntry.getLastModified());
+        String dateStr = formatLastModifiedDate(fileSystemEntry);
         String dirOrFile = fileSystemEntry.isDirectory() ? "d" : "-";
-        Permissions permissions = fileSystemEntry.getPermissions() != null ? fileSystemEntry.getPermissions() : Permissions.DEFAULT;
-        String permissionsStr = StringUtil.padRight(permissions.asRwxString(), 9);
+        String permissionsStr = formatPermissions(fileSystemEntry);
         String linkCountStr = "1";
         String ownerStr = StringUtil.padRight(stringOrNone(fileSystemEntry.getOwner()), OWNER_WIDTH);
         String groupStr = StringUtil.padRight(stringOrNone(fileSystemEntry.getGroup()), GROUP_WIDTH);
@@ -71,6 +69,18 @@ public class UnixDirectoryListingFormatter implements DirectoryListingFormatter 
      */
     public void setLocale(Locale locale) {
         this.locale = locale;
+    }
+
+    private String formatLastModifiedDate(FileSystemEntry fileSystemEntry) {
+        Date showYearThresholdDate = Date.from(Instant.now().minus(Duration.ofDays(180)));
+        String formatString = fileSystemEntry.getLastModified().before(showYearThresholdDate) ? DATE_FORMAT_YEAR : DATE_FORMAT_HOURS_MINUTES;
+        DateFormat dateFormat = new SimpleDateFormat(formatString, locale);
+        return dateFormat.format(fileSystemEntry.getLastModified());
+    }
+
+    private String formatPermissions(FileSystemEntry fileSystemEntry) {
+        Permissions permissions = fileSystemEntry.getPermissions() != null ? fileSystemEntry.getPermissions() : Permissions.DEFAULT;
+        return StringUtil.padRight(permissions.asRwxString(), 9);
     }
 
     private String stringOrNone(String string) {
