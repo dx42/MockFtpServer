@@ -1,7 +1,7 @@
 # MockFtpServer Change Log
 
 
-TODO Version 3.0.0 (??? 2021)
+Version 3.0.0 (Sep 2021)
 ------------------------------------------
 Enhancements and Bug Fixes
  - #14: `UnixDirectoryListingFormatter`: When formatting lastModified timestamp, use "MMM dd HH:mm" for recent files and "MMM dd  yyyy" for older files (> 180 days old)
