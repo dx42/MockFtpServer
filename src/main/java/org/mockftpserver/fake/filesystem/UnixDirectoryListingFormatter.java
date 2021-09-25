@@ -35,8 +35,8 @@ public class UnixDirectoryListingFormatter implements DirectoryListingFormatter 
 
     private static final Logger LOG = LoggerFactory.getLogger(UnixDirectoryListingFormatter.class);
 
-    private static final String DATE_FORMAT_YEAR = "MMM dd  yyyy";
-    private static final String DATE_FORMAT_HOURS_MINUTES = "MMM dd HH:mm";
+    protected static final String DATE_FORMAT_YEAR = "MMM dd  yyyy";
+    protected static final String DATE_FORMAT_HOURS_MINUTES = "MMM dd HH:mm";
     private static final int SIZE_WIDTH = 15;
     private static final int OWNER_WIDTH = 8;
     private static final int GROUP_WIDTH = 8;

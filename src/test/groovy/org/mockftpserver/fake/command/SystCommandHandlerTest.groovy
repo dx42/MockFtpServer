@@ -28,7 +28,7 @@ import org.mockftpserver.core.command.ReplyCodes
  */
 class SystCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
-    static final SYSTEM_NAME = "UNIX"
+    private static final SYSTEM_NAME = "UNIX"
 
     boolean testNotLoggedIn = false
 

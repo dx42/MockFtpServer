@@ -29,10 +29,10 @@ import org.mockftpserver.test.AbstractGroovyTestCase
  */
 class WindowsDirectoryListingFormatterTest extends AbstractGroovyTestCase {
 
-    static final NAME = "def.txt"
-    static final PATH = "/dir/$NAME"
-    static final LAST_MODIFIED = new Date()
-    static final SIZE_WIDTH = WindowsDirectoryListingFormatter.SIZE_WIDTH
+    private static final String NAME = "def.txt"
+    private static final String PATH = "/dir/$NAME"
+    private static final Date LAST_MODIFIED = new Date()
+    private static final int SIZE_WIDTH = WindowsDirectoryListingFormatter.SIZE_WIDTH
 
     private formatter
     private dateFormat

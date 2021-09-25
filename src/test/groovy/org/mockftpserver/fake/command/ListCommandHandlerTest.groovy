@@ -36,9 +36,9 @@ import org.mockftpserver.fake.filesystem.Permissions
  */
 class ListCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
-    private static final DIR = "/usr"
-    private static final NAME = "abc.txt"
-    private static final LAST_MODIFIED = new Date()
+    private static final String DIR = "/usr"
+    private static final String NAME = "abc.txt"
+    private static final Date LAST_MODIFIED = new Date()
 
     @Test
     void testHandleCommand_SingleFile() {

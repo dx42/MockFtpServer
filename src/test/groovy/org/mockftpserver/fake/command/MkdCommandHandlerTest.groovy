@@ -33,10 +33,10 @@ import org.mockftpserver.fake.filesystem.Permissions
  */
 class MkdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
-    static final PARENT = '/'
-    static final DIRNAME = "usr"
-    static final DIR = p(PARENT, DIRNAME)
-    static final PERMISSIONS = new Permissions('rwx------')
+    private static final String PARENT = '/'
+    private static final String DIRNAME = "usr"
+    private static final String DIR = p(PARENT, DIRNAME)
+    private static final Permissions PERMISSIONS = new Permissions('rwx------')
 
     @Test
     void testHandleCommand() {

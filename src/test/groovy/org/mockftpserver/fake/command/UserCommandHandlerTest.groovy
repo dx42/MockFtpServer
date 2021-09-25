@@ -31,8 +31,9 @@ import org.mockftpserver.fake.UserAccount
  */
 class UserCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
-    static final USERNAME = "user123"
-    static final HOME_DIRECTORY = "/"
+    private static final String USERNAME = "user123"
+    private static final String HOME_DIRECTORY = "/"
+
     UserAccount userAccount
 
     boolean testNotLoggedIn = false

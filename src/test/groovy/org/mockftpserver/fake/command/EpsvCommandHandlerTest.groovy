@@ -28,8 +28,8 @@ import org.mockftpserver.core.command.ReplyCodes
  */
 class EpsvCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
-    static final SERVER = InetAddress.getByName("1080::8:800:200C:417A")
-    static final PORT = 6275
+    private static final InetAddress SERVER = InetAddress.getByName("1080::8:800:200C:417A")
+    private static final int PORT = 6275
 
     @Test
     void testHandleCommand() {

@@ -28,8 +28,8 @@ import org.mockftpserver.core.command.ReplyCodes
  */
 class PasvCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
-    static final PORT = (23 << 8) + 77
-    static final InetAddress SERVER = inetAddress("192.168.0.2")
+    private static final int PORT = (23 << 8) + 77
+    private static final InetAddress SERVER = inetAddress("192.168.0.2")
 
     @Test
     void testHandleCommand() {

@@ -27,12 +27,12 @@ import org.mockftpserver.test.AbstractGroovyTestCase
  */
 public abstract class AbstractFileSystemEntryTestCase extends AbstractGroovyTestCase {
 
-    protected static final PATH = "c:/test/dir"
-    protected static final NEW_PATH = "d:/other/dir"
-    protected static final USER = 'user77'
-    protected static final GROUP = 'group88'
-    protected static final PERMISSIONS = new Permissions('rwxrwx---')
-    protected static final LAST_MODIFIED = new Date()
+    protected static final String PATH = "c:/test/dir"
+    protected static final String NEW_PATH = "d:/other/dir"
+    protected static final String USER = 'user77'
+    protected static final String GROUP = 'group88'
+    protected static final Permissions PERMISSIONS = new Permissions('rwxrwx---')
+    protected static final Date LAST_MODIFIED = new Date()
 
     @Test
     void testConstructor_NoArgs() {

@@ -37,7 +37,6 @@ class UnixDirectoryListingFormatterTest extends AbstractGroovyTestCase {
     private static final String DIR_PATH = "/dir/$DIR_NAME"
     private static final String OWNER = 'owner123'
     private static final String GROUP = 'group456'
-    private static final long SIZE = 11L
     private static final Date LAST_MODIFIED_RECENT = new Date()
     private static final Date LAST_MODIFIED_OLDER = Date.from(Instant.now().minus(Duration.ofDays(181)))
     private static final Permissions FILE_PERMISSIONS = new Permissions('rw-r--r--')

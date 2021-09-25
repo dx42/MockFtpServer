@@ -29,10 +29,10 @@ import org.mockftpserver.test.AbstractGroovyTestCase
  */
 class UserAccountTest extends AbstractGroovyTestCase {
 
-    private static final USERNAME = "user123"
-    private static final PASSWORD = "password123"
-    private static final HOME_DIR = "/usr/user123"
-    private static final GROUP = 'group'
+    private static final String USERNAME = "user123"
+    private static final String PASSWORD = "password123"
+    private static final String HOME_DIR = "/usr/user123"
+    private static final String GROUP = 'group'
 
     private UserAccount userAccount
 

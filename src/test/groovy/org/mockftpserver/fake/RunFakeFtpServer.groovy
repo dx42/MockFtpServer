@@ -28,8 +28,8 @@ import org.mockftpserver.fake.filesystem.UnixFakeFileSystem
  */
 class RunFakeFtpServer {
 
-    static final ANONYMOUS = 'anonymous'
-    static final HOME_DIR = '/home'
+    private static final String ANONYMOUS = 'anonymous'
+    private static final String HOME_DIR = '/home'
 
     static main(args) {
         def fileSystem = new UnixFakeFileSystem()

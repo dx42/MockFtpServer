@@ -30,9 +30,9 @@ import org.mockftpserver.fake.filesystem.Permissions
  */
 class DeleCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
-    static final DIR = '/'
-    static final FILENAME = "f.txt"
-    static final FILE = p(DIR, FILENAME)
+    private static final String DIR = '/'
+    private static final String FILENAME = "f.txt"
+    private static final String FILE = p(DIR, FILENAME)
 
     @Test
     void testHandleCommand() {

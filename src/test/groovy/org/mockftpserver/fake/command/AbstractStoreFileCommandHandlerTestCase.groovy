@@ -32,10 +32,10 @@ import org.mockftpserver.fake.filesystem.Permissions
  */
 abstract class AbstractStoreFileCommandHandlerTestCase extends AbstractFakeCommandHandlerTestCase {
 
-    protected static final DIR = "/"
-    protected static final FILENAME = "file.txt"
-    protected static final FILE = p(DIR, FILENAME)
-    protected static final CONTENTS = "abc"
+    protected static final String DIR = "/"
+    protected static final String FILENAME = "file.txt"
+    protected static final String FILE = p(DIR, FILENAME)
+    protected static final String CONTENTS = "abc"
 
     //-------------------------------------------------------------------------
     // Tests Common to All Subclasses

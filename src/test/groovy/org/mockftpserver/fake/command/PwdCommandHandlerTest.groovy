@@ -29,7 +29,7 @@ import org.mockftpserver.core.session.SessionKeys
  */
 class PwdCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
-    static final DIR = "/usr/abc"
+    private static final String DIR = "/usr/abc"
 
     boolean testNotLoggedIn = false
 

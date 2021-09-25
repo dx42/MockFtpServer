@@ -29,13 +29,13 @@ import org.mockftpserver.test.AbstractGroovyTestCase
  */
 abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
 
-    public static final FILENAME1 = "File1.txt"
-    public static final FILENAME2 = "file2.txt"
-    public static final DIR1 = "dir1"
-    public static final NEW_DIRNAME = "testDir"
-    public static final ILLEGAL_FILE = "xx/yy////z!<>?*z.txt"
-    public static final EXISTING_FILE_CONTENTS = "abc 123 %^& xxx"
-    public static final DATE = new Date()
+    protected static final String FILENAME1 = "File1.txt"
+    protected static final String FILENAME2 = "file2.txt"
+    protected static final String DIR1 = "dir1"
+    protected static final String NEW_DIRNAME = "testDir"
+    protected static final String ILLEGAL_FILE = "xx/yy////z!<>?*z.txt"
+    protected static final String EXISTING_FILE_CONTENTS = "abc 123 %^& xxx"
+    protected static final Date DATE = new Date()
 
     // These must be set by the concrete subclass (in its constructor)
     protected String NEW_DIR = null

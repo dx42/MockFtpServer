@@ -32,10 +32,10 @@ import org.mockftpserver.fake.filesystem.Permissions
  */
 class RntoCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
-    private static final DIR = '/'
-    private static final FROM_FILE = "/from.txt"
-    private static final TO_FILE = "/file.txt"
-    private static final FROM_DIR = "/subdir"
+    private static final String DIR = '/'
+    private static final String FROM_FILE = "/from.txt"
+    private static final String TO_FILE = "/file.txt"
+    private static final String FROM_DIR = "/subdir"
 
     @Test
     void testHandleCommand_SingleFile() {

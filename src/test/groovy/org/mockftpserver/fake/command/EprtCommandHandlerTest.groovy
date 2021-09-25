@@ -28,11 +28,11 @@ import org.mockftpserver.core.command.ReplyCodes
  */
 class EprtCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
-    static final PARAMETERS_IPV4 = ["|1|132.235.1.2|6275|"]
-    static final HOST_IPV4 = InetAddress.getByName("132.235.1.2")
-    static final PARAMETERS_IPV6 = ["|2|1080::8:800:200C:417A|6275|"]
-    static final HOST_IPV6 = InetAddress.getByName("1080::8:800:200C:417A")
-    static final PORT = 6275
+    private static final List PARAMETERS_IPV4 = ["|1|132.235.1.2|6275|"]
+    private static final InetAddress HOST_IPV4 = InetAddress.getByName("132.235.1.2")
+    private static final List PARAMETERS_IPV6 = ["|2|1080::8:800:200C:417A|6275|"]
+    private static final InetAddress HOST_IPV6 = InetAddress.getByName("1080::8:800:200C:417A")
+    private static final int PORT = 6275
 
     boolean testNotLoggedIn = false
 

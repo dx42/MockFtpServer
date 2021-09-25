@@ -26,16 +26,16 @@ import org.mockftpserver.test.AbstractGroovyTestCase
  */
 class PortParserTest extends AbstractGroovyTestCase {
 
-    static final String[] PARAMETERS = ["192", "22", "250", "44", "1", "206"]
-    static final String[] PARAMETERS_INSUFFICIENT = ["7", "29", "99", "11", "77"]
-    static final int PORT = (1 << 8) + 206
-    static final InetAddress HOST = inetAddress("192.22.250.44")
+    private static final String[] PARAMETERS = ["192", "22", "250", "44", "1", "206"]
+    private static final String[] PARAMETERS_INSUFFICIENT = ["7", "29", "99", "11", "77"]
+    private static final int PORT = (1 << 8) + 206
+    private static final InetAddress HOST = inetAddress("192.22.250.44")
 
-    static final PARAMETER_IPV4 = "|1|132.235.1.2|6275|"
-    static final HOST_IPV4 = InetAddress.getByName("132.235.1.2")
-    static final PARAMETER_IPV6 = "|2|1080::8:800:200C:417A|6275|"
-    static final HOST_IPV6 = InetAddress.getByName("1080::8:800:200C:417A")
-    static final E_PORT = 6275
+    private static final String PARAMETER_IPV4 = "|1|132.235.1.2|6275|"
+    private static final HOST_IPV4 = InetAddress.getByName("132.235.1.2")
+    private static final String PARAMETER_IPV6 = "|2|1080::8:800:200C:417A|6275|"
+    private static final HOST_IPV6 = InetAddress.getByName("1080::8:800:200C:417A")
+    private static final E_PORT = 6275
 
     @Test
     void testParseExtendedAddressHostAndPort_IPv4() {

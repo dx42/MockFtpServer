@@ -40,21 +40,21 @@ import org.mockftpserver.test.PortTestUtil
  */
 class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
 
-    static final SERVER = "localhost"
-    static final USERNAME = "user123"
-    static final PASSWORD = "password"
-    static final ACCOUNT = "account123"
-    static final ASCII_DATA = "abcdef\tghijklmnopqr"
-    static final BINARY_DATA = new byte[256]
-    static final ROOT_DIR = "c:/"
-    static final HOME_DIR = p(ROOT_DIR, "home")
-    static final SUBDIR_NAME = 'sub'
-    static final SUBDIR_NAME2 = "archive"
-    static final SUBDIR = p(HOME_DIR, SUBDIR_NAME)
-    static final FILENAME1 = "abc.txt"
-    static final FILENAME2 = "SomeOtherFile.xml"
-    static final FILE1 = p(HOME_DIR, FILENAME1)
-    static final SYSTEM_NAME = "WINDOWS"
+    private static final String SERVER = "localhost"
+    private static final String USERNAME = "user123"
+    private static final String PASSWORD = "password"
+    private static final String ACCOUNT = "account123"
+    private static final String ASCII_DATA = "abcdef\tghijklmnopqr"
+    private static final byte[] BINARY_DATA = new byte[256]
+    private static final String ROOT_DIR = "c:/"
+    private static final String HOME_DIR = p(ROOT_DIR, "home")
+    private static final String SUBDIR_NAME = 'sub'
+    private static final String SUBDIR_NAME2 = "archive"
+    private static final String SUBDIR = p(HOME_DIR, SUBDIR_NAME)
+    private static final String FILENAME1 = "abc.txt"
+    private static final String FILENAME2 = "SomeOtherFile.xml"
+    private static final String FILE1 = p(HOME_DIR, FILENAME1)
+    private static final String SYSTEM_NAME = "WINDOWS"
 
     private FakeFtpServer ftpServer
     private FTPClient ftpClient

@@ -28,7 +28,9 @@ import org.mockftpserver.test.PortTestUtil
  * @author Chris Mair
  */
 class StubFtpServer_RestartTest extends AbstractGroovyTestCase {
-    static final SERVER = "localhost"
+
+    private static final String SERVER = "localhost"
+
     private stubFtpServer
     private ftpClient
 

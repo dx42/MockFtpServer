@@ -28,10 +28,10 @@ import org.mockftpserver.core.command.ReplyCodes
  */
 class PortCommandHandlerTest extends AbstractFakeCommandHandlerTestCase {
 
-    static final PARAMETERS = ["11", "22", "33", "44", "1", "206"]
-    static final PARAMETERS_INSUFFICIENT = ["7", "29", "99", "11", "77"]
-    static final PORT = (1 << 8) + 206
-    static final HOST = InetAddress.getByName("11.22.33.44")
+    private static final List PARAMETERS = ["11", "22", "33", "44", "1", "206"]
+    private static final List PARAMETERS_INSUFFICIENT = ["7", "29", "99", "11", "77"]
+    private static final int PORT = (1 << 8) + 206
+    private static final InetAddress HOST = InetAddress.getByName("11.22.33.44")
 
     boolean testNotLoggedIn = false
 

@@ -27,10 +27,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext
 */
 class FakeFtpServerSpringConfigurationTest extends AbstractGroovyTestCase {
 
-    static final SERVER = "localhost"
-    static final PORT = 9981
-    static final USERNAME = 'joe'           // Must match Spring config
-    static final PASSWORD = 'password'      // Must match Spring config 
+    private static final String SERVER = "localhost"
+    private static final int PORT = 9981
+    private static final String USERNAME = 'joe'           // Must match Spring config
+    private static final String PASSWORD = 'password'      // Must match Spring config
 
     private FakeFtpServer fakeFtpServer
     private FTPClient ftpClient

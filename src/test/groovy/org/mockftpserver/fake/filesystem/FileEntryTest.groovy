@@ -26,7 +26,7 @@ import org.mockftpserver.core.util.IoUtil
  */
 class FileEntryTest extends AbstractFileSystemEntryTestCase {
 
-    private static final CONTENTS = "abc 123 %^& xxx"
+    private static final String CONTENTS = "abc 123 %^& xxx"
 
     private FileEntry entry
 
