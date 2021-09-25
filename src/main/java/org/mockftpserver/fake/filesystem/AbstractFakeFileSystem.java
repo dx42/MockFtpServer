@@ -42,7 +42,7 @@ import java.util.Map;
  * used by the <code>formatDirectoryListing</code> method to format directory listings in a
  * filesystem-specific manner. This property must be initialized by concrete subclasses.
  *
- * <p> The <code>systemName</code>> property holds the default value returned by this FileSystem for the FTP SYST command.
+ * <p> The <code>systemName</code> property holds the default value returned by this FileSystem for the FTP SYST command.
  *
  * @author Chris Mair
  */
