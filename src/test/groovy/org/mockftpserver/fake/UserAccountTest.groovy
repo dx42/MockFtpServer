@@ -15,7 +15,7 @@
  */
 package org.mockftpserver.fake
 
-import org.junit.jupiter.api.BeforeEach
+
 import org.junit.jupiter.api.Test
 import org.mockftpserver.fake.filesystem.FileEntry
 import org.mockftpserver.fake.filesystem.FileSystemEntry
@@ -34,7 +34,7 @@ class UserAccountTest extends AbstractGroovyTestCase {
     private static final String HOME_DIR = "/usr/user123"
     private static final String GROUP = 'group'
 
-    private UserAccount userAccount
+    private UserAccount userAccount = new UserAccount()
 
     @Test
     void testConstructor() {
@@ -208,10 +208,5 @@ class UserAccountTest extends AbstractGroovyTestCase {
     private FileSystemEntry createFileEntry(owner, permissionsString, group) {
         def permissions = permissionsString ? new Permissions(permissionsString) : null
         return new FileEntry(path: '', owner: owner, group: group, permissions: permissions)
-    }
-
-    @BeforeEach
-    void setUp() {
-        userAccount = new UserAccount()
     }
 }

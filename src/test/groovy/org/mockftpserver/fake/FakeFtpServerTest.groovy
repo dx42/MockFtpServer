@@ -15,7 +15,7 @@
  */
 package org.mockftpserver.fake
 
-import org.junit.jupiter.api.BeforeEach
+
 import org.junit.jupiter.api.Test
 import org.mockftpserver.core.command.Command
 import org.mockftpserver.core.command.CommandHandler
@@ -33,8 +33,8 @@ import org.mockftpserver.fake.filesystem.WindowsFakeFileSystem
  */
 class FakeFtpServerTest extends AbstractFtpServerTestCase {
 
-    private CommandHandler commandHandler
-    private CommandHandler commandHandler_NotServerConfigurationAware
+    private CommandHandler commandHandler = new TestCommandHandler()
+    private CommandHandler commandHandler_NotServerConfigurationAware = new TestCommandHandlerNotServerConfigurationAware()
 
     //-------------------------------------------------------------------------
     // Extra tests  (Standard tests defined in superclass)
@@ -110,16 +110,6 @@ class FakeFtpServerTest extends AbstractFtpServerTestCase {
 
         ResourceBundle resourceBundle = ftpServer.replyTextBundle
         assert resourceBundle.getString("110") == "Testing123"
-    }
-
-    //-------------------------------------------------------------------------
-    // Test set up
-    //-------------------------------------------------------------------------
-
-    @BeforeEach
-    void setUp() {
-        commandHandler = new TestCommandHandler()
-        commandHandler_NotServerConfigurationAware = new TestCommandHandlerNotServerConfigurationAware()
     }
 
     //-------------------------------------------------------------------------

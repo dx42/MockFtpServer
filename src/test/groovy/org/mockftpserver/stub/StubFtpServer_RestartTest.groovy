@@ -31,8 +31,8 @@ class StubFtpServer_RestartTest extends AbstractGroovyTestCase {
 
     private static final String SERVER = "localhost"
 
-    private stubFtpServer
-    private ftpClient
+    private StubFtpServer stubFtpServer = new StubFtpServer()
+    private FTPClient ftpClient = new FTPClient()
 
     @Test
     void testRestart() {
@@ -50,9 +50,7 @@ class StubFtpServer_RestartTest extends AbstractGroovyTestCase {
 
     @BeforeEach
     void setUp() {
-        stubFtpServer = new StubFtpServer()
         stubFtpServer.setServerControlPort(PortTestUtil.getFtpServerControlPort())
-        ftpClient = new FTPClient()
     }
 
     @AfterEach

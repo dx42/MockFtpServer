@@ -56,10 +56,10 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
     private static final String FILE1 = p(HOME_DIR, FILENAME1)
     private static final String SYSTEM_NAME = "WINDOWS"
 
-    private FakeFtpServer ftpServer
-    private FTPClient ftpClient
-    private FileSystem fileSystem
-    private UserAccount userAccount
+    private FakeFtpServer ftpServer = new FakeFtpServer()
+    private FTPClient ftpClient = new FTPClient()
+    private FileSystem fileSystem = new WindowsFakeFileSystem()
+    private UserAccount userAccount = new UserAccount(USERNAME, PASSWORD, HOME_DIR)
 
     //-------------------------------------------------------------------------
     // Tests
@@ -505,11 +505,9 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
             BINARY_DATA[i] = (byte) i
         }
 
-        ftpServer = new FakeFtpServer()
         ftpServer.serverControlPort = PortTestUtil.getFtpServerControlPort()
         ftpServer.systemName = SYSTEM_NAME
 
-        fileSystem = new WindowsFakeFileSystem()
         fileSystem.createParentDirectoriesAutomatically = true
         fileSystem.add(new DirectoryEntry(SUBDIR))
         ftpServer.fileSystem = fileSystem
@@ -518,7 +516,6 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         ftpServer.addUserAccount(userAccount)
 
         ftpServer.start()
-        ftpClient = new FTPClient()
     }
 
     @AfterEach

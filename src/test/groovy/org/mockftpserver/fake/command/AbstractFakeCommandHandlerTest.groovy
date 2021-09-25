@@ -25,6 +25,7 @@ import org.mockftpserver.core.command.ReplyCodes
 import org.mockftpserver.core.session.Session
 import org.mockftpserver.core.session.SessionKeys
 import org.mockftpserver.core.session.StubSession
+import org.mockftpserver.fake.ServerConfiguration
 import org.mockftpserver.fake.StubServerConfiguration
 import org.mockftpserver.fake.UserAccount
 import org.mockftpserver.fake.filesystem.FileSystemException
@@ -40,21 +41,22 @@ import org.mockftpserver.test.StubResourceBundle
  */
 class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTestCase {
 
-    static PATH = "some/path"
-    static REPLY_CODE = 99
-    static MESSAGE_KEY = "99.WithFilename"
-    static ARG = "ABC"
-    static MSG = "text {0}"
-    static MSG_WITH_ARG = "text ABC"
-    static MSG_FOR_KEY = "some other message"
-    static INTERNAL_ERROR = AbstractFakeCommandHandler.INTERNAL_ERROR_KEY
-    static MSG_INTERNAL_ERROR = "internal error message {0}"
-    private AbstractFakeCommandHandler commandHandler
-    private session
-    private serverConfiguration
-    private replyTextBundle
-    private fileSystem
-    private userAccount
+    private static final int REPLY_CODE = 99
+    private static final String PATH = "some/path"
+    private static final String MESSAGE_KEY = "99.WithFilename"
+    private static final String ARG = "ABC"
+    private static final String MSG = "text {0}"
+    private static final String MSG_WITH_ARG = "text ABC"
+    private static final String MSG_FOR_KEY = "some other message"
+    private static final String INTERNAL_ERROR = AbstractFakeCommandHandler.INTERNAL_ERROR_KEY
+    private static final String MSG_INTERNAL_ERROR = "internal error message {0}"
+
+    private AbstractFakeCommandHandler commandHandler = new TestFakeCommandHandler()
+    private Session session = new StubSession()
+    private ServerConfiguration serverConfiguration = new StubServerConfiguration()
+    private UnixFakeFileSystem fileSystem = new UnixFakeFileSystem()
+    private StubResourceBundle replyTextBundle = new StubResourceBundle()
+    private UserAccount userAccount = new UserAccount()
 
     //-------------------------------------------------------------------------
     // Tests
@@ -164,12 +166,6 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTestCase {
 
     @BeforeEach
     void setUp() {
-        commandHandler = new TestFakeCommandHandler()
-        session = new StubSession()
-        serverConfiguration = new StubServerConfiguration()
-        replyTextBundle = new StubResourceBundle()
-        userAccount = new UserAccount()
-        fileSystem = new UnixFakeFileSystem()
         serverConfiguration.setFileSystem(fileSystem)
 
         replyTextBundle.put(REPLY_CODE as String, MSG)
@@ -208,7 +204,7 @@ class AbstractFakeCommandHandlerClassTest extends AbstractGroovyTestCase {
  */
 class TestFakeCommandHandler extends AbstractFakeCommandHandler {
     boolean handled = false
-    def exception
+    Exception exception
 
     protected void handle(Command command, Session session) {
         if (exception) {

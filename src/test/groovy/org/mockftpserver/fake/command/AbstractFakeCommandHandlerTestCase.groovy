@@ -40,12 +40,12 @@ abstract class AbstractFakeCommandHandlerTestCase extends AbstractGroovyTestCase
 
     protected static final ERROR_MESSAGE_KEY = 'msgkey'
 
-    protected session
-    protected serverConfiguration
-    protected replyTextBundle
-    protected commandHandler
-    protected fileSystem
-    protected userAccount
+    protected StubSession session = new StubSession()
+    protected StubServerConfiguration serverConfiguration = new StubServerConfiguration()
+    protected StubResourceBundle replyTextBundle = new StubResourceBundle()
+    protected TestUnixFakeFileSystem fileSystem = new TestUnixFakeFileSystem()
+    protected CommandHandler commandHandler
+    protected UserAccount userAccount = new UserAccount()
 
     /** Set this to false to skip the test that verifies that the CommandHandler requires a logged in user              */
     boolean testNotLoggedIn = true
@@ -103,14 +103,9 @@ abstract class AbstractFakeCommandHandlerTestCase extends AbstractGroovyTestCase
 
     @BeforeEach
     void setUpAbstractFakeCommandHandlerTest() {
-        session = new StubSession()
-        serverConfiguration = new StubServerConfiguration()
-        replyTextBundle = new StubResourceBundle()
-        fileSystem = new TestUnixFakeFileSystem()
         fileSystem.createParentDirectoriesAutomatically = true
         serverConfiguration.setFileSystem(fileSystem)
 
-        userAccount = new UserAccount()
         session.setAttribute(SessionKeys.USER_ACCOUNT, userAccount)
 
         commandHandler = createCommandHandler()

@@ -16,11 +16,10 @@
 package org.mockftpserver.fake.filesystem
 
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockftpserver.test.AbstractGroovyTestCase
 
 import java.text.SimpleDateFormat
-import org.mockftpserver.test.AbstractGroovyTestCase
 
 /**
  * Tests for WindowsDirectoryListingFormatter
@@ -34,10 +33,10 @@ class WindowsDirectoryListingFormatterTest extends AbstractGroovyTestCase {
     private static final Date LAST_MODIFIED = new Date()
     private static final int SIZE_WIDTH = WindowsDirectoryListingFormatter.SIZE_WIDTH
 
-    private formatter
-    private dateFormat
-    private lastModifiedFormatted
-    private defaultLocale
+    private WindowsDirectoryListingFormatter formatter = new WindowsDirectoryListingFormatter()
+    private SimpleDateFormat dateFormat = new SimpleDateFormat(WindowsDirectoryListingFormatter.DATE_FORMAT)
+    private String lastModifiedFormatted = dateFormat.format(LAST_MODIFIED)
+    private Locale defaultLocale = Locale.default
 
     @Test
     void testFormat_File() {
@@ -68,14 +67,6 @@ class WindowsDirectoryListingFormatterTest extends AbstractGroovyTestCase {
         def result = formatter.format(fileEntry)
         LOG.info("result=$result")
         assert result == expected
-    }
-
-    @BeforeEach
-    void setUp() {
-        formatter = new WindowsDirectoryListingFormatter()
-        dateFormat = new SimpleDateFormat(WindowsDirectoryListingFormatter.DATE_FORMAT)
-        lastModifiedFormatted = dateFormat.format(LAST_MODIFIED)
-        defaultLocale = Locale.default
     }
 
     @AfterEach

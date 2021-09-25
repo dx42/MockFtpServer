@@ -42,8 +42,8 @@ abstract class AbstractFileSystemTestCase extends AbstractGroovyTestCase {
     protected String NEW_FILE = null
     protected String EXISTING_DIR = null
     protected String EXISTING_FILE = null
-    protected NO_SUCH_DIR = null
-    protected NO_SUCH_FILE = null
+    protected String NO_SUCH_DIR = null
+    protected String NO_SUCH_FILE = null
 
     protected FileSystem fileSystem
 
