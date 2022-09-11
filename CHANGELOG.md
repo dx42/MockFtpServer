@@ -3,7 +3,7 @@
 TODO Version 3.1.0 (??? 2021)
 ------------------------------------------
 Infrastructure and Dependencies
- - #19: Upgrade to Groovy 3.0.12; logback-classic to 1.3.0; slf4j-api to 2.0.0
+ - #19: Upgrade jars: groovy-all to 3.0.12; logback-classic to 1.3.0; slf4j-api to 2.0.0; mockito-core to 4.7.0
 
 Version 3.0.0 (Sep 2021)
 ------------------------------------------
