@@ -15,19 +15,19 @@
  */
 package org.mockftpserver.fake.filesystem;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.mockftpserver.core.util.Assert;
 import org.mockftpserver.core.util.PatternUtil;
 import org.mockftpserver.core.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Abstract superclass for implementation of the FileSystem interface that manage the files
@@ -66,7 +66,7 @@ public abstract class AbstractFakeFileSystem implements FileSystem {
      */
     private DirectoryListingFormatter directoryListingFormatter;
 
-    private Map entries = new HashMap();
+    private Map entries = new ConcurrentHashMap();
 
     //-------------------------------------------------------------------------
     // Public API

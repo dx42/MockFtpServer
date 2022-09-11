@@ -18,6 +18,8 @@ package org.mockftpserver.fake.filesystem
 import org.junit.jupiter.api.Test
 import org.mockftpserver.core.util.IoUtil
 
+import java.util.concurrent.Executors
+
 /**
  * Tests for subclasses of AbstractFakeFileSystem
  *
@@ -25,9 +27,9 @@ import org.mockftpserver.core.util.IoUtil
  */
 abstract class AbstractFakeFileSystemTestCase extends AbstractFileSystemTestCase {
 
-    // -------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     // Tests
-    // -------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
 
     @Test
     void testDefaultDirectoryListingFormatterClass() {
@@ -152,6 +154,29 @@ abstract class AbstractFakeFileSystemTestCase extends AbstractFileSystemTestCase
     @Test
     void testGetName_Null() {
         shouldFailWithMessageContaining("path") { fileSystem.getName(null) }
+    }
+
+    @Test
+    void testMultipleThreads() {
+        int numThreads = 10;
+        def pool = Executors.newFixedThreadPool(5)
+        def futures = []
+
+        for (int threadIndex = 0; threadIndex < numThreads; threadIndex++) {
+            def index = threadIndex
+            def runThread = {
+                for (int fileIndex = 0; fileIndex < 20; fileIndex++) {
+                    def filename = NEW_FILE + index + "_" + fileIndex
+                    fileSystem.add(new FileEntry(filename))
+                    fileSystem.listFiles("/")       // iterate through the entries
+                    fileSystem.delete(filename)
+                }
+                log("Finished thread #" + index)
+            }
+            log("Starting thread #" + index)
+            futures << pool.submit(runThread)
+        }
+        futures.each { future -> future.get() }     // make sure no thread threw an exception
     }
 
     //--------------------------------------------------------------------------
