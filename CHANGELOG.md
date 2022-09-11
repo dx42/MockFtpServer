@@ -3,8 +3,10 @@
 TODO Version 3.1.0 (??? 2021)
 ------------------------------------------
 Infrastructure and Dependencies
- - #19: Upgrade jars: groovy-all to 3.0.12; logback-classic to 1.3.0; slf4j-api to 2.0.0; mockito-core to 4.7.0; 
-        junit-jupiter-engine to 5.9.0
+ - #19: Upgrade main dependencies: slf4j-api to 2.0.0.
+ - #19: Upgrade test dependencies: groovy-all to 3.0.12; logback-classic to 1.3.0; mockito-core to 4.7.0; 
+        junit-jupiter-engine to 5.9.0; spring-core and spring-context to 5.2.22.RELEASE.
+
 
 Version 3.0.0 (Sep 2021)
 ------------------------------------------
@@ -60,7 +62,7 @@ Version 2.5 (May 2014)
 - Fix #23 PWD response should have commentary: "{0}" is current directory.
   Also adjusted reply text for MKD to adhere to RFC959: "{0}" created.
 - Removed deprecation of assertSessionReply(int,Object)
-- Fix broken internal links on the web site pages.
+- Fix broken internal links on the website pages.
 - Update “Log4J Configuration Required to See Log Output” section on “FakeFtpServer – Getting Started” with info for SLF4J.
 - Added MockFtpServer logo image. Thanks to cooltext.com.
 
