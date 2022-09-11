@@ -1,5 +1,9 @@
 # MockFtpServer Change Log
 
+TODO Version 3.1.0 (??? 2021)
+------------------------------------------
+Infrastructure and Dependencies
+ - #19: Upgrade to Groovy 3.0.12; logback-classic to 1.3.0;
 
 Version 3.0.0 (Sep 2021)
 ------------------------------------------
