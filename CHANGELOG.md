@@ -4,6 +4,7 @@ TODO Version 3.1.0 (??? 2021)
 ------------------------------------------
 Enhancements and Bug Fixes
  - #18: Fix UnixFakeFileSystem and WindowsFakeFileSystem thread safety. Use ConcurrentHashMap.
+ - #17: DefaultSession: Fix slow readData(). Use BufferedInputStream.
 Infrastructure and Dependencies
  - #19: Upgrade main dependencies: slf4j-api to 2.0.0.
  - #19: Upgrade test dependencies: groovy-all to 3.0.12; logback-classic to 1.3.0; mockito-core to 4.7.0; 

@@ -265,15 +265,21 @@ public class DefaultSession implements Session {
      */
     public byte[] readData(int numBytes) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        int numBytesRead = 0;
+        byte[] data = new byte[1024];
+        int totalBytesReadSoFar = 0;
+        boolean reading = true;
+
         try {
-            while (numBytesRead < numBytes) {
-                int b = dataInputStream.read();
-                if (b == -1) {
-                    break;
+            while (reading) {
+                int numBytesLeft = numBytes - totalBytesReadSoFar;
+                int numBytesToReadThisTime = Math.min(data.length, numBytesLeft);
+                int numBytesRead = dataInputStream.read(data, 0, numBytesToReadThisTime);
+                reading = numBytesRead != -1;
+                if (reading) {
+                    bytes.write(data, 0, numBytesRead);
+                    totalBytesReadSoFar += numBytesRead;
+                    reading = totalBytesReadSoFar < numBytes;
                 }
-                bytes.write(b);
-                numBytesRead++;
             }
             return bytes.toByteArray();
         }

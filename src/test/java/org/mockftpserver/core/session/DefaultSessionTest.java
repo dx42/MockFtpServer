@@ -19,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockftpserver.core.MockFtpServerException;
 import org.mockftpserver.core.command.Command;
 import org.mockftpserver.core.socket.StubServerSocket;
@@ -30,6 +32,8 @@ import org.mockftpserver.test.AbstractTestCase;
 
 import java.io.*;
 import java.net.InetAddress;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -163,18 +167,37 @@ class DefaultSessionTest extends AbstractTestCase {
         assertArrayEquals(DATA.getBytes(), data);
     }
 
-    @Test
-    void testReadData_NumBytes() {
-        final int NUM_BYTES = 5;
-        final String EXPECTED_DATA = DATA.substring(0, NUM_BYTES);
+    @ParameterizedTest
+    @ValueSource(ints = {1, 5, 15})
+    void testReadData_NumBytes(int numBytes) {
+        final String EXPECTED_DATA = DATA.substring(0, numBytes);
         StubSocket stubSocket = createTestSocket(DATA);
         session.socketFactory = new StubSocketFactory(stubSocket);
         session.setClientDataHost(clientHost);
 
         session.openDataConnection();
-        byte[] data = session.readData(NUM_BYTES);
+        byte[] data = session.readData(numBytes);
         log("data=[" + new String(data) + "]");
         assertArrayEquals(EXPECTED_DATA.getBytes(), data);
+    }
+
+    @Test
+    void testReadData_LargeData() {
+        final int NUM_BYTES = 50_000_000;
+        byte[] bytes = new byte[NUM_BYTES + 3];
+
+        StubSocket stubSocket = createTestSocket(bytes);
+        session.socketFactory = new StubSocketFactory(stubSocket);
+        session.setClientDataHost(clientHost);
+        session.openDataConnection();
+
+        Instant startTime = Instant.now();
+        byte[] data = session.readData(NUM_BYTES);
+        Instant endTime = Instant.now();
+
+        Duration duration = Duration.between(startTime, endTime);
+        log("Read " + data.length + " bytes in " + duration.toMillis() + " milliseconds");
+        assertEquals(NUM_BYTES, data.length);
     }
 
     @Test
@@ -375,7 +398,11 @@ class DefaultSessionTest extends AbstractTestCase {
      * @return the StubSocket
      */
     private StubSocket createTestSocket(String inputStreamContents) {
-        InputStream inputStream = new ByteArrayInputStream(inputStreamContents.getBytes());
+        return createTestSocket(inputStreamContents.getBytes());
+    }
+
+    private StubSocket createTestSocket(byte[] inputStreamContents) {
+        InputStream inputStream = new ByteArrayInputStream(inputStreamContents);
         StubSocket stubSocket = new StubSocket(inputStream, outputStream);
         stubSocket._setLocalAddress(DEFAULT_HOST);
         return stubSocket;
