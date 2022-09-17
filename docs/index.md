@@ -52,7 +52,7 @@ from the **Maven Central Repository**. Add a dependency to your POM like this:
   <dependency>
     <groupId>org.mockftpserver</groupId>
     <artifactId>MockFtpServer</artifactId>
-    <version>2.8.0</version>
+    <version>3.1.0</version>
     <scope>test</scope>
   </dependency>
 ```

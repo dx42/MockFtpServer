@@ -1,6 +1,6 @@
 # MockFtpServer Change Log
 
-TODO Version 3.1.0 (??? 2021)
+Version 3.1.0 (Sep 2022)
 ------------------------------------------
 Enhancements and Bug Fixes
  - #18: Fix UnixFakeFileSystem and WindowsFakeFileSystem thread safety. Use ConcurrentHashMap.
