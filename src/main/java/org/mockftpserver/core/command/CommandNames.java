@@ -49,6 +49,7 @@ public final class CommandNames {
     public static final String RNFR = "RNFR";
     public static final String RNTO = "RNTO";
     public static final String SITE = "SITE";
+    public static final String SIZE = "SIZE";
     public static final String SMNT = "SMNT";
     public static final String STAT = "STAT";
     public static final String STOR = "STOR";

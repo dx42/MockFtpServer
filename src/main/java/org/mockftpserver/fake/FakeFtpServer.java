@@ -196,6 +196,7 @@ public class FakeFtpServer extends AbstractFtpServer implements ServerConfigurat
         setCommandHandler(CommandNames.RNFR, new RnfrCommandHandler());
         setCommandHandler(CommandNames.RNTO, new RntoCommandHandler());
         setCommandHandler(CommandNames.SITE, new SiteCommandHandler());
+        setCommandHandler(CommandNames.SIZE, new SizeCommandHandler());
         setCommandHandler(CommandNames.SMNT, new SmntCommandHandler());
         setCommandHandler(CommandNames.STAT, new StatCommandHandler());
         setCommandHandler(CommandNames.STOR, new StorCommandHandler());

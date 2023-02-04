@@ -50,6 +50,7 @@ public final class ReplyCodes {
     public static final int SMNT_OK = 250;
     public static final int STAT_SYSTEM_OK = 211;
     public static final int STAT_FILE_OK = 213;
+    public static final int SIZE_OK = 213;
     public static final int STRU_OK = 200;
     public static final int SYST_OK = 215;
     public static final int TYPE_OK = 200;
