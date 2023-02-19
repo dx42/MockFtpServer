@@ -1,5 +1,10 @@
 # MockFtpServer Change Log
 
+TODO: Version 3.2.0 (??? 2023)
+------------------------------------------
+ - #21: FakeFtpServer: Add support for the SIZE command.([Edoardo Luppi](https://github.com/lppedd))
+
+
 Version 3.1.0 (Sep 2022)
 ------------------------------------------
 Enhancements and Bug Fixes
