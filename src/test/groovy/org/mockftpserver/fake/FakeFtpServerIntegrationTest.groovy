@@ -396,6 +396,24 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
     }
 
     @Test
+    void testRetr_Using_retrieveFileStream() {
+        fileSystem.add(new FileEntry(path: FILE1, contents: ASCII_DATA))
+
+        ftpClientConnectAndLogin()
+
+        InputStream inputStream = ftpClient.retrieveFileStream(FILE1)
+        String text = inputStream.text
+        assert text == ASCII_DATA
+
+        inputStream.close()
+        ftpClient.completePendingCommand();
+
+        // An extra call to completePendingCommand() or getReply() will hang
+        // ftpClient.completePendingCommand();
+        // ftpClient.getReply();
+    }
+
+    @Test
     void testRmd() {
         ftpClientConnectAndLogin()
 
@@ -445,6 +463,23 @@ class FakeFtpServerIntegrationTest extends AbstractGroovyTestCase {
         assert ftpClient.storeFile(FILENAME1, inputStream)      // relative to homeDirectory
         def contents = fileSystem.getEntry(FILE1).createInputStream().text
         LOG.info("File contents=[" + contents + "]")
+        assert contents == ASCII_DATA
+    }
+
+    @Test
+    void testStor_Using_storeFileStream() {
+        ftpClientConnectAndLogin()
+
+        OutputStream outputStream = ftpClient.storeFileStream(FILENAME1)      // relative to homeDirectory
+        outputStream << ASCII_DATA
+        outputStream.close()
+        ftpClient.completePendingCommand();
+
+        // An extra call to completePendingCommand() or getReply() will hang
+        // ftpClient.completePendingCommand();
+        // ftpClient.getReply();
+
+        def contents = fileSystem.getEntry(FILE1).createInputStream().text
         assert contents == ASCII_DATA
     }
 
