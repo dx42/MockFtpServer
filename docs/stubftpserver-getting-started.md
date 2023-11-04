@@ -164,74 +164,88 @@ The following `RemoteFileTest` class includes a couple of JUnit tests that use
 a customized handler.
 
 ```  
-    import java.io.IOException;
-    import org.mockftpserver.core.command.InvocationRecord;
-    import org.mockftpserver.stub.StubFtpServer;
-    import org.mockftpserver.stub.command.RetrCommandHandler;
-    import org.mockftpserver.test.AbstractTest;
-    
-    public class RemoteFileTest extends AbstractTest {
-    
-        private static final String FILENAME = "dir/sample.txt";
-    
-        private RemoteFile remoteFile;
-        private StubFtpServer stubFtpServer;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockftpserver.core.command.CommandNames;
+import org.mockftpserver.core.command.InvocationRecord;
+import org.mockftpserver.stub.StubFtpServer;
+import org.mockftpserver.stub.command.RetrCommandHandler;
+import org.mockftpserver.test.AbstractTestCase;
+import org.mockftpserver.test.IntegrationTest;
+
+import java.io.IOException;
+
+/**
+ * Example test using StubFtpServer, with programmatic configuration.
+ */
+class RemoteFileTest extends AbstractTestCase implements IntegrationTest {
+
+    private static final int PORT = 9981;
+    private static final String FILENAME = "dir/sample.txt";
+
+    private RemoteFile remoteFile;
+    private StubFtpServer stubFtpServer;
+
+    @Test
+    void testReadFile() throws Exception {
+
+        final String CONTENTS = "abcdef 1234567890";
+
+        // Replace the default RETR CommandHandler; customize returned file contents
+        RetrCommandHandler retrCommandHandler = new RetrCommandHandler();
+        retrCommandHandler.setFileContents(CONTENTS);
+        stubFtpServer.setCommandHandler(CommandNames.RETR, retrCommandHandler);
         
-        public void testReadFile() throws Exception {
-    
-            final String CONTENTS = "abcdef 1234567890";
-    
-            // Replace the default RETR CommandHandler; customize returned file contents
-            RetrCommandHandler retrCommandHandler = new RetrCommandHandler();
-            retrCommandHandler.setFileContents(CONTENTS);
-            stubFtpServer.setCommandHandler("RETR", retrCommandHandler);
-            
-            stubFtpServer.start();
-            
-            String contents = remoteFile.readFile(FILENAME);
-    
-            // Verify returned file contents
-            assertEquals("contents", CONTENTS, contents);
-            
-            // Verify the submitted filename
-            InvocationRecord invocationRecord = retrCommandHandler.getInvocation(0);
-            String filename = invocationRecord.getString(RetrCommandHandler.PATHNAME_KEY);
-            assertEquals("filename", FILENAME, filename);
-        }
-    
-        /**
-         * Test the readFile() method when the FTP transfer fails (returns a non-success reply code) 
-         */
-        public void testReadFileThrowsException() {
-    
-            // Replace the default RETR CommandHandler; return failure reply code
-            RetrCommandHandler retrCommandHandler = new RetrCommandHandler();
-            retrCommandHandler.setFinalReplyCode(550);
-            stubFtpServer.setCommandHandler("RETR", retrCommandHandler);
-            
-            stubFtpServer.start();
-    
-            try {
-                remoteFile.readFile(FILENAME);
-                fail("Expected IOException");
-            }
-            catch (IOException expected) {
-                // Expected this
-            }
-        }
+        stubFtpServer.start();
         
-        protected void setUp() throws Exception {
-            super.setUp();
-            remoteFile = new RemoteFile();
-            remoteFile.setServer("localhost");
-            stubFtpServer = new StubFtpServer();
+        String contents = remoteFile.readFile(FILENAME);
+
+        // Verify returned file contents
+        assertEquals(CONTENTS, contents);
+        
+        // Verify the submitted filename
+        InvocationRecord invocationRecord = retrCommandHandler.getInvocation(0);
+        String filename = invocationRecord.getString(RetrCommandHandler.PATHNAME_KEY);
+        assertEquals(FILENAME, filename);
+    }
+
+    @Test
+    void testReadFileThrowsException() {
+
+        // Replace the default RETR CommandHandler; return failure reply code
+        RetrCommandHandler retrCommandHandler = new RetrCommandHandler();
+        retrCommandHandler.setFinalReplyCode(550);
+        stubFtpServer.setCommandHandler(CommandNames.RETR, retrCommandHandler);
+        
+        stubFtpServer.start();
+
+        try {
+            remoteFile.readFile(FILENAME);
+            fail("Expected IOException");
         }
-    
-        protected void tearDown() throws Exception {
-            super.tearDown();
-            stubFtpServer.stop();
+        catch (IOException expected) {
+            // Expected this
         }
     }
+    
+    @BeforeEach
+    void setUp() throws Exception {
+        remoteFile = new RemoteFile();
+        remoteFile.setServer("localhost");
+        remoteFile.setPort(PORT);
+        stubFtpServer = new StubFtpServer();
+        stubFtpServer.setServerControlPort(PORT);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        stubFtpServer.stop();
+    }
+
+}
 ```  
 
 Things to note about the above test:
