@@ -117,8 +117,8 @@ Version 2.2 (23 Mar 2010)
 Version 2.1 (16 Jun 2009)
 ------------------------------------------
 - Added support for IPv6 (EPRT and EPSV commands) to FakeFtpServer and StubFtpServer. Thanks to Fernando Martinez for testing.
-- BUG FIX: #2696898: �WindowsFakeFilesystem DirectoryEntry case sensitivity� (https://sourceforge.net/tracker/?func=detail&atid=1006533&aid=2696898&group_id=208647).
-- BUG FIX: #2797980: �UnixFakeFileSystem IsValidName Regex incorrect� (https://sourceforge.net/tracker/?func=detail&atid=1006533&aid=2797980&group_id=208647).
+- BUG FIX: #2696898: "WindowsFakeFilesystem DirectoryEntry case sensitivity" (https://sourceforge.net/tracker/?func=detail&atid=1006533&aid=2696898&group_id=208647).
+- BUG FIX: #2797980: "UnixFakeFileSystem IsValidName Regex incorrect" (https://sourceforge.net/tracker/?func=detail&atid=1006533&aid=2797980&group_id=208647).
 - Add getServerControlPort() to AbstractFtpServer.
 - Create HostAndPort class. Refactor both PortCommandHandler(s) and the PortParser classes to use HostAndPort.
 - TESTS: Convert PortParserTest to Groovy.
@@ -132,9 +132,9 @@ Version 2.0.2 (09 Mar 2009)
 
 Version 2.0.1 (09 Feb 2009)
 ------------------------------------------
-- BUG FIX: #2543193 �"cd .." and "pwd" don't work properly together� (https://sourceforge.net/tracker2/?func=detail&aid=2543193&group_id=208647&atid=1006533).
-- BUG FIX: #2540548 �Missing new line on directory listing� (https://sourceforge.net/tracker2/?func=detail&aid=2540548&group_id=208647&atid=1006533).
-- BUG FIX: #2540366 �FileEntry.setContents( byte [] contents ) change the content� (https://sourceforge.net/tracker2/?func=detail&aid=2540366&group_id=208647&atid=1006533).
+- BUG FIX: #2543193 ""cd .." and "pwd" don't work properly together" (https://sourceforge.net/tracker2/?func=detail&aid=2543193&group_id=208647&atid=1006533).
+- BUG FIX: #2540548 "Missing new line on directory listing" (https://sourceforge.net/tracker2/?func=detail&aid=2540548&group_id=208647&atid=1006533).
+- BUG FIX: #2540366 "FileEntry.setContents( byte [] contents ) change the content" (https://sourceforge.net/tracker2/?func=detail&aid=2540366&group_id=208647&atid=1006533).
  - AbstractFtpServer: Use entrySet() to iterate through sessions (From Rijk van Haaften).
 
 
@@ -164,8 +164,8 @@ Version 2.0-rc2 (12 Dec 2008)
 - AbstractFtpServer: Add createSession() method. Make some attributes protected.
 - StubFtpServer: Introduce AbstractStorCommandHandler. Remove final from stub CommandHandler classes.
 - Cleanup code and javadoc
-- DOCS:	Add �Requirements� section to main (index) page. Also �Maven� section.
-- DOCS: Add "Configuring CommandHandler for New (Unsupported) Command" and �Creating Your Own Custom CommandHandler Class� sections to StubFtpServer Getting Started Guide.
+- DOCS:	Add "Requirements" section to main (index) page. Also "Maven" section.
+- DOCS: Add "Configuring CommandHandler for New (Unsupported) Command" and "Creating Your Own Custom CommandHandler Class" sections to StubFtpServer Getting Started Guide.
 - DOCS: Add "Configuring Custom CommandHandlers" section to Getting Started Guide (FakeFtpServer).
 - TESTS: Move AbstractCommandHandlerTest into core package.
 - TESTS: Create sample test of FakeFtpServer with StaticReplyCommandHandler command handler(s).

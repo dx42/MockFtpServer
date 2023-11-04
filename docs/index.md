@@ -30,6 +30,8 @@ The **MockFtpServer** project is written in Java, and is ideally suited to testi
 communication with the FTP server is across the network using sockets, it can be used to test FTP client 
 code written in any language.
 
+NOTE: The **MockFtpServer** project does not support **FTPS** or **SFTP**.
+
 NOTE: Starting with **MockFtpServer** 2.4, the **Log4J** dependency has been replaced with [SLF4J](http://www.slf4j.org/).
 
 
