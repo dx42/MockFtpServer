@@ -24,7 +24,7 @@ repositories {
     maven { url "https://repo.maven.apache.org/maven2" }
 }
 
-def springVersion = '5.3.30.RELEASE'
+def springVersion = '5.3.30'
 def junitVersion = '5.9.0'
 
 dependencies {

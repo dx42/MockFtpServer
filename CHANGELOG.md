@@ -8,7 +8,7 @@ Infrastructure and Dependencies
  - Upgrade Spring Framework test dependency to 5.3.30.
 
 Documentation
- - Update example FakeFtpServer and StubFtpServer tests in the online docs to use JUnit 5. [Nov 3]
+ - Update example FakeFtpServer and StubFtpServer tests in the online docs to use JUnit 5.
 
 
 Version 3.1.0 (Sep 2022)
